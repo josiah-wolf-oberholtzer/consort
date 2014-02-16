@@ -1,0 +1,76 @@
+\documentclass[11pt]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[papersize={11in, 17in}]{geometry}
+\usepackage{tikz}
+\usepackage{xltxtra,fontspec,xunicode}
+\usetikzlibrary{calc}
+
+\defaultfontfeatures{Scale=MatchLowercase}
+\setromanfont[Numbers=Uppercase]{Didot}
+\newlength{\drop}
+\parindent=0pt
+
+\begin{document}
+    \begin{titlepage}
+
+        \begin{tikzpicture}[remember picture, overlay]
+            \draw[line width = 1.6pt]
+                ($(current page.north west) + (1in,-1in)$)
+                rectangle
+                ($(current page.south east) + (-1in,1in)$);
+            \draw[line width = 0.4pt]
+                ($(current page.north west) + (1in,-1in) + (2.8pt,-2.8pt)$)
+                rectangle
+                ($(current page.south east) + (-1in,1in) + (-2.8pt,2.8pt)$);
+        \end{tikzpicture}
+
+        \drop=0.1\textheight
+        \centering
+
+        \vspace*{\baselineskip}
+
+        \rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt}
+        \rule{\textwidth}{0.4pt}\\[\baselineskip]
+        {
+            \fontsize{3.5cm}{1em}\selectfont
+            CONSORT
+        }
+        \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+        \rule{\textwidth}{1.6pt}\\[\baselineskip]
+
+        \vspace*{2\baselineskip}
+
+        {
+            \itshape
+            for
+        }
+        \\
+        {
+            \large
+            String Orchestra
+            \par
+        }
+
+        \vspace*{2\baselineskip}
+
+        {
+            \itshape
+            Composed by
+        }
+        \\
+        {
+            \Large
+            JOSIAH WOLF OBERHOLTZER
+            \par
+        }
+
+        \vspace*{2\baselineskip}
+
+        {
+            \Large
+            2014
+        }
+
+    \end{titlepage}
+\end{document}

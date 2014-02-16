@@ -1,0 +1,37 @@
+\documentclass[11pt]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[papersize={11in, 17in}]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{multicol}
+
+\usepackage{xltxtra,fontspec,xunicode}
+\defaultfontfeatures{Scale=MatchLowercase}
+\setromanfont[Numbers=Uppercase]{Didot}
+
+\parindent=0pt
+
+\begin{document}
+\begin{titlepage}
+\begin{multicols}{2}
+\raggedcolumns
+\interlinepenalty=10000
+
+{
+    \paragraph{Performance Notes}
+
+    Here are some performance notes.
+} 
+
+\columnbreak
+
+{
+    \paragraph{More Performance Notes}
+
+    Here are some more performance notes.
+}
+
+\end{multicols}
+\end{titlepage}
+\end{document}
