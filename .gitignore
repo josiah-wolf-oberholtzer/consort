@@ -3,11 +3,15 @@
 # C extensions
 *.so
 
+# LaTeX
+*.aux
+*.log
+
 # Packages
 *.egg
 *.egg-info
 dist
-build
+!build
 eggs
 parts
 bin
@@ -34,3 +38,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Etc.
+.DS_Store
