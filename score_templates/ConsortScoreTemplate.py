@@ -224,6 +224,115 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             >>
         >>
 
+    As a string quartet:
+
+    ::
+
+        >>> template = score_templates.ConsortScoreTemplate(
+        ...     violin_count=2,
+        ...     viola_count=1,
+        ...     cello_count=1,
+        ...     contrabass_count=0,
+        ...     )
+        >>> score = template()
+        >>> print format(score)
+        \context Score = "Score" <<
+            \tag #'(Violin1 Violin2 Viola Cello)
+            \context TimeSignatureContext = "TimeSignatureContext" {
+            }
+            \context ViolinStaffGroup = "Violin Staff Group" <<
+                \tag #'Violin1
+                \context PerformerStaffGroup = "Violin 1 Staff Group" <<
+                    \context RHStaff = "Violin 1 RH Staff" {
+                        \context RHVoice = "Violin 1 RH Voice" {
+                        }
+                    }
+                    \context LHStaff = "Violin 1 LH Staff" {
+                        \context LHVoice = "Violin 1 LH Voice" {
+                        }
+                    }
+                    \context Dynamics = "Violin 1 Dynamics" {
+                    }
+                >>
+                \tag #'Violin2
+                \context PerformerStaffGroup = "Violin 2 Staff Group" <<
+                    \context RHStaff = "Violin 2 RH Staff" {
+                        \context RHVoice = "Violin 2 RH Voice" {
+                        }
+                    }
+                    \context LHStaff = "Violin 2 LH Staff" {
+                        \context LHVoice = "Violin 2 LH Voice" {
+                        }
+                    }
+                    \context Dynamics = "Violin 2 Dynamics" {
+                    }
+                >>
+            >>
+            \context ViolaStaffGroup = "Viola Staff Group" <<
+                \tag #'Viola
+                \context PerformerStaffGroup = "Viola Staff Group" <<
+                    \context RHStaff = "Viola RH Staff" {
+                        \context RHVoice = "Viola RH Voice" {
+                        }
+                    }
+                    \context LHStaff = "Viola LH Staff" {
+                        \context LHVoice = "Viola LH Voice" {
+                        }
+                    }
+                    \context Dynamics = "Viola Dynamics" {
+                    }
+                >>
+            >>
+            \context CelloStaffGroup = "Cello Staff Group" <<
+                \tag #'Cello
+                \context PerformerStaffGroup = "Cello Staff Group" <<
+                    \context RHStaff = "Cello RH Staff" {
+                        \context RHVoice = "Cello RH Voice" {
+                        }
+                    }
+                    \context LHStaff = "Cello LH Staff" {
+                        \context LHVoice = "Cello LH Voice" {
+                        }
+                    }
+                    \context Dynamics = "Cello Dynamics" {
+                    }
+                >>
+            >>
+        >>
+
+    As a cello solo:
+
+    ::
+
+        >>> template = score_templates.ConsortScoreTemplate(
+        ...     violin_count=0,
+        ...     viola_count=0,
+        ...     cello_count=1,
+        ...     contrabass_count=0,
+        ...     )
+        >>> score = template()
+        >>> print format(score)
+        \context Score = "Score" <<
+            \tag #'(Cello)
+            \context TimeSignatureContext = "TimeSignatureContext" {
+            }
+            \context CelloStaffGroup = "Cello Staff Group" <<
+                \tag #'Cello
+                \context PerformerStaffGroup = "Cello Staff Group" <<
+                    \context RHStaff = "Cello RH Staff" {
+                        \context RHVoice = "Cello RH Voice" {
+                        }
+                    }
+                    \context LHStaff = "Cello LH Staff" {
+                        \context LHVoice = "Cello LH Voice" {
+                        }
+                    }
+                    \context Dynamics = "Cello Dynamics" {
+                    }
+                >>
+            >>
+        >>
+
     '''
 
     ### INITIALIZER ###
@@ -257,11 +366,17 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             name='{} Staff Group'.format(instrument_name),
             )
         tag_names = []
-        for i in range(1, count + 1):
-            performer_staff_group, tag_name = self._make_performer_staff_group(
-                instrument, i)
+        if count == 1:
+            performer_staff_group, tag_name = \
+                self._make_performer_staff_group(instrument, None)
             instrument_staff_group.append(performer_staff_group)
             tag_names.append(tag_name)
+        else:
+            for i in range(1, count + 1):
+                performer_staff_group, tag_name = \
+                    self._make_performer_staff_group(instrument, i)
+                instrument_staff_group.append(performer_staff_group)
+                tag_names.append(tag_name)
         return instrument_staff_group, tag_names
 
     def _make_performer_staff_group(
@@ -269,10 +384,13 @@ class ConsortScoreTemplate(abctools.AbjadObject):
         instrument=None,
         number=None,
         ):
-        name = '{} {}'.format(
-            instrument.instrument_name.title(),
-            number,
-            )
+        if number is not None:
+            name = '{} {}'.format(
+                instrument.instrument_name.title(),
+                number,
+                )
+        else:
+            name = instrument.instrument_name.title()
         pitch_range = instrument.pitch_range
 
         lh_voice = scoretools.Voice(
@@ -383,7 +501,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
 
         ### BASSES ###
 
-        if self.cello_count:
+        if self.contrabass_count:
             instrument = instrumenttools.Contrabass()
             instrument_count = self.contrabass_count
             instrument_staff_group, instrument_tag_names = \
