@@ -24,7 +24,11 @@ class AlterationAgent(abctools.AbjadObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, logical_tie, seed=0):
+    def __call__(
+        self,
+        logical_tie,
+        seed=0,
+        ):
         pass
 
     ### PUBLIC METHODS ###
@@ -32,7 +36,6 @@ class AlterationAgent(abctools.AbjadObject):
     @staticmethod
     def iterate_score(
         score,
-        progress_indicator=None,
         ):
         from consort import makers
         counter = collections.Counter()
