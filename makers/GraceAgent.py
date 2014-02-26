@@ -2,8 +2,8 @@
 from abjad.tools import abctools
 
 
-class GraceMaker(abctools.AbjadObject):
-    r'''A grace maker.
+class GraceAgent(abctools.AbjadObject):
+    r'''A grace agent.
     '''
 
     ### CLASS VARIABLES ###
