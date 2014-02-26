@@ -50,5 +50,8 @@ class AlterationAgent(abctools.AbjadObject):
             if alteration_agent is None:
                 continue
             seed = counter[alteration_agent]
-            alteration_agent(logical_tie, seed=seed)
+            alteration_agent(
+                logical_tie,
+                seed=seed,
+                )
             counter[alteration_agent] += 1
