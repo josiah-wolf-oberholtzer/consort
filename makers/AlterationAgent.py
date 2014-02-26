@@ -2,6 +2,7 @@
 import collections
 from abjad.tools import abctools
 from abjad.tools import scoretools
+from abjad.tools import selectiontools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 
@@ -29,7 +30,7 @@ class AlterationAgent(abctools.AbjadObject):
         logical_tie,
         seed=0,
         ):
-        pass
+        assert isinstance(logical_tie, selectiontools.LogicalTie)
 
     ### PUBLIC METHODS ###
 
