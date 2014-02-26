@@ -14,6 +14,8 @@ class ChordAgent(abctools.AbjadObject):
 
         >>> from consort import makers
         >>> chord_agent = makers.ChordAgent()
+        >>> print format(chord_agent)
+        makers.ChordAgent()
 
     '''
 

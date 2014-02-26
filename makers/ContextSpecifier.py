@@ -4,6 +4,14 @@ from abjad.tools import abctools
 
 class ContextSpecifier(abctools.AbjadObject):
     r'''A context specifier.
+
+    ::
+
+        >>> from consort import makers
+        >>> context_specifier = makers.ContextSpecifier()
+        >>> print format(context_specifier)
+        makers.ContextSpecifier()
+
     '''
 
     ### CLASS VARIABLES ###

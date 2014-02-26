@@ -14,6 +14,8 @@ class AlterationAgent(abctools.AbjadObject):
 
         >>> from consort import makers
         >>> alteration_agent = makers.AlterationAgent()
+        >>> print format(alteration_agent)
+        makers.AlterationAgent()
 
     '''
 

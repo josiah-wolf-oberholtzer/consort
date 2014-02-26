@@ -14,6 +14,8 @@ class PitchAgent(abctools.AbjadObject):
 
         >>> from consort import makers
         >>> pitch_agent = makers.PitchAgent()
+        >>> print format(pitch_agent)
+        makers.PitchAgent()
 
     '''
 

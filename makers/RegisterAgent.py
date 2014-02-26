@@ -13,6 +13,8 @@ class RegisterAgent(abctools.AbjadObject):
 
         >>> from consort import makers
         >>> register_agent = makers.RegisterAgent()
+        >>> print format(register_agent)
+        makers.RegisterAgent()
 
     '''
 

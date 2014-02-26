@@ -4,6 +4,14 @@ from abjad.tools import abctools
 
 class MusicSpecifier(abctools.AbjadObject):
     r'''A music specifier.
+    
+    ::
+
+        >>> from consort import makers
+        >>> music_specifier = makers.MusicSpecifier()
+        >>> print format(music_specifier)
+        makers.MusicSpecifier()
+
     '''
 
     ### CLASS VARIABLES ###

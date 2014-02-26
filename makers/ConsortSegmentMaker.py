@@ -17,6 +17,10 @@ class ConsortSegmentMaker(SegmentMaker):
 
         >>> from consort import makers
         >>> segment_maker = makers.ConsortSegmentMaker()
+        >>> print format(segment_maker)
+        makers.ConsortSegmentMaker(
+            is_final_segment=False,
+            )
 
     '''
 
@@ -43,6 +47,7 @@ class ConsortSegmentMaker(SegmentMaker):
             self,
             name=name,
             )
+        self._is_final_segment = bool(is_final_segment)
         if permitted_time_signatures is not None:
             permitted_time_signatures = (
                 indicatortools.TimeSignature(x)
@@ -133,6 +138,10 @@ class ConsortSegmentMaker(SegmentMaker):
 
     ### PUBLIC PROPERTIES ###
 
+    @property
+    def is_final_segment(self):
+        return self._is_final_segment
+    
     @property
     def permitted_time_signatures(self):
         return self._permitted_time_signatures

@@ -13,6 +13,24 @@ class AttachmentSpecifier(abctools.AbjadObject):
         ...     attachments=(indicatortools.Articulation('>'),),
         ...     selector=selectortools.Selector().by_leaves()[0],
         ...     )
+        >>> print format(attachment_specifier)
+        makers.AttachmentSpecifier(
+            attachments=(
+                indicatortools.Articulation(),
+                ),
+            selector=selectortools.Selector(
+                callbacks=(
+                    selectortools.PrototypeSelectorCallback(
+                        (
+                            scoretools.Leaf,
+                            )
+                        ),
+                    selectortools.SliceSelectorCallback(
+                        0
+                        ),
+                    ),
+                ),
+            )
 
     '''
 

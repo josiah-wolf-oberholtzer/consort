@@ -13,6 +13,8 @@ class AttachmentAgent(abctools.AbjadObject):
 
         >>> from consort import makers
         >>> attachment_agent = makers.AttachmentAgent()
+        >>> print format(attachment_agent)
+        makers.AttachmentAgent()
 
     '''
 

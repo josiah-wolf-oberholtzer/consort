@@ -14,6 +14,8 @@ class GraceAgent(abctools.AbjadObject):
 
         >>> from consort import makers
         >>> grace_agent = makers.GraceAgent()
+        >>> print format(grace_agent)
+        makers.GraceAgent()
 
     '''
 
