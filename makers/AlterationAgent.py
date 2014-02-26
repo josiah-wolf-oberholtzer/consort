@@ -9,6 +9,12 @@ from abjad.tools.topleveltools import iterate
 
 class AlterationAgent(abctools.AbjadObject):
     r'''An alteration agent.
+
+    ::
+
+        >>> from consort import makers
+        >>> alteration_agent = makers.AlterationAgent()
+
     '''
 
     ### CLASS VARIABLES ###

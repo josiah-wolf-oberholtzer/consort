@@ -9,6 +9,12 @@ from abjad.tools.topleveltools import iterate
 
 class GraceAgent(abctools.AbjadObject):
     r'''A grace agent.
+
+    ::
+
+        >>> from consort import makers
+        >>> grace_agent = makers.GraceAgent()
+
     '''
 
     ### CLASS VARIABLES ###

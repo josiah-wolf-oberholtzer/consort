@@ -9,6 +9,12 @@ from abjad.tools.topleveltools import iterate
 
 class PitchAgent(abctools.AbjadObject):
     r'''A pitch agent.
+
+    ::
+
+        >>> from consort import makers
+        >>> pitch_agent = makers.PitchAgent()
+
     '''
 
     ### CLASS VARIABLES ###

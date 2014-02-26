@@ -8,6 +8,12 @@ from abjad.tools.topleveltools import iterate
 
 class RegisterAgent(abctools.AbjadObject):
     r'''An register agent.
+
+    ::
+
+        >>> from consort import makers
+        >>> register_agent = makers.RegisterAgent()
+
     '''
 
     ### CLASS VARIABLES ###

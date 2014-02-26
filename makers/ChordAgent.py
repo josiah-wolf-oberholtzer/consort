@@ -9,6 +9,12 @@ from abjad.tools.topleveltools import iterate
 
 class ChordAgent(abctools.AbjadObject):
     r'''A chord agent.
+
+    ::
+
+        >>> from consort import makers
+        >>> chord_agent = makers.ChordAgent()
+
     '''
 
     ### CLASS VARIABLES ###

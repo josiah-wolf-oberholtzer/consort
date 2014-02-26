@@ -8,6 +8,12 @@ from abjad.tools.topleveltools import iterate
 
 class AttachmentAgent(abctools.AbjadObject):
     r'''An attachment agent.
+
+    ::
+
+        >>> from consort import makers
+        >>> attachment_agent = makers.AttachmentAgent()
+
     '''
 
     ### CLASS VARIABLES ###
