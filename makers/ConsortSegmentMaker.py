@@ -27,6 +27,7 @@ class ConsortSegmentMaker(SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_context_specifiers',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_target_duration',
@@ -37,16 +38,24 @@ class ConsortSegmentMaker(SegmentMaker):
 
     def __init__(
         self,
+        context_specifiers=None,
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
         target_duration=None,
         tempo=None,
         ):
+        from consort import makers
         SegmentMaker.__init__(
             self,
             name=name,
             )
+        if context_specifiers is not None:
+            context_specifiers = tuple(context_specifiers)
+            assert len(context_specifiers)
+            assert all(isinstance(x, makers.ContextSpecifier)
+                for x in context_specifiers)
+        self._context_specifiers = context_specifiers
         self._is_final_segment = bool(is_final_segment)
         if permitted_time_signatures is not None:
             permitted_time_signatures = (
@@ -139,9 +148,13 @@ class ConsortSegmentMaker(SegmentMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
+    def context_specifiers(self):
+        return self._context_specifiers
+
+    @property
     def is_final_segment(self):
         return self._is_final_segment
-    
+
     @property
     def permitted_time_signatures(self):
         return self._permitted_time_signatures
