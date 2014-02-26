@@ -21,13 +21,9 @@ class AttachmentSpecifier(abctools.AbjadObject):
             selector=selectortools.Selector(
                 callbacks=(
                     selectortools.PrototypeSelectorCallback(
-                        (
-                            scoretools.Leaf,
-                            )
+                        scoretools.Leaf
                         ),
-                    selectortools.SliceSelectorCallback(
-                        0
-                        ),
+                    selectortools.SliceSelectorCallback(0),
                     ),
                 ),
             )
