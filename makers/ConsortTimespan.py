@@ -23,6 +23,7 @@ class ConsortTimespan(timespantools.Timespan):
 
     __slots__ = (
         '_context_name',
+        '_layer',
         '_music_specifier',
         '_original_start_offset',
         '_original_stop_offset',
@@ -33,6 +34,7 @@ class ConsortTimespan(timespantools.Timespan):
     def __init__(
         self,
         context_name=None,
+        layer=None,
         music_specifier=None,
         original_start_offset=None,
         original_stop_offset=None,
@@ -45,6 +47,9 @@ class ConsortTimespan(timespantools.Timespan):
             stop_offset=stop_offset,
             )
         self._context_name = context_name
+        if layer is not None:
+            layer = int(layer)
+        self._layer = layer
         self._music_specifier = music_specifier
         if original_start_offset is not None:
             original_start_offset = durationtools.Offset(original_start_offset)
@@ -58,6 +63,10 @@ class ConsortTimespan(timespantools.Timespan):
     @property
     def context_name(self):
         return self._context_name
+
+    @property
+    def layer(self):
+        return self._layer
 
     @property
     def music_specifier(self):
