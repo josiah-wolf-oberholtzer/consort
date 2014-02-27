@@ -73,7 +73,26 @@ class ConsortSegmentMaker(SegmentMaker):
 
     ### PRIVATE METHODS ###
 
-    def _configure_lilypond_file(self, score):
+    def _create_timespan_inventories(self):
+        timespan_inventory = timespantools.TimespanInventory()
+        for layer, context_specifier in enumerate(self.context_specifiers):
+            result = context_specifier(
+                layer=layer,
+                template=self.score_template,
+                )
+            timespan_inventory.extend(result)
+
+    def _make_lilypond_file(self, score):
+        rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')
+        attach(rehearsal_mark, score['TimeSignatureContext'][0],
+            scope=scoretools.Context)
+        attach(self.segment_tempo, score['TimeSignatureContext'][0])
+        if self.is_final_segment:
+            score.add_final_markup(self.final_markup)
+            score.add_final_bar_line()
+        else:
+            score.add_final_bar_line('||')
+        assert inspect_(score).is_well_formed()
         lilypond_file = lilypondfiletools.LilyPondFile()
         lilypond_file.use_relative_includes = True
         score_block = lilypondfiletools.Block(name='score')
@@ -84,37 +103,13 @@ class ConsortSegmentMaker(SegmentMaker):
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
 
-    def _configure_score(self, score):
-        rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')
-        attach(rehearsal_mark, score['TimeSignatureContext'][0],
-            scope=scoretools.Context)
-        attach(self.segment_tempo, score['TimeSignatureContext'][0])
-        if self.is_final_segment:
-            score.add_final_markup(self.final_markup)
-            score.add_final_bar_line()
-        else:
-            score.add_final_bar_line('||')
-
-    def _create_timespan_inventories(self):
-        timespan_inventory = timespantools.TimespanInventory()
-        for layer, context_specifier in enumerate(self.context_specifiers):
-            result = context_specifier(
-                layer=layer,
-                template=self.score_template,
-                )
-            timespan_inventory.extend(result)
-
     def _make_music(self):
         from consort import makers
-        from consort import templates
 
-        template = templates.ConsortScoreTemplate(
-            violin_count=2,
-            viola_count=1,
-            cello_count=1,
-            contrabass_count=0,
-            )
-        score = template()
+        score = self.score_template()
+
+        #timespan_inventory = None
+        #timespan_inventory_mapping = None
 
         makers.GraceAgent.iterate_score(score)
         makers.PitchAgent.iterate_score(score)
@@ -123,9 +118,8 @@ class ConsortSegmentMaker(SegmentMaker):
         makers.ChordAgent.iterate_score(score)
         makers.AttachmentAgent.iterate_score(score)
 
-        self._configure_score(score)
-        assert inspect_(score).is_well_formed()
-        lilypond_file = self._configure_lilypond_file(score)
+        lilypond_file = self._make_lilypond_file(score)
+
         return lilypond_file
 
     ### PUBLIC PROPERTIES ###
@@ -136,13 +130,17 @@ class ConsortSegmentMaker(SegmentMaker):
 
     @property
     def final_markup(self):
+        from consort.__metadata__ import metadata
         right_column = markuptools.MarkupCommand(
             'right-column', [
                 ' ',
                 ' ',
                 ' ',
-                'Jamaica Plain',
-                'February 2014 - April 2014',
+                metadata['locale'],
+                '{} - {}'.format(
+                    metadata['time_period'][0],
+                    metadata['time_period'][1],
+                    ),
                 ],
             )
         italic = markuptools.MarkupCommand(
