@@ -198,7 +198,7 @@ class ConsortSegmentMaker(SegmentMaker):
             self.permitted_time_signatures,
             maximum_repetitions=2,
             )
-        segment_product.meters = meters
+        segment_product.meters = tuple(meters)
 
     def _make_lilypond_file(self, score):
         rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')

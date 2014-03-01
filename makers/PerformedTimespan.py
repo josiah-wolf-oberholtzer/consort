@@ -4,15 +4,15 @@ from abjad.tools import timespantools
 from abjad.tools import mathtools
 
 
-class ConsortTimespan(timespantools.Timespan):
+class PerformedTimespan(timespantools.Timespan):
     r'''A Consort timespan.
 
     ::
 
         >>> from consort import makers
-        >>> timespan = makers.ConsortTimespan()
+        >>> timespan = makers.PerformedTimespan()
         >>> print format(timespan)
-        makers.ConsortTimespan(
+        makers.PerformedTimespan(
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )
