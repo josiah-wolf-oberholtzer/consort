@@ -41,6 +41,7 @@ class PerformedTimespan(timespantools.Timespan):
         start_offset=mathtools.NegativeInfinity(),
         stop_offset=mathtools.Infinity(),
         ):
+        from consort import makers
         timespantools.Timespan.__init__(
             self,
             start_offset=start_offset,
@@ -50,6 +51,8 @@ class PerformedTimespan(timespantools.Timespan):
         if layer is not None:
             layer = int(layer)
         self._layer = layer
+        if music_specifier is not None:
+            assert isinstance(music_specifier, makers.MusicSpecifier)
         self._music_specifier = music_specifier
         if original_start_offset is not None:
             original_start_offset = durationtools.Offset(original_start_offset)
