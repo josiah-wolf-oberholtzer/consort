@@ -1,5 +1,9 @@
 # -*- encoding: utf-8 -*-
 from abjad import *
+from abjad.tools import abctools
+from abjad.tools import datastructuretools
+from abjad.tools import durationtools
+from abjad.tools import timespantools
 
 
 class TimespanMaker(abctools.AbjadObject):
@@ -24,6 +28,7 @@ class TimespanMaker(abctools.AbjadObject):
                 durationtools.Duration(1, 4),
                 ),
             step_anchor=Right,
+            synchronize_groupings=False,
             synchronize_step=False,
             )
 
@@ -41,6 +46,7 @@ class TimespanMaker(abctools.AbjadObject):
         '_repeat',
         '_silence_durations',
         '_step_anchor',
+        '_synchronize_groupings',
         '_synchronize_step',
         )
 
@@ -61,16 +67,18 @@ class TimespanMaker(abctools.AbjadObject):
             durationtools.Duration(1, 4),
             ),
         step_anchor=Right,
+        synchronize_groupings=False,
         synchronize_step=False,
         ):
         self._can_shift = bool(can_shift)
         self._can_split = bool(can_split)
-        initial_silence_durations = tuple(Duration(x)
+        initial_silence_durations = tuple(durationtools.Duration(x)
             for x in initial_silence_durations)
         assert all(0 <= x for x in initial_silence_durations)
         self._initial_silence_durations = initial_silence_durations
         self._minimum_duration = durationtools.Duration(minimum_duration)
-        playing_durations = tuple(Duration(x) for x in playing_durations)
+        playing_durations = tuple(durationtools.Duration(x)
+            for x in playing_durations)
         assert len(playing_durations)
         assert all(0 < x for x in playing_durations)
         self._playing_durations = playing_durations
@@ -79,25 +87,26 @@ class TimespanMaker(abctools.AbjadObject):
         assert all(0 < x for x in playing_groupings)
         self._playing_groupings = playing_groupings
         self._repeat = bool(repeat)
-        silence_durations = tuple(Duration(x) for x in silence_durations)
+        silence_durations = tuple(durationtools.Duration(x)
+            for x in silence_durations)
         assert len(silence_durations)
         assert all(0 < x for x in silence_durations)
         self._silence_durations = silence_durations
         assert step_anchor in (Left, Right)
         self._step_anchor = step_anchor
+        self._synchronize_groupings = bool(synchronize_groupings)
         self._synchronize_step = bool(synchronize_step)
 
     ### SPECIAL METHODS ###
 
     def __call__(
         self,
+        layer=None,
         music_specifier=None,
         score_template=None,
         target_duration=None,
         voice_specifier=None,
         ):
-        timespan_inventory = timespantools.TimespanInventory()
-
         initial_silence_durations = datastructuretools.StatalServer(
             self.initial_silence_durations)()
         playing_durations = datastructuretools.StatalServer(
@@ -108,30 +117,136 @@ class TimespanMaker(abctools.AbjadObject):
             self.silence_durations)()
 
         if self.synchronize_step:
-            current_offset = Offset(0)
-            if initial_silence_durations:
-                current_offset += initial_silence_durations()[0]
-            while current_offset < target_duration:
+            procedure = self._make_with_synchronized_step
+        else:
+            procedure = self._make_without_synchronized_step
+
+        timespan_inventory, final_offset = procedure(
+            initial_silence_durations=initial_silence_durations,
+            layer=layer,
+            music_specifier=music_specifier,
+            playing_durations=playing_durations,
+            playing_groupings=playing_groupings,
+            silence_durations=silence_durations,
+            target_duration=None,
+            voice_specifier=None,
+            )
+
+        if target_duration < final_offset:
+            final_offset = durationtools.Offset(target_duration)
+
+        return timespan_inventory, final_offset
+
+    ### PRIVATE METHODS ###
+
+    def _make_with_synchronized_step(
+        self,
+        initial_silence_durations=None,
+        layer=None,
+        music_specifier=None,
+        playing_durations=None,
+        playing_groupings=None,
+        silence_durations=None,
+        target_duration=None,
+        voice_specifier=None,
+        ):
+        from consort import makers
+        timespan_inventory = timespantools.TimespanInventory()
+        start_offset = durationtools.Offset(0)
+        if initial_silence_durations:
+            start_offset += initial_silence_durations()[0]
+        while start_offset < target_duration:
+            if self.synchronize_groupings:
                 grouping = playing_groupings()[0]
                 playing_durations = playing_durations(grouping)
-                silence_duration = silence_durations()[0]
-                if not self.repeat:
-                    break
-
-        else:
+            silence_duration = silence_durations()[0]
             for voice_name in voice_specifier:
-                current_offset = Offset(0)
-                if initial_silence_durations:
-                    current_offset += initial_silence_durations()[0]
-                while current_offset < target_duration:
+                if not self.synchronize_groupings:
                     grouping = playing_groupings()[0]
                     playing_durations = playing_durations(grouping)
-                    silence_duration = silence_durations()[0]
-                    if not self.repeat:
+                maximum_offset = start_offset + sum(playing_durations) + \
+                    silence_duration
+                maximum_offset = min(maximum_offset, target_duration)
+                if self.step_anchor is Left:
+                    maximum_offset = min(maximum_offset,
+                        start_offset + silence_duration)
+                current_offset = start_offset
+                for duration in playing_durations:
+                    if maximum_offset < (current_offset + duration):
                         break
+                    timespan = makers.PerformedTimespan(
+                        context_name=voice_name,
+                        layer=layer,
+                        music_specifier=music_specifier,
+                        start_offset=current_offset,
+                        stop_offset=current_offset + duration,
+                        original_start_offset=current_offset,
+                        original_stop_offset=current_offset + duration,
+                        )
+                    timespan_inventory.append(timespan)
+                    current_offset += duration
+            timespan_inventory.sort()
+            if self.step_anchor is Left:
+                start_offset += silence_duration
+            else:
+                start_offset = timespan_inventory.stop_offset + \
+                    silence_duration
+            if not self.repeat:
+                break
+        return timespan_inventory, start_offset
 
-        stop_offset = current_offset
-        return timespan_inventory, stop_offset
+    def _make_without_synchronized_step(
+        self,
+        initial_silence_durations=None,
+        layer=None,
+        music_specifier=None,
+        playing_durations=None,
+        playing_groupings=None,
+        silence_durations=None,
+        target_duration=None,
+        voice_specifier=None,
+        ):
+        from consort import makers
+        timespan_inventory = timespantools.TimespanInventory()
+        final_offset = durationtools.Offset(0)
+        for voice_name in voice_specifier:
+            start_offset = durationtools.Offset(0)
+            if initial_silence_durations:
+                start_offset += initial_silence_durations()[0]
+            while start_offset < target_duration:
+                silence_duration = silence_durations()[0]
+                grouping = playing_groupings()[0]
+                playing_durations = playing_durations(grouping)
+                maximum_offset = start_offset + sum(playing_durations) + \
+                    silence_duration
+                maximum_offset = min(maximum_offset, target_duration)
+                if self.step_anchor is Left:
+                    maximum_offset = min(maximum_offset,
+                        start_offset + silence_duration)
+                current_offset = start_offset
+                for duration in playing_durations:
+                    if maximum_offset < (current_offset + duration):
+                        break
+                    timespan = makers.PerformedTimespan(
+                        context_name=voice_name,
+                        layer=layer,
+                        music_specifier=music_specifier,
+                        start_offset=current_offset,
+                        stop_offset=current_offset + duration,
+                        original_start_offset=current_offset,
+                        original_stop_offset=current_offset + duration,
+                        )
+                    timespan_inventory.append(timespan)
+                    current_offset += duration
+                if self.step_anchor is Left:
+                    start_offset += silence_duration
+                else:
+                    start_offset = current_offset + silence_duration
+                if not self.repeat:
+                    break
+            if final_offset < start_offset:
+                final_offset = start_offset
+        return timespan_inventory, final_offset
 
     ### PUBLIC PROPERTIES ###
 
@@ -170,6 +285,10 @@ class TimespanMaker(abctools.AbjadObject):
     @property
     def step_anchor(self):
         return self._step_anchor
+
+    @property
+    def synchronize_groupings(self):
+        return self._synchronize_groupings
 
     @property
     def synchronize_step(self):
