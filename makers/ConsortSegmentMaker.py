@@ -1,9 +1,12 @@
 # -*- encoding: utf-8 -*-
 import os
+from abjad.tools import abctools
+from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
+from abjad.tools import metertools
 from abjad.tools import scoretools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
@@ -27,7 +30,39 @@ class ConsortSegmentMaker(SegmentMaker):
 
     ### CLASS VARIABLES ###
 
+    class SegmentProduct(abctools.AbjadObject):
+        r'''A segment product.
+        '''
+
+        ### CLASS VARIABLES ###
+
+        __slots__ = (
+            'lilypond_file',
+            'meters',
+            'score',
+            'segment_duration',
+            'segment_maker',
+            'time_signatures',
+            'timespan_inventory_mapping',
+            )
+
+        ### INITIALIZER ###
+
+        def __init__(
+            self,
+            segment_maker=None,
+            ):
+            self.lilypond_file = None
+            self.meters = None
+            self.score = None
+            self.segment_duration = None
+            self.segment_maker = segment_maker
+            self.time_signatures = None
+            self.timespan_inventory_mapping = None
+
     __slots__ = (
+        '_context_map',
+        '_context_settings',
         '_context_specifiers',
         '_is_final_segment',
         '_permitted_time_signatures',
@@ -39,6 +74,8 @@ class ConsortSegmentMaker(SegmentMaker):
 
     def __init__(
         self,
+        context_map=None,
+        context_settings=None,
         context_specifiers=None,
         is_final_segment=False,
         name=None,
@@ -51,6 +88,15 @@ class ConsortSegmentMaker(SegmentMaker):
             self,
             name=name,
             )
+        if context_map is not None:
+            assert isinstance(context_map, datastructuretools.ContextMap)
+            assert context_map.score_template == self.score_template
+        self._context_map = context_map
+        if context_settings is not None:
+            assert all(isinstance(x, makers.ContextSetting)
+                for x in context_settings)
+            context_settings = tuple(context_settings)
+        self._context_settings = context_settings
         if context_specifiers is not None:
             context_specifiers = tuple(context_specifiers)
             assert len(context_specifiers)
@@ -71,16 +117,55 @@ class ConsortSegmentMaker(SegmentMaker):
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
 
+    ### SPECIAL METHODS ###
+
+    def __call__(self):
+        from consort import makers
+
+        product = self.SegmentProduct(segment_maker=self)
+        product.score = self.score_template()
+
+        self._make_timespan_inventory_mapping(product)
+        self._find_meters(product)
+        self._cleanup_semantic_timespans(product)
+        self._create_dependent_timespans(product)
+        self._remove_empty_trailing_measures(product)
+        self._create_silent_timespans(product)
+        self._apply_context_settings(product)
+
+        #self._populate_time_signature_context(product)
+        #self._populate_rhythms(product)
+        #self._cleanup_silences(product)
+
+        makers.GraceAgent.iterate_score(product.score)
+        makers.PitchAgent.iterate_score(product.score)
+        makers.AlterationAgent.iterate_score(product.score)
+        makers.RegisterAgent.iterate_score(product.score)
+        makers.ChordAgent.iterate_score(product.score)
+        makers.AttachmentAgent.iterate_score(product.score)
+
+        product.lilypond_file = self._make_lilypond_file(product.score)
+
+        return product.lilypond_file
+
     ### PRIVATE METHODS ###
 
-    def _create_timespan_inventories(self):
-        timespan_inventory = timespantools.TimespanInventory()
-        for layer, context_specifier in enumerate(self.context_specifiers):
-            result = context_specifier(
-                layer=layer,
-                template=self.score_template,
-                )
-            timespan_inventory.extend(result)
+    def _find_meters(self, product):
+        offset_counter = datastructuretools.TypedCounter(
+            item_class=durationtools.Offset,
+            )
+        for timespan_inventory in product.timespan_inventory_mapping.values():
+            for timespan in timespan_inventory:
+                offset_counter[timespan.start_offset] += 1
+                offset_counter[timespan.stop_offset] += 1
+        if not offset_counter:
+            offset_counter[self.target_segment_duration] += 1
+        meters = metertools.Meter.fit_meters_to_expr(
+            offset_counter,
+            self.permitted_time_signatures,
+            maximum_repetitions=2,
+            )
+        product.meters = meters
 
     def _make_lilypond_file(self, score):
         rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')
@@ -103,24 +188,32 @@ class ConsortSegmentMaker(SegmentMaker):
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
 
-    def _make_music(self):
-        from consort import makers
+    def _make_timespan_inventory_mapping(self, product):
+        timespan_inventory = timespantools.TimespanInventory()
+        for layer, context_specifier in enumerate(self.context_specifiers):
+            result = context_specifier(
+                layer=layer,
+                template=self.score_template,
+                )
+            timespan_inventory.extend(result)
+        timespan_inventory_mapping = {}
+        for timespan in timespan_inventory:
+            context_name, layer = timespan.context_name, timespan.layer
+            if context_name not in timespan_inventory_mapping:
+                timespan_inventory_mapping[context_name] = []
+                for _ in range(len(self.context_specifiers)):
+                    timespan_inventory_mapping[context_name].append(
+                        timespantools.TimespanInventory())
+            timespan_inventory_mapping[context_name][layer].append(timespan)
+        for context_name in timespan_inventory_mapping:
+            timespan_inventories = timespan_inventory_mapping[context_name]
+            timespan_inventory = self._resolve_timespan_inventories(
+                timespan_inventories)
+            timespan_inventory_mapping[context_name] = timespan_inventory
+        product.timespan_inventory_mapping = timespan_inventory_mapping
 
-        score = self.score_template()
-
-        #timespan_inventory = None
-        #timespan_inventory_mapping = None
-
-        makers.GraceAgent.iterate_score(score)
-        makers.PitchAgent.iterate_score(score)
-        makers.AlterationAgent.iterate_score(score)
-        makers.RegisterAgent.iterate_score(score)
-        makers.ChordAgent.iterate_score(score)
-        makers.AttachmentAgent.iterate_score(score)
-
-        lilypond_file = self._make_lilypond_file(score)
-
-        return lilypond_file
+    def _resolve_timespan_inventories(self, timespan_inventories):
+        pass
 
     ### PUBLIC PROPERTIES ###
 
