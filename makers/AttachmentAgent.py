@@ -53,7 +53,7 @@ class AttachmentAgent(abctools.AbjadObject):
         ):
         from consort import makers
         counter = collections.Counter()
-        for voice in iterate(score).by_context(voice):
+        for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
                 prototype = makers.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
