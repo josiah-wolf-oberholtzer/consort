@@ -103,18 +103,34 @@ class TimespanMaker(abctools.AbjadObject):
         self,
         layer=None,
         music_specifier=None,
-        score_template=None,
         target_duration=None,
         voice_specifier=None,
         ):
-        initial_silence_durations = datastructuretools.StatalServer(
-            self.initial_silence_durations)()
+
+        initial_silence_durations = self.initial_silence_durations
+        if len(initial_silence_durations) < 2:
+            initial_silence_durations *= 2
+        if initial_silence_durations:
+            initial_silence_durations = datastructuretools.StatalServer(
+                initial_silence_durations)()
+
+        playing_durations = self.playing_durations
+        if len(playing_durations) < 2:
+            playing_durations *= 2
         playing_durations = datastructuretools.StatalServer(
-            self.playing_durations)()
+            playing_durations)()
+
+        playing_groupings = self.playing_groupings
+        if len(playing_groupings) < 2:
+            playing_groupings *= 2
         playing_groupings = datastructuretools.StatalServer(
-            self.playing_groupings)()
+            playing_groupings)()
+
+        silence_durations = self.silence_durations
+        if len(silence_durations) < 2:
+            silence_durations *= 2
         silence_durations = datastructuretools.StatalServer(
-            self.silence_durations)()
+            silence_durations)()
 
         if self.synchronize_step:
             procedure = self._make_with_synchronized_step
@@ -128,8 +144,8 @@ class TimespanMaker(abctools.AbjadObject):
             playing_durations=playing_durations,
             playing_groupings=playing_groupings,
             silence_durations=silence_durations,
-            target_duration=None,
-            voice_specifier=None,
+            target_duration=target_duration,
+            voice_specifier=voice_specifier,
             )
 
         if target_duration < final_offset:
@@ -158,20 +174,20 @@ class TimespanMaker(abctools.AbjadObject):
         while start_offset < target_duration:
             if self.synchronize_groupings:
                 grouping = playing_groupings()[0]
-                playing_durations = playing_durations(grouping)
+                durations = playing_durations(grouping)
             silence_duration = silence_durations()[0]
             for voice_name in voice_specifier:
                 if not self.synchronize_groupings:
                     grouping = playing_groupings()[0]
-                    playing_durations = playing_durations(grouping)
-                maximum_offset = start_offset + sum(playing_durations) + \
+                    durations = playing_durations(grouping)
+                maximum_offset = start_offset + sum(durations) + \
                     silence_duration
                 maximum_offset = min(maximum_offset, target_duration)
                 if self.step_anchor is Left:
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
                 current_offset = start_offset
-                for duration in playing_durations:
+                for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         break
                     timespan = makers.PerformedTimespan(
@@ -180,8 +196,6 @@ class TimespanMaker(abctools.AbjadObject):
                         music_specifier=music_specifier,
                         start_offset=current_offset,
                         stop_offset=current_offset + duration,
-                        original_start_offset=current_offset,
-                        original_stop_offset=current_offset + duration,
                         )
                     timespan_inventory.append(timespan)
                     current_offset += duration
@@ -216,15 +230,15 @@ class TimespanMaker(abctools.AbjadObject):
             while start_offset < target_duration:
                 silence_duration = silence_durations()[0]
                 grouping = playing_groupings()[0]
-                playing_durations = playing_durations(grouping)
-                maximum_offset = start_offset + sum(playing_durations) + \
+                durations = playing_durations(grouping)
+                maximum_offset = start_offset + sum(durations) + \
                     silence_duration
                 maximum_offset = min(maximum_offset, target_duration)
                 if self.step_anchor is Left:
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
                 current_offset = start_offset
-                for duration in playing_durations:
+                for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         break
                     timespan = makers.PerformedTimespan(
@@ -233,8 +247,6 @@ class TimespanMaker(abctools.AbjadObject):
                         music_specifier=music_specifier,
                         start_offset=current_offset,
                         stop_offset=current_offset + duration,
-                        original_start_offset=current_offset,
-                        original_stop_offset=current_offset + duration,
                         )
                     timespan_inventory.append(timespan)
                     current_offset += duration
