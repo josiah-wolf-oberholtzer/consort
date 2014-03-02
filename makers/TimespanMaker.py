@@ -151,6 +151,8 @@ class TimespanMaker(abctools.AbjadObject):
         if target_duration < final_offset:
             final_offset = durationtools.Offset(target_duration)
 
+        timespan_inventory.sort()
+
         return timespan_inventory, final_offset
 
     ### PRIVATE METHODS ###
