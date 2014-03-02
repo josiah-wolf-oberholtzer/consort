@@ -56,10 +56,30 @@ class PerformedTimespan(timespantools.Timespan):
         self._music_specifier = music_specifier
         if original_start_offset is not None:
             original_start_offset = durationtools.Offset(original_start_offset)
+        else:
+            original_start_offset = self.start_offset
         self._original_start_offset = original_start_offset
         if original_stop_offset is not None:
             original_stop_offset = durationtools.Offset(original_stop_offset)
+        else:
+            original_stop_offset = self.stop_offset
         self._original_stop_offset = original_stop_offset
+
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _storage_format_specification(self):
+        from abjad.tools import systemtools
+        manager = systemtools.StorageFormatManager
+        keyword_argument_names = list(manager.get_keyword_argument_names(self))
+        if self.original_start_offset == self.start_offset:
+            keyword_argument_names.remove('original_start_offset')
+        if self.original_stop_offset == self.stop_offset:
+            keyword_argument_names.remove('original_stop_offset')
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=keyword_argument_names,
+            )
 
     ### PUBLIC PROPERTIES ###
 
