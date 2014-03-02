@@ -95,7 +95,7 @@ class ConsortSegmentMaker(SegmentMaker):
 
     __slots__ = (
         '_context_settings',
-        '_context_specifiers',
+        '_voice_specifiers',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_target_duration',
@@ -107,12 +107,12 @@ class ConsortSegmentMaker(SegmentMaker):
     def __init__(
         self,
         context_settings=None,
-        context_specifiers=None,
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
         target_duration=None,
         tempo=None,
+        voice_specifiers=None,
         ):
         from consort import makers
         SegmentMaker.__init__(
@@ -124,12 +124,12 @@ class ConsortSegmentMaker(SegmentMaker):
                 for x in context_settings)
             context_settings = tuple(context_settings)
         self._context_settings = context_settings
-        if context_specifiers is not None:
-            context_specifiers = tuple(context_specifiers)
-            assert len(context_specifiers)
-            assert all(isinstance(x, makers.ContextSpecifier)
-                for x in context_specifiers)
-        self._context_specifiers = context_specifiers
+        if voice_specifiers is not None:
+            voice_specifiers = tuple(voice_specifiers)
+            assert len(voice_specifiers)
+            assert all(isinstance(x, makers.VoiceSpecifier)
+                for x in voice_specifiers)
+        self._voice_specifiers = voice_specifiers
         self._is_final_segment = bool(is_final_segment)
         if permitted_time_signatures is not None:
             permitted_time_signatures = indicatortools.TimeSignatureInventory(
@@ -224,9 +224,9 @@ class ConsortSegmentMaker(SegmentMaker):
     def _make_timespan_inventory_mapping(self, segment_product):
         timespan_inventory_mapping = {}
         timespan_inventory = timespantools.TimespanInventory()
-        if self.context_specifiers is not None:
-            for layer, context_specifier in enumerate(self.context_specifiers):
-                result = context_specifier(
+        if self.voice_specifiers is not None:
+            for layer, voice_specifier in enumerate(self.voice_specifiers):
+                result = voice_specifier(
                     layer=layer,
                     template=self.score_template,
                     )
@@ -235,7 +235,7 @@ class ConsortSegmentMaker(SegmentMaker):
                 context_name, layer = timespan.context_name, timespan.layer
                 if context_name not in timespan_inventory_mapping:
                     timespan_inventory_mapping[context_name] = []
-                    for _ in range(len(self.context_specifiers)):
+                    for _ in range(len(self.voice_specifier)):
                         timespan_inventory_mapping[context_name].append(
                             timespantools.TimespanInventory())
                 timespan_inventory_mapping[context_name][layer].append(timespan)
@@ -254,10 +254,6 @@ class ConsortSegmentMaker(SegmentMaker):
     @property
     def context_settings(self):
         return self._context_settings
-
-    @property
-    def context_specifiers(self):
-        return self._context_specifiers
 
     @property
     def final_markup(self):
@@ -326,3 +322,8 @@ class ConsortSegmentMaker(SegmentMaker):
     @property
     def tempo(self):
         return self._tempo
+
+    @property
+    def voice_specifiers(self):
+        return self._voice_specifiers
+
