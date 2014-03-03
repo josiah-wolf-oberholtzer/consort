@@ -9,7 +9,11 @@ class VoiceSpecifier(abctools.AbjadObject):
     ::
 
         >>> from consort import makers
-        >>> voice_specifier = makers.VoiceSpecifier()
+        >>> voice_specifier = makers.VoiceSpecifier(
+        ...     music_specifier=makers.MusicSpecifier(),
+        ...     timespan_maker=makers.TimespanMaker(),
+        ...     voice_identifier=(),
+        ...     )
         >>> print format(voice_specifier)
         makers.VoiceSpecifier()
 
@@ -31,8 +35,17 @@ class VoiceSpecifier(abctools.AbjadObject):
         timespan_maker=None,
         voice_identifier=None,
         ):
+        from consort import makers
+        assert isinstance(music_specifier, makers.MusicSpecifier)
         self._music_specifier = music_specifier
+        assert isinstance(timespan_maker, makers.TimespanMaker)
         self._timespan_maker = timespan_maker
+        if isinstance(voice_identifier, str):
+            voice_identifier = (voice_identifier,)
+        assert isinstance(voice_identifier, tuple)
+        assert len(voice_identifier)
+        assert all(isinstance(voice_identifier, str)
+            for x in voice_identifier)
         self._voice_identifier = voice_identifier
 
     ### SPECIAL METHODS ###
