@@ -22,24 +22,24 @@ class PerformedTimespan(timespantools.Timespan):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_context_name',
         '_layer',
         '_music_specifier',
         '_original_start_offset',
         '_original_stop_offset',
+        '_voice_name',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        context_name=None,
         layer=None,
         music_specifier=None,
         original_start_offset=None,
         original_stop_offset=None,
         start_offset=mathtools.NegativeInfinity(),
         stop_offset=mathtools.Infinity(),
+        voice_name=None,
         ):
         from consort import makers
         timespantools.Timespan.__init__(
@@ -47,7 +47,6 @@ class PerformedTimespan(timespantools.Timespan):
             start_offset=start_offset,
             stop_offset=stop_offset,
             )
-        self._context_name = context_name
         if layer is not None:
             layer = int(layer)
         self._layer = layer
@@ -64,6 +63,7 @@ class PerformedTimespan(timespantools.Timespan):
         else:
             original_stop_offset = self.stop_offset
         self._original_stop_offset = original_stop_offset
+        self._voice_name = voice_name
 
     ### PRIVATE PROPERTIES ###
 
@@ -84,10 +84,6 @@ class PerformedTimespan(timespantools.Timespan):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def context_name(self):
-        return self._context_name
-
-    @property
     def layer(self):
         return self._layer
 
@@ -102,3 +98,7 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def original_stop_offset(self):
         return self._original_stop_offset
+
+    @property
+    def voice_name(self):
+        return self._voice_name
