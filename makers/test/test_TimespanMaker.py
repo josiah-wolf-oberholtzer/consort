@@ -3,7 +3,7 @@ from abjad import *
 from consort import makers
 
 
-voice_specifier = ('One', 'Two')
+voice_names = ('One', 'Two')
 target_duration = Duration(1)
 
 
@@ -11,7 +11,7 @@ def test_TimespanMaker_01():
     timespan_maker = makers.TimespanMaker()
     timespan_inventory, final_offset = timespan_maker(
         target_duration=target_duration,
-        voice_specifier=voice_specifier,
+        voice_names=voice_names,
         )
     assert final_offset == 1
     assert systemtools.TestManager.compare(
@@ -20,24 +20,24 @@ def test_TimespanMaker_01():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
                     ),
                 ]
             )
@@ -54,7 +54,7 @@ def test_TimespanMaker_02():
         )
     timespan_inventory, final_offset = timespan_maker(
         target_duration=target_duration,
-        voice_specifier=voice_specifier,
+        voice_names=voice_names,
         )
     assert final_offset == 1
     assert systemtools.TestManager.compare(
@@ -63,24 +63,24 @@ def test_TimespanMaker_02():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Two',
                     ),
                 ]
             )
@@ -94,7 +94,7 @@ def test_TimespanMaker_03():
         )
     timespan_inventory, final_offset = timespan_maker(
         target_duration=target_duration,
-        voice_specifier=voice_specifier,
+        voice_names=voice_names,
         )
     assert final_offset == 1
     assert systemtools.TestManager.compare(
@@ -103,24 +103,24 @@ def test_TimespanMaker_03():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
                     ),
                 ]
             )
@@ -137,7 +137,7 @@ def test_TimespanMaker_04():
         )
     timespan_inventory, final_offset = timespan_maker(
         target_duration=target_duration,
-        voice_specifier=voice_specifier,
+        voice_names=voice_names,
         )
     assert final_offset == 1
     assert systemtools.TestManager.compare(
@@ -146,29 +146,29 @@ def test_TimespanMaker_04():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(3, 8),
                     stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(7, 8),
                     stop_offset=durationtools.Offset(1, 1),
+                    voice_name='One',
                     ),
                 ]
             )
@@ -186,7 +186,7 @@ def test_TimespanMaker_05():
         )
     timespan_inventory, final_offset = timespan_maker(
         target_duration=target_duration,
-        voice_specifier=voice_specifier,
+        voice_names=voice_names,
         )
     assert final_offset == 1
     assert systemtools.TestManager.compare(
@@ -195,24 +195,24 @@ def test_TimespanMaker_05():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
                     ),
                 ]
             )
@@ -233,7 +233,7 @@ def test_TimespanMaker_06():
         )
     timespan_inventory, final_offset = timespan_maker(
         target_duration=target_duration,
-        voice_specifier=voice_specifier,
+        voice_names=voice_names,
         )
     assert final_offset == 1
     assert systemtools.TestManager.compare(
@@ -242,29 +242,29 @@ def test_TimespanMaker_06():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(3, 8),
                     stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
                     ),
                 makers.PerformedTimespan(
-                    context_name='Two',
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
                     ),
                 makers.PerformedTimespan(
-                    context_name='One',
                     start_offset=durationtools.Offset(7, 8),
                     stop_offset=durationtools.Offset(1, 1),
+                    voice_name='One',
                     ),
                 ]
             )
