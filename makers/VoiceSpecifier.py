@@ -16,7 +16,7 @@ class VoiceSpecifier(abctools.AbjadObject):
         >>> voice_specifier = makers.VoiceSpecifier(
         ...     music_specifier=makers.MusicSpecifier(),
         ...     timespan_maker=makers.TimespanMaker(),
-        ...     voice_identifiers=('Voice (One|Two)', 'Voice Four'),
+        ...     voice_identifiers=('Violin \\d+ LH Voice', 'Viola LH Voice'),
         ...     )
         >>> print format(voice_specifier)
         makers.VoiceSpecifier(
@@ -38,8 +38,20 @@ class VoiceSpecifier(abctools.AbjadObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            voice_identifiers=('Voice (One|Two)', 'Voice Four'),
+            voice_identifiers=('Violin \\d+ LH Voice', 'Viola LH Voice'),
             )
+
+    ::
+
+        >>> from consort import templates
+        >>> template = templates.ConsortScoreTemplate(
+        ...     violin_count=2,
+        ...     viola_count=1,
+        ...     cello_count=1,
+        ...     contrabass_count=1,
+        ...     )
+        >>> voice_specifier.find_voice_names(template=template)
+        ('Violin 1 LH Voice', 'Violin 2 LH Voice', 'Viola LH Voice')
 
     '''
 
@@ -96,9 +108,9 @@ class VoiceSpecifier(abctools.AbjadObject):
             )
         return timespan_inventory, final_offset
 
-    ### PRIVATE METHODS ###
+    ### PUBLIC METHODS ###
 
-    def _find_voice_names(
+    def find_voice_names(
         self,
         template=None,
         ):
@@ -106,10 +118,8 @@ class VoiceSpecifier(abctools.AbjadObject):
         all_voice_names = [voice.name for voice in
             iterate(score).by_class(scoretools.Voice)]
         matched_voice_names = set()
-        patterns = [re.compile(voice_identifier)
-            for voice_identifier in self.voice_identifiers
-            ]
-        for pattern in patterns:
+        for voice_identifier in self.voice_identifiers:
+            pattern = re.compile(voice_identifier)
             for voice_name in all_voice_names:
                 match = pattern.match(voice_name)
                 if match:
