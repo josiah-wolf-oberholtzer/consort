@@ -12,12 +12,20 @@ class TimespanMaker(abctools.AbjadObject):
     ::
 
         >>> from consort import makers
-        >>> timespan_maker = makers.TimespanMaker()
+        >>> timespan_maker = makers.TimespanMaker(
+        ...     initial_silence_durations=(
+        ...         durationtools.Duration(0),
+        ...         durationtools.Duration(1, 4),
+        ...         )
+        ...     )
         >>> print format(timespan_maker)
         makers.TimespanMaker(
             can_shift=False,
             can_split=False,
-            initial_silence_durations=(),
+            initial_silence_durations=(
+                durationtools.Duration(0, 1),
+                durationtools.Duration(1, 4),
+                ),
             minimum_duration=durationtools.Duration(1, 8),
             playing_durations=(
                 durationtools.Duration(1, 4),
@@ -30,6 +38,40 @@ class TimespanMaker(abctools.AbjadObject):
             step_anchor=Right,
             synchronize_groupings=False,
             synchronize_step=False,
+            )
+
+    ::
+
+        >>> voice_names = ('Violin', 'Viola')
+        >>> target_duration = Duration(1)
+        >>> timespan_inventory, final_duration = timespan_maker(
+        ...     target_duration=target_duration,
+        ...     voice_names=voice_names,
+        ...     )
+        >>> print format(timespan_inventory)
+        timespantools.TimespanInventory(
+            [
+                makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Violin',
+                    ),
+                makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Viola',
+                    ),
+                makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Violin',
+                    ),
+                makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Viola',
+                    ),
+                ]
             )
 
     '''
