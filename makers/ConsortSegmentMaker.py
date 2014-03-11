@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import os
+import re
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -11,6 +12,7 @@ from abjad.tools import scoretools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
+from abjad.tools.topleveltools import iterate
 from experimental.tools.segmentmakertools import SegmentMaker
 
 
@@ -146,7 +148,6 @@ class ConsortSegmentMaker(SegmentMaker):
     ### SPECIAL METHODS ###
 
     def __call__(self):
-        from consort import makers
 
         segment_product = self.SegmentProduct(segment_maker=self)
         segment_product.score = self.score_template()
@@ -238,7 +239,8 @@ class ConsortSegmentMaker(SegmentMaker):
                     for _ in range(len(self.voice_specifier)):
                         timespan_inventory_mapping[context_name].append(
                             timespantools.TimespanInventory())
-                timespan_inventory_mapping[context_name][layer].append(timespan)
+                timespan_inventory_mapping[context_name][layer].append(
+                    timespan)
             for context_name in timespan_inventory_mapping:
                 timespan_inventories = timespan_inventory_mapping[context_name]
                 timespan_inventory = self._resolve_timespan_inventories(
@@ -248,6 +250,53 @@ class ConsortSegmentMaker(SegmentMaker):
 
     def _resolve_timespan_inventories(self, timespan_inventories):
         pass
+
+    ### PUBLIC METHODS ###
+
+    @staticmethod
+    def find_voice_names(
+        template=None,
+        voice_identifiers=None,
+        ):
+        r'''Find voice names matching `voice_identifiers` in `template`:
+
+        ::
+    
+            >>> from consort import makers
+            >>> from consort import templates
+            >>> template = templates.ConsortScoreTemplate(
+            ...     violin_count=2,
+            ...     viola_count=1,
+            ...     cello_count=1,
+            ...     contrabass_count=1,
+            ...     )
+            >>> voice_identifiers = (
+            ...     'Violin \\d+ LH Voice',
+            ...     'Viola LH Voice',
+            ...     )
+            >>> makers.ConsortSegmentMaker.find_voice_names(
+            ...     template=template,
+            ...     voice_identifiers=voice_identifiers,
+            ...     )
+            ('Violin 1 LH Voice', 'Violin 2 LH Voice', 'Viola LH Voice')
+
+        '''
+        score = template()
+        all_voice_names = [voice.name for voice in
+            iterate(score).by_class(scoretools.Voice)]
+        matched_voice_names = set()
+        for voice_identifier in voice_identifiers:
+            pattern = re.compile(voice_identifier)
+            for voice_name in all_voice_names:
+                match = pattern.match(voice_name)
+                if match:
+                    matched_voice_names.add(voice_name)
+        selected_voice_names = []
+        for voice_name in all_voice_names:
+            if voice_name in matched_voice_names:
+                selected_voice_names.append(voice_name)
+        selected_voice_names = tuple(selected_voice_names)
+        return selected_voice_names
 
     ### PUBLIC PROPERTIES ###
 
@@ -326,4 +375,3 @@ class ConsortSegmentMaker(SegmentMaker):
     @property
     def voice_specifiers(self):
         return self._voice_specifiers
-
