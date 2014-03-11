@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import abctools
-from abjad.tools import scoretools
-from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
@@ -14,7 +12,7 @@ class VoiceSetting(abctools.AbjadObject):
         >>> voice_setting = makers.VoiceSetting(
         ...     voice_identifiers=r'Violin \d+ LH Voice',
         ...     key='rhythm_maker',
-        ...     rhythmmakertools.NoteRhythmMaker(),
+        ...     value=rhythmmakertools.NoteRhythmMaker(),
         ...     )
 
     '''
@@ -53,8 +51,6 @@ class VoiceSetting(abctools.AbjadObject):
         timespan_inventory_mapping=None,
         ):
         from consort import makers
-        prototype = makers.ConsortSegmentMaker.SegmentProduct
-        score = template()
         voice_names = makers.ConsortSegmentMaker.find_voice_names(
             template=template,
             voice_identifiers=self.voice_identifiers,
