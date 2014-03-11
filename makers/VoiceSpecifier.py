@@ -4,7 +4,6 @@ from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import scoretools
 from abjad.tools import timespantools
-from abjad.tools.topleveltools import iterate
 
 
 class VoiceSpecifier(abctools.AbjadObject):
@@ -58,20 +57,16 @@ class VoiceSpecifier(abctools.AbjadObject):
 
     ::
 
+
         >>> from consort import templates
+        >>> layer = 1
+        >>> target_duration = durationtools.Duration(1)
         >>> template = templates.ConsortScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
         ...     contrabass_count=1,
         ...     )
-        >>> voice_specifier.find_voice_names(template=template)
-        ('Violin 1 LH Voice', 'Violin 2 LH Voice', 'Viola LH Voice')
-
-    ::
-
-        >>> layer = 1
-        >>> target_duration = durationtools.Duration(1)
         >>> timespan_inventory, final_duration = voice_specifier(
         ...     layer=layer,
         ...     target_duration=target_duration,
@@ -171,14 +166,16 @@ class VoiceSpecifier(abctools.AbjadObject):
         target_duration=None,
         template=None,
         ):
+        from consort import makers
         if layer is None:
             layer = 0
         layer = int(layer)
         target_duration = durationtools.Duration(target_duration)
         assert 0 < target_duration
         assert template is not None
-        voice_names = self.find_voice_names(
+        voice_names = makers.ConsortSegmentMaker.find_voice_names(
             template=template,
+            voice_identifiers=self.voice_identifiers,
             )
         timespan_inventory, final_offset = self.timespan_maker(
             layer=layer,
@@ -189,27 +186,6 @@ class VoiceSpecifier(abctools.AbjadObject):
         return timespan_inventory, final_offset
 
     ### PUBLIC METHODS ###
-
-    def find_voice_names(
-        self,
-        template=None,
-        ):
-        score = template()
-        all_voice_names = [voice.name for voice in
-            iterate(score).by_class(scoretools.Voice)]
-        matched_voice_names = set()
-        for voice_identifier in self.voice_identifiers:
-            pattern = re.compile(voice_identifier)
-            for voice_name in all_voice_names:
-                match = pattern.match(voice_name)
-                if match:
-                    matched_voice_names.add(voice_name)
-        selected_voice_names = []
-        for voice_name in all_voice_names:
-            if voice_name in matched_voice_names:
-                selected_voice_names.append(voice_name)
-        selected_voice_names = tuple(selected_voice_names)
-        return selected_voice_names
 
     ### PUBLIC PROPERTIES ###
 
