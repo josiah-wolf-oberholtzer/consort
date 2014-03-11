@@ -15,7 +15,17 @@ class VoiceSpecifier(abctools.AbjadObject):
         >>> from consort import makers
         >>> voice_specifier = makers.VoiceSpecifier(
         ...     music_specifier=makers.MusicSpecifier(),
-        ...     timespan_maker=makers.TimespanMaker(),
+        ...     timespan_maker=makers.TimespanMaker(
+        ...         initial_silence_durations=(
+        ...             durationtools.Duration(0, 1),
+        ...             durationtools.Duration(1, 4),
+        ...             ),
+        ...         playing_durations=(
+        ...             durationtools.Duration(1, 4),
+        ...             durationtools.Duration(1, 2),
+        ...             durationtools.Duration(1, 4),
+        ...             ),
+        ...         ),
         ...     voice_identifiers=('Violin \\d+ LH Voice', 'Viola LH Voice'),
         ...     )
         >>> print format(voice_specifier)
@@ -24,9 +34,14 @@ class VoiceSpecifier(abctools.AbjadObject):
             timespan_maker=makers.TimespanMaker(
                 can_shift=False,
                 can_split=False,
-                initial_silence_durations=(),
+                initial_silence_durations=(
+                    durationtools.Duration(0, 1),
+                    durationtools.Duration(1, 4),
+                    ),
                 minimum_duration=durationtools.Duration(1, 8),
                 playing_durations=(
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 2),
                     durationtools.Duration(1, 4),
                     ),
                 playing_groupings=(1,),
@@ -52,6 +67,71 @@ class VoiceSpecifier(abctools.AbjadObject):
         ...     )
         >>> voice_specifier.find_voice_names(template=template)
         ('Violin 1 LH Voice', 'Violin 2 LH Voice', 'Viola LH Voice')
+
+    ::
+
+        >>> layer = 1
+        >>> target_duration = durationtools.Duration(1)
+        >>> timespan_inventory, final_duration = voice_specifier(
+        ...     layer=layer,
+        ...     target_duration=target_duration,
+        ...     template=template,
+        ...     )
+
+    ::
+
+        >>> print final_duration
+        1
+
+    ::
+
+        >>> print format(timespan_inventory)
+        timespantools.TimespanInventory(
+            [
+                makers.PerformedTimespan(
+                    layer=1,
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Violin 1 LH Voice',
+                    ),
+                makers.PerformedTimespan(
+                    layer=1,
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Viola LH Voice',
+                    ),
+                makers.PerformedTimespan(
+                    layer=1,
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Violin 2 LH Voice',
+                    ),
+                makers.PerformedTimespan(
+                    layer=1,
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Violin 1 LH Voice',
+                    ),
+                makers.PerformedTimespan(
+                    layer=1,
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Violin 2 LH Voice',
+                    ),
+                makers.PerformedTimespan(
+                    layer=1,
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Viola LH Voice',
+                    ),
+                ]
+            )
 
     '''
 
@@ -97,7 +177,7 @@ class VoiceSpecifier(abctools.AbjadObject):
         target_duration = durationtools.Duration(target_duration)
         assert 0 < target_duration
         assert template is not None
-        voice_names = self._find_voice_names(
+        voice_names = self.find_voice_names(
             template=template,
             )
         timespan_inventory, final_offset = self.timespan_maker(
