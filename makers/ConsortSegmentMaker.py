@@ -96,7 +96,7 @@ class ConsortSegmentMaker(SegmentMaker):
                 )
 
     __slots__ = (
-        '_context_settings',
+        '_voice_settings',
         '_voice_specifiers',
         '_is_final_segment',
         '_permitted_time_signatures',
@@ -108,7 +108,7 @@ class ConsortSegmentMaker(SegmentMaker):
 
     def __init__(
         self,
-        context_settings=None,
+        voice_settings=None,
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
@@ -121,11 +121,11 @@ class ConsortSegmentMaker(SegmentMaker):
             self,
             name=name,
             )
-        if context_settings is not None:
-            assert all(isinstance(x, makers.ContextSetting)
-                for x in context_settings)
-            context_settings = tuple(context_settings)
-        self._context_settings = context_settings
+        if voice_settings is not None:
+            assert all(isinstance(x, makers.VoiceSetting)
+                for x in voice_settings)
+            voice_settings = tuple(voice_settings)
+        self._voice_settings = voice_settings
         if voice_specifiers is not None:
             voice_specifiers = tuple(voice_specifiers)
             assert len(voice_specifiers)
@@ -158,7 +158,7 @@ class ConsortSegmentMaker(SegmentMaker):
         #self._create_dependent_timespans(segment_product)
         #self._remove_empty_trailing_measures(segment_product)
         #self._create_silent_timespans(segment_product)
-        #self._apply_context_settings(segment_product)
+        #self._apply_voice_settings(segment_product)
 
         #self._populate_time_signature_context(segment_product)
         #self._populate_rhythms(segment_product)
@@ -178,9 +178,9 @@ class ConsortSegmentMaker(SegmentMaker):
 
     ### PRIVATE METHODS ###
 
-    def _apply_context_settings(self, segment_product):
-        if self.context_settings is not None:
-            for context_setting in self.context_settings:
+    def _apply_voice_settings(self, segment_product):
+        if self.voice_settings is not None:
+            for context_setting in self.voice_settings:
                 context_setting(segment_product)
 
     def _find_meters(self, segment_product):
@@ -301,10 +301,6 @@ class ConsortSegmentMaker(SegmentMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def context_settings(self):
-        return self._context_settings
-
-    @property
     def final_markup(self):
         from consort.__metadata__ import metadata
         right_column = markuptools.MarkupCommand(
@@ -371,6 +367,10 @@ class ConsortSegmentMaker(SegmentMaker):
     @property
     def tempo(self):
         return self._tempo
+
+    @property
+    def voice_settings(self):
+        return self._voice_settings
 
     @property
     def voice_specifiers(self):

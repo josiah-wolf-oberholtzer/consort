@@ -5,14 +5,24 @@ from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
-class ContextSetting(abctools.AbjadObject):
-    r'''A context setting.
+class VoiceSetting(abctools.AbjadObject):
+    r'''A voice setting.
+
+    ::
+
+        >>> from consort import makers
+        >>> voice_setting = makers.VoiceSetting(
+        ...     voice_identifiers=r'Violin \d+ LH Voice',
+        ...     key='rhythm_maker',
+        ...     rhythmmakertools.NoteRhythmMaker(),
+        ...     )
+
     '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_context_identifier',
+        '_voice_identifiers',
         '_key',
         '_value',
         )
@@ -21,41 +31,38 @@ class ContextSetting(abctools.AbjadObject):
 
     def __init__(
         self,
-        context_identifier=None,
+        voice_identifiers=None,
         key=None,
         value=None,
         ):
-        if context_identifier is not None:
-            if isinstance(context_identifier, str):
-                context_identifier = (context_identifier,)
-            if not isinstance(context_identifier, tuple):
-                context_identifier = tuple(context_identifier)
-        self._context_identifier = context_identifier
+        if voice_identifiers is not None:
+            if isinstance(voice_identifiers, str):
+                voice_identifiers = (voice_identifiers,)
+            if not isinstance(voice_identifiers, tuple):
+                voice_identifiers = tuple(voice_identifiers)
+        self._voice_identifiers = voice_identifiers
         self._key = key
         self._value = value
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, segment_product):
+    def __call__(
+        self,
+        segment_duration=None,
+        template=None,
+        timespan_inventory_mapping=None,
+        ):
         from consort import makers
         prototype = makers.ConsortSegmentMaker.SegmentProduct
-        assert isinstance(segment_product, prototype)
-        assert segment_product.timespan_inventory_mapping is not None
-        score = segment_product.segment_maker.score_template()
-        context_names = set()
-        for context_name in self.context_identifier:
-            context = score[context_name]
-            if isinstance(context, scoretools.Voice):
-                context_names.add(context_name)
-            else:
-                for voice in iterate(context).by_class(scoretools.Voice):
-                    context_names.add(voice.name)
-        segment_duration = segment_product.segment_duration
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
-        for context_name in context_names:
-            if context_name not in timespan_inventory_mapping:
+        score = template()
+        voice_names = makers.ConsortSegmentMaker.find_voice_names(
+            template=template,
+            voice_identifiers=self.voice_identifiers,
+            )
+        for voice_name in voice_names:
+            if voice_name not in timespan_inventory_mapping:
                 continue
-            timespan_inventory = timespan_inventory_mapping[context_name]
+            timespan_inventory = timespan_inventory_mapping[voice_name]
             self._apply_setting(
                 segment_duration=segment_duration,
                 timespan_inventory=timespan_inventory,
@@ -108,8 +115,8 @@ class ContextSetting(abctools.AbjadObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def context_identifier(self):
-        return self._context_identifier
+    def voice_identifiers(self):
+        return self._voice_identifiers
 
     @property
     def key(self):
