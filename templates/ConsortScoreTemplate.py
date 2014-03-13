@@ -11,8 +11,8 @@ class ConsortScoreTemplate(abctools.AbjadObject):
 
     ::
 
-        >>> from consort import score_templates
-        >>> template = score_templates.ConsortScoreTemplate()
+        >>> from consort import templates
+        >>> template = templates.ConsortScoreTemplate()
         >>> score = template()
         >>> print format(score)
         \context Score = "Score" <<
@@ -228,7 +228,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
 
     ::
 
-        >>> template = score_templates.ConsortScoreTemplate(
+        >>> template = templates.ConsortScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -304,7 +304,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
 
     ::
 
-        >>> template = score_templates.ConsortScoreTemplate(
+        >>> template = templates.ConsortScoreTemplate(
         ...     violin_count=0,
         ...     viola_count=0,
         ...     cello_count=1,
