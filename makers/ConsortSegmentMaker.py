@@ -304,6 +304,19 @@ class ConsortSegmentMaker(SegmentMaker):
             silence_inventory.split_at_offsets(measure_offsets)
             timespan_inventory.extend(silence_inventory)
             timespan_inventory.sort()
+        score = self.template()
+        for voice in iterate(score).by_class(scoretools.Voice):
+            voice_name = voice.name
+            if voice_name in timespan_inventory_mapping:
+                continue
+            silence_inventory = timespantools.TimespanInventory()
+            silence = makers.SilentTimespan(
+                start_offset=0,
+                stop_offset=measure_offsets[-1],
+                )
+            silence_inventory.append(silence)
+            silence_inventory.split_at_offsets(measure_offsets)
+            timespan_inventory_mapping[voice_name] = silence_inventory
 
     def _make_timespan_inventory_mapping(self, segment_product):
         timespan_inventory_mapping = {}
