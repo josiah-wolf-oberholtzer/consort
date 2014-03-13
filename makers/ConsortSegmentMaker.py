@@ -22,12 +22,24 @@ class ConsortSegmentMaker(SegmentMaker):
     ::
 
         >>> from consort import makers
+        >>> from consort import templates
+        >>> template = templates.ConsortScoreTemplate(
+        ...     violin_count=2,
+        ...     viola_count=1,
+        ...     cello_count=1,
+        ...     contrabass_count=0,
+        ...     )
+
+    ::
+
         >>> segment_maker = makers.ConsortSegmentMaker(
         ...     permitted_time_signatures=(
         ...         (5, 8),
         ...         (7, 16),
         ...         ),
-        ...     target_duration=4,
+        ...     target_duration=2,
+        ...     tempo=indicatortools.Tempo((1, 4), 72),
+        ...     template=template,
         ...     voice_specifiers=(
         ...         makers.VoiceSpecifier(
         ...             music_specifier=makers.MusicSpecifier(),
@@ -45,7 +57,14 @@ class ConsortSegmentMaker(SegmentMaker):
                     indicatortools.TimeSignature((7, 16)),
                     ]
                 ),
-            target_duration=durationtools.Duration(4, 1),
+            target_duration=durationtools.Duration(2, 1),
+            template=templates.ConsortScoreTemplate(
+                violin_count=2,
+                viola_count=1,
+                cello_count=1,
+                contrabass_count=0,
+                ),
+            tempo=indicatortools.Tempo(durationtools.Duration(1, 4), 72),
             voice_specifiers=(
                 makers.VoiceSpecifier(
                     music_specifier=makers.MusicSpecifier(),
@@ -117,24 +136,26 @@ class ConsortSegmentMaker(SegmentMaker):
                 )
 
     __slots__ = (
-        '_voice_settings',
-        '_voice_specifiers',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_target_duration',
+        '_template',
         '_tempo',
+        '_voice_settings',
+        '_voice_specifiers',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        voice_settings=None,
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
         target_duration=None,
+        template=None,
         tempo=None,
+        voice_settings=None,
         voice_specifiers=None,
         ):
         from consort import makers
@@ -162,6 +183,7 @@ class ConsortSegmentMaker(SegmentMaker):
         if target_duration is not None:
             target_duration = durationtools.Duration(target_duration)
         self._target_duration = target_duration
+        self._template = template
         if tempo is not None:
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
@@ -171,7 +193,7 @@ class ConsortSegmentMaker(SegmentMaker):
     def __call__(self):
 
         segment_product = self.SegmentProduct(segment_maker=self)
-        segment_product.score = self.score_template()
+        segment_product.score = self.template()
 
         self._make_timespan_inventory_mapping(segment_product)
         self._find_meters(segment_product)
@@ -252,7 +274,7 @@ class ConsortSegmentMaker(SegmentMaker):
             timespan_inventory, final_duration = voice_specifier(
                 layer=layer,
                 target_duration=self.target_duration,
-                template=self.score_template,
+                template=self.template,
                 )
             if segment_duration < final_duration:
                 segment_duration = final_duration
@@ -362,15 +384,8 @@ class ConsortSegmentMaker(SegmentMaker):
         return self._permitted_time_signatures
 
     @property
-    def score_template(self):
-        from consort import templates
-        template = templates.ConsortScoreTemplate(
-            violin_count=2,
-            viola_count=1,
-            cello_count=1,
-            contrabass_count=0,
-            )
-        return template
+    def template(self):
+        return self._template
 
     @property
     def stylesheet_file_paths(self):
