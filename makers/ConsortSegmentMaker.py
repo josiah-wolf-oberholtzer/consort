@@ -7,6 +7,7 @@ from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
+from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import scoretools
 from abjad.tools import timespantools
@@ -204,9 +205,9 @@ class ConsortSegmentMaker(SegmentMaker):
         self._make_timespan_inventory_mapping(segment_product)
         self._find_meters(segment_product)
         self._cleanup_performed_timespans(segment_product)
+        self._make_silent_timespans(segment_product)
         #self._create_dependent_timespans(segment_product)
         #self._remove_empty_trailing_measures(segment_product)
-        #self._create_silent_timespans(segment_product)
         #self._apply_voice_settings(segment_product)
 
         #self._populate_time_signature_context(segment_product)
@@ -241,8 +242,7 @@ class ConsortSegmentMaker(SegmentMaker):
             timespan_inventory = timespan_inventory_mapping[voice_name]
             timespan_inventory.split_at_offsets(measure_offsets)
             for timespan in timespan_inventory[:]:
-                timespan_maker = timespan.music_specifier.timespan_maker
-                minimum_duration = timespan_maker.minimum_duration
+                minimum_duration = timespan.minimum_duration
                 if timespan.duration < minimum_duration:
                     timespan_inventory.remove(timespan)
 
@@ -286,6 +286,24 @@ class ConsortSegmentMaker(SegmentMaker):
             lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
+
+    def _make_silent_timespans(self, segment_product):
+        from consort import makers
+        measure_offsets = segment_product.measure_offsets
+        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        for voice_name in timespan_inventory_mapping:
+            timespan_inventory = timespan_inventory_mapping[voice_name]
+            silence_inventory = timespantools.TimespanInventory()
+            silence = makers.SilentTimespan(
+                start_offset=0,
+                stop_offset=measure_offsets[-1],
+                )
+            silence_inventory.append(silence)
+            for timespan in timespan_inventory:
+                silence_inventory - timespan
+            silence_inventory.split_at_offsets(measure_offsets)
+            timespan_inventory.extend(silence_inventory)
+            timespan_inventory.sort()
 
     def _make_timespan_inventory_mapping(self, segment_product):
         timespan_inventory_mapping = {}
