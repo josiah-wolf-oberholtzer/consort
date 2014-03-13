@@ -129,6 +129,12 @@ class ConsortSegmentMaker(SegmentMaker):
         ### PUBLIC PROPERTIES ###
 
         @property
+        def measure_offsets(self):
+            measure_durations = [x.duration for x in self.time_signatures]
+            measure_offsets = mathtools.cumulative_sums(measure_durations)
+            return measure_offsets
+
+        @property
         def time_signatures(self):
             return (
                 meter.implied_time_signature
@@ -197,7 +203,7 @@ class ConsortSegmentMaker(SegmentMaker):
 
         self._make_timespan_inventory_mapping(segment_product)
         self._find_meters(segment_product)
-        #self._cleanup_semantic_timespans(segment_product)
+        self._cleanup_performed_timespans(segment_product)
         #self._create_dependent_timespans(segment_product)
         #self._remove_empty_trailing_measures(segment_product)
         #self._create_silent_timespans(segment_product)
@@ -217,7 +223,9 @@ class ConsortSegmentMaker(SegmentMaker):
         #segment_product.lilypond_file = self._make_lilypond_file(
         #    segment_product.score)
 
-        return segment_product.lilypond_file
+        #return segment_product.lilypond_file
+
+        return segment_product
 
     ### PRIVATE METHODS ###
 
@@ -225,6 +233,18 @@ class ConsortSegmentMaker(SegmentMaker):
         if self.voice_settings is not None:
             for context_setting in self.voice_settings:
                 context_setting(segment_product)
+
+    def _cleanup_performed_timespans(self, segment_product):
+        measure_offsets = segment_product.measure_offsets
+        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        for voice_name in timespan_inventory_mapping:
+            timespan_inventory = timespan_inventory_mapping[voice_name]
+            timespan_inventory.split_at_offsets(measure_offsets)
+            for timespan in timespan_inventory[:]:
+                timespan_maker = timespan.music_specifier.timespan_maker
+                minimum_duration = timespan_maker.minimum_duration
+                if timespan.duration < minimum_duration:
+                    timespan_inventory.remove(timespan)
 
     def _find_meters(self, segment_product):
         offset_counter = datastructuretools.TypedCounter(
