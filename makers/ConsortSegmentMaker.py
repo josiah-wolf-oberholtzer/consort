@@ -28,6 +28,13 @@ class ConsortSegmentMaker(SegmentMaker):
         ...         (7, 16),
         ...         ),
         ...     target_duration=4,
+        ...     voice_specifiers=(
+        ...         makers.VoiceSpecifier(
+        ...             music_specifier=makers.MusicSpecifier(),
+        ...             timespan_maker=makers.TimespanMaker(),
+        ...             voice_identifiers=('Violin \\d+ LH Voice',),
+        ...             ),
+        ...         ),
         ...     )
         >>> print format(segment_maker)
         makers.ConsortSegmentMaker(
@@ -43,6 +50,29 @@ class ConsortSegmentMaker(SegmentMaker):
                     ]
                 ),
             target_duration=durationtools.Duration(4, 1),
+            voice_specifiers=(
+                makers.VoiceSpecifier(
+                    music_specifier=makers.MusicSpecifier(),
+                    timespan_maker=makers.TimespanMaker(
+                        can_shift=False,
+                        can_split=False,
+                        initial_silence_durations=(),
+                        minimum_duration=durationtools.Duration(1, 8),
+                        playing_durations=(
+                            durationtools.Duration(1, 4),
+                            ),
+                        playing_groupings=(1,),
+                        repeat=True,
+                        silence_durations=(
+                            durationtools.Duration(1, 4),
+                            ),
+                        step_anchor=Right,
+                        synchronize_groupings=False,
+                        synchronize_step=False,
+                        ),
+                    voice_identifiers=('Violin \\d+ LH Voice',),
+                    ),
+                ),
             )
 
     ::
@@ -63,6 +93,7 @@ class ConsortSegmentMaker(SegmentMaker):
             'lilypond_file',
             'meters',
             'score',
+            'segment_duration',
             'segment_maker',
             'timespan_inventory_mapping',
             )
@@ -76,17 +107,11 @@ class ConsortSegmentMaker(SegmentMaker):
             self.lilypond_file = None
             self.meters = None
             self.score = None
+            self.segment_duration = None
             self.segment_maker = segment_maker
             self.timespan_inventory_mapping = None
 
         ### PUBLIC PROPERTIES ###
-
-        @property
-        def segment_duration(self):
-            return sum(
-                time_signature.duration
-                for time_signature in self.time_signatures
-                )
 
         @property
         def time_signatures(self):
@@ -200,6 +225,8 @@ class ConsortSegmentMaker(SegmentMaker):
             maximum_repetitions=2,
             )
         segment_product.meters = tuple(meters)
+        segment_product.segment_duration = sum(
+            x.duration for x in segment_product.time_signatures)
 
     def _make_lilypond_file(self, score):
         rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')
@@ -224,32 +251,40 @@ class ConsortSegmentMaker(SegmentMaker):
 
     def _make_timespan_inventory_mapping(self, segment_product):
         timespan_inventory_mapping = {}
-        timespan_inventory = timespantools.TimespanInventory()
-        if self.voice_specifiers is not None:
-            for layer, voice_specifier in enumerate(self.voice_specifiers):
-                result = voice_specifier(
-                    layer=layer,
-                    template=self.score_template,
-                    )
-                timespan_inventory.extend(result)
+        segment_duration = durationtools.Duration(0)
+        for layer, voice_specifier in enumerate(self.voice_specifiers):
+            timespan_inventory, final_duration = voice_specifier(
+                layer=layer,
+                target_duration=self.target_duration,
+                template=self.score_template,
+                )
+            if segment_duration < final_duration:
+                segment_duration = final_duration
             for timespan in timespan_inventory:
-                context_name, layer = timespan.context_name, timespan.layer
-                if context_name not in timespan_inventory_mapping:
-                    timespan_inventory_mapping[context_name] = []
-                    for _ in range(len(self.voice_specifier)):
-                        timespan_inventory_mapping[context_name].append(
+                voice_name, layer = timespan.voice_name, timespan.layer
+                if voice_name not in timespan_inventory_mapping:
+                    timespan_inventory_mapping[voice_name] = []
+                    for _ in range(len(self.voice_specifiers)):
+                        timespan_inventory_mapping[voice_name].append(
                             timespantools.TimespanInventory())
-                timespan_inventory_mapping[context_name][layer].append(
+                timespan_inventory_mapping[voice_name][layer].append(
                     timespan)
-            for context_name in timespan_inventory_mapping:
-                timespan_inventories = timespan_inventory_mapping[context_name]
-                timespan_inventory = self._resolve_timespan_inventories(
-                    timespan_inventories)
-                timespan_inventory_mapping[context_name] = timespan_inventory
+                timespan_inventory_mapping[voice_name][layer].sort()
+        for voice_name in timespan_inventory_mapping:
+            timespan_inventories = timespan_inventory_mapping[voice_name]
+            timespan_inventory = self._resolve_timespan_inventories(
+                timespan_inventories)
+            timespan_inventory_mapping[voice_name] = timespan_inventory
+        segment_product.segment_duration = segment_duration
         segment_product.timespan_inventory_mapping = timespan_inventory_mapping
 
     def _resolve_timespan_inventories(self, timespan_inventories):
-        pass
+        resolved_timespan_inventory = timespantools.TimespanInventory()
+        resolved_timespan_inventory.extend(timespan_inventories[0])
+        for timespan_inventory in timespan_inventories[1:]:
+            for timespan in timespan_inventory:
+                resolved_timespan_inventory -= timespan
+        return resolved_timespan_inventory
 
     ### PUBLIC METHODS ###
 
@@ -261,7 +296,7 @@ class ConsortSegmentMaker(SegmentMaker):
         r'''Find voice names matching `voice_identifiers` in `template`:
 
         ::
-    
+
             >>> from consort import makers
             >>> from consort import templates
             >>> template = templates.ConsortScoreTemplate(
