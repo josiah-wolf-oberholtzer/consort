@@ -1,10 +1,9 @@
 from consort import makers
-from consort import templates
 
 
 def test_ConsortSegmentMaker___call___01():
 
-    template = templates.ConsortScoreTemplate(
+    template = makers.ConsortScoreTemplate(
         violin_count=2,
         viola_count=1,
         cello_count=1,

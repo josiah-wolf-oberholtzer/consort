@@ -23,8 +23,7 @@ class ConsortSegmentMaker(SegmentMaker):
     ::
 
         >>> from consort import makers
-        >>> from consort import templates
-        >>> template = templates.ConsortScoreTemplate(
+        >>> template = makers.ConsortScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -59,7 +58,7 @@ class ConsortSegmentMaker(SegmentMaker):
                     ]
                 ),
             target_duration=durationtools.Duration(2, 1),
-            template=templates.ConsortScoreTemplate(
+            template=makers.ConsortScoreTemplate(
                 violin_count=2,
                 viola_count=1,
                 cello_count=1,
@@ -367,8 +366,7 @@ class ConsortSegmentMaker(SegmentMaker):
         ::
 
             >>> from consort import makers
-            >>> from consort import templates
-            >>> template = templates.ConsortScoreTemplate(
+            >>> template = makers.ConsortScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
             ...     cello_count=1,

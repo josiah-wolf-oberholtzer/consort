@@ -58,10 +58,9 @@ class VoiceSpecifier(abctools.AbjadObject):
     ::
 
 
-        >>> from consort import templates
         >>> layer = 1
         >>> target_duration = durationtools.Duration(1)
-        >>> template = templates.ConsortScoreTemplate(
+        >>> template = makers.ConsortScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
