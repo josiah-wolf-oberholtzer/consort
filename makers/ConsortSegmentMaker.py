@@ -41,12 +41,8 @@ class ConsortSegmentMaker(SegmentMaker):
             is_final_segment=False,
             permitted_time_signatures=indicatortools.TimeSignatureInventory(
                 [
-                    indicatortools.TimeSignature(
-                        (5, 8)
-                        ),
-                    indicatortools.TimeSignature(
-                        (7, 16)
-                        ),
+                    indicatortools.TimeSignature((5, 8)),
+                    indicatortools.TimeSignature((7, 16)),
                     ]
                 ),
             target_duration=durationtools.Duration(4, 1),
