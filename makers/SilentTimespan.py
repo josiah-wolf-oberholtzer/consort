@@ -5,4 +5,7 @@ from abjad.tools import timespantools
 class SilentTimespan(timespantools.Timespan):
     r'''A silent timespan.
     '''
-    pass
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
