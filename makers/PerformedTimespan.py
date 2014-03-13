@@ -100,5 +100,16 @@ class PerformedTimespan(timespantools.Timespan):
         return self._original_stop_offset
 
     @property
+    def minimum_duration(self):
+        if self.music_specifier is None:
+            return durationtools.Duration(0)
+        elif self.music_specifier.timespan_maker is None:
+            return durationtools.Duration(0)
+        minimum_duration = self.music_specifier.timespan_maker.minimum_duration
+        if minimum_duration is None:
+            return durationtools.Duration(0)
+        return minimum_duration
+
+    @property
     def voice_name(self):
         return self._voice_name
