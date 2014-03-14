@@ -215,7 +215,7 @@ class ConsortSegmentMaker(SegmentMaker):
 
         self._populate_time_signature_context(segment_product)
         self._populate_rhythms(segment_product)
-        #self._cleanup_silences(segment_product)
+        self._cleanup_silences(segment_product)
 
         #makers.GraceAgent.iterate_score(segment_product.score)
         #makers.PitchAgent.iterate_score(segment_product.score)
@@ -224,8 +224,8 @@ class ConsortSegmentMaker(SegmentMaker):
         #makers.ChordAgent.iterate_score(segment_product.score)
         #makers.AttachmentAgent.iterate_score(segment_product.score)
 
-        #segment_product.lilypond_file = self._make_lilypond_file(
-        #    segment_product.score)
+        segment_product.lilypond_file = self._make_lilypond_file(
+            segment_product.score)
 
         #return segment_product.lilypond_file
 
@@ -251,6 +251,23 @@ class ConsortSegmentMaker(SegmentMaker):
                         split_inventory.append(timespan)
             split_inventory.sort()
             timespan_inventory_mapping[voice_name] = split_inventory
+
+    def _cleanup_silences(self, segment_product):
+        from consort import makers
+        score = segment_product.score
+        procedure = lambda x: isinstance(x, scoretools.MultimeasureRest)
+        for voice in iterate(score).by_class(scoretools.Voice):
+            for music in voice:
+                if inspect_(music).get_indicators(makers.MusicSpecifier):
+                    continue
+                leaves = music.select_leaves()
+                for is_multimeasure_rest, group in itertools.groupby(
+                    leaves, procedure):
+                    if not is_multimeasure_rest:
+                        continue
+                    group = list(group)
+                    spanner = spannertools.StaffLinesSpanner(lines=1)
+                    attach(spanner, group)
 
     def _find_meters(self, segment_product):
         offset_counter = datastructuretools.TypedCounter(
@@ -303,7 +320,7 @@ class ConsortSegmentMaker(SegmentMaker):
         rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')
         attach(rehearsal_mark, score['TimeSignatureContext'][0],
             scope=scoretools.Context)
-        attach(self.segment_tempo, score['TimeSignatureContext'][0])
+        attach(self.tempo, score['TimeSignatureContext'][0])
         if self.is_final_segment:
             score.add_final_markup(self.final_markup)
             score.add_final_bar_line()
@@ -315,7 +332,7 @@ class ConsortSegmentMaker(SegmentMaker):
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
-        for file_path in self.stylesheets_file_paths:
+        for file_path in self.stylesheet_file_paths:
             lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
@@ -439,7 +456,6 @@ class ConsortSegmentMaker(SegmentMaker):
         timespan_inventory_mapping = segment_product.timespan_inventory_mapping
         seed = 0
         for voice_name in timespan_inventory_mapping:
-            print voice_name
             timespan_inventory = timespan_inventory_mapping[voice_name]
             voice = segment_product.score[voice_name]
             previous_silence = scoretools.Container()
@@ -448,13 +464,16 @@ class ConsortSegmentMaker(SegmentMaker):
                 if music_specifier is None:
                     rhythm_maker = rhythmmakertools.RestRhythmMaker()
                 elif music_specifier.rhythm_maker is None:
-                    rhythm_maker = rhythmmakertools.NoteRhythmMaker()
+                    rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                        tie_specifier=rhythmmakertools.TieSpecifier(
+                            tie_split_notes=True,
+                            ),
+                        )
                 else:
                     rhythm_maker = music_specifier.rhythm_maker
                 timespans = tuple(timespans)
                 durations = [x.duration for x in timespans]
                 start_offset = timespans[0].start_offset
-                print '\t', durations, rhythm_maker, start_offset
                 leading_silence, music, tailing_silence = \
                     self._populate_rhythm_group(
                         durations=durations,
@@ -522,22 +541,10 @@ class ConsortSegmentMaker(SegmentMaker):
                     all(isinstance(x, scoretools.Rest)
                         for x in container.select_leaves()):
                     multi_measure_rest = scoretools.MultimeasureRest(1)
-                    multiplier = durationtools.Multiplier(current_meter_duration)
+                    multiplier = durationtools.Multiplier(
+                        current_meter_duration)
                     attach(multiplier, multi_measure_rest)
                     container[:] = [multi_measure_rest]
-                    new_spanner = spannertools.StaffLinesSpanner(
-                        lines=1,
-                        )
-                    attach(new_spanner, container.select_leaves())
-                    previous_leaf = inspect_(multi_measure_rest
-                        ).get_leaf(-1)
-                    if isinstance(previous_leaf, type(multi_measure_rest)):
-                        old_spanner = inspect_(previous_leaf).get_spanner(
-                            type(new_spanner))
-                        components = old_spanner[:] + [multi_measure_rest]
-                        old_spanner._detach()
-                        new_spanner._detach()
-                        attach(old_spanner, components)
                 else:
                     mutate(container[:]).rewrite_meter(
                         current_meter,
@@ -636,15 +643,14 @@ class ConsortSegmentMaker(SegmentMaker):
             consort_path,
             'stylesheets',
             )
-        stylesheet_file_names = [x for x in os.listdir(stylesheets_path)
-            if os.path.splitext(x)[-1] == 'ily']
+        stylesheet_file_names = os.listdir(stylesheets_path)
         stylesheet_file_paths = []
         for file_name in stylesheet_file_names:
-            relative_file_path = os.path.join(
-                '..', '..', 'stylesheets',
+            full_path = os.path.join(
+                stylesheets_path,
                 file_name,
                 )
-            stylesheet_file_paths.append(relative_file_path)
+            stylesheet_file_paths.append(full_path)
         return stylesheet_file_paths
 
     @property
