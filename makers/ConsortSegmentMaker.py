@@ -3,7 +3,6 @@ import itertools
 import os
 import re
 from abjad.tools import abctools
-from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
@@ -13,7 +12,6 @@ from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
 from abjad.tools import scoretools
 from abjad.tools import spannertools
-from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
@@ -201,17 +199,19 @@ class ConsortSegmentMaker(SegmentMaker):
     ### SPECIAL METHODS ###
 
     def __call__(self):
+        from consort import makers
 
         segment_product = self.SegmentProduct(segment_maker=self)
         segment_product.score = self.template()
 
-        self._make_timespan_inventory_mapping(segment_product)
-        self._find_meters(segment_product)
-        self._cleanup_performed_timespans(segment_product)
-        self._make_silent_timespans(segment_product)
-        #self._create_dependent_timespans(segment_product)
-        #self._remove_empty_trailing_measures(segment_product)
-        #self._apply_voice_settings(segment_product)
+        segment_product = makers.TimespanManager.execute(
+            permitted_time_signatures=self.permitted_time_signatures,
+            segment_product=segment_product,
+            target_duration=self.target_duration,
+            template=self.template,
+            voice_settings=self.voice_settings,
+            voice_specifiers=self.voice_specifiers,
+            )
 
         self._populate_time_signature_context(segment_product)
         self._populate_rhythms(segment_product)
@@ -233,25 +233,6 @@ class ConsortSegmentMaker(SegmentMaker):
 
     ### PRIVATE METHODS ###
 
-    def _apply_voice_settings(self, segment_product):
-        if self.voice_settings is not None:
-            for context_setting in self.voice_settings:
-                context_setting(segment_product)
-
-    def _cleanup_performed_timespans(self, segment_product):
-        measure_offsets = segment_product.measure_offsets
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
-        for voice_name in timespan_inventory_mapping:
-            timespan_inventory = timespan_inventory_mapping[voice_name]
-            split_inventory = timespantools.TimespanInventory()
-            for shard in timespan_inventory.split_at_offsets(measure_offsets):
-                for timespan in shard:
-                    minimum_duration = timespan.minimum_duration
-                    if minimum_duration < timespan.duration:
-                        split_inventory.append(timespan)
-            split_inventory.sort()
-            timespan_inventory_mapping[voice_name] = split_inventory
-
     def _cleanup_silences(self, segment_product):
         from consort import makers
         score = segment_product.score
@@ -268,26 +249,6 @@ class ConsortSegmentMaker(SegmentMaker):
                     group = list(group)
                     spanner = spannertools.StaffLinesSpanner(lines=1)
                     attach(spanner, group)
-
-    def _find_meters(self, segment_product):
-        offset_counter = datastructuretools.TypedCounter(
-            item_class=durationtools.Offset,
-            )
-        for timespan_inventory in \
-            segment_product.timespan_inventory_mapping.values():
-            for timespan in timespan_inventory:
-                offset_counter[timespan.start_offset] += 1
-                offset_counter[timespan.stop_offset] += 1
-        if not offset_counter:
-            offset_counter[self.target_duration] += 1
-        meters = metertools.Meter.fit_meters_to_expr(
-            offset_counter,
-            self.permitted_time_signatures,
-            maximum_repetitions=2,
-            )
-        segment_product.meters = tuple(meters)
-        segment_product.segment_duration = sum(
-            x.duration for x in segment_product.time_signatures)
 
     def _iterate_music_and_meters(
         self,
@@ -336,58 +297,6 @@ class ConsortSegmentMaker(SegmentMaker):
             lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
-
-    def _make_silent_timespans(self, segment_product):
-        from consort import makers
-        measure_offsets = segment_product.measure_offsets
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
-        score = self.template()
-        for voice in iterate(score).by_class(scoretools.Voice):
-            voice_name = voice.name
-            if voice_name not in timespan_inventory_mapping:
-                timespan_inventory_mapping[voice_name] = \
-                    timespantools.TimespanInventory()
-            timespan_inventory = timespan_inventory_mapping[voice_name]
-            silence_inventory = timespantools.TimespanInventory()
-            silence = makers.SilentTimespan(
-                start_offset=0,
-                stop_offset=measure_offsets[-1],
-                )
-            silence_inventory.append(silence)
-            for timespan in timespan_inventory:
-                silence_inventory - timespan
-            for shard in silence_inventory.split_at_offsets(measure_offsets):
-                timespan_inventory.extend(shard)
-                timespan_inventory.sort()
-
-    def _make_timespan_inventory_mapping(self, segment_product):
-        timespan_inventory_mapping = {}
-        segment_duration = durationtools.Duration(0)
-        for layer, voice_specifier in enumerate(self.voice_specifiers):
-            timespan_inventory, final_duration = voice_specifier(
-                layer=layer,
-                target_duration=self.target_duration,
-                template=self.template,
-                )
-            if segment_duration < final_duration:
-                segment_duration = final_duration
-            for timespan in timespan_inventory:
-                voice_name, layer = timespan.voice_name, timespan.layer
-                if voice_name not in timespan_inventory_mapping:
-                    timespan_inventory_mapping[voice_name] = []
-                    for _ in range(len(self.voice_specifiers)):
-                        timespan_inventory_mapping[voice_name].append(
-                            timespantools.TimespanInventory())
-                timespan_inventory_mapping[voice_name][layer].append(
-                    timespan)
-                timespan_inventory_mapping[voice_name][layer].sort()
-        for voice_name in timespan_inventory_mapping:
-            timespan_inventories = timespan_inventory_mapping[voice_name]
-            timespan_inventory = self._resolve_timespan_inventories(
-                timespan_inventories)
-            timespan_inventory_mapping[voice_name] = timespan_inventory
-        segment_product.segment_duration = segment_duration
-        segment_product.timespan_inventory_mapping = timespan_inventory_mapping
 
     def _populate_rhythm_group(
         self,
@@ -500,14 +409,6 @@ class ConsortSegmentMaker(SegmentMaker):
         time_signatures = segment_product.time_signatures
         measures = scoretools.make_spacer_skip_measures(time_signatures)
         score['TimeSignatureContext'].extend(measures)
-
-    def _resolve_timespan_inventories(self, timespan_inventories):
-        resolved_timespan_inventory = timespantools.TimespanInventory()
-        resolved_timespan_inventory.extend(timespan_inventories[0])
-        for timespan_inventory in timespan_inventories[1:]:
-            for timespan in timespan_inventory:
-                resolved_timespan_inventory -= timespan
-        return resolved_timespan_inventory
 
     def _rewrite_meter(
         self,
