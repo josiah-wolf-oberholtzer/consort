@@ -7,6 +7,7 @@ from abjad.tools import spannertools
 from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
+from abjad.tools import selectiontools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
@@ -103,15 +104,15 @@ class RhythmManager(abctools.AbjadObject):
                 tailing_silence.insert(0, division)
             else:
                 break
-        if music:
-            beam = spannertools.GeneralizedBeam(
-                durations=durations,
-                include_long_duration_notes=True,
-                include_long_duration_rests=True,
-                isolated_nib_direction=None,
-                use_stemlets=True,
-                )
-            attach(beam, music)
+#        if music:
+#            beam = spannertools.GeneralizedBeam(
+#                durations=durations,
+#                include_long_duration_notes=True,
+#                include_long_duration_rests=True,
+#                isolated_nib_direction=None,
+#                use_stemlets=True,
+#                )
+#            attach(beam, music)
         assert sum([
             inspect_(music).get_duration(),
             inspect_(leading_silence).get_duration(),
@@ -129,6 +130,7 @@ class RhythmManager(abctools.AbjadObject):
                     music_specifier = makers.MusicSpecifier()
             return music_specifier
         from consort import makers
+        silent_music_specifier = makers.MusicSpecifier()
         timespan_inventory_mapping = segment_product.timespan_inventory_mapping
         seed = 0
         for voice_name in timespan_inventory_mapping:
@@ -142,7 +144,7 @@ class RhythmManager(abctools.AbjadObject):
                 elif music_specifier.rhythm_maker is None:
                     rhythm_maker = rhythmmakertools.NoteRhythmMaker(
                         tie_specifier=rhythmmakertools.TieSpecifier(
-                            tie_split_notes=True,
+                            tie_across_divisions=True,
                             ),
                         )
                 else:
@@ -163,12 +165,26 @@ class RhythmManager(abctools.AbjadObject):
                     previous_silence.extend(tailing_silence)
                 else:
                     if len(previous_silence.select_leaves()):
+                        attach(
+                            silent_music_specifier,
+                            previous_silence,
+                            scope=scoretools.Voice,
+                            )
                         voice.append(previous_silence)
-                    attach(music_specifier, music)
+                    attach(
+                        music_specifier,
+                        music,
+                        scope=scoretools.Voice,
+                        )
                     voice.append(music)
                     previous_silence = tailing_silence
                 seed += 1
             if len(previous_silence.select_leaves()):
+                attach(
+                    silent_music_specifier,
+                    previous_silence,
+                    scope=scoretools.Voice,
+                    )
                 voice.append(previous_silence)
 
     @staticmethod
@@ -194,6 +210,9 @@ class RhythmManager(abctools.AbjadObject):
                 current_meter.implied_time_signature.duration
             container_stop_offset = inspect_(container).get_duration() + \
                 container_start_offset
+            print format(container)
+            last_leaf = container.select_leaves()[-1]
+            is_tied = RhythmManager._leaf_is_tied(last_leaf)
             if isinstance(container, scoretools.Tuplet) or \
                 current_meter_duration < container_stop_offset:
                 contents_duration = container._contents_duration
@@ -221,6 +240,28 @@ class RhythmManager(abctools.AbjadObject):
                         initial_offset=container_start_offset,
                         maximum_dot_count=2,
                         )
+            if is_tied:
+                last_leaf = container.select_leaves()[-1]
+                next_leaf = inspect_(last_leaf).get_leaf(1)
+                selection = selectiontools.ContiguousSelection((
+                    last_leaf, next_leaf))
+                selection._attach_tie_spanner_to_leaf_pair()
+
+    @staticmethod
+    def _leaf_is_tied(leaf):
+        prototype = spannertools.Tie
+        leaf_tie = None
+        if inspect_(leaf).get_spanners(prototype):
+            leaf_tie = inspect_(leaf).get_spanner(prototype)
+        else:
+            return False
+        next_leaf = inspect_(leaf).get_leaf(1)
+        if next_leaf is not None:
+            if inspect_(next_leaf).get_spanners(prototype):
+                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
+                if leaf_tie is next_leaf_tie:
+                    return True
+        return False
 
     ### PUBLIC METHODS ###
 
