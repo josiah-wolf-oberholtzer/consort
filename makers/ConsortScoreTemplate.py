@@ -30,8 +30,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Violin 1 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Violin 1 Dynamics" {
-                    }
                 >>
                 \tag #'Violin2
                 \context PerformerStaffGroup = "Violin 2 Staff Group" <<
@@ -42,8 +40,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Violin 2 LH Staff" {
                         \context LHVoice = "Violin 2 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Violin 2 Dynamics" {
                     }
                 >>
                 \tag #'Violin3
@@ -56,8 +52,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Violin 3 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Violin 3 Dynamics" {
-                    }
                 >>
                 \tag #'Violin4
                 \context PerformerStaffGroup = "Violin 4 Staff Group" <<
@@ -68,8 +62,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Violin 4 LH Staff" {
                         \context LHVoice = "Violin 4 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Violin 4 Dynamics" {
                     }
                 >>
                 \tag #'Violin5
@@ -82,8 +74,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Violin 5 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Violin 5 Dynamics" {
-                    }
                 >>
                 \tag #'Violin6
                 \context PerformerStaffGroup = "Violin 6 Staff Group" <<
@@ -94,8 +84,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Violin 6 LH Staff" {
                         \context LHVoice = "Violin 6 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Violin 6 Dynamics" {
                     }
                 >>
             >>
@@ -110,8 +98,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Viola 1 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Viola 1 Dynamics" {
-                    }
                 >>
                 \tag #'Viola2
                 \context PerformerStaffGroup = "Viola 2 Staff Group" <<
@@ -122,8 +108,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Viola 2 LH Staff" {
                         \context LHVoice = "Viola 2 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Viola 2 Dynamics" {
                     }
                 >>
                 \tag #'Viola3
@@ -136,8 +120,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Viola 3 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Viola 3 Dynamics" {
-                    }
                 >>
                 \tag #'Viola4
                 \context PerformerStaffGroup = "Viola 4 Staff Group" <<
@@ -148,8 +130,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Viola 4 LH Staff" {
                         \context LHVoice = "Viola 4 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Viola 4 Dynamics" {
                     }
                 >>
             >>
@@ -164,8 +144,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Cello 1 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Cello 1 Dynamics" {
-                    }
                 >>
                 \tag #'Cello2
                 \context PerformerStaffGroup = "Cello 2 Staff Group" <<
@@ -177,8 +155,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Cello 2 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Cello 2 Dynamics" {
-                    }
                 >>
                 \tag #'Cello3
                 \context PerformerStaffGroup = "Cello 3 Staff Group" <<
@@ -189,8 +165,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Cello 3 LH Staff" {
                         \context LHVoice = "Cello 3 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Cello 3 Dynamics" {
                     }
                 >>
             >>
@@ -205,8 +179,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Contrabass 1 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Contrabass 1 Dynamics" {
-                    }
                 >>
                 \tag #'Contrabass2
                 \context PerformerStaffGroup = "Contrabass 2 Staff Group" <<
@@ -217,8 +189,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Contrabass 2 LH Staff" {
                         \context LHVoice = "Contrabass 2 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Contrabass 2 Dynamics" {
                     }
                 >>
             >>
@@ -251,8 +221,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Violin 1 LH Voice" {
                         }
                     }
-                    \context Dynamics = "Violin 1 Dynamics" {
-                    }
                 >>
                 \tag #'Violin2
                 \context PerformerStaffGroup = "Violin 2 Staff Group" <<
@@ -263,8 +231,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Violin 2 LH Staff" {
                         \context LHVoice = "Violin 2 LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Violin 2 Dynamics" {
                     }
                 >>
             >>
@@ -279,8 +245,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         \context LHVoice = "Viola LH Voice" {
                         }
                     }
-                    \context Dynamics = "Viola Dynamics" {
-                    }
                 >>
             >>
             \context CelloStaffGroup = "Cello Staff Group" <<
@@ -293,8 +257,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Cello LH Staff" {
                         \context LHVoice = "Cello LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Cello Dynamics" {
                     }
                 >>
             >>
@@ -326,8 +288,6 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                     \context LHStaff = "Cello LH Staff" {
                         \context LHVoice = "Cello LH Voice" {
                         }
-                    }
-                    \context Dynamics = "Cello Dynamics" {
                     }
                 >>
             >>
@@ -417,16 +377,11 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             context_name='RHStaff',
             name='{} RH Staff'.format(name),
             )
-        dynamics = scoretools.Voice(
-            context_name='Dynamics',
-            name='{} Dynamics'.format(name),
-            )
 
         staff_group = scoretools.StaffGroup(
             [
                 rh_staff,
                 lh_staff,
-                dynamics,
                 ],
             context_name='PerformerStaffGroup',
             name='{} Staff Group'.format(name),
