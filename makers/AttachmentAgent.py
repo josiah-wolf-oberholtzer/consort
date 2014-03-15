@@ -4,6 +4,7 @@ from abjad.tools import abctools
 from abjad.tools import scoretools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
+from abjad.tools.topleveltools import new
 
 
 class AttachmentAgent(abctools.AbjadObject):
@@ -34,6 +35,8 @@ class AttachmentAgent(abctools.AbjadObject):
         prototype = makers.AttachmentSpecifier
         if attachment_specifiers is not None:
             assert all(isinstance(x, prototype) for x in attachment_specifiers)
+            assert len(attachment_specifiers)
+            attachment_specifiers = tuple(attachment_specifiers)
         self._attachment_specifiers = attachment_specifiers
 
     ### SPECIAL METHODS ###
@@ -44,6 +47,8 @@ class AttachmentAgent(abctools.AbjadObject):
         seed=0,
         ):
         assert isinstance(music, scoretools.Container)
+        for attachment_specifier in self.attachment_specifiers:
+            attachment_specifier(music, seed=seed)
 
     ### PUBLIC METHODS ###
 
@@ -66,6 +71,28 @@ class AttachmentAgent(abctools.AbjadObject):
                     seed=seed,
                     )
                 counter[attachment_agent] += 1
+
+    def reverse(self):
+        attachment_specifiers = self.attachment_specifiers
+        if attachment_specifiers is None:
+            return new(self)
+        attachment_specifiers = [
+            attachment_specifier.reverse()
+            for attachment_specifier in attachment_specifiers
+            ]
+        return new(self,
+            attachment_specifiers=attachment_specifiers,
+            )
+
+    def rotate(self, n=0):
+        attachment_specifiers = self.attachment_specifiers
+        attachment_specifiers = [
+            attachment_specifier.rotate(n)
+            for attachment_specifier in attachment_specifiers
+            ]
+        return new(self,
+            attachment_specifiers=attachment_specifiers,
+            )
 
     ### PUBLIC PROPERTIES ###
 
