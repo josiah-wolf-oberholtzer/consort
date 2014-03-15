@@ -210,7 +210,6 @@ class RhythmManager(abctools.AbjadObject):
                 current_meter.implied_time_signature.duration
             container_stop_offset = inspect_(container).get_duration() + \
                 container_start_offset
-            print format(container)
             last_leaf = container.select_leaves()[-1]
             is_tied = RhythmManager._leaf_is_tied(last_leaf)
             if isinstance(container, scoretools.Tuplet) or \

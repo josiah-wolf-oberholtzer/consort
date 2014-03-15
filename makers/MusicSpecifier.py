@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import abctools
+from abjad.tools import rhythmmakertools
 
 
 class MusicSpecifier(abctools.AbjadObject):
     r'''A music specifier.
-    
+
     ::
 
         >>> from consort import makers
@@ -60,7 +61,7 @@ class MusicSpecifier(abctools.AbjadObject):
             assert isinstance(register_agent, makers.RegisterAgent)
         self._register_agent = register_agent
         if rhythm_maker is not None:
-            assert isinstance(rhythm_maker, makers.RhythmMaker)
+            assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
         if timespan_maker is not None:
             assert isinstance(alteration_agent, makers.TimespanMaker)
