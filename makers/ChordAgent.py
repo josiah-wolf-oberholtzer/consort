@@ -1,10 +1,12 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import abctools
+from abjad.tools import sequencetools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
+from abjad.tools.topleveltools import new
 
 
 class ChordAgent(abctools.AbjadObject):
@@ -22,14 +24,19 @@ class ChordAgent(abctools.AbjadObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_expressions',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
+        expressions=None,
         ):
-        pass
+        if expressions is not None:
+            assert len(expressions)
+            expressions = tuple(expressions)
+        self._expressions = expressions
 
     ### SPECIAL METHODS ###
 
@@ -39,6 +46,12 @@ class ChordAgent(abctools.AbjadObject):
         seed=0,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
+        expressions = sequencetools.Sequence(*self.expressions)
+        expressions = expressions.rotate(seed)
+        expression = expressions[0]
+        if expression is None:
+            return
+        expression(logical_tie)
 
     ### PUBLIC METHODS ###
 
@@ -60,3 +73,25 @@ class ChordAgent(abctools.AbjadObject):
             seed = counter[chord_agent]
             chord_agent(logical_tie, seed=seed)
             counter[chord_agent] += 1
+
+    def reverse(self):
+        expressions = self.expressions
+        if expressions is not None:
+            expressions = sequencetools.Sequence(*expressions)
+        return new(self,
+            expressions=expressions.reverse(),
+            )
+
+    def rotate(self, n=0):
+        expressions = self.expressions
+        if expressions is not None:
+            expressions = sequencetools.Sequence(*expressions)
+        return new(self,
+            expressions=expressions.rotate(n),
+            )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def expressions(self):
+        return self._expressions
