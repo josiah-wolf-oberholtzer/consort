@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import sequencetools
 from abjad.tools import spannertools
 from abjad.tools.topleveltools import attach
+from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
 
 
@@ -67,8 +69,8 @@ class AttachmentSpecifier(abctools.AbjadObject):
         attachments=None,
         selector=None,
         ):
-        assert isinstance(attachments, tuple)
-        self._attachments = attachments
+        assert isinstance(attachments, collections.Sequence)
+        self._attachments = tuple(attachments)
         assert isinstance(selector, selectortools.Selector)
         self._selector = selector
 
@@ -94,6 +96,20 @@ class AttachmentSpecifier(abctools.AbjadObject):
                 else:
                     for component in selection:
                         attach(attachment, component)
+
+    ### PUBLIC METHODS ###
+
+    def reverse(self):
+        attachments = sequencetools.Sequence(*self.attachments)
+        return new(self,
+            attachments=attachments.reverse(),
+            )
+
+    def rotate(self, n=0):
+        attachments = sequencetools.Sequence(*self.attachments)
+        return new(self,
+            attachments=attachments.rotate(n),
+            )
 
     ### PUBLIC PROPERTIES ###
 
