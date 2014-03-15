@@ -8,26 +8,27 @@ from abjad.tools.topleveltools import iterate
 
 class RegisterAgent(abctools.AbjadObject):
     r'''An register agent.
-
-    ::
-
-        >>> from consort import makers
-        >>> register_agent = makers.RegisterAgent()
-        >>> print format(register_agent)
-        makers.RegisterAgent()
-
     '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_division_inflections',
+        '_global_inflections',
+        '_octavations',
+        '_phrase_inflections',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
+        division_inflections=None,
+        global_inflections=None,
+        octavations=None,
+        phrase_inflections=None,
         ):
+        from plague_water import makers
         pass
 
     ### SPECIAL METHODS ###
@@ -60,3 +61,21 @@ class RegisterAgent(abctools.AbjadObject):
                     seed=seed,
                     )
                 counter[register_agent] += 1
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def division_inflections(self):
+        return self._division_inflections
+
+    @property
+    def global_inflections(self):
+        return self._global_inflections
+
+    @property
+    def phrase_inflections(self):
+        return self._phrase_inflections
+
+    @property
+    def octavations(self):
+        return self._octavations
