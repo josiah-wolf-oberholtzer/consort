@@ -95,49 +95,6 @@ class ConsortSegmentMaker(SegmentMaker):
 
     ### CLASS VARIABLES ###
 
-    class SegmentProduct(abctools.AbjadObject):
-        r'''A segment segment_product.
-        '''
-
-        ### CLASS VARIABLES ###
-
-        __slots__ = (
-            'lilypond_file',
-            'meters',
-            'score',
-            'segment_duration',
-            'segment_maker',
-            'timespan_inventory_mapping',
-            )
-
-        ### INITIALIZER ###
-
-        def __init__(
-            self,
-            segment_maker=None,
-            ):
-            self.lilypond_file = None
-            self.meters = None
-            self.score = None
-            self.segment_duration = None
-            self.segment_maker = segment_maker
-            self.timespan_inventory_mapping = None
-
-        ### PUBLIC PROPERTIES ###
-
-        @property
-        def measure_offsets(self):
-            measure_durations = [x.duration for x in self.time_signatures]
-            measure_offsets = mathtools.cumulative_sums(measure_durations)
-            return measure_offsets
-
-        @property
-        def time_signatures(self):
-            return (
-                meter.implied_time_signature
-                for meter in self.meters
-                )
-
     __slots__ = (
         '_is_final_segment',
         '_permitted_time_signatures',
@@ -195,7 +152,7 @@ class ConsortSegmentMaker(SegmentMaker):
 
     def __call__(self):
         from consort import makers
-        segment_product = self.SegmentProduct(segment_maker=self)
+        segment_product = makers.SegmentProduct(segment_maker=self)
         segment_product.score = self.template()
         segment_product = makers.TimespanManager.execute(
             permitted_time_signatures=self.permitted_time_signatures,
