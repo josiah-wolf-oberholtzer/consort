@@ -5,8 +5,10 @@ from abjad.tools import mathtools
 from abjad.tools import pitchtools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
+from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
+from abjad.tools.topleveltools import new
 
 
 class PitchAgent(abctools.AbjadObject):
@@ -91,6 +93,49 @@ class PitchAgent(abctools.AbjadObject):
             seed = counter[pitch_agent]
             pitch_agent(logical_tie, seed=seed)
             counter[pitch_agent] += 1
+
+    def reverse(self):
+        pitch_segments = self.pitch_segments
+        if pitch_segments is not None:
+            pitch_segments = [x.reverse() for x in reversed(pitch_segments)]
+        pitch_segment_ratio = self.pitch_segment_ratio
+        if pitch_segment_ratio is not None:
+            pitch_segment_ratio = sequencetools.reverse_sequence(
+                pitch_segment_ratio)
+        transforms = self.transforms
+        if transforms is not None:
+            transforms = reversed(transforms)
+        transform_ratio = self.transform_ratio
+        if transform_ratio is not None:
+            transform_ratio = sequencetools.reverse_sequence(transform_ratio)
+        return new(self,
+            pitch_segments=pitch_segments,
+            pitch_segment_ratio=pitch_segment_ratio,
+            transforms=transforms,
+            transform_ratio=transform_ratio,
+            )
+
+    def rotate(self, n=0):
+        pitch_segments = self.pitch_segments
+        if pitch_segments is not None:
+            pitch_segments = [x.rotate()
+                for x in sequencetools.rotate_sequence(pitch_segments, n)]
+        pitch_segment_ratio = self.pitch_segment_ratio
+        if pitch_segment_ratio is not None:
+            pitch_segment_ratio = sequencetools.rotate_sequence(
+                pitch_segment_ratio, n)
+        transforms = self.transforms
+        if transforms is not None:
+            transforms = sequencetools.rotate_sequence(transforms, n)
+        transform_ratio = self.transform_ratio
+        if transform_ratio is not None:
+            transform_ratio = sequencetools.rotate_sequence(transform_ratio, n)
+        return new(self,
+            pitch_segments=pitch_segments,
+            pitch_segment_ratio=pitch_segment_ratio,
+            transforms=transforms,
+            transform_ratio=transform_ratio,
+            )
 
     ### PUBLIC PROPERTIES ###
 
