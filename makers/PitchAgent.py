@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import abctools
+from abjad.tools import mathtools
+from abjad.tools import pitchtools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from abjad.tools.topleveltools import inspect_
@@ -22,14 +24,43 @@ class PitchAgent(abctools.AbjadObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_pitch_segments',
+        '_pitch_segment_ratio',
+        '_transforms',
+        '_transform_ratio',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
+        pitch_segments=None,
+        pitch_segment_ratio=None,
+        transforms=None,
+        transform_ratio=None
         ):
-        pass
+        from consort import makers
+        if pitch_segments is not None:
+            assert isinstance(pitch_segments, collections.Sequence)
+            assert len(pitch_segments)
+            pitch_segments = tuple([pitchtools.PitchSegment(x)
+                for x in pitch_segments])
+        self._pitch_segments = pitch_segments
+        if pitch_segment_ratio is not None:
+            pitch_segment_ratio = mathtools.Ratio(pitch_segment_ratio)
+            assert len(pitch_segment_ratio) == len(pitch_segments)
+        self._pitch_segment_ratio = pitch_segment_ratio
+        if transforms is not None:
+            prototype = (type(None), makers.PitchClassSegmentTransform)
+            assert isinstance(transforms, collections.Sequence)
+            assert len(transforms)
+            assert all(isinstance(x, prototype) for x in transforms)
+            transforms = tuple(transforms)
+        self._transforms = transforms
+        if transform_ratio is not None:
+            transform_ratio = mathtools.Ratio(transform_ratio)
+            assert len(transform_ratio) == len(transforms)
+        self._transform_ratio = transform_ratio
 
     ### SPECIAL METHODS ###
 
@@ -60,3 +91,21 @@ class PitchAgent(abctools.AbjadObject):
             seed = counter[pitch_agent]
             pitch_agent(logical_tie, seed=seed)
             counter[pitch_agent] += 1
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def pitch_segments(self):
+        return self._pitch_segments
+
+    @property
+    def pitch_segment_ratio(self):
+        return self._pitch_segment_ratio
+
+    @property
+    def transforms(self):
+        return self._transforms
+
+    @property
+    def transform_ratio(self):
+        return self._transform_ratio
