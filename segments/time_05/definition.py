@@ -14,21 +14,30 @@ voice_specifier = makers.VoiceSpecifier(
         ),
     timespan_maker=makers.TimespanMaker(
         can_split=False,
+        initial_silence_durations=(
+            Duration(0),
+            Duration(1, 8),
+            Duration(1, 4),
+            ),
         minimum_duration=Duration(1, 8),
         playing_durations=(
             Duration(1, 4),
             Duration(3, 16),
             Duration(1, 8),
             ),
-        synchronize_groupings=True,
-        synchronize_step=True,
+        playing_groupings=(2, 2, 1, 1),
+        silence_durations=(
+            Duration(1, 4),
+            Duration(1, 8),
+            ),
+        synchronize_step=False,
         ),
     voice_identifiers='.*',
     )
 
 
 segment_maker = new(base.segment_maker,
-    rehearsal_mark=2,
+    rehearsal_mark=5,
     voice_specifiers=(
         voice_specifier,
         ),

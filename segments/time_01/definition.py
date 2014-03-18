@@ -12,7 +12,9 @@ voice_specifier = makers.VoiceSpecifier(
                 ),
             ),
         ),
-    timespan_maker=makers.TimespanMaker(),
+    timespan_maker=makers.TimespanMaker(
+        can_split=False,
+        ),
     voice_identifiers='.*',
     )
 

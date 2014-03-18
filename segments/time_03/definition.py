@@ -13,6 +13,7 @@ voice_specifier = makers.VoiceSpecifier(
             ),
         ),
     timespan_maker=makers.TimespanMaker(
+        can_split=False,
         minimum_duration=Duration(1, 8),
         playing_durations=(
             Duration(1, 4),
