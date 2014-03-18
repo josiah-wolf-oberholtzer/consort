@@ -66,8 +66,6 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 makers.VoiceSpecifier(
                     music_specifier=makers.MusicSpecifier(),
                     timespan_maker=makers.TimespanMaker(
-                        can_shift=False,
-                        can_split=False,
                         initial_silence_durations=(),
                         minimum_duration=durationtools.Duration(1, 8),
                         playing_durations=(

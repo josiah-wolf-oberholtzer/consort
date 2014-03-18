@@ -31,8 +31,6 @@ class VoiceSpecifier(abctools.AbjadObject):
         makers.VoiceSpecifier(
             music_specifier=makers.MusicSpecifier(),
             timespan_maker=makers.TimespanMaker(
-                can_shift=False,
-                can_split=False,
                 initial_silence_durations=(
                     durationtools.Duration(0, 1),
                     durationtools.Duration(1, 4),
