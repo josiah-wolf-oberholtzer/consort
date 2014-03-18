@@ -183,6 +183,11 @@ class TimespanMaker(abctools.AbjadObject):
         else:
             procedure = self._make_without_synchronized_step
 
+        #print initial_silence_durations
+        #print playing_durations
+        #print playing_groupings
+        #print silence_durations
+
         timespan_inventory, final_offset = procedure(
             initial_silence_durations=initial_silence_durations,
             layer=layer,
@@ -237,7 +242,9 @@ class TimespanMaker(abctools.AbjadObject):
         start_offset = durationtools.Offset(0)
         if initial_silence_durations:
             start_offset += initial_silence_durations()[0]
-        while start_offset < target_duration:
+        can_continue = True
+        while start_offset < target_duration and can_continue:
+            #print float(start_offset), float(target_duration)
             if self.synchronize_groupings:
                 grouping = playing_groupings()[0]
                 durations = playing_durations(grouping)
@@ -255,6 +262,7 @@ class TimespanMaker(abctools.AbjadObject):
                 current_offset = start_offset
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
+                        can_continue = False
                         break
                     timespan = self._make_performed_timespan(
                         layer=layer,

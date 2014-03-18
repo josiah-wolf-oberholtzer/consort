@@ -35,7 +35,7 @@ class TimespanManager(abctools.AbjadObject):
             for shard in timespan_inventory.split_at_offsets(measure_offsets):
                 for timespan in shard:
                     minimum_duration = timespan.minimum_duration
-                    if minimum_duration < timespan.duration:
+                    if minimum_duration <= timespan.duration:
                         split_inventory.append(timespan)
             split_inventory.sort()
             timespan_inventory_mapping[voice_name] = split_inventory
