@@ -9,6 +9,7 @@ from abjad.tools import scoretools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
+from abjad.tools.topleveltools import persist
 from experimental.tools import segmentmakertools
 
 
@@ -177,7 +178,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         makers.AttachmentAgent.iterate_score(segment_product.score)
         segment_product.lilypond_file = self._make_lilypond_file(
             segment_product.score)
-        return segment_product
+        return segment_product.lilypond_file
 
     ### PRIVATE METHODS ###
 
@@ -212,6 +213,19 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         return lilypond_file
 
     ### PUBLIC METHODS ###
+
+    def build_and_persist(self, current_file_path):
+        current_directory_path = os.path.dirname(os.path.abspath(
+            os.path.expanduser(current_file_path)))
+        pdf_file_path = os.path.join(
+            current_directory_path,
+            'output.pdf',
+            )
+        lilypond_file = self()
+        persist(lilypond_file).as_pdf(
+            pdf_file_path=pdf_file_path,
+            remove_ly=False,
+            )
 
     @staticmethod
     def find_voice_names(
