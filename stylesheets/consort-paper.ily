@@ -1,5 +1,5 @@
-#(set-default-paper-size "11x17" 'landscape)
-#(set-global-staff-size 14)
+#(set-default-paper-size "letter" 'landscape)
+#(set-global-staff-size 12)
 
 \paper {
     bottom-margin = 10\mm
