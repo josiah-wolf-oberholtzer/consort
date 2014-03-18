@@ -256,6 +256,21 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         selected_voice_names = tuple(selected_voice_names)
         return selected_voice_names
 
+    @staticmethod
+    def get_segment_target_duration(
+        target_duration_in_seconds=None,
+        tempo=None,
+        ):
+        tempo_duration_in_seconds = durationtools.Duration(
+            tempo.duration_to_milliseconds(tempo.duration),
+            1000,
+            )
+        target_segment_duration = durationtools.Duration((
+            target_duration_in_seconds / tempo_duration_in_seconds
+            ).limit_denominator(16))
+        target_segment_duration *= tempo.duration
+        return target_segment_duration
+
     ### PUBLIC PROPERTIES ###
 
     @property
