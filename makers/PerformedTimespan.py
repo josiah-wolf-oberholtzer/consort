@@ -23,6 +23,7 @@ class PerformedTimespan(timespantools.Timespan):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_can_split',
         '_layer',
         '_minimum_duration',
         '_music_specifier',
@@ -35,6 +36,7 @@ class PerformedTimespan(timespantools.Timespan):
 
     def __init__(
         self,
+        can_split=None,
         layer=None,
         minimum_duration=None,
         music_specifier=None,
@@ -50,6 +52,9 @@ class PerformedTimespan(timespantools.Timespan):
             start_offset=start_offset,
             stop_offset=stop_offset,
             )
+        if can_split is not None:
+            can_split = bool(can_split)
+        self._can_split = can_split
         if layer is not None:
             layer = int(layer)
         self._layer = layer
@@ -88,6 +93,10 @@ class PerformedTimespan(timespantools.Timespan):
             )
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def can_split(self):
+        return self._can_split
 
     @property
     def layer(self):
