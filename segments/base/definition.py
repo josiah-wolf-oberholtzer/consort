@@ -11,11 +11,12 @@ segment_maker = makers.ConsortSegmentMaker(
         (3, 4),
         (3, 8),
         (5, 8),
+        (5, 16),
         (6, 8),
         (7, 8),
         (7, 16),
         ]),
-    target_duration=durationtools.Duration(9, 2),
+    target_duration=durationtools.Duration(4),
     template=makers.ConsortScoreTemplate(
         violin_count=1,
         viola_count=1,
