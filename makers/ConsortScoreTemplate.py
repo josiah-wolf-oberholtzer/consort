@@ -27,6 +27,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 1 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 1 LH Voice" {
                         }
                     }
@@ -38,6 +39,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 2 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 2 LH Voice" {
                         }
                     }
@@ -49,6 +51,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 3 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 3 LH Voice" {
                         }
                     }
@@ -60,6 +63,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 4 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 4 LH Voice" {
                         }
                     }
@@ -71,6 +75,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 5 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 5 LH Voice" {
                         }
                     }
@@ -82,6 +87,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 6 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 6 LH Voice" {
                         }
                     }
@@ -95,6 +101,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Viola 1 LH Staff" {
+                        \clef "alto"
                         \context LHVoice = "Viola 1 LH Voice" {
                         }
                     }
@@ -106,6 +113,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Viola 2 LH Staff" {
+                        \clef "alto"
                         \context LHVoice = "Viola 2 LH Voice" {
                         }
                     }
@@ -117,6 +125,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Viola 3 LH Staff" {
+                        \clef "alto"
                         \context LHVoice = "Viola 3 LH Voice" {
                         }
                     }
@@ -128,6 +137,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Viola 4 LH Staff" {
+                        \clef "alto"
                         \context LHVoice = "Viola 4 LH Voice" {
                         }
                     }
@@ -141,6 +151,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Cello 1 LH Staff" {
+                        \clef "bass"
                         \context LHVoice = "Cello 1 LH Voice" {
                         }
                     }
@@ -152,6 +163,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Cello 2 LH Staff" {
+                        \clef "bass"
                         \context LHVoice = "Cello 2 LH Voice" {
                         }
                     }
@@ -163,6 +175,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Cello 3 LH Staff" {
+                        \clef "bass"
                         \context LHVoice = "Cello 3 LH Voice" {
                         }
                     }
@@ -176,6 +189,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Contrabass 1 LH Staff" {
+                        \clef "bass_8"
                         \context LHVoice = "Contrabass 1 LH Voice" {
                         }
                     }
@@ -187,6 +201,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Contrabass 2 LH Staff" {
+                        \clef "bass_8"
                         \context LHVoice = "Contrabass 2 LH Voice" {
                         }
                     }
@@ -218,6 +233,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 1 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 1 LH Voice" {
                         }
                     }
@@ -229,6 +245,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Violin 2 LH Staff" {
+                        \clef "treble"
                         \context LHVoice = "Violin 2 LH Voice" {
                         }
                     }
@@ -242,6 +259,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Viola LH Staff" {
+                        \clef "alto"
                         \context LHVoice = "Viola LH Voice" {
                         }
                     }
@@ -255,6 +273,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Cello LH Staff" {
+                        \clef "bass"
                         \context LHVoice = "Cello LH Voice" {
                         }
                     }
@@ -286,6 +305,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                         }
                     }
                     \context LHStaff = "Cello LH Staff" {
+                        \clef "bass"
                         \context LHVoice = "Cello LH Voice" {
                         }
                     }
@@ -329,6 +349,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
 
     def _make_instrument_staff_group(
         self,
+        clef_name=None,
         count=None,
         instrument=None,
         ):
@@ -340,19 +361,28 @@ class ConsortScoreTemplate(abctools.AbjadObject):
         tag_names = []
         if count == 1:
             performer_staff_group, tag_name = \
-                self._make_performer_staff_group(instrument, None)
+                self._make_performer_staff_group(
+                    clef_name=clef_name,
+                    instrument=instrument,
+                    number=None,
+                    )
             instrument_staff_group.append(performer_staff_group)
             tag_names.append(tag_name)
         else:
             for i in range(1, count + 1):
                 performer_staff_group, tag_name = \
-                    self._make_performer_staff_group(instrument, i)
+                    self._make_performer_staff_group(
+                        clef_name=clef_name,
+                        instrument=instrument,
+                        number=i,
+                        )
                 instrument_staff_group.append(performer_staff_group)
                 tag_names.append(tag_name)
         return instrument_staff_group, tag_names
 
     def _make_performer_staff_group(
         self,
+        clef_name=None,
         instrument=None,
         number=None,
         ):
@@ -388,6 +418,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                 name='{} LH Staff'.format(name),
                 )
             attach(pitch_range, lh_staff)
+            attach(indicatortools.Clef(clef_name), lh_staff)
             rh_voice = scoretools.Voice(
                 context_name='RHVoice',
                 name='{} RH Voice'.format(name),
@@ -413,6 +444,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
                 name='{} Staff'.format(name),
                 )
             attach(pitch_range, lh_staff)
+            attach(indicatortools.Clef(clef_name), lh_staff)
             staff_group.append(lh_staff)
         return staff_group, tag_name
 
@@ -441,6 +473,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             instrument_count = self.violin_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
+                    clef_name='treble',
                     count=instrument_count,
                     instrument=instrument,
                     )
@@ -454,6 +487,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             instrument_count = self.viola_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
+                    clef_name='alto',
                     count=instrument_count,
                     instrument=instrument,
                     )
@@ -467,6 +501,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             instrument_count = self.cello_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
+                    clef_name='bass',
                     count=instrument_count,
                     instrument=instrument,
                     )
@@ -480,6 +515,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             instrument_count = self.contrabass_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
+                    clef_name='bass_8',
                     count=instrument_count,
                     instrument=instrument,
                     )
