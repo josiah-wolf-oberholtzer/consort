@@ -20,21 +20,25 @@ def test_TimespanMaker_01():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Two',
@@ -63,21 +67,25 @@ def test_TimespanMaker_02():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Two',
@@ -103,21 +111,25 @@ def test_TimespanMaker_03():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Two',
@@ -146,26 +158,31 @@ def test_TimespanMaker_04():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(3, 8),
                     stop_offset=durationtools.Offset(5, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(5, 8),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(7, 8),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='One',
@@ -195,21 +212,25 @@ def test_TimespanMaker_05():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(5, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Two',
@@ -242,26 +263,31 @@ def test_TimespanMaker_06():
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(3, 8),
                     stop_offset=durationtools.Offset(5, 8),
                     voice_name='One',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Two',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(7, 8),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='One',

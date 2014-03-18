@@ -52,21 +52,25 @@ class TimespanMaker(abctools.AbjadObject):
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Viola',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola',
@@ -199,6 +203,25 @@ class TimespanMaker(abctools.AbjadObject):
 
     ### PRIVATE METHODS ###
 
+    def _make_performed_timespan(
+        self,
+        layer=None,
+        music_specifier=None,
+        start_offset=None,
+        stop_offset=None,
+        voice_name=None,
+        ):
+        from consort import makers
+        timespan = makers.PerformedTimespan(
+            layer=layer,
+            minimum_duration=self.minimum_duration,
+            music_specifier=music_specifier,
+            start_offset=start_offset,
+            stop_offset=stop_offset,
+            voice_name=voice_name,
+            )
+        return timespan
+
     def _make_with_synchronized_step(
         self,
         initial_silence_durations=None,
@@ -210,7 +233,6 @@ class TimespanMaker(abctools.AbjadObject):
         target_duration=None,
         voice_names=None,
         ):
-        from consort import makers
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = durationtools.Offset(0)
         if initial_silence_durations:
@@ -234,7 +256,7 @@ class TimespanMaker(abctools.AbjadObject):
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         break
-                    timespan = makers.PerformedTimespan(
+                    timespan = self._make_performed_timespan(
                         layer=layer,
                         music_specifier=music_specifier,
                         start_offset=current_offset,
@@ -264,7 +286,6 @@ class TimespanMaker(abctools.AbjadObject):
         target_duration=None,
         voice_names=None,
         ):
-        from consort import makers
         timespan_inventory = timespantools.TimespanInventory()
         final_offset = durationtools.Offset(0)
         for voice_name in voice_names:
@@ -285,7 +306,7 @@ class TimespanMaker(abctools.AbjadObject):
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         break
-                    timespan = makers.PerformedTimespan(
+                    timespan = self._make_performed_timespan(
                         layer=layer,
                         music_specifier=music_specifier,
                         start_offset=current_offset,

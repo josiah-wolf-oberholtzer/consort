@@ -59,7 +59,7 @@ class TimespanManager(abctools.AbjadObject):
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
-            maximum_repetitions=2,
+            maximum_repetitions=None,
             )
         segment_product.meters = tuple(meters)
         segment_product.segment_duration = sum(

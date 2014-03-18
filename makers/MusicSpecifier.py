@@ -25,7 +25,6 @@ class MusicSpecifier(abctools.AbjadObject):
         '_pitch_agent',
         '_register_agent',
         '_rhythm_maker',
-        '_timespan_maker',
         )
 
     ### INITIALIZER ###
@@ -39,7 +38,6 @@ class MusicSpecifier(abctools.AbjadObject):
         pitch_agent=None,
         register_agent=None,
         rhythm_maker=None,
-        timespan_maker=None,
         ):
         from consort import makers
         if alteration_agent is not None:
@@ -63,9 +61,6 @@ class MusicSpecifier(abctools.AbjadObject):
         if rhythm_maker is not None:
             assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
-        if timespan_maker is not None:
-            assert isinstance(alteration_agent, makers.TimespanMaker)
-        self._timespan_maker = timespan_maker
 
     ### PUBLIC PROPERTIES ###
 
@@ -96,7 +91,3 @@ class MusicSpecifier(abctools.AbjadObject):
     @property
     def rhythm_maker(self):
         return self._rhythm_maker
-
-    @property
-    def timespan_maker(self):
-        return self._timespan_maker

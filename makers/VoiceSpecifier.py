@@ -84,6 +84,7 @@ class VoiceSpecifier(abctools.AbjadObject):
             [
                 makers.PerformedTimespan(
                     layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
@@ -91,6 +92,7 @@ class VoiceSpecifier(abctools.AbjadObject):
                     ),
                 makers.PerformedTimespan(
                     layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 2),
@@ -98,6 +100,7 @@ class VoiceSpecifier(abctools.AbjadObject):
                     ),
                 makers.PerformedTimespan(
                     layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
@@ -105,6 +108,7 @@ class VoiceSpecifier(abctools.AbjadObject):
                     ),
                 makers.PerformedTimespan(
                     layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(1, 1),
@@ -112,6 +116,7 @@ class VoiceSpecifier(abctools.AbjadObject):
                     ),
                 makers.PerformedTimespan(
                     layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
@@ -119,6 +124,7 @@ class VoiceSpecifier(abctools.AbjadObject):
                     ),
                 makers.PerformedTimespan(
                     layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),

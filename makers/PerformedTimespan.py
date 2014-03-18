@@ -13,6 +13,7 @@ class PerformedTimespan(timespantools.Timespan):
         >>> timespan = makers.PerformedTimespan()
         >>> print format(timespan)
         makers.PerformedTimespan(
+            minimum_duration=durationtools.Duration(0, 1),
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )
@@ -23,6 +24,7 @@ class PerformedTimespan(timespantools.Timespan):
 
     __slots__ = (
         '_layer',
+        '_minimum_duration',
         '_music_specifier',
         '_original_start_offset',
         '_original_stop_offset',
@@ -34,6 +36,7 @@ class PerformedTimespan(timespantools.Timespan):
     def __init__(
         self,
         layer=None,
+        minimum_duration=None,
         music_specifier=None,
         original_start_offset=None,
         original_stop_offset=None,
@@ -50,6 +53,9 @@ class PerformedTimespan(timespantools.Timespan):
         if layer is not None:
             layer = int(layer)
         self._layer = layer
+        if minimum_duration is not None:
+            minimum_duration = durationtools.Duration(minimum_duration)
+        self._minimum_duration = minimum_duration
         if music_specifier is not None:
             assert isinstance(music_specifier, makers.MusicSpecifier)
         self._music_specifier = music_specifier
@@ -101,14 +107,9 @@ class PerformedTimespan(timespantools.Timespan):
 
     @property
     def minimum_duration(self):
-        if self.music_specifier is None:
+        if self._minimum_duration is None:
             return durationtools.Duration(0)
-        elif self.music_specifier.timespan_maker is None:
-            return durationtools.Duration(0)
-        minimum_duration = self.music_specifier.timespan_maker.minimum_duration
-        if minimum_duration is None:
-            return durationtools.Duration(0)
-        return minimum_duration
+        return self._minimum_duration
 
     @property
     def voice_name(self):
