@@ -20,8 +20,6 @@ class TimespanMaker(abctools.AbjadObject):
         ...     )
         >>> print format(timespan_maker)
         makers.TimespanMaker(
-            can_shift=False,
-            can_split=False,
             initial_silence_durations=(
                 durationtools.Duration(0, 1),
                 durationtools.Duration(1, 4),
@@ -83,7 +81,6 @@ class TimespanMaker(abctools.AbjadObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_can_shift',
         '_can_split',
         '_initial_silence_durations',
         '_minimum_duration',
@@ -100,8 +97,7 @@ class TimespanMaker(abctools.AbjadObject):
 
     def __init__(
         self,
-        can_shift=False,
-        can_split=False,
+        can_split=None,
         initial_silence_durations=(),
         minimum_duration=durationtools.Duration(1, 8),
         playing_durations=(
@@ -116,8 +112,9 @@ class TimespanMaker(abctools.AbjadObject):
         synchronize_groupings=False,
         synchronize_step=False,
         ):
-        self._can_shift = bool(can_shift)
-        self._can_split = bool(can_split)
+        if can_split is not None:
+            can_split = bool(can_split)
+        self._can_split = can_split
         initial_silence_durations = tuple(durationtools.Duration(x)
             for x in initial_silence_durations)
         assert all(0 <= x for x in initial_silence_durations)
@@ -218,6 +215,7 @@ class TimespanMaker(abctools.AbjadObject):
         ):
         from consort import makers
         timespan = makers.PerformedTimespan(
+            can_split=self.can_split,
             layer=layer,
             minimum_duration=self.minimum_duration,
             music_specifier=music_specifier,
@@ -334,10 +332,6 @@ class TimespanMaker(abctools.AbjadObject):
         return timespan_inventory, final_offset
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def can_shift(self):
-        return self._can_shift
 
     @property
     def can_split(self):
