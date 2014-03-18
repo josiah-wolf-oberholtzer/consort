@@ -58,6 +58,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 viola_count=1,
                 cello_count=1,
                 contrabass_count=0,
+                split_hands=True,
                 ),
             tempo=indicatortools.Tempo(durationtools.Duration(1, 4), 72),
             voice_specifiers=(

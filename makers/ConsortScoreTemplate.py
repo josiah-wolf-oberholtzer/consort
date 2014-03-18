@@ -295,6 +295,16 @@ class ConsortScoreTemplate(abctools.AbjadObject):
 
     '''
 
+    ### CLASS VARIABLES ###
+
+    __slots__ = (
+        '_violin_count',
+        '_viola_count',
+        '_cello_count',
+        '_contrabass_count',
+        '_split_hands',
+        )
+
     ### INITIALIZER ###
 
     def __init__(
@@ -303,6 +313,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
         viola_count=4,
         cello_count=3,
         contrabass_count=2,
+        split_hands=True,
         ):
         assert 0 <= violin_count
         assert 0 <= viola_count
@@ -312,6 +323,7 @@ class ConsortScoreTemplate(abctools.AbjadObject):
         self._viola_count = int(viola_count)
         self._cello_count = int(cello_count)
         self._contrabass_count = int(contrabass_count)
+        self._split_hands = bool(split_hands)
 
     ### PRIVATE METHODS ###
 
@@ -352,41 +364,10 @@ class ConsortScoreTemplate(abctools.AbjadObject):
         else:
             name = instrument.instrument_name.title()
         pitch_range = instrument.pitch_range
-
-        lh_voice = scoretools.Voice(
-            context_name='LHVoice',
-            name='{} LH Voice'.format(name),
-            )
-        lh_staff = scoretools.Staff(
-            [
-                lh_voice
-                ],
-            context_name='LHStaff',
-            name='{} LH Staff'.format(name),
-            )
-        attach(pitch_range, lh_staff)
-
-        rh_voice = scoretools.Voice(
-            context_name='RHVoice',
-            name='{} RH Voice'.format(name),
-            )
-        rh_staff = scoretools.Staff(
-            [
-                rh_voice
-                ],
-            context_name='RHStaff',
-            name='{} RH Staff'.format(name),
-            )
-
         staff_group = scoretools.StaffGroup(
-            [
-                rh_staff,
-                lh_staff,
-                ],
             context_name='PerformerStaffGroup',
             name='{} Staff Group'.format(name),
             )
-
         tag_name = name.replace(' ', '')
         tag_string = "tag #'{}".format(tag_name)
         tag_command = indicatortools.LilyPondCommand(
@@ -394,7 +375,45 @@ class ConsortScoreTemplate(abctools.AbjadObject):
             'before',
             )
         attach(tag_command, staff_group)
-
+        if self.split_hands:
+            lh_voice = scoretools.Voice(
+                context_name='LHVoice',
+                name='{} LH Voice'.format(name),
+                )
+            lh_staff = scoretools.Staff(
+                [
+                    lh_voice
+                    ],
+                context_name='LHStaff',
+                name='{} LH Staff'.format(name),
+                )
+            attach(pitch_range, lh_staff)
+            rh_voice = scoretools.Voice(
+                context_name='RHVoice',
+                name='{} RH Voice'.format(name),
+                )
+            rh_staff = scoretools.Staff(
+                [
+                    rh_voice
+                    ],
+                context_name='RHStaff',
+                name='{} RH Staff'.format(name),
+                )
+            staff_group.extend([rh_staff, lh_staff])
+        else:
+            lh_voice = scoretools.Voice(
+                context_name='LHVoice',
+                name='{} Voice'.format(name),
+                )
+            lh_staff = scoretools.Staff(
+                [
+                    lh_voice
+                    ],
+                context_name='LHStaff',
+                name='{} Staff'.format(name),
+                )
+            attach(pitch_range, lh_staff)
+            staff_group.append(lh_staff)
         return staff_group, tag_name
 
     ### SPECIAL METHODS ###
@@ -499,6 +518,12 @@ class ConsortScoreTemplate(abctools.AbjadObject):
         Returns nonnegative integer.
         '''
         return self._contrabass_count
+
+    @property
+    def split_hands(self):
+        r'''Is true if each hands receives a separate staff.
+        '''
+        return self._split_hands
 
     @property
     def viola_count(self):
