@@ -93,6 +93,17 @@ afterGraceFraction = #(cons 127 128)
         \accepts PerformerStaffGroup
     }
 
+    \context{
+        \StaffGroup
+        \name OuterStaffGroup
+        \type Engraver_group
+        \alias StaffGroup
+        \accepts ViolinStaffGroup
+        \accepts ViolaStaffGroup
+        \accepts CelloStaffGroup
+        \accepts ContrabassStaffGroup
+    }
+
     %%% TIME SIGNATURE CONTEXT %%%
 
     \context {
@@ -139,10 +150,7 @@ afterGraceFraction = #(cons 127 128)
     \context {
         \Score
         \accepts TimeSignatureContext
-        \accepts ViolinStaffGroup
-        \accepts ViolaStaffGroup
-        \accepts CelloStaffGroup
-        \accepts ContrabassStaffGroup
+        \accepts OuterStaffGroup
         \remove Metronome_mark_engraver
         \remove Mark_engraver
         \remove Bar_number_engraver
