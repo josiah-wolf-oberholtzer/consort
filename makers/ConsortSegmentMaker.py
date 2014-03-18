@@ -1,20 +1,18 @@
 # -*- encoding: utf-8 -*-
 import os
 import re
-from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
-from abjad.tools import mathtools
 from abjad.tools import scoretools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
-from experimental.tools.segmentmakertools import SegmentMaker
+from experimental.tools import segmentmakertools
 
 
-class ConsortSegmentMaker(SegmentMaker):
+class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     r'''A Consort segment-maker.
 
     ::
@@ -98,6 +96,7 @@ class ConsortSegmentMaker(SegmentMaker):
     __slots__ = (
         '_is_final_segment',
         '_permitted_time_signatures',
+        '_rehearsal_mark',
         '_target_duration',
         '_template',
         '_tempo',
@@ -112,6 +111,7 @@ class ConsortSegmentMaker(SegmentMaker):
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
+        rehearsal_mark=None,
         target_duration=None,
         template=None,
         tempo=None,
@@ -119,7 +119,7 @@ class ConsortSegmentMaker(SegmentMaker):
         voice_specifiers=None,
         ):
         from consort import makers
-        SegmentMaker.__init__(
+        segmentmakertools.SegmentMaker.__init__(
             self,
             name=name,
             )
@@ -140,6 +140,7 @@ class ConsortSegmentMaker(SegmentMaker):
                 items=permitted_time_signatures,
                 )
         self._permitted_time_signatures = permitted_time_signatures
+        self._rehearsal_mark = rehearsal_mark
         if target_duration is not None:
             target_duration = durationtools.Duration(target_duration)
         self._target_duration = target_duration
@@ -165,12 +166,14 @@ class ConsortSegmentMaker(SegmentMaker):
         segment_product = makers.RhythmManager.execute(
             segment_product=segment_product,
             )
-        #makers.GraceAgent.iterate_score(segment_product.score)
+        makers.GraceAgent.iterate_score(segment_product.score)
+
         #makers.PitchAgent.iterate_score(segment_product.score)
         #makers.AlterationAgent.iterate_score(segment_product.score)
         #makers.RegisterAgent.iterate_score(segment_product.score)
         #makers.ChordAgent.iterate_score(segment_product.score)
-        #makers.AttachmentAgent.iterate_score(segment_product.score)
+
+        makers.AttachmentAgent.iterate_score(segment_product.score)
         segment_product.lilypond_file = self._make_lilypond_file(
             segment_product.score)
         return segment_product
@@ -178,10 +181,19 @@ class ConsortSegmentMaker(SegmentMaker):
     ### PRIVATE METHODS ###
 
     def _make_lilypond_file(self, score):
-        rehearsal_mark = indicatortools.LilyPondCommand(r'mark \default')
-        attach(rehearsal_mark, score['TimeSignatureContext'][0],
-            scope=scoretools.Context)
-        attach(self.tempo, score['TimeSignatureContext'][0])
+        if self.rehearsal_mark is not None:
+            rehearsal_mark_text = 'mark \\markup {{ ' \
+                "\\override #'(box-padding . 0.5) " \
+                '\\box {} }}'
+            rehearsal_mark_text = rehearsal_mark_text.format(
+                self.segment_id.upper(),
+                )
+            rehearsal_mark = indicatortools.LilyPondCommand(
+                rehearsal_mark_text)
+            attach(rehearsal_mark, score['TimeSignatureContext'][0],
+                scope=scoretools.Context)
+        if self.tempo is not None:
+            attach(self.tempo, score['TimeSignatureContext'][0])
         if self.is_final_segment:
             score.add_final_markup(self.final_markup)
             score.add_final_bar_line()
@@ -277,8 +289,8 @@ class ConsortSegmentMaker(SegmentMaker):
         return self._permitted_time_signatures
 
     @property
-    def template(self):
-        return self._template
+    def rehearsal_mark(self):
+        return self._rehearsal_mark
 
     @property
     def stylesheet_file_paths(self):
@@ -297,6 +309,10 @@ class ConsortSegmentMaker(SegmentMaker):
                 )
             stylesheet_file_paths.append(full_path)
         return stylesheet_file_paths
+
+    @property
+    def template(self):
+        return self._template
 
     @property
     def target_duration(self):
