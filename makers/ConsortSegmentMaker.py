@@ -188,7 +188,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 "\\override #'(box-padding . 0.5) " \
                 '\\box {} }}'
             rehearsal_mark_text = rehearsal_mark_text.format(
-                self.segment_id.upper(),
+                str(self.rehearsal_mark).title(),
                 )
             rehearsal_mark = indicatortools.LilyPondCommand(
                 rehearsal_mark_text)
