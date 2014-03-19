@@ -1,2 +1,15 @@
 CONSORT TODO
 ============
+
+1.  TimespanMaker should not consume playing durations which do not appear in
+    the output. The talea should always be unbroken as it wraps around unsynced
+    voices.
+
+2.  Decide what to do about PitchAgent. Should AlterationAgent and
+    RegisterAgent be merged into it?
+
+3.  Implement a PitchCurve-based PitchAgent class.
+
+4.  Extend MutationAgent.rewrite_meter() to allow Meter sequences. It should be
+    possible to rewrite the meter(s) of divisions which cross measure
+    boundaries.
