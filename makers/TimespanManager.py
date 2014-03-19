@@ -30,13 +30,28 @@ class TimespanManager(abctools.AbjadObject):
         measure_offsets = segment_product.measure_offsets
         timespan_inventory_mapping = segment_product.timespan_inventory_mapping
         for voice_name in timespan_inventory_mapping:
+            offsets = list(measure_offsets)
             timespan_inventory = timespan_inventory_mapping[voice_name]
+            timespan_inventory.sort()
             split_inventory = timespantools.TimespanInventory()
-            for shard in timespan_inventory.split_at_offsets(measure_offsets):
-                for timespan in shard:
-                    minimum_duration = timespan.minimum_duration
-                    if minimum_duration <= timespan.duration:
-                        split_inventory.append(timespan)
+            for timespan in timespan_inventory:
+                current_offsets = []
+                while offsets and offsets[0] <= timespan.start_offset:
+                    offsets.pop(0)
+                while offsets and offsets[0] < timespan.stop_offset:
+                    current_offsets.append(offsets.pop(0))
+                if current_offsets and timespan.can_split:
+                    shards = timespan.split_at_offsets(current_offsets)
+                    for shard in shards:
+                        if shard.minimum_duration:
+                            if shard.minimum_duration <= shard.duration:
+                                split_inventory.append(shard)
+                        else:
+                            split_inventory.append(shard)
+                else:
+                    if timespan.minimum_duration:
+                        if timespan.minimum_duration <= timespan.duration:
+                            split_inventory.append(timespan)
             split_inventory.sort()
             timespan_inventory_mapping[voice_name] = split_inventory
 
