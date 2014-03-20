@@ -12,7 +12,7 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "2" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "A2" }
 				\tempo 8=72
 				\time 2/4
 				s1 * 1/2
