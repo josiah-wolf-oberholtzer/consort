@@ -13,3 +13,6 @@ CONSORT TODO
 4.  Extend MutationAgent.rewrite_meter() to allow Meter sequences. It should be
     possible to rewrite the meter(s) of divisions which cross measure
     boundaries.
+
+5.  Meter rewriting should take into account divisions which cross more than
+    one meter boundary.
