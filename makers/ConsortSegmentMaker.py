@@ -131,8 +131,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         if voice_specifiers is not None:
             voice_specifiers = tuple(voice_specifiers)
             assert len(voice_specifiers)
-            assert all([isinstance(x, makers.VoiceSpecifier)
-                for x in voice_specifiers])
+            assert all(isinstance(x, makers.VoiceSpecifier)
+                for x in voice_specifiers)
         self._voice_specifiers = voice_specifiers
         self._is_final_segment = bool(is_final_segment)
         if permitted_time_signatures is not None:
@@ -184,7 +184,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         if self.rehearsal_mark is not None:
             rehearsal_mark_text = 'mark \\markup {{ ' \
                 "\\override #'(box-padding . 0.5) " \
-                '\\box {} }}'
+                '\\box "{}" }}'
             rehearsal_mark_text = rehearsal_mark_text.format(
                 str(self.rehearsal_mark).title(),
                 )

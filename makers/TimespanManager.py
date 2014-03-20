@@ -52,6 +52,8 @@ class TimespanManager(abctools.AbjadObject):
                     if timespan.minimum_duration:
                         if timespan.minimum_duration <= timespan.duration:
                             split_inventory.append(timespan)
+                    else:
+                        split_inventory.append(timespan)
             split_inventory.sort()
             timespan_inventory_mapping[voice_name] = split_inventory
 
@@ -152,6 +154,8 @@ class TimespanManager(abctools.AbjadObject):
         for timespan_inventory in timespan_inventories[1:]:
             for timespan in timespan_inventory:
                 resolved_timespan_inventory -= timespan
+            resolved_timespan_inventory.extend(timespan_inventory)
+            resolved_timespan_inventory.sort()
         return resolved_timespan_inventory
 
     ### PUBLIC METHODS ###
