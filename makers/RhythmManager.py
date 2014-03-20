@@ -101,16 +101,14 @@ class RhythmManager(abctools.AbjadObject):
         tailing_silence = scoretools.Container()
         for division in music[:]:
             leaves = division.select_leaves()
-            if all(isinstance(leaf, rest_prototype) for leaf in leaves):
-                leading_silence.append(division)
-            else:
+            if not all(isinstance(leaf, rest_prototype) for leaf in leaves):
                 break
+            leading_silence.append(division)
         for division in reversed(music[:]):
             leaves = division.select_leaves()
-            if all(isinstance(leaf, rest_prototype) for leaf in leaves):
-                tailing_silence.insert(0, division)
-            else:
+            if not all(isinstance(leaf, rest_prototype) for leaf in leaves):
                 break
+            tailing_silence.insert(0, division)
 #        if music:
 #            beam = spannertools.GeneralizedBeam(
 #                durations=durations,
@@ -373,5 +371,6 @@ class RhythmManager(abctools.AbjadObject):
         ):
         RhythmManager._populate_time_signature_context(segment_product)
         RhythmManager._populate_rhythms(segment_product)
+        # TODO: Implement silence consolidation, before meter rewriting
         RhythmManager._cleanup_silences(segment_product)
         return segment_product
