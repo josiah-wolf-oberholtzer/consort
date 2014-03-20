@@ -7,7 +7,17 @@ from abjad.tools import timespantools
 
 
 class VoiceSpecifier(abctools.AbjadObject):
-    r'''A context specifier.
+    r'''A voice specifier.
+
+    Voice specifiers bundle three things:
+
+    - a music specifier
+    - a timespan maker
+    - a sequence of voice identifiers
+
+    They represent the complete logic for how a collection of timespans should
+    be arranged in time, on what voices, with what music specifications to
+    inscribe them with.
 
     ::
 
