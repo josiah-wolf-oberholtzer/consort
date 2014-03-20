@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import collections
 import itertools
 from abjad.tools import abctools
 from abjad.tools import durationtools
@@ -135,8 +136,13 @@ class RhythmManager(abctools.AbjadObject):
         from consort import makers
         silent_music_specifier = makers.MusicSpecifier()
         timespan_inventory_mapping = segment_product.timespan_inventory_mapping
-        seed = 0
-        for voice_name in timespan_inventory_mapping:
+        seeds = collections.Counter()
+        voice_names = timespan_inventory_mapping.keys()
+        voice_names = RhythmManager.sort_voice_names(
+            template=segment_product.segment_maker.template,
+            voice_names=voice_names,
+            )
+        for voice_name in voice_names:
             timespan_inventory = timespan_inventory_mapping[voice_name]
             voice = segment_product.score[voice_name]
             previous_silence = scoretools.Container()
@@ -161,7 +167,7 @@ class RhythmManager(abctools.AbjadObject):
                         initial_offset=start_offset,
                         meters=segment_product.meters,
                         rhythm_maker=rhythm_maker,
-                        seed=seed,
+                        seed=seeds[music_specifier],
                         )
                 previous_silence.extend(leading_silence)
                 if not len(music.select_leaves()):
@@ -181,7 +187,7 @@ class RhythmManager(abctools.AbjadObject):
                         )
                     voice.append(music)
                     previous_silence = tailing_silence
-                seed += 1
+                seeds[music_specifier] += 1
             if len(previous_silence.select_leaves()):
                 attach(
                     silent_music_specifier,
@@ -327,6 +333,18 @@ class RhythmManager(abctools.AbjadObject):
                 selection = selectiontools.ContiguousSelection((
                     last_leaf, next_leaf))
                 selection._attach_tie_spanner_to_leaf_pair()
+
+    @staticmethod
+    def sort_voice_names(
+        template=None,
+        voice_names=None,
+        ):
+        result = []
+        score = template()
+        for voice in iterate(score).by_class(scoretools.Voice):
+            if voice.name in voice_names:
+                result.append(voice.name)
+        return tuple(result)
 
     @staticmethod
     def _leaf_is_tied(leaf):
