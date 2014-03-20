@@ -75,7 +75,7 @@ voice_specifier_two = makers.VoiceSpecifier(
 
 
 segment_maker = new(base.segment_maker,
-    rehearsal_mark='6',
+    rehearsal_mark='A6',
     voice_specifiers=(
         voice_specifier_one,
         voice_specifier_two,
