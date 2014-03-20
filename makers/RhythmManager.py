@@ -84,6 +84,9 @@ class RhythmManager(abctools.AbjadObject):
             else:
                 music[i] = scoretools.Container(x)
         music = scoretools.Container(music)
+        for x in music[:]:
+            if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
+                mutate(x).swap(scoretools.Container())
         RhythmManager._rewrite_meter(
             music,
             initial_offset=initial_offset,
