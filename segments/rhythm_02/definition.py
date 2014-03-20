@@ -8,12 +8,12 @@ voice_specifier_one = new(base.voice_specifier_one,
     music_specifier__rhythm_maker=new(
         materials.talea_rhythm_maker,
         extra_counts_per_division=(0,),
-        talea__counts=(1,),
+        talea__counts=(1, 2),
         ),
     )
 
 segment_maker = new(base.segment_maker,
-    rehearsal_mark='B1',
+    rehearsal_mark='B2',
     voice_specifiers=(
         voice_specifier_one,
         ),
