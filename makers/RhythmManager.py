@@ -63,7 +63,10 @@ class RhythmManager(abctools.AbjadObject):
             current_meter_offset = current_meter_offsets[0]
             current_initial_offset = \
                 container_start_offset - current_meter_offset
-            yield container, current_meter, current_initial_offset
+            next_meter = None
+            if 1 < len(current_meters):
+                next_meter = current_meters[1]
+            yield container, current_meter, next_meter, current_initial_offset
 
     @staticmethod
     def _populate_rhythm_group(
@@ -195,6 +198,81 @@ class RhythmManager(abctools.AbjadObject):
         score['TimeSignatureContext'].extend(measures)
 
     @staticmethod
+    def _rewrite_barline_crossing_container_meter(
+        container=None,
+        container_start_offset=None,
+        meter_one=None,
+        meter_two=None,
+        ):
+        meter_one_duration = meter_one.implied_time_signature.duration
+        split_duration = meter_one_duration - container_start_offset
+        container_timespan = inspect_(container).get_timespan()
+        split_offset = container_timespan.start_offset + split_duration
+        left_group, split_component, right_group = [], None, []
+        for component in container:
+            component_timespan = inspect_(component).get_timespan()
+            start_offset = component_timespan.start_offset
+            stop_offset = component_timespan.stop_offset
+            if start_offset < split_offset < stop_offset:
+                split_component = component
+            else:
+                if start_offset < split_offset:
+                    left_group.append(component)
+                elif split_offset <= start_offset:
+                    right_group.append(component)
+        if isinstance(split_component, scoretools.Tuplet):
+            mutate(left_group).rewrite_meter(
+                meter_one,
+                boundary_depth=1,
+                initial_offset=container_start_offset,
+                maximum_dot_count=2,
+                )
+            RhythmManager._rewrite_tuplet_meter(split_component)
+            right_start = inspect_(right_group[0]).get_timespan().start_offset
+            initial_offset = right_start - split_offset
+            mutate(right_group).rewrite_meter(
+                meter_two,
+                boundary_depth=1,
+                initial_offset=initial_offset,
+                maximum_dot_count=2,
+                )
+        else:
+            left, right = mutate(container[:]).split([split_duration])
+            mutate(left).rewrite_meter(
+                meter_one,
+                boundary_depth=1,
+                initial_offset=container_start_offset,
+                maximum_dot_count=2,
+                )
+            mutate(right).rewrite_meter(
+                meter_two,
+                boundary_depth=1,
+                maximum_dot_count=2,
+                )
+
+    @staticmethod
+    def _rewrite_silent_container_meter(
+        container=None,
+        ):
+        multi_measure_rest = scoretools.MultimeasureRest(1)
+        duration = inspect_(container).get_duration()
+        multiplier = durationtools.Multiplier(duration)
+        attach(multiplier, multi_measure_rest)
+        container[:] = [multi_measure_rest]
+
+    @staticmethod
+    def _rewrite_tuplet_meter(
+        container=None,
+        ):
+        contents_duration = container._contents_duration
+        meter = metertools.Meter(contents_duration)
+        mutate(container[:]).rewrite_meter(
+            meter,
+            boundary_depth=1,
+            maximum_dot_count=2,
+            )
+
+    @staticmethod
     def _rewrite_meter(
         music=None,
         initial_offset=None,
@@ -205,21 +283,27 @@ class RhythmManager(abctools.AbjadObject):
             meters=meters,
             music=music,
             )
-        for container, current_meter, container_start_offset in iterator:
+        for item in iterator:
+            container = item[0]
+            current_meter = item[1]
+            next_meter = item[2]
+            container_start_offset = item[3]
             current_meter_duration = \
                 current_meter.implied_time_signature.duration
             container_stop_offset = inspect_(container).get_duration() + \
                 container_start_offset
             last_leaf = container.select_leaves()[-1]
             is_tied = RhythmManager._leaf_is_tied(last_leaf)
-            if isinstance(container, scoretools.Tuplet) or \
-                current_meter_duration < container_stop_offset:
-                contents_duration = container._contents_duration
-                meter = metertools.Meter(contents_duration)
-                mutate(container[:]).rewrite_meter(
-                    meter,
-                    boundary_depth=1,
-                    maximum_dot_count=2,
+            if isinstance(container, scoretools.Tuplet):
+                RhythmManager._rewrite_tuplet_meter(
+                    container=container,
+                    )
+            elif current_meter_duration < container_stop_offset:
+                RhythmManager._rewrite_barline_crossing_container_meter(
+                    container=container,
+                    meter_one=current_meter,
+                    meter_two=next_meter,
+                    container_start_offset=container_start_offset,
                     )
             else:
                 if inspect_(container).get_duration() == \
@@ -227,11 +311,9 @@ class RhythmManager(abctools.AbjadObject):
                     container_start_offset == 0 and \
                     all(isinstance(x, scoretools.Rest)
                         for x in container.select_leaves()):
-                    multi_measure_rest = scoretools.MultimeasureRest(1)
-                    multiplier = durationtools.Multiplier(
-                        current_meter_duration)
-                    attach(multiplier, multi_measure_rest)
-                    container[:] = [multi_measure_rest]
+                    RhythmManager._rewrite_silent_container_meter(
+                        container=container,
+                        )
                 else:
                     mutate(container[:]).rewrite_meter(
                         current_meter,
