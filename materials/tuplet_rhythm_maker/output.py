@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import rhythmmakertools
+from abjad.tools import *
 
 
 tuplet_rhythm_maker = rhythmmakertools.TupletRhythmMaker(

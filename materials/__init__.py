@@ -1,9 +1,4 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import systemtools
-
-systemtools.ImportManager.import_structured_package(
-	__path__[0],
-	globals(),
-	)
-
-_documentation_section = 'core'
+from incised_rhythm_maker import incised_rhythm_maker
+from talea_rhythm_maker import talea_rhythm_maker
+from tuplet_rhythm_maker import tuplet_rhythm_maker

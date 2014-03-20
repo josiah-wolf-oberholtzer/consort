@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad import *
 output_module_import_statements = [
-    'from abjad.tools import rhythmmakertools',
+    'from abjad.tools import *',
     ]
 
 
