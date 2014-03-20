@@ -4,7 +4,7 @@ from consort import makers
 from consort.segments import base
 
 
-voice_specifier = makers.VoiceSpecifier(
+voice_specifier_one = makers.VoiceSpecifier(
     music_specifier=makers.MusicSpecifier(
         rhythm_maker=rhythmmakertools.NoteRhythmMaker(
             tie_specifier=rhythmmakertools.TieSpecifier(
@@ -34,15 +34,12 @@ voice_specifier = makers.VoiceSpecifier(
 segment_maker = new(base.segment_maker,
     rehearsal_mark='3',
     voice_specifiers=(
-        voice_specifier,
+        voice_specifier_one,
         ),
     )
 
 
 __all__ = (
     'segment_maker',
+    'voice_specifier_one',
     )
-
-
-if __name__ == '__main__':
-    segment_maker.build_and_persist(__file__)

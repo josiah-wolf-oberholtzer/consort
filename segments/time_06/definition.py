@@ -85,8 +85,6 @@ segment_maker = new(base.segment_maker,
 
 __all__ = (
     'segment_maker',
+    'voice_specifier_one',
+    'voice_specifier_two',
     )
-
-
-if __name__ == '__main__':
-    segment_maker.build_and_persist(__file__)
