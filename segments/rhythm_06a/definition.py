@@ -21,7 +21,7 @@ voice_specifier_one = new(base.voice_specifier_one,
     )
 
 segment_maker = new(base.segment_maker,
-    rehearsal_mark='B6',
+    rehearsal_mark='B6a',
     voice_specifiers=(
         voice_specifier_one,
         ),

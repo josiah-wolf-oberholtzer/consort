@@ -12,7 +12,7 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "B6C" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" }
 				\tempo 8=72
 				\time 2/4
 				s1 * 1/2
@@ -129,12 +129,9 @@
 							}
 							{
 								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									r16 [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									c'8 ]
+									r16
+									\set stemRightBeamCount = 1
+									c'8
 								}
 							}
 							{
@@ -270,12 +267,9 @@
 							}
 							{
 								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									r8 [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
+									r8
+									\set stemRightBeamCount = 2
+									c'16
 								}
 							}
 							{
@@ -357,12 +351,9 @@
 							}
 							{
 								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									r16 [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									c'8 ]
+									r16
+									\set stemRightBeamCount = 1
+									c'8
 								}
 							}
 							{
@@ -505,12 +496,9 @@
 							}
 							{
 								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									r8 [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
+									r8
+									\set stemRightBeamCount = 2
+									c'16
 								}
 							}
 							{
