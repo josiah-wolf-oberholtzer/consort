@@ -155,6 +155,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         from consort import makers
         segment_product = makers.SegmentProduct(segment_maker=self)
         segment_product.score = self.template()
+
         segment_product = makers.TimespanManager.execute(
             permitted_time_signatures=self.permitted_time_signatures,
             segment_product=segment_product,
@@ -163,17 +164,20 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             voice_settings=self.voice_settings,
             voice_specifiers=self.voice_specifiers,
             )
+
         segment_product = makers.RhythmManager.execute(
             segment_product=segment_product,
             )
-        makers.GraceAgent.iterate_score(segment_product.score)
 
+        makers.GraceAgent.iterate_score(segment_product.score)
         #makers.PitchAgent.iterate_score(segment_product.score)
         #makers.AlterationAgent.iterate_score(segment_product.score)
         #makers.RegisterAgent.iterate_score(segment_product.score)
         #makers.ChordAgent.iterate_score(segment_product.score)
-
         makers.AttachmentAgent.iterate_score(segment_product.score)
+
+        makers.EditorialManager.annotate(segment_product)
+
         segment_product.lilypond_file = self._make_lilypond_file(
             segment_product.score)
         return segment_product.lilypond_file
