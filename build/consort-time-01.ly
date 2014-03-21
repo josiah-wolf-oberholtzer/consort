@@ -26,16 +26,15 @@
 				s1 * 1/2
 			}
 			{
-				\time 3/8
-				s1 * 3/8
+				s1 * 1/2
 			}
 		}
 		\context OuterStaffGroup = "Outer Staff Group" <<
 			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" {
-						\clef "treble"
+					\context LHStaff = "Violin Staff" <<
+						\clef "percussion"
 						\context LHVoice = "Violin Voice" {
 							{
 								{
@@ -114,18 +113,86 @@
 							}
 							{
 								{
-									r8
+									r4
 								}
 							}
 						}
-					}
+						\context InnerAnnotation = "Violin Voice Inner Annotation" {
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+						}
+						\context OuterAnnotation = "Violin Voice Outer Annotation" {
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+						}
+					>>
 				>>
 			>>
 			\context ViolaStaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
 				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" {
-						\clef "alto"
+					\context LHStaff = "Viola Staff" <<
+						\clef "percussion"
 						\context LHVoice = "Viola Voice" {
 							{
 								{
@@ -204,18 +271,86 @@
 							}
 							{
 								{
-									r8
+									r4
 								}
 							}
 						}
-					}
+						\context InnerAnnotation = "Viola Voice Inner Annotation" {
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+						}
+						\context OuterAnnotation = "Viola Voice Outer Annotation" {
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+						}
+					>>
 				>>
 			>>
 			\context CelloStaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
 				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" {
-						\clef "bass"
+					\context LHStaff = "Cello Staff" <<
+						\clef "percussion"
 						\context LHVoice = "Cello Voice" {
 							{
 								{
@@ -294,12 +429,80 @@
 							}
 							{
 								{
-									r8
-									\bar "||"
+									r4
 								}
 							}
 						}
-					}
+						\context InnerAnnotation = "Cello Voice Inner Annotation" {
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+						}
+						\context OuterAnnotation = "Cello Voice Outer Annotation" {
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\times 1/4 {
+								c'1
+							}
+							c'1 * 1/4
+							\bar "||"
+						}
+					>>
 				>>
 			>>
 		>>

@@ -28,3 +28,5 @@
 \include "consort-rhythm-07.ly"
 \include "consort-rhythm-08.ly"
 \include "consort-grace-01.ly"
+\include "consort-grace-02.ly"
+\include "consort-grace-03.ly"

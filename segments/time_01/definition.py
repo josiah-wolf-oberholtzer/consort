@@ -18,6 +18,9 @@ voice_specifier_one = makers.VoiceSpecifier(
 
 segment_maker = new(base.segment_maker,
     rehearsal_mark='A1',
+    permitted_time_signatures=indicatortools.TimeSignatureInventory([
+        (2, 4),
+        ]),
     voice_specifiers=(
         voice_specifier_one,
         ),
