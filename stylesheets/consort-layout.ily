@@ -18,13 +18,15 @@ afterGraceFraction = #(cons 127 128)
     \context {
         \Staff
         \remove Time_signature_engraver
+        \override StaffSymbol.line-count = 1
+        \override TupletBracket.staff-padding = 6
     }
 
     %%% SPECIFIC %%%
 
     \context {
         \Voice
-        \new InnerAnnotation
+        \name InnerAnnotation
         \type Engraver_group
         \alias Voice
         \override Dots.stencil = ##f
@@ -35,14 +37,14 @@ afterGraceFraction = #(cons 127 128)
         \override TupletBracket.color = #red
         \override TupletBracket.dash-fraction = 0.25
         \override TupletBracket.dash-period = 1.5
-        \override TupletBracket.staff-padding = 6
+        \override TupletBracket.staff-padding = 8
         \override TupletBracket.style = #'dashed-line
         \override TupletNumber.stencil = ##f
     }
 
     \context {
         \Voice
-        \new OuterAnnotation
+        \name OuterAnnotation
         \type Engraver_group
         \alias Voice
         \override Dots.stencil = ##f
@@ -51,7 +53,7 @@ afterGraceFraction = #(cons 127 128)
         \override Stem.stencil = ##f
         \override TupletNumber.stencil = ##f
         \override TupletBracket.color = #red
-        \override TupletBracket.staff-padding = 7.5
+        \override TupletBracket.staff-padding = 10
         \override NoteColumn.ignore-collision = ##t
     }
 
@@ -68,6 +70,8 @@ afterGraceFraction = #(cons 127 128)
         \type Engraver_group
         \alias Staff
         \accepts RHVoice
+        \accepts InnerAnnotation
+        \accepts OuterAnnotation
     }
 
     \context {
@@ -83,6 +87,8 @@ afterGraceFraction = #(cons 127 128)
         \type Engraver_group
         \alias Staff
         \accepts LHVoice
+        \accepts InnerAnnotation
+        \accepts OuterAnnotation
     }
 
     \context {
