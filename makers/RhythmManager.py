@@ -431,7 +431,8 @@ class RhythmManager(ConsortObject):
         ):
         RhythmManager._populate_time_signature_context(segment_product)
         RhythmManager._populate_rhythms(segment_product)
-        # TODO: Implement silence consolidation, before meter rewriting
+        segment_product.unrewritten_score = \
+            mutate(segment_product.score).copy()
         RhythmManager._consolidate_silences(segment_product)
         RhythmManager._rewrite_meters(segment_product)
         RhythmManager._cleanup_silences(segment_product)

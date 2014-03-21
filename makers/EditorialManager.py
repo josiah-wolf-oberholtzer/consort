@@ -6,6 +6,7 @@ from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import mutate
+from abjad.tools.topleveltools import override
 from consort.makers.ConsortObject import ConsortObject
 
 
@@ -17,6 +18,8 @@ class EditorialManager(ConsortObject):
 
     @staticmethod
     def _create_all_annotation_voices(
+        hide_brackets=None,
+        score=None,
         segment_product=None,
         ):
         from consort import makers
@@ -26,11 +29,16 @@ class EditorialManager(ConsortObject):
             template=segment_product.segment_maker.template,
             voice_names=voice_names,
             )
-        score = mutate(segment_product.score).copy()
+        annotation_specification = \
+            segment_product.segment_maker.annotation_specification
+        show_inner_bracket = \
+            annotation_specification.show_inner_bracket
         for voice_name in voice_names:
             timespan_inventory = timespan_inventory_mapping[voice_name]
             inner_annotation, outer_annotation = \
                 EditorialManager._create_annotation_voices(
+                    hide_brackets=hide_brackets,
+                    show_inner_bracket=show_inner_bracket,
                     timespan_inventory=timespan_inventory,
                     voice_name=voice_name,
                     )
@@ -43,6 +51,8 @@ class EditorialManager(ConsortObject):
 
     @staticmethod
     def _create_annotation_voices(
+        hide_brackets=None,
+        show_inner_bracket=None,
         timespan_inventory=None,
         voice_name=None,
         ):
@@ -76,19 +86,32 @@ class EditorialManager(ConsortObject):
                 inner_annotation.append(inner_note)
                 continue
             outer_tuplet = scoretools.Tuplet(outer_duration, "c'1")
-            inner_tuplets = [scoretools.Tuplet(inner_duration, "c'1")
-                for inner_duration in inner_durations]
             outer_annotation.append(outer_tuplet)
-            inner_annotation.extend(inner_tuplets)
+            if show_inner_bracket:
+                inner_tuplets = [scoretools.Tuplet(inner_duration, "c'1")
+                    for inner_duration in inner_durations]
+                inner_annotation.extend(inner_tuplets)
+            else:
+                inner_note = scoretools.Note("c'1")
+                inner_multiplier = durationtools.Multiplier(outer_duration)
+                attach(inner_multiplier, inner_note)
+                inner_annotation.append(inner_note)
+        if hide_brackets:
+            override(inner_annotation).tuplet_bracket.transparent = True
+            override(outer_annotation).tuplet_bracket.transparent = True
         return inner_annotation, outer_annotation
 
     ### PUBLIC METHODS ###
 
     @staticmethod
     def annotate(
+        hide_brackets=None,
+        score=None,
         segment_product=None,
         ):
         annotated_score = EditorialManager._create_all_annotation_voices(
+            hide_brackets=hide_brackets,
+            score=score,
             segment_product=segment_product,
             )
-        segment_product.score = annotated_score
+        return annotated_score

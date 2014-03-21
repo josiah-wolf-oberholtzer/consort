@@ -9,8 +9,17 @@ from abjad.tools import scoretools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
+from abjad.tools.topleveltools import mutate
+from abjad.tools.topleveltools import override
 from abjad.tools.topleveltools import persist
 from experimental.tools import segmentmakertools
+
+# stage 1: no notation, no barlines
+# stage 2: outer bracket, no barlines, no notation
+# stage 3: outer bracket, barlines, no notation
+# stage 4: outer bracket, barlines, notation (not rewritten)
+# stage 5: outer bracket, barlines, notation (rewritten)
+# stage 6: no brackets, barlines, notation (rewritten)
 
 
 class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
@@ -94,6 +103,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_annotation_specification',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_rehearsal_mark',
@@ -108,6 +118,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     def __init__(
         self,
+        annotation_specification=None,
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
@@ -123,17 +134,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             self,
             name=name,
             )
-        if voice_settings is not None:
-            assert all(isinstance(x, makers.VoiceSetting)
-                for x in voice_settings)
-            voice_settings = tuple(voice_settings)
-        self._voice_settings = voice_settings
-        if voice_specifiers is not None:
-            voice_specifiers = tuple(voice_specifiers)
-            assert len(voice_specifiers)
-            assert all(isinstance(x, makers.VoiceSpecifier)
-                for x in voice_specifiers)
-        self._voice_specifiers = voice_specifiers
+        self._annotation_specification = annotation_specification
         self._is_final_segment = bool(is_final_segment)
         if permitted_time_signatures is not None:
             permitted_time_signatures = indicatortools.TimeSignatureInventory(
@@ -148,6 +149,17 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         if tempo is not None:
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
+        if voice_settings is not None:
+            assert all(isinstance(x, makers.VoiceSetting)
+                for x in voice_settings)
+            voice_settings = tuple(voice_settings)
+        self._voice_settings = voice_settings
+        if voice_specifiers is not None:
+            voice_specifiers = tuple(voice_specifiers)
+            assert len(voice_specifiers)
+            assert all(isinstance(x, makers.VoiceSpecifier)
+                for x in voice_specifiers)
+        self._voice_specifiers = voice_specifiers
 
     ### SPECIAL METHODS ###
 
@@ -169,6 +181,67 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             segment_product=segment_product,
             )
 
+        if self.annotation_specification is not None:
+            rewritten_score = segment_product.score
+            unrewritten_score = segment_product.unrewritten_score
+            if self.annotation_specification.show_stage_1:
+                score_copy = mutate(rewritten_score).copy()
+                annotated_score = makers.EditorialManager.annotate(
+                    score=score_copy,
+                    segment_product=segment_product,
+                    )
+                manager = override(annotated_score)
+                manager.bar_line.stencil = False
+                manager.beam.stencil = False
+                manager.dots.stencil = False
+                manager.flag.stencil = False
+                manager.note_head.stencil = False
+                manager.rest.stencil = False
+                manager.span_bar.stencil = False
+                manager.stem.stencil = False
+                manager.tuplet_bracket.stencil = False
+                segment_product.scores.append(annotated_score)
+
+            if self.annotation_specification.show_stage_2:
+                score_copy = mutate(rewritten_score).copy()
+                annotated_score = makers.EditorialManager.annotate(
+                    score=score_copy,
+                    segment_product=segment_product,
+                    )
+                manager = override(annotated_score)
+                manager.bar_line.stencil = False
+                manager.beam.stencil = False
+                manager.dots.stencil = False
+                manager.flag.stencil = False
+                manager.note_head.stencil = False
+                manager.rest.stencil = False
+                manager.span_bar.stencil = False
+                manager.stem.stencil = False
+                segment_product.scores.append(annotated_score)
+
+            if self.annotation_specification.show_stage_3:
+                score_copy = mutate(rewritten_score).copy()
+                annotated_score = makers.EditorialManager.annotate(
+                    score=score_copy,
+                    segment_product=segment_product,
+                    )
+                manager = override(annotated_score)
+                manager.beam.stencil = False
+                manager.dots.stencil = False
+                manager.flag.stencil = False
+                manager.note_head.stencil = False
+                manager.rest.stencil = False
+                manager.stem.stencil = False
+                segment_product.scores.append(annotated_score)
+
+            if self.annotation_specification.show_stage_4:
+                score_copy = mutate(unrewritten_score).copy()
+                annotated_score = makers.EditorialManager.annotate(
+                    score=score_copy,
+                    segment_product=segment_product,
+                    )
+                segment_product.scores.append(annotated_score)
+
         makers.GraceAgent.iterate_score(segment_product.score)
         #makers.PitchAgent.iterate_score(segment_product.score)
         #makers.AlterationAgent.iterate_score(segment_product.score)
@@ -176,15 +249,35 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         #makers.ChordAgent.iterate_score(segment_product.score)
         makers.AttachmentAgent.iterate_score(segment_product.score)
 
-        makers.EditorialManager.annotate(segment_product)
+        if self.annotation_specification is not None and \
+            self.annotation_specification.show_stage_5:
+            score_copy = mutate(segment_product.score).copy()
+            annotated_score = makers.EditorialManager.annotate(
+                score=score_copy,
+                segment_product=segment_product,
+                )
+            segment_product.scores.append(annotated_score)
 
-        segment_product.lilypond_file = self._make_lilypond_file(
-            segment_product.score)
-        return segment_product.lilypond_file
+        segment_product.scores.append(segment_product.score)
+
+        lilypond_file = self._make_lilypond_file()
+        for score in segment_product.scores:
+            score_block = self._make_score_block(score)
+            lilypond_file.items.append(score_block)
+
+        return lilypond_file
 
     ### PRIVATE METHODS ###
 
-    def _make_lilypond_file(self, score):
+    def _make_lilypond_file(self):
+        lilypond_file = lilypondfiletools.LilyPondFile()
+        lilypond_file.use_relative_includes = True
+        for file_path in self.stylesheet_file_paths:
+            lilypond_file.file_initial_user_includes.append(file_path)
+        lilypond_file.file_initial_system_comments[:] = []
+        return lilypond_file
+
+    def _make_score_block(self, score):
         if self.rehearsal_mark is not None:
             rehearsal_mark_text = 'mark \\markup {{ ' \
                 "\\override #'(box-padding . 0.5) " \
@@ -204,15 +297,9 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         else:
             score.add_final_bar_line('||')
         assert inspect_(score).is_well_formed()
-        lilypond_file = lilypondfiletools.LilyPondFile()
-        lilypond_file.use_relative_includes = True
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
-        lilypond_file.items.append(score_block)
-        for file_path in self.stylesheet_file_paths:
-            lilypond_file.file_initial_user_includes.append(file_path)
-        lilypond_file.file_initial_system_comments[:] = []
-        return lilypond_file
+        return score_block
 
     ### PUBLIC METHODS ###
 
@@ -289,6 +376,10 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         return target_segment_duration
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def annotation_specification(self):
+        return self._annotation_specification
 
     @property
     def final_markup(self):

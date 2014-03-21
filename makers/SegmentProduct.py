@@ -10,12 +10,13 @@ class SegmentProduct(ConsortObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        'lilypond_file',
         'meters',
         'score',
+        'scores',
         'segment_duration',
         'segment_maker',
         'timespan_inventory_mapping',
+        'unrewritten_score',
         )
 
     ### INITIALIZER ###
@@ -24,12 +25,13 @@ class SegmentProduct(ConsortObject):
         self,
         segment_maker=None,
         ):
-        self.lilypond_file = None
         self.meters = None
         self.score = None
+        self.scores = []
         self.segment_duration = None
         self.segment_maker = segment_maker
         self.timespan_inventory_mapping = None
+        self.unrewritten_score = None
 
     ### PRIVATE PROPERTIES ###
 
