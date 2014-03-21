@@ -9,6 +9,7 @@ from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
 from abjad.tools import selectiontools
+from abjad.tools import systemtools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
@@ -41,12 +42,9 @@ class RhythmManager(abctools.AbjadObject):
 
     @staticmethod
     def _iterate_music_and_meters(
-        initial_offset=None,
         meters=None,
         music=None,
         ):
-        assert isinstance(initial_offset, durationtools.Offset)
-        assert 0 <= initial_offset
         assert all(isinstance(x, metertools.Meter) for x in meters)
         assert len(meters)
         current_meters = list(meters)
@@ -54,8 +52,7 @@ class RhythmManager(abctools.AbjadObject):
             x.implied_time_signature.duration for x in meters))
         for container in music[:]:
             container_start_offset = \
-                inspect_(container).get_timespan().start_offset + \
-                initial_offset
+                inspect_(container).get_timespan().start_offset
             while 2 < len(current_meter_offsets) and \
                 current_meter_offsets[1] <= container_start_offset:
                 current_meter_offsets.pop(0)
@@ -87,11 +84,11 @@ class RhythmManager(abctools.AbjadObject):
         for x in music[:]:
             if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
                 mutate(x).swap(scoretools.Container())
-        RhythmManager._rewrite_meter(
-            music,
-            initial_offset=initial_offset,
-            meters=meters,
-            )
+#        RhythmManager._rewrite_meter(
+#            music,
+#            initial_offset=initial_offset,
+#            meters=meters,
+#            )
         assert inspect_(music).get_duration() == sum(durations)
         rest_prototype = (
             scoretools.Rest,
@@ -132,7 +129,6 @@ class RhythmManager(abctools.AbjadObject):
                     tailing_silence_container.append(music[-1].pop())
                 if tailing_silence_container:
                     tailing_silence.insert(0, tailing_silence_container)
-
 #        if music:
 #            beam = spannertools.GeneralizedBeam(
 #                durations=durations,
@@ -163,7 +159,7 @@ class RhythmManager(abctools.AbjadObject):
         timespan_inventory_mapping = segment_product.timespan_inventory_mapping
         seeds = collections.Counter()
         voice_names = timespan_inventory_mapping.keys()
-        voice_names = RhythmManager.sort_voice_names(
+        voice_names = RhythmManager._sort_voice_names(
             template=segment_product.segment_maker.template,
             voice_names=voice_names,
             )
@@ -306,11 +302,9 @@ class RhythmManager(abctools.AbjadObject):
     @staticmethod
     def _rewrite_meter(
         music=None,
-        initial_offset=None,
         meters=None,
         ):
         iterator = RhythmManager._iterate_music_and_meters(
-            initial_offset=initial_offset,
             meters=meters,
             music=music,
             )
@@ -360,7 +354,17 @@ class RhythmManager(abctools.AbjadObject):
                 selection._attach_tie_spanner_to_leaf_pair()
 
     @staticmethod
-    def sort_voice_names(
+    def _rewrite_meters(segment_product):
+        score = segment_product.score
+        for voice in iterate(score).by_class(scoretools.Voice):
+            for music in voice:
+                RhythmManager._rewrite_meter(
+                    music=music,
+                    meters=segment_product.meters,
+                    )
+
+    @staticmethod
+    def _sort_voice_names(
         template=None,
         voice_names=None,
         ):
@@ -396,5 +400,6 @@ class RhythmManager(abctools.AbjadObject):
         RhythmManager._populate_time_signature_context(segment_product)
         RhythmManager._populate_rhythms(segment_product)
         # TODO: Implement silence consolidation, before meter rewriting
+        RhythmManager._rewrite_meters(segment_product)
         RhythmManager._cleanup_silences(segment_product)
         return segment_product
