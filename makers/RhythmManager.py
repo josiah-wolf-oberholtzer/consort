@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
 import itertools
-from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import durationtools
 from abjad.tools import scoretools
 from abjad.tools import spannertools
@@ -14,6 +13,7 @@ from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
+from consort.makers.ConsortObject import ConsortObject
 
 
 class RhythmManager(ConsortObject):
@@ -70,6 +70,22 @@ class RhythmManager(ConsortObject):
                 music[:] = [rest_container]
                 if split_durations:
                     mutate(music[:]).split(split_durations)
+
+    @staticmethod
+    def _leaf_is_tied(leaf):
+        prototype = spannertools.Tie
+        leaf_tie = None
+        if inspect_(leaf).get_spanners(prototype):
+            leaf_tie = inspect_(leaf).get_spanner(prototype)
+        else:
+            return False
+        next_leaf = inspect_(leaf).get_leaf(1)
+        if next_leaf is not None:
+            if inspect_(next_leaf).get_spanners(prototype):
+                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
+                if leaf_tie is next_leaf_tie:
+                    return True
+        return False
 
     @staticmethod
     def _iterate_music_and_meters(
@@ -406,22 +422,6 @@ class RhythmManager(ConsortObject):
             if voice.name in voice_names:
                 result.append(voice.name)
         return tuple(result)
-
-    @staticmethod
-    def _leaf_is_tied(leaf):
-        prototype = spannertools.Tie
-        leaf_tie = None
-        if inspect_(leaf).get_spanners(prototype):
-            leaf_tie = inspect_(leaf).get_spanner(prototype)
-        else:
-            return False
-        next_leaf = inspect_(leaf).get_leaf(1)
-        if next_leaf is not None:
-            if inspect_(next_leaf).get_spanners(prototype):
-                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
-                if leaf_tie is next_leaf_tie:
-                    return True
-        return False
 
     ### PUBLIC METHODS ###
 
