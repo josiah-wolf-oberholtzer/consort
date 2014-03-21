@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 import re
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import durationtools
 from abjad.tools import scoretools
 from abjad.tools import timespantools
 
 
-class VoiceSpecifier(abctools.AbjadObject):
+class VoiceSpecifier(ConsortObject):
     r'''A voice specifier.
 
     Voice specifiers bundle three things:

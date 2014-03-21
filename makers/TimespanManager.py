@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import metertools
@@ -8,7 +8,7 @@ from abjad.tools import timespantools
 from abjad.tools.topleveltools import iterate
 
 
-class TimespanManager(abctools.AbjadObject):
+class TimespanManager(ConsortObject):
     r'''A timespan manager.
     '''
 

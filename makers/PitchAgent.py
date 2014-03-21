@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
 from abjad.tools import scoretools
@@ -11,7 +11,7 @@ from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
-class PitchAgent(abctools.AbjadObject):
+class PitchAgent(ConsortObject):
     r'''A pitch agent.
 
     ::

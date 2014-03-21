@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools.topleveltools import new
 
 
-class VoiceSetting(abctools.AbjadObject):
+class VoiceSetting(ConsortObject):
     r'''A voice setting.
 
     ::

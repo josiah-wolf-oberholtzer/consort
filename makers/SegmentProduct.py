@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import mathtools
 
 
-class SegmentProduct(abctools.AbjadObject):
+class SegmentProduct(ConsortObject):
     r'''A segment product.
     '''
 

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
 import itertools
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import durationtools
 from abjad.tools import scoretools
 from abjad.tools import spannertools
@@ -16,7 +16,7 @@ from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
 
 
-class RhythmManager(abctools.AbjadObject):
+class RhythmManager(ConsortObject):
     r'''A rhythm manager.
     '''
 

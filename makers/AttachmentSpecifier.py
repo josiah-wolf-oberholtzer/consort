@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import datastructuretools
 from abjad.tools import sequencetools
 from abjad.tools import spannertools
@@ -9,7 +9,7 @@ from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
 
 
-class AttachmentSpecifier(abctools.AbjadObject):
+class AttachmentSpecifier(ConsortObject):
     r'''An attachment specifier.
 
     ::

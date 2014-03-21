@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import rhythmmakertools
 
 
-class MusicSpecifier(abctools.AbjadObject):
+class MusicSpecifier(ConsortObject):
     r'''A music specifier.
 
     ::

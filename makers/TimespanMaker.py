@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 from abjad import *
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import timespantools
 
 
-class TimespanMaker(abctools.AbjadObject):
+class TimespanMaker(ConsortObject):
     r'''A timespan maker.
 
     ::

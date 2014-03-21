@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import pitchtools
 
 
-class PitchClassSegmentTransform(abctools.AbjadObject):
+class PitchClassSegmentTransform(ConsortObject):
     r'''A pitch-class transform expression.
 
     ::

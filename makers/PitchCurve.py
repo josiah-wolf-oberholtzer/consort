@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 import bisect
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
 from abjad.tools.topleveltools import new
 
 
-class PitchCurve(abctools.AbjadObject):
+class PitchCurve(ConsortObject):
     r'''A pitch curve.
 
     ::

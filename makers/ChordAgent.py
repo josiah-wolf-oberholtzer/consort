@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import sequencetools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
@@ -9,7 +9,7 @@ from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
-class ChordAgent(abctools.AbjadObject):
+class ChordAgent(ConsortObject):
     r'''A chord agent.
 
     ::

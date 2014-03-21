@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 import collections
-from abjad.tools import abctools
+from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import scoretools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 
 
-class RegisterAgent(abctools.AbjadObject):
+class RegisterAgent(ConsortObject):
     r'''An register agent.
     '''
 
