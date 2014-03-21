@@ -22,6 +22,7 @@ class MusicSpecifier(abctools.AbjadObject):
         '_attachment_agent',
         '_chord_agent',
         '_grace_agent',
+        '_is_sentinel',
         '_pitch_agent',
         '_register_agent',
         '_rhythm_maker',
@@ -35,6 +36,7 @@ class MusicSpecifier(abctools.AbjadObject):
         attachment_agent=None,
         chord_agent=None,
         grace_agent=None,
+        is_sentinel=None,
         pitch_agent=None,
         register_agent=None,
         rhythm_maker=None,
@@ -52,6 +54,9 @@ class MusicSpecifier(abctools.AbjadObject):
         if grace_agent is not None:
             assert isinstance(grace_agent, makers.GraceAgent)
         self._grace_agent = grace_agent
+        if is_sentinel is not None:
+            is_sentinel = bool(is_sentinel)
+        self._is_sentinel = is_sentinel
         if pitch_agent is not None:
             assert isinstance(pitch_agent, makers.PitchAgent)
         self._pitch_agent = pitch_agent
@@ -79,6 +84,10 @@ class MusicSpecifier(abctools.AbjadObject):
     @property
     def grace_agent(self):
         return self._grace_agent
+
+    @property
+    def is_sentinel(self):
+        return self._is_sentinel
 
     @property
     def pitch_agent(self):
