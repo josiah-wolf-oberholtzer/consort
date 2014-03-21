@@ -2,16 +2,13 @@
 from abjad import *
 from experimental.tools import selectortools
 from consort import makers
+from consort import materials
 from consort.segments import base
 
 
 voice_specifier_one = makers.VoiceSpecifier(
     music_specifier=makers.MusicSpecifier(
-        rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-            tie_specifier=rhythmmakertools.TieSpecifier(
-                tie_across_divisions=False,
-                ),
-            ),
+        rhythm_maker=materials.note_rhythm_maker,
         ),
     timespan_maker=makers.TimespanMaker(
         can_split=False,
@@ -49,11 +46,7 @@ voice_specifier_two = makers.VoiceSpecifier(
                     ),
                 ),
             ),
-        rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-            tie_specifier=rhythmmakertools.TieSpecifier(
-                tie_across_divisions=False,
-                ),
-            ),
+        rhythm_maker=materials.note_rhythm_maker,
         ),
     timespan_maker=makers.TimespanMaker(
         can_split=False,
