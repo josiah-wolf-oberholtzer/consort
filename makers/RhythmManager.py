@@ -103,12 +103,36 @@ class RhythmManager(abctools.AbjadObject):
             leaves = division.select_leaves()
             if not all(isinstance(leaf, rest_prototype) for leaf in leaves):
                 break
+            division = music.pop(music.index(division))
+            if isinstance(division, scoretools.Tuplet):
+                duration = inspect_(division).get_duration()
+                rests = scoretools.make_rests([duration])
+                division = scoretools.Container(rests)
             leading_silence.append(division)
         for division in reversed(music[:]):
             leaves = division.select_leaves()
             if not all(isinstance(leaf, rest_prototype) for leaf in leaves):
                 break
+            division = music.pop(music.index(division))
+            if isinstance(division, scoretools.Tuplet):
+                duration = inspect_(division).get_duration()
+                rests = scoretools.make_rests([duration])
+                division = scoretools.Container(rests)
             tailing_silence.insert(0, division)
+        if music:
+            if not isinstance(music[0], scoretools.Tuplet):
+                leading_silence_container = scoretools.Container()
+                while isinstance(music[0][0], rest_prototype):
+                    leading_silence_container.append(music[0].pop(0))
+                if leading_silence_container:
+                    leading_silence.append(leading_silence_container)
+            if not isinstance(music[-1], scoretools.Tuplet):
+                tailing_silence_container = scoretools.Container()
+                while isinstance(music[-1][-1], rest_prototype):
+                    tailing_silence_container.append(music[-1].pop())
+                if tailing_silence_container:
+                    tailing_silence.insert(0, tailing_silence_container)
+
 #        if music:
 #            beam = spannertools.GeneralizedBeam(
 #                durations=durations,
