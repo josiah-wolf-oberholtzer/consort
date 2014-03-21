@@ -28,7 +28,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Violin 1 LH Staff" {
-                            \clef "treble"
+                            \clef "percussion"
                             \context LHVoice = "Violin 1 LH Voice" {
                             }
                         }
@@ -40,7 +40,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Violin 2 LH Staff" {
-                            \clef "treble"
+                            \clef "percussion"
                             \context LHVoice = "Violin 2 LH Voice" {
                             }
                         }
@@ -52,7 +52,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Violin 3 LH Staff" {
-                            \clef "treble"
+                            \clef "percussion"
                             \context LHVoice = "Violin 3 LH Voice" {
                             }
                         }
@@ -64,7 +64,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Violin 4 LH Staff" {
-                            \clef "treble"
+                            \clef "percussion"
                             \context LHVoice = "Violin 4 LH Voice" {
                             }
                         }
@@ -76,7 +76,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Violin 5 LH Staff" {
-                            \clef "treble"
+                            \clef "percussion"
                             \context LHVoice = "Violin 5 LH Voice" {
                             }
                         }
@@ -88,7 +88,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Violin 6 LH Staff" {
-                            \clef "treble"
+                            \clef "percussion"
                             \context LHVoice = "Violin 6 LH Voice" {
                             }
                         }
@@ -102,7 +102,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Viola 1 LH Staff" {
-                            \clef "alto"
+                            \clef "percussion"
                             \context LHVoice = "Viola 1 LH Voice" {
                             }
                         }
@@ -114,7 +114,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Viola 2 LH Staff" {
-                            \clef "alto"
+                            \clef "percussion"
                             \context LHVoice = "Viola 2 LH Voice" {
                             }
                         }
@@ -126,7 +126,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Viola 3 LH Staff" {
-                            \clef "alto"
+                            \clef "percussion"
                             \context LHVoice = "Viola 3 LH Voice" {
                             }
                         }
@@ -138,7 +138,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Viola 4 LH Staff" {
-                            \clef "alto"
+                            \clef "percussion"
                             \context LHVoice = "Viola 4 LH Voice" {
                             }
                         }
@@ -152,7 +152,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Cello 1 LH Staff" {
-                            \clef "bass"
+                            \clef "percussion"
                             \context LHVoice = "Cello 1 LH Voice" {
                             }
                         }
@@ -164,7 +164,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Cello 2 LH Staff" {
-                            \clef "bass"
+                            \clef "percussion"
                             \context LHVoice = "Cello 2 LH Voice" {
                             }
                         }
@@ -176,7 +176,7 @@ class ConsortScoreTemplate(ConsortObject):
                             }
                         }
                         \context LHStaff = "Cello 3 LH Staff" {
-                            \clef "bass"
+                            \clef "percussion"
                             \context LHVoice = "Cello 3 LH Voice" {
                             }
                         }
@@ -231,55 +231,55 @@ class ConsortScoreTemplate(ConsortObject):
                 \context ViolinStaffGroup = "Violin Staff Group" <<
                     \tag #'Violin1
                     \context PerformerStaffGroup = "Violin 1 Staff Group" <<
-                        \context RHStaff = "Violin 1 RH Staff" {
+                        \context RHStaff = "Violin 1 RH Staff" <<
                             \context RHVoice = "Violin 1 RH Voice" {
                             }
-                        }
-                        \context LHStaff = "Violin 1 LH Staff" {
-                            \clef "treble"
+                        >>
+                        \context LHStaff = "Violin 1 LH Staff" <<
+                            \clef "percussion"
                             \context LHVoice = "Violin 1 LH Voice" {
                             }
-                        }
+                        >>
                     >>
                     \tag #'Violin2
                     \context PerformerStaffGroup = "Violin 2 Staff Group" <<
-                        \context RHStaff = "Violin 2 RH Staff" {
+                        \context RHStaff = "Violin 2 RH Staff" <<
                             \context RHVoice = "Violin 2 RH Voice" {
                             }
-                        }
-                        \context LHStaff = "Violin 2 LH Staff" {
-                            \clef "treble"
+                        >>
+                        \context LHStaff = "Violin 2 LH Staff" <<
+                            \clef "percussion"
                             \context LHVoice = "Violin 2 LH Voice" {
                             }
-                        }
+                        >>
                     >>
                 >>
                 \context ViolaStaffGroup = "Viola Staff Group" <<
                     \tag #'Viola
                     \context PerformerStaffGroup = "Viola Staff Group" <<
-                        \context RHStaff = "Viola RH Staff" {
+                        \context RHStaff = "Viola RH Staff" <<
                             \context RHVoice = "Viola RH Voice" {
                             }
-                        }
-                        \context LHStaff = "Viola LH Staff" {
-                            \clef "alto"
+                        >>
+                        \context LHStaff = "Viola LH Staff" <<
+                            \clef "percussion"
                             \context LHVoice = "Viola LH Voice" {
                             }
-                        }
+                        >>
                     >>
                 >>
                 \context CelloStaffGroup = "Cello Staff Group" <<
                     \tag #'Cello
                     \context PerformerStaffGroup = "Cello Staff Group" <<
-                        \context RHStaff = "Cello RH Staff" {
+                        \context RHStaff = "Cello RH Staff" <<
                             \context RHVoice = "Cello RH Voice" {
                             }
-                        }
-                        \context LHStaff = "Cello LH Staff" {
-                            \clef "bass"
+                        >>
+                        \context LHStaff = "Cello LH Staff" <<
+                            \clef "percussion"
                             \context LHVoice = "Cello LH Voice" {
                             }
-                        }
+                        >>
                     >>
                 >>
             >>
@@ -305,15 +305,15 @@ class ConsortScoreTemplate(ConsortObject):
                 \context CelloStaffGroup = "Cello Staff Group" <<
                     \tag #'Cello
                     \context PerformerStaffGroup = "Cello Staff Group" <<
-                        \context RHStaff = "Cello RH Staff" {
+                        \context RHStaff = "Cello RH Staff" <<
                             \context RHVoice = "Cello RH Voice" {
                             }
-                        }
-                        \context LHStaff = "Cello LH Staff" {
-                            \clef "bass"
+                        >>
+                        \context LHStaff = "Cello LH Staff" <<
+                            \clef "percussion"
                             \context LHVoice = "Cello LH Voice" {
                             }
-                        }
+                        >>
                     >>
                 >>
             >>
@@ -423,6 +423,7 @@ class ConsortScoreTemplate(ConsortObject):
                 context_name='LHStaff',
                 name='{} LH Staff'.format(name),
                 )
+            lh_staff.is_simultaneous = True
             attach(pitch_range, lh_staff)
             attach(indicatortools.Clef(clef_name), lh_staff)
             rh_voice = scoretools.Voice(
@@ -436,6 +437,7 @@ class ConsortScoreTemplate(ConsortObject):
                 context_name='RHStaff',
                 name='{} RH Staff'.format(name),
                 )
+            rh_staff.is_simultaneous = True
             staff_group.extend([rh_staff, lh_staff])
         else:
             lh_voice = scoretools.Voice(
@@ -449,6 +451,7 @@ class ConsortScoreTemplate(ConsortObject):
                 context_name='LHStaff',
                 name='{} Staff'.format(name),
                 )
+            lh_staff.is_simultaneous = True
             attach(pitch_range, lh_staff)
             attach(indicatortools.Clef(clef_name), lh_staff)
             staff_group.append(lh_staff)
@@ -485,7 +488,7 @@ class ConsortScoreTemplate(ConsortObject):
             instrument_count = self.violin_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
-                    clef_name='treble',
+                    clef_name='percussion',
                     count=instrument_count,
                     instrument=instrument,
                     )
@@ -499,7 +502,7 @@ class ConsortScoreTemplate(ConsortObject):
             instrument_count = self.viola_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
-                    clef_name='alto',
+                    clef_name='percussion',
                     count=instrument_count,
                     instrument=instrument,
                     )
@@ -513,7 +516,7 @@ class ConsortScoreTemplate(ConsortObject):
             instrument_count = self.cello_count
             instrument_staff_group, instrument_tag_names = \
                 self._make_instrument_staff_group(
-                    clef_name='bass',
+                    clef_name='percussion',
                     count=instrument_count,
                     instrument=instrument,
                     )
