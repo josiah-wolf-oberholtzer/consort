@@ -155,15 +155,15 @@ class RhythmManager(abctools.AbjadObject):
                     tailing_silence_container.append(music[-1].pop())
                 if tailing_silence_container:
                     tailing_silence.insert(0, tailing_silence_container)
-#        if music:
-#            beam = spannertools.GeneralizedBeam(
-#                durations=durations,
-#                include_long_duration_notes=True,
-#                include_long_duration_rests=True,
-#                isolated_nib_direction=None,
-#                use_stemlets=True,
-#                )
-#            attach(beam, music)
+        if music:
+            beam = spannertools.GeneralizedBeam(
+                durations=durations,
+                include_long_duration_notes=True,
+                include_long_duration_rests=True,
+                isolated_nib_direction=None,
+                use_stemlets=True,
+                )
+            attach(beam, music)
         assert sum([
             inspect_(music).get_duration(),
             inspect_(leading_silence).get_duration(),
@@ -201,6 +201,10 @@ class RhythmManager(abctools.AbjadObject):
                     rhythm_maker = rhythmmakertools.RestRhythmMaker()
                 elif music_specifier.rhythm_maker is None:
                     rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                        beam_specifier=rhythmmakertools.BeamSpecifier(
+                            beam_each_division=False,
+                            beam_divisions_together=False,
+                            ),
                         tie_specifier=rhythmmakertools.TieSpecifier(
                             tie_across_divisions=True,
                             ),
