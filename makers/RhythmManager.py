@@ -29,7 +29,9 @@ class RhythmManager(abctools.AbjadObject):
         procedure = lambda x: isinstance(x, scoretools.MultimeasureRest)
         for voice in iterate(score).by_class(scoretools.Voice):
             for music in voice:
-                if inspect_(music).get_indicators(makers.MusicSpecifier):
+                music_specifier = inspect_(music).get_indicator(
+                    makers.MusicSpecifier)
+                if not music_specifier.is_sentinel:
                     continue
                 leaves = music.select_leaves()
                 for is_multimeasure_rest, group in itertools.groupby(
@@ -39,6 +41,35 @@ class RhythmManager(abctools.AbjadObject):
                     group = list(group)
                     spanner = spannertools.StaffLinesSpanner(lines=1)
                     attach(spanner, group)
+
+    @staticmethod
+    def _consolidate_silences(segment_product):
+        from consort import makers
+        score = segment_product.score
+        for voice in iterate(score).by_class(scoretools.Voice):
+            meter_offsets = list(mathtools.cumulative_sums(
+                x.implied_time_signature.duration
+                for x in segment_product.meters))
+            for music in reversed(voice):
+                music_specifier = inspect_(music).get_indicator(
+                    makers.MusicSpecifier)
+                if not music_specifier.is_sentinel:
+                    continue
+                timespan = inspect_(music).get_timespan()
+                start_offset = timespan.start_offset
+                stop_offset = timespan.stop_offset
+                while meter_offsets and stop_offset <= meter_offsets[-1]:
+                    meter_offsets.pop()
+                split_offsets = []
+                while meter_offsets and start_offset < meter_offsets[-1]:
+                    split_offsets.append(meter_offsets.pop())
+                split_offsets = [x - start_offset for x in split_offsets]
+                split_durations = mathtools.cumulative_sums(split_offsets)[1:]
+                rests = scoretools.make_rests([timespan.duration])
+                rest_container = scoretools.Container(rests)
+                music[:] = [rest_container]
+                if split_durations:
+                    mutate(music[:]).split(split_durations)
 
     @staticmethod
     def _iterate_music_and_meters(
@@ -84,11 +115,6 @@ class RhythmManager(abctools.AbjadObject):
         for x in music[:]:
             if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
                 mutate(x).swap(scoretools.Container())
-#        RhythmManager._rewrite_meter(
-#            music,
-#            initial_offset=initial_offset,
-#            meters=meters,
-#            )
         assert inspect_(music).get_duration() == sum(durations)
         rest_prototype = (
             scoretools.Rest,
@@ -155,7 +181,9 @@ class RhythmManager(abctools.AbjadObject):
                     music_specifier = makers.MusicSpecifier()
             return music_specifier
         from consort import makers
-        silent_music_specifier = makers.MusicSpecifier()
+        silent_music_specifier = makers.MusicSpecifier(
+            is_sentinel=True,
+            )
         timespan_inventory_mapping = segment_product.timespan_inventory_mapping
         seeds = collections.Counter()
         voice_names = timespan_inventory_mapping.keys()
@@ -400,6 +428,7 @@ class RhythmManager(abctools.AbjadObject):
         RhythmManager._populate_time_signature_context(segment_product)
         RhythmManager._populate_rhythms(segment_product)
         # TODO: Implement silence consolidation, before meter rewriting
+        RhythmManager._consolidate_silences(segment_product)
         RhythmManager._rewrite_meters(segment_product)
         RhythmManager._cleanup_silences(segment_product)
         return segment_product
