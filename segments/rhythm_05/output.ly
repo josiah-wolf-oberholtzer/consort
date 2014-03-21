@@ -90,12 +90,11 @@
 							}
 							{
 								{
-									r8
+									r4
 								}
 							}
 							{
 								{
-									r8
 									c'16
 								}
 							}
@@ -145,10 +144,12 @@
 								{
 									r8
 								}
+								{
+									r16
+								}
 							}
 							{
 								{
-									r16
 									c'8
 								}
 							}
@@ -201,14 +202,12 @@
 							}
 							{
 								{
-									r8
-								}
-								{
-									r16
-									r8
-								}
-								{
-									r8
+									\stopStaff
+									\once \override Staff.StaffSymbol.line-count = 1
+									\startStaff
+									R1 * 7/16
+									\stopStaff
+									\startStaff
 								}
 								{
 									r8
@@ -256,13 +255,14 @@
 							{
 								{
 									r16
+									r8
+								}
+								{
 									r16
 								}
 							}
 							{
 								{
-									r16
-									r16
 									c'16
 								}
 							}
@@ -318,11 +318,11 @@
 							{
 								{
 									r4
+									r16
 								}
 							}
 							{
 								{
-									r16
 									c'16 ~ [
 									c'16 ]
 								}
@@ -377,10 +377,12 @@
 									r8
 								}
 								{
-									r8.
-								}
-								{
-									r4
+									\stopStaff
+									\once \override Staff.StaffSymbol.line-count = 1
+									\startStaff
+									R1 * 7/16
+									\stopStaff
+									\startStaff
 								}
 							}
 							{
