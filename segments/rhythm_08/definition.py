@@ -2,7 +2,7 @@
 from abjad import new
 from abjad.tools import rhythmmakertools
 from consort import materials
-from consort.segments import time_08 as base
+from consort.segments import time_09 as base
 
 
 voice_specifier_one = new(base.voice_specifier_one,
