@@ -68,6 +68,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -78,6 +79,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -98,6 +100,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -108,6 +111,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -128,6 +132,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -138,6 +143,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -158,6 +164,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -183,6 +190,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -193,6 +201,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -213,6 +222,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -223,6 +233,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -243,6 +254,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -253,6 +265,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -273,6 +286,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -298,6 +312,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -308,6 +323,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -328,6 +344,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -338,6 +355,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -358,6 +376,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -368,6 +387,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -388,6 +408,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 									\bar "||"
 								}

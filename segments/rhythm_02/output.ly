@@ -59,13 +59,25 @@
 						\context LHVoice = "Violin Voice" {
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16
-									c'16 ]
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
 								}
 								{
-									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -79,67 +91,22 @@
 							}
 							{
 								{
-									c'8
-								}
-								{
-									c'16 [
-									c'16 ~
-									c'16
-									c'16 ]
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									c'16 [
-									c'16 ~
-									c'16 ]
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'8
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									c'16 [
-									c'16 ~
-									c'16
-									c'16 ]
-								}
-								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 [
-									c'16 ]
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'8
 								}
 								{
-									c'16 [
-									c'16 ~
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
 									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -150,7 +117,95 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r4
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 1
+									c'8
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r4
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -161,6 +216,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -171,9 +227,17 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -194,12 +258,22 @@
 							}
 							{
 								{
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
 								}
 								{
-									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -210,7 +284,11 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -224,6 +302,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -234,13 +313,25 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
 									c'8
-									c'16 ]
-								}
-								{
-									c'16 ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
 									c'16
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -252,11 +343,19 @@
 							}
 							{
 								{
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
 								}
 								{
-									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
 									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -268,7 +367,11 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -280,6 +383,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -290,13 +394,25 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
 									c'8
-									c'16 ]
-								}
-								{
-									c'16 ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
 									c'16
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -308,6 +424,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -328,8 +445,14 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -343,6 +466,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -353,13 +477,25 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16
-									c'16 ]
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
 								}
 								{
-									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -370,12 +506,22 @@
 							}
 							{
 								{
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
 								}
 								{
-									c'16 [
-									c'16 ~
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
 									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -386,7 +532,11 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -397,6 +547,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -407,13 +558,25 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
 									c'16
-									c'16 ]
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
 								}
 								{
-									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -424,12 +587,22 @@
 							}
 							{
 								{
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
 								}
 								{
-									c'16 [
-									c'16 ~
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
 									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}

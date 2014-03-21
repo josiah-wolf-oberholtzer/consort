@@ -59,16 +59,19 @@
 						\context LHVoice = "Violin Voice" {
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8. -\accent
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -83,16 +86,19 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8 -\accent
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -103,7 +109,11 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -114,6 +124,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -129,6 +140,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -139,12 +151,17 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -155,11 +172,13 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16. -\accent
 								}
 							}
@@ -171,6 +190,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -196,11 +216,13 @@
 						\context LHVoice = "Viola Voice" {
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8 -\accent
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -216,12 +238,17 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 -\accent ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -232,6 +259,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -247,7 +275,11 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -259,12 +291,17 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8. ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -276,7 +313,11 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -288,6 +329,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -298,22 +340,29 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8 -\accent
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									c'16 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -325,6 +374,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -340,6 +390,7 @@
 						\context LHVoice = "Cello Voice" {
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16. -\accent
 								}
 							}
@@ -351,6 +402,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -365,11 +417,13 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 2
 									c'16
 								}
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8 -\accent
 								}
 							}
@@ -380,13 +434,21 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -397,12 +459,17 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
@@ -413,6 +480,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
@@ -423,6 +491,7 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
@@ -438,12 +507,17 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8.
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 -\accent ~ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
@@ -454,12 +528,17 @@
 							}
 							{
 								{
+									\set stemRightBeamCount = 1
 									c'8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
 									c'8 ~ [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
 									c'8 ]
 								}
 							}
