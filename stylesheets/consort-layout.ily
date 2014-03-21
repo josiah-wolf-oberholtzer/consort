@@ -211,10 +211,10 @@ afterGraceFraction = #(cons 127 128)
         \override TupletNumber.font-size = 1
         \override TupletNumber.text = #tuplet-number::calc-fraction-text
         \override VerticalAxisGroup.staff-staff-spacing = #'(
-            (basic-distance . 12)
-            (minimum-distance . 8)
+            (basic-distance . 8)
+            (minimum-distance . 6)
             (padding . 4)
-            (stretchability . 0)
+            (stretchability . 100)
             )
         autoBeaming = ##f
         pedalSustainStyle = #'mixed
