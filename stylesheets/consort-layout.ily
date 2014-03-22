@@ -34,7 +34,6 @@ afterGraceFraction = #(cons 127 128)
         \override NoteColumn.ignore-collision = ##t
         \override NoteHead.stencil = ##f
         \override Stem.stencil = ##f
-        \override TupletBracket.color = #red
         \override TupletBracket.dash-fraction = 0.125
         \override TupletBracket.dash-period = 1.0
         \override TupletBracket.staff-padding = 8
@@ -52,7 +51,6 @@ afterGraceFraction = #(cons 127 128)
         \override NoteHead.stencil = ##f
         \override Stem.stencil = ##f
         \override TupletNumber.stencil = ##f
-        \override TupletBracket.color = #red
         \override TupletBracket.staff-padding = 10
         \override NoteColumn.ignore-collision = ##t
     }
