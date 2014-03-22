@@ -2,7 +2,7 @@
 from consort.makers.ConsortObject import ConsortObject
 
 
-class AnnotationSpecification(ConsortObject):
+class AnnotationSpecifier(ConsortObject):
     r'''An annotation specifier.
 
     Annotated stages:

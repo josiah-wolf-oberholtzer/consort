@@ -5,7 +5,7 @@ from consort import makers
 
 
 segment_maker = makers.ConsortSegmentMaker(
-    annotation_specifier=makers.AnnotationSpecification(
+    annotation_specifier=makers.AnnotationSpecifier(
         show_stage_1=True,
         show_stage_2=True,
         show_stage_3=True,

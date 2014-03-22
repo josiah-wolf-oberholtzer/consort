@@ -296,22 +296,16 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         lilypond_file = self._make_lilypond_file()
         for score in segment_product.scores:
-            score_block = self._make_score_block(score)
+            score = self._configure_score(score)
+            score_block = lilypondfiletools.Block(name='score')
+            score_block.items.append(score)
             lilypond_file.items.append(score_block)
 
         return lilypond_file
 
     ### PRIVATE METHODS ###
 
-    def _make_lilypond_file(self):
-        lilypond_file = lilypondfiletools.LilyPondFile()
-        lilypond_file.use_relative_includes = True
-        for file_path in self.stylesheet_file_paths:
-            lilypond_file.file_initial_user_includes.append(file_path)
-        lilypond_file.file_initial_system_comments[:] = []
-        return lilypond_file
-
-    def _make_score_block(self, score):
+    def _configure_score(self, score):
         if self.rehearsal_mark is not None:
             rehearsal_mark_text = 'mark \\markup {{ ' \
                 "\\override #'(box-padding . 0.5) " \
@@ -332,9 +326,15 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         else:
             score.add_final_bar_line('||')
         assert inspect_(score).is_well_formed()
-        score_block = lilypondfiletools.Block(name='score')
-        score_block.items.append(score)
-        return score_block
+        return score
+
+    def _make_lilypond_file(self):
+        lilypond_file = lilypondfiletools.LilyPondFile()
+        lilypond_file.use_relative_includes = True
+        for file_path in self.stylesheet_file_paths:
+            lilypond_file.file_initial_user_includes.append(file_path)
+        lilypond_file.file_initial_system_comments[:] = []
+        return lilypond_file
 
     ### PUBLIC METHODS ###
 
