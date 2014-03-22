@@ -24,6 +24,7 @@ class PerformedTimespan(timespantools.Timespan):
 
     __slots__ = (
         '_can_split',
+        '_color',
         '_layer',
         '_minimum_duration',
         '_music_specifier',
@@ -37,6 +38,7 @@ class PerformedTimespan(timespantools.Timespan):
     def __init__(
         self,
         can_split=None,
+        color=None,
         layer=None,
         minimum_duration=None,
         music_specifier=None,
@@ -97,6 +99,10 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def can_split(self):
         return self._can_split
+
+    @property
+    def color(self):
+        return self._color
 
     @property
     def layer(self):
