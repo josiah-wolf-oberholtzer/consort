@@ -21,6 +21,13 @@ voice_specifier_one = new(base.voice_specifier_one,
     )
 
 segment_maker = new(base.segment_maker,
+    annotation_specifier__show_stage_1=False,
+    annotation_specifier__show_stage_2=False,
+    annotation_specifier__show_stage_3=False,
+    annotation_specifier__show_stage_4=True,
+    annotation_specifier__show_stage_5=True,
+    annotation_specifier__show_stage_6=False,
+    name='changing notes into rests',
     rehearsal_mark='B5',
     voice_specifiers=(
         voice_specifier_one,
