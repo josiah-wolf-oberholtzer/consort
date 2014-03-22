@@ -105,6 +105,20 @@ class PerformedTimespan(timespantools.Timespan):
         return self._color
 
     @property
+    def is_left_broken(self):
+        if self.original_start_offset is not None:
+            if self.original_start_offset != self.start_offset:
+                return False
+        return True
+
+    @property
+    def is_right_broken(self):
+        if self.original_stop_offset is not None:
+            if self.original_stop_offset != self.stop_offset:
+                return False
+        return True
+
+    @property
     def layer(self):
         return self._layer
 
