@@ -6,6 +6,7 @@ from abjad.tools import schemetools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
+from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
 from abjad.tools.topleveltools import override
 from consort.makers.ConsortObject import ConsortObject
@@ -16,6 +17,129 @@ class EditorialManager(ConsortObject):
     '''
 
     ### PUBLIC PROPERTIES ###
+
+    @staticmethod
+    def _annotate_stage_1(
+        segment_product=None,
+        ):
+        from consort import makers
+        rewritten_score = segment_product.score
+        score_copy = mutate(rewritten_score).copy()
+        annotated_score = makers.EditorialManager.annotate(
+            score=score_copy,
+            segment_product=segment_product,
+            )
+        manager = override(annotated_score)
+        manager.bar_line.transparent = True
+        manager.beam.transparent = True
+        manager.dots.transparent = True
+        manager.flag.transparent = True
+        manager.note_head.transparent = True
+        manager.rest.transparent = True
+        manager.span_bar.transparent = True
+        manager.stem.transparent = True
+        manager.tie.transparent = True
+        manager.tuplet_bracket.transparent = True
+        manager.tuplet_number.transparent = True
+        prototype = scoretools.Voice
+        for voice in iterate(annotated_score).by_class(prototype):
+            if voice.context_name != 'LHVoice':
+                continue
+            override(voice).tuplet_bracket.transparent = True
+        segment_product.scores.append(annotated_score)
+
+    @staticmethod
+    def _annotate_stage_2(
+        segment_product=None,
+        ):
+        from consort import makers
+        rewritten_score = segment_product.score
+        score_copy = mutate(rewritten_score).copy()
+        annotated_score = makers.EditorialManager.annotate(
+            score=score_copy,
+            segment_product=segment_product,
+            )
+        manager = override(annotated_score)
+        manager.bar_line.transparent = True
+        manager.beam.transparent = True
+        manager.dots.transparent = True
+        manager.flag.transparent = True
+        manager.note_head.transparent = True
+        manager.rest.transparent = True
+        manager.span_bar.transparent = True
+        manager.stem.transparent = True
+        manager.tie.transparent = True
+        manager.tuplet_number.transparent = True
+        prototype = scoretools.Voice
+        for voice in iterate(annotated_score).by_class(prototype):
+            if voice.context_name != 'LHVoice':
+                continue
+            override(voice).tuplet_bracket.transparent = True
+        segment_product.scores.append(annotated_score)
+
+    @staticmethod
+    def _annotate_stage_3(
+        segment_product=None,
+        ):
+        from consort import makers
+        rewritten_score = segment_product.rewritten_score
+        score_copy = mutate(rewritten_score).copy()
+        annotated_score = makers.EditorialManager.annotate(
+            score=score_copy,
+            segment_product=segment_product,
+            )
+        manager = override(annotated_score)
+        manager.beam.transparent = True
+        manager.dots.transparent = True
+        manager.flag.transparent = True
+        manager.note_head.transparent = True
+        manager.rest.transparent = True
+        manager.stem.transparent = True
+        manager.tie.transparent = True
+        manager.tuplet_number.transparent = True
+        prototype = scoretools.Voice
+        for voice in iterate(annotated_score).by_class(prototype):
+            if voice.context_name != 'LHVoice':
+                continue
+            override(voice).tuplet_bracket.transparent = True
+        segment_product.scores.append(annotated_score)
+
+    @staticmethod
+    def _annotate_stage_4(
+        segment_product=None,
+        ):
+        from consort import makers
+        unrewritten_score = segment_product.unrewritten_score
+        score_copy = mutate(unrewritten_score).copy()
+        annotated_score = makers.EditorialManager.annotate(
+            score=score_copy,
+            segment_product=segment_product,
+            )
+        segment_product.scores.append(annotated_score)
+
+    @staticmethod
+    def _annotate_stage_5(
+        segment_product=None,
+        ):
+        from consort import makers
+        score_copy = mutate(segment_product.score).copy()
+        annotated_score = makers.EditorialManager.annotate(
+            score=score_copy,
+            segment_product=segment_product,
+            )
+        segment_product.scores.append(annotated_score)
+
+    @staticmethod
+    def _annotate_stage_6(
+        segment_product=None,
+        ):
+        from consort import makers
+        score_copy = mutate(segment_product.score).copy()
+        annotated_score = makers.EditorialManager.annotate(
+            score=score_copy,
+            segment_product=segment_product,
+            )
+        segment_product.scores.append(annotated_score)
 
     @staticmethod
     def _create_all_annotation_voices(

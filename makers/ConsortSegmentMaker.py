@@ -6,11 +6,10 @@ from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
 from abjad.tools import scoretools
+from abjad.tools import systemtools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
-from abjad.tools.topleveltools import mutate
-from abjad.tools.topleveltools import override
 from abjad.tools.topleveltools import persist
 from experimental.tools import segmentmakertools
 
@@ -166,6 +165,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     def __call__(self):
         from consort import makers
+
         segment_product = makers.SegmentProduct(segment_maker=self)
         segment_product.score = self.template()
 
@@ -183,95 +183,16 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             )
 
         if self.annotation_specifier is not None:
-            rewritten_score = segment_product.score
-            unrewritten_score = segment_product.unrewritten_score
             if self.annotation_specifier.show_stage_1:
-                score_copy = mutate(rewritten_score).copy()
-                annotated_score = makers.EditorialManager.annotate(
-                    score=score_copy,
-                    segment_product=segment_product,
-                    )
-                manager = override(annotated_score)
-                manager.bar_line.transparent = True
-                manager.beam.transparent = True
-                manager.dots.transparent = True
-                manager.flag.transparent = True
-                manager.note_head.transparent = True
-                manager.rest.transparent = True
-                manager.span_bar.transparent = True
-                manager.stem.transparent = True
-                manager.tie.transparent = True
-                manager.tuplet_bracket.transparent = True
-                manager.tuplet_number.transparent = True
-                prototype = scoretools.Voice
-                for voice in iterate(annotated_score).by_class(prototype):
-                    if voice.context_name != 'LHVoice':
-                        continue
-                    override(voice).tuplet_bracket.transparent = True
-                segment_product.scores.append(annotated_score)
-
+                makers.EditorialManager._annotate_stage_1(segment_product)
             if self.annotation_specifier.show_stage_2:
-                score_copy = mutate(rewritten_score).copy()
-                annotated_score = makers.EditorialManager.annotate(
-                    score=score_copy,
-                    segment_product=segment_product,
-                    )
-                manager = override(annotated_score)
-                manager.bar_line.transparent = True
-                manager.beam.transparent = True
-                manager.dots.transparent = True
-                manager.flag.transparent = True
-                manager.note_head.transparent = True
-                manager.rest.transparent = True
-                manager.span_bar.transparent = True
-                manager.stem.transparent = True
-                manager.tie.transparent = True
-                manager.tuplet_number.transparent = True
-                prototype = scoretools.Voice
-                for voice in iterate(annotated_score).by_class(prototype):
-                    if voice.context_name != 'LHVoice':
-                        continue
-                    override(voice).tuplet_bracket.transparent = True
-                segment_product.scores.append(annotated_score)
-
+                makers.EditorialManager._annotate_stage_2(segment_product)
             if self.annotation_specifier.show_stage_3:
-                score_copy = mutate(rewritten_score).copy()
-                annotated_score = makers.EditorialManager.annotate(
-                    score=score_copy,
-                    segment_product=segment_product,
-                    )
-                manager = override(annotated_score)
-                manager.beam.transparent = True
-                manager.dots.transparent = True
-                manager.flag.transparent = True
-                manager.note_head.transparent = True
-                manager.rest.transparent = True
-                manager.stem.transparent = True
-                manager.tie.transparent = True
-                manager.tuplet_number.transparent = True
-                prototype = scoretools.Voice
-                for voice in iterate(annotated_score).by_class(prototype):
-                    if voice.context_name != 'LHVoice':
-                        continue
-                    override(voice).tuplet_bracket.transparent = True
-                segment_product.scores.append(annotated_score)
-
+                makers.EditorialManager._annotate_stage_3(segment_product)
             if self.annotation_specifier.show_stage_4:
-                score_copy = mutate(unrewritten_score).copy()
-                annotated_score = makers.EditorialManager.annotate(
-                    score=score_copy,
-                    segment_product=segment_product,
-                    )
-                segment_product.scores.append(annotated_score)
-
-        if self.annotation_specifier is not None and \
-            self.annotation_specifier.show_stage_5:
-            score_copy = mutate(segment_product.score).copy()
-            annotated_score = makers.EditorialManager.annotate(
-                score=score_copy,
-                segment_product=segment_product,
-                )
-            segment_product.scores.append(annotated_score)
+                makers.EditorialManager._annotate_stage_4(segment_product)
+            if self.annotation_specifier.show_stage_5:
+                makers.EditorialManager._annotate_stage_5(segment_product)
 
         makers.GraceAgent.iterate_score(segment_product.score)
         #makers.PitchAgent.iterate_score(segment_product.score)
@@ -282,12 +203,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         if self.annotation_specifier is not None and \
             self.annotation_specifier.show_stage_6:
-            score_copy = mutate(segment_product.score).copy()
-            annotated_score = makers.EditorialManager.annotate(
-                score=score_copy,
-                segment_product=segment_product,
-                )
-            segment_product.scores.append(annotated_score)
+                makers.EditorialManager._annotate_stage_6(segment_product)
 
         if self.annotation_specifier is not None:
             if self.annotation_specifier.show_unannotated_result:
