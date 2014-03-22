@@ -36,7 +36,7 @@ class SegmentProduct(ConsortObject):
     ### PRIVATE PROPERTIES ###
 
     @property
-    def _storage_format_specification(self):
+    def _storage_format_specifier(self):
         from abjad.tools import systemtools
         return systemtools.StorageFormatSpecification(
             self,

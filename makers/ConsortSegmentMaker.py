@@ -103,7 +103,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_annotation_specification',
+        '_annotation_specifier',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_rehearsal_mark',
@@ -118,7 +118,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     def __init__(
         self,
-        annotation_specification=None,
+        annotation_specifier=None,
         is_final_segment=False,
         name=None,
         permitted_time_signatures=None,
@@ -134,7 +134,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             self,
             name=name,
             )
-        self._annotation_specification = annotation_specification
+        self._annotation_specifier = annotation_specifier
         self._is_final_segment = bool(is_final_segment)
         if permitted_time_signatures is not None:
             permitted_time_signatures = indicatortools.TimeSignatureInventory(
@@ -181,10 +181,10 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             segment_product=segment_product,
             )
 
-        if self.annotation_specification is not None:
+        if self.annotation_specifier is not None:
             rewritten_score = segment_product.score
             unrewritten_score = segment_product.unrewritten_score
-            if self.annotation_specification.show_stage_1:
+            if self.annotation_specifier.show_stage_1:
                 score_copy = mutate(rewritten_score).copy()
                 annotated_score = makers.EditorialManager.annotate(
                     score=score_copy,
@@ -209,7 +209,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     override(voice).tuplet_bracket.transparent = True
                 segment_product.scores.append(annotated_score)
 
-            if self.annotation_specification.show_stage_2:
+            if self.annotation_specifier.show_stage_2:
                 score_copy = mutate(rewritten_score).copy()
                 annotated_score = makers.EditorialManager.annotate(
                     score=score_copy,
@@ -233,7 +233,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     override(voice).tuplet_bracket.transparent = True
                 segment_product.scores.append(annotated_score)
 
-            if self.annotation_specification.show_stage_3:
+            if self.annotation_specifier.show_stage_3:
                 score_copy = mutate(rewritten_score).copy()
                 annotated_score = makers.EditorialManager.annotate(
                     score=score_copy,
@@ -255,7 +255,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     override(voice).tuplet_bracket.transparent = True
                 segment_product.scores.append(annotated_score)
 
-            if self.annotation_specification.show_stage_4:
+            if self.annotation_specifier.show_stage_4:
                 score_copy = mutate(unrewritten_score).copy()
                 annotated_score = makers.EditorialManager.annotate(
                     score=score_copy,
@@ -263,8 +263,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     )
                 segment_product.scores.append(annotated_score)
 
-        if self.annotation_specification is not None and \
-            self.annotation_specification.show_stage_5:
+        if self.annotation_specifier is not None and \
+            self.annotation_specifier.show_stage_5:
             score_copy = mutate(segment_product.score).copy()
             annotated_score = makers.EditorialManager.annotate(
                 score=score_copy,
@@ -279,8 +279,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         #makers.ChordAgent.iterate_score(segment_product.score)
         makers.AttachmentAgent.iterate_score(segment_product.score)
 
-        if self.annotation_specification is not None and \
-            self.annotation_specification.show_stage_6:
+        if self.annotation_specifier is not None and \
+            self.annotation_specifier.show_stage_6:
             score_copy = mutate(segment_product.score).copy()
             annotated_score = makers.EditorialManager.annotate(
                 score=score_copy,
@@ -288,8 +288,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 )
             segment_product.scores.append(annotated_score)
 
-        if self.annotation_specification is not None:
-            if self.annotation_specification.show_unannotated_result:
+        if self.annotation_specifier is not None:
+            if self.annotation_specifier.show_unannotated_result:
                 segment_product.scores.append(segment_product.score)
         else:
             segment_product.scores.append(segment_product.score)
@@ -413,8 +413,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def annotation_specification(self):
-        return self._annotation_specification
+    def annotation_specifier(self):
+        return self._annotation_specifier
 
     @property
     def final_markup(self):

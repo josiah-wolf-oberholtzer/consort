@@ -84,7 +84,7 @@ class PerformedTimespan(timespantools.Timespan):
     ### PRIVATE PROPERTIES ###
 
     @property
-    def _storage_format_specification(self):
+    def _storage_format_specifier(self):
         from abjad.tools import systemtools
         manager = systemtools.StorageFormatManager
         keyword_argument_names = list(manager.get_keyword_argument_names(self))

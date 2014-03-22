@@ -13,7 +13,7 @@ class VoiceSpecifier(ConsortObject):
     - a sequence of voice identifiers
 
     They represent the complete logic for how a collection of timespans should
-    be arranged in time, on what voices, with what music specifications to
+    be arranged in time, on what voices, with what music specifiers to
     inscribe them with.
 
     ::

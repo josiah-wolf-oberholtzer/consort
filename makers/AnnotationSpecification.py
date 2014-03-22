@@ -3,20 +3,20 @@ from consort.makers.ConsortObject import ConsortObject
 
 
 class AnnotationSpecification(ConsortObject):
-    r'''An annotation specification.
+    r'''An annotation specifier.
 
     Annotated stages:
 
         stage 1: no brackets, no notation, no barlines
-        stage 2: outer bracket, no barlines, no notation
-        stage 3: outer bracket, barlines, no notation
-        stage 4: outer bracket, barlines, notation (not rewritten)
-        stage 5: outer bracket, barlines, notation (rewritten)
+        stage 2: bracket, no barlines, no notation
+        stage 3: bracket, barlines, no notation
+        stage 4: bracket, barlines, notation (not rewritten)
+        stage 5: bracket, barlines, notation (rewritten)
         stage 6: brackets, barlines, notation (rewritten), and all attachments
 
     Final stage:
 
-        stage 6: no brackets, barlines, notation (rewritten)
+        stage X: no brackets, barlines, notation (rewritten)
 
     '''
 

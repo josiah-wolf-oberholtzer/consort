@@ -30,10 +30,10 @@ class EditorialManager(ConsortObject):
             template=segment_product.segment_maker.template,
             voice_names=voice_names,
             )
-        annotation_specification = \
-            segment_product.segment_maker.annotation_specification
+        annotation_specifier = \
+            segment_product.segment_maker.annotation_specifier
         hide_inner_bracket = \
-            annotation_specification.hide_inner_bracket
+            annotation_specifier.hide_inner_bracket
         for voice_name in voice_names:
             timespan_inventory = timespan_inventory_mapping[voice_name]
             inner_annotation, outer_annotation = \
