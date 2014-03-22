@@ -7,6 +7,7 @@ from consort.segments import base
 
 
 voice_specifier_one = makers.VoiceSpecifier(
+    color='red',
     music_specifier=makers.MusicSpecifier(
         rhythm_maker=materials.note_rhythm_maker,
         ),
@@ -35,6 +36,7 @@ voice_specifier_one = makers.VoiceSpecifier(
 
 
 voice_specifier_two = makers.VoiceSpecifier(
+    color='blue',
     music_specifier=makers.MusicSpecifier(
         attachment_agent=makers.AttachmentAgent(
             attachment_specifiers=(
@@ -72,9 +74,10 @@ voice_specifier_two = makers.VoiceSpecifier(
 
 segment_maker = new(base.segment_maker,
     annotation_specifier__show_stage_1=False,
+    annotation_specifier__show_stage_2=False,
     annotation_specifier__show_stage_4=False,
     annotation_specifier__show_stage_6=False,
-    name='making blue timespans less regular',
+    name='desynchronizing blue timespan releases',
     rehearsal_mark='A7',
     voice_specifiers=(
         voice_specifier_one,
