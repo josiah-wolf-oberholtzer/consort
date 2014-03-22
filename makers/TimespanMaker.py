@@ -223,6 +223,8 @@ class TimespanMaker(ConsortObject):
             layer=layer,
             minimum_duration=self.minimum_duration,
             music_specifier=music_specifier,
+            original_start_offset=start_offset,
+            original_stop_offset=stop_offset,
             start_offset=start_offset,
             stop_offset=stop_offset,
             voice_name=voice_name,

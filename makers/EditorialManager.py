@@ -2,6 +2,7 @@
 import itertools
 from abjad.tools import durationtools
 from abjad.tools import scoretools
+from abjad.tools import schemetools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
@@ -77,6 +78,11 @@ class EditorialManager(ConsortObject):
             timespans = timespantools.TimespanInventory(timespans)
             outer_duration = timespans.duration
             inner_durations = [x.duration for x in timespans]
+            colors = tuple(set([timespan.color for timespan in timespans]))
+            assert len(colors) == 1
+            color = colors[0]
+            is_left_broken = timespans[0].is_left_broken
+            is_right_broken = timespans[-1].is_right_broken
             if music_specifier is None or music_specifier.is_sentinel:
                 outer_note = scoretools.Note("c'1")
                 outer_multiplier = durationtools.Multiplier(outer_duration)
@@ -86,10 +92,34 @@ class EditorialManager(ConsortObject):
                 inner_annotation.append(inner_note)
                 continue
             outer_tuplet = scoretools.Tuplet(outer_duration, "c'1")
+            override(outer_tuplet).tuplet_bracket.color = color
+            EditorialManager._override_tuplet_edge_height(
+                is_left_broken=is_left_broken,
+                is_right_broken=is_right_broken,
+                tuplet=outer_tuplet,
+                )
             outer_annotation.append(outer_tuplet)
             if not hide_inner_bracket:
-                inner_tuplets = [scoretools.Tuplet(inner_duration, "c'1")
-                    for inner_duration in inner_durations]
+                inner_tuplets = []
+                for inner_duration in inner_durations:
+                    inner_tuplet = scoretools.Tuplet(inner_duration, "c'1")
+                    override(inner_tuplet).tuplet_bracket.color = color
+                    inner_tuplets.append(inner_tuplet)
+                if len(inner_tuplets) == 1:
+                    EditorialManager._override_tuplet_edge_height(
+                        is_left_broken=is_left_broken,
+                        is_right_broken=is_right_broken,
+                        tuplet=inner_tuplets[0],
+                        )
+                else:
+                    if is_left_broken:
+                        manager = override(inner_tuplets[0])
+                        manager.tuplet_bracket.edge_height = \
+                            schemetools.SchemePair(0, 0.7)
+                    if is_right_broken:
+                        manager = override(inner_tuplets[-1])
+                        manager.tuplet_bracket.edge_height = \
+                            schemetools.SchemePair(0.7, 0)
                 inner_annotation.extend(inner_tuplets)
             else:
                 inner_note = scoretools.Note("c'1")
@@ -100,6 +130,23 @@ class EditorialManager(ConsortObject):
             override(inner_annotation).tuplet_bracket.transparent = True
             override(outer_annotation).tuplet_bracket.transparent = True
         return inner_annotation, outer_annotation
+
+    @staticmethod
+    def _override_tuplet_edge_height(
+        is_left_broken=None,
+        is_right_broken=None,
+        tuplet=None,
+        ):
+        if is_left_broken:
+            if is_right_broken:
+                override(tuplet).tuplet_bracket.edge_height = \
+                    schemetools.SchemePair(0, 0)
+            else:
+                override(tuplet).tuplet_bracket.edge_height = \
+                    schemetools.SchemePair(0, 0.7)
+        elif is_right_broken:
+            override(tuplet).tuplet_bracket.edge_height = \
+                schemetools.SchemePair(0.7, 0)
 
     ### PUBLIC METHODS ###
 

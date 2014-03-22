@@ -111,15 +111,15 @@ class PerformedTimespan(timespantools.Timespan):
     def is_left_broken(self):
         if self.original_start_offset is not None:
             if self.original_start_offset != self.start_offset:
-                return False
-        return True
+                return True
+        return False
 
     @property
     def is_right_broken(self):
         if self.original_stop_offset is not None:
             if self.original_stop_offset != self.stop_offset:
-                return False
-        return True
+                return True
+        return False
 
     @property
     def layer(self):
