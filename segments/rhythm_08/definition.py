@@ -27,6 +27,13 @@ voice_specifier_two = new(base.voice_specifier_two,
     )
 
 segment_maker = new(base.segment_maker,
+    annotation_specifier__show_stage_1=False,
+    annotation_specifier__show_stage_2=False,
+    annotation_specifier__show_stage_3=False,
+    annotation_specifier__show_stage_4=True,
+    annotation_specifier__show_stage_5=True,
+    annotation_specifier__show_stage_6=False,
+    name='adding rhythms to blue timespans',
     rehearsal_mark='B8',
     voice_specifiers=(
         voice_specifier_one,
