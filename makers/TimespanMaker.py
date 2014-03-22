@@ -51,24 +51,32 @@ class TimespanMaker(ConsortObject):
             [
                 makers.PerformedTimespan(
                     minimum_duration=durationtools.Duration(1, 8),
+                    original_start_offset=durationtools.Offset(0, 1),
+                    original_stop_offset=durationtools.Offset(1, 4),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
                     minimum_duration=durationtools.Duration(1, 8),
+                    original_start_offset=durationtools.Offset(1, 4),
+                    original_stop_offset=durationtools.Offset(1, 2),
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Viola',
                     ),
                 makers.PerformedTimespan(
                     minimum_duration=durationtools.Duration(1, 8),
+                    original_start_offset=durationtools.Offset(1, 2),
+                    original_stop_offset=durationtools.Offset(3, 4),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
                     minimum_duration=durationtools.Duration(1, 8),
+                    original_start_offset=durationtools.Offset(3, 4),
+                    original_stop_offset=durationtools.Offset(1, 1),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola',

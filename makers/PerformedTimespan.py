@@ -14,6 +14,8 @@ class PerformedTimespan(timespantools.Timespan):
         >>> print format(timespan)
         makers.PerformedTimespan(
             minimum_duration=durationtools.Duration(0, 1),
+            original_start_offset=NegativeInfinity,
+            original_stop_offset=Infinity,
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )
