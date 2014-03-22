@@ -16,10 +16,4 @@ class ConsortObject(abctools.AbjadObject):
         return systemtools.StorageFormatManager.compare(self, expr)
 
     def __hash__(self):
-        hash_values = systemtools.StorageFormatManager.get_hash_values(self)
-        try:
-            result = hash(hash_values)
-        except TypeError as e:
-            print hash_values
-            raise e
-        return result
+        return hash((type(self), format(self)))
