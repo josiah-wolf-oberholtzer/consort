@@ -12,6 +12,7 @@ class AnnotationSpecification(ConsortObject):
         stage 3: outer bracket, barlines, no notation
         stage 4: outer bracket, barlines, notation (not rewritten)
         stage 5: outer bracket, barlines, notation (rewritten)
+        stage 6: brackets, barlines, notation (rewritten), and all attachments
 
     Final stage:
 
@@ -28,6 +29,7 @@ class AnnotationSpecification(ConsortObject):
         '_show_stage_3',
         '_show_stage_4',
         '_show_stage_5',
+        '_show_stage_6',
         )
 
     ### INITIALIZER ###
@@ -35,11 +37,12 @@ class AnnotationSpecification(ConsortObject):
     def __init__(
         self,
         hide_inner_bracket=None,
-        show_stage_1=None,
-        show_stage_2=None,
-        show_stage_3=None,
-        show_stage_4=None,
-        show_stage_5=None,
+        show_stage_1=True,
+        show_stage_2=True,
+        show_stage_3=True,
+        show_stage_4=True,
+        show_stage_5=True,
+        show_stage_6=True,
         ):
         self._hide_inner_bracket = hide_inner_bracket
         self._show_stage_1 = show_stage_1
@@ -47,6 +50,7 @@ class AnnotationSpecification(ConsortObject):
         self._show_stage_3 = show_stage_3
         self._show_stage_4 = show_stage_4
         self._show_stage_5 = show_stage_5
+        self._show_stage_6 = show_stage_6
 
     ### PUBLIC PROPERTIES ###
 
@@ -73,3 +77,7 @@ class AnnotationSpecification(ConsortObject):
     @property
     def show_stage_5(self):
         return self._show_stage_5
+
+    @property
+    def show_stage_6(self):
+        return self._show_stage_6

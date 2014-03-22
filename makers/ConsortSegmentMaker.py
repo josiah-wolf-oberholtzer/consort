@@ -279,6 +279,15 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         #makers.ChordAgent.iterate_score(segment_product.score)
         makers.AttachmentAgent.iterate_score(segment_product.score)
 
+        if self.annotation_specification is not None and \
+            self.annotation_specification.show_stage_6:
+            score_copy = mutate(segment_product.score).copy()
+            annotated_score = makers.EditorialManager.annotate(
+                score=score_copy,
+                segment_product=segment_product,
+                )
+            segment_product.scores.append(annotated_score)
+
         segment_product.scores.append(segment_product.score)
 
         lilypond_file = self._make_lilypond_file()
