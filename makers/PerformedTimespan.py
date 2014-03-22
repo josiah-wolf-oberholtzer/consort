@@ -57,6 +57,9 @@ class PerformedTimespan(timespantools.Timespan):
         if can_split is not None:
             can_split = bool(can_split)
         self._can_split = can_split
+        if color is not None:
+            color = str(color)
+        self._color = color
         if layer is not None:
             layer = int(layer)
         self._layer = layer

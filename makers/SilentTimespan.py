@@ -9,3 +9,17 @@ class SilentTimespan(timespantools.Timespan):
     ### CLASS VARIABLES ###
 
     __slots__ = ()
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def color(self):
+        return None
+
+    @property
+    def is_left_broken(self):
+        return False
+
+    @property
+    def is_right_broken(self):
+        return False
