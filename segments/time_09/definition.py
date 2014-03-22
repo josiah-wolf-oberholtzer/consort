@@ -75,9 +75,10 @@ voice_specifier_two = makers.VoiceSpecifier(
 
 segment_maker = new(base.segment_maker,
     annotation_specifier__show_stage_1=False,
+    annotation_specifier__show_stage_2=False,
     annotation_specifier__show_stage_4=False,
     annotation_specifier__show_stage_6=False,
-    name='masking out brief blue timespans',
+    name='masking out brief red timespans',
     rehearsal_mark='A9',
     voice_specifiers=(
         voice_specifier_one,
