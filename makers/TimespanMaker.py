@@ -144,6 +144,7 @@ class TimespanMaker(ConsortObject):
 
     def __call__(
         self,
+        color=None,
         layer=None,
         music_specifier=None,
         target_duration=None,
@@ -186,6 +187,7 @@ class TimespanMaker(ConsortObject):
         #print silence_durations
 
         timespan_inventory, final_offset = procedure(
+            color=color,
             initial_silence_durations=initial_silence_durations,
             layer=layer,
             music_specifier=music_specifier,
@@ -207,6 +209,7 @@ class TimespanMaker(ConsortObject):
 
     def _make_performed_timespan(
         self,
+        color=None,
         layer=None,
         music_specifier=None,
         start_offset=None,
@@ -216,6 +219,7 @@ class TimespanMaker(ConsortObject):
         from consort import makers
         timespan = makers.PerformedTimespan(
             can_split=self.can_split,
+            color=color,
             layer=layer,
             minimum_duration=self.minimum_duration,
             music_specifier=music_specifier,
@@ -227,6 +231,7 @@ class TimespanMaker(ConsortObject):
 
     def _make_with_synchronized_step(
         self,
+        color=None,
         initial_silence_durations=None,
         layer=None,
         music_specifier=None,
@@ -263,6 +268,7 @@ class TimespanMaker(ConsortObject):
                         can_continue = False
                         break
                     timespan = self._make_performed_timespan(
+                        color=color,
                         layer=layer,
                         music_specifier=music_specifier,
                         start_offset=current_offset,
@@ -283,6 +289,7 @@ class TimespanMaker(ConsortObject):
 
     def _make_without_synchronized_step(
         self,
+        color=None,
         initial_silence_durations=None,
         layer=None,
         music_specifier=None,
@@ -313,6 +320,7 @@ class TimespanMaker(ConsortObject):
                     if maximum_offset < (current_offset + duration):
                         break
                     timespan = self._make_performed_timespan(
+                        color=color,
                         layer=layer,
                         music_specifier=music_specifier,
                         start_offset=current_offset,
