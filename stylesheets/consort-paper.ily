@@ -28,8 +28,9 @@
     print-first-page-number = ##f
     print-page-number = ##t
     ragged-bottom = ##f
-    ragged-last-bottom = ##t
+    ragged-last-bottom = ##f
     right-margin = 10\mm
+    systems-per-page = 3
     top-margin = 10\mm
 
     markup-system-spacing = #'(
