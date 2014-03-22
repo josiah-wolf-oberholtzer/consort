@@ -14,8 +14,6 @@ class PerformedTimespan(timespantools.Timespan):
         >>> print format(timespan)
         makers.PerformedTimespan(
             minimum_duration=durationtools.Duration(0, 1),
-            original_start_offset=NegativeInfinity,
-            original_stop_offset=Infinity,
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )
@@ -86,7 +84,7 @@ class PerformedTimespan(timespantools.Timespan):
     ### PRIVATE PROPERTIES ###
 
     @property
-    def _storage_format_specifier(self):
+    def _storage_format_specification(self):
         from abjad.tools import systemtools
         manager = systemtools.StorageFormatManager
         keyword_argument_names = list(manager.get_keyword_argument_names(self))
