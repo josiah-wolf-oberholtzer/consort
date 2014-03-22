@@ -68,6 +68,10 @@ voice_specifier_two = makers.VoiceSpecifier(
 
 
 segment_maker = new(base.segment_maker,
+    annotation_specifier__show_stage_1=False,
+    annotation_specifier__show_stage_4=False,
+    annotation_specifier__show_stage_6=False,
+    name='overlaying red timespans with blue',
     rehearsal_mark='A6',
     voice_specifiers=(
         voice_specifier_one,

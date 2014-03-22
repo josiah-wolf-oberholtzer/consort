@@ -16,6 +16,12 @@ voice_specifier_two = new(base.voice_specifier_two,
 
 
 segment_maker = new(base.segment_maker,
+    annotation_specifier=makers.AnnotationSpecification(
+        show_stage_3=True,
+        show_stage_4=True,
+        show_stage_5=True,
+        ),
+    name='adding grace notes (a longer pattern)',
     rehearsal_mark='C3',
     voice_specifiers=(
         voice_specifier_one,

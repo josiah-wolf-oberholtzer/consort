@@ -16,6 +16,7 @@ voice_specifier_two = new(base.voice_specifier_two,
 
 
 segment_maker = new(base.segment_maker,
+    name='adding grace notes (every other red attack)',
     rehearsal_mark='C2',
     voice_specifiers=(
         voice_specifier_one,
