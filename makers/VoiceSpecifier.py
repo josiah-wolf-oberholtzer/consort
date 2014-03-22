@@ -1,9 +1,6 @@
 # -*- encoding: utf-8 -*-
-import re
 from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import durationtools
-from abjad.tools import scoretools
-from abjad.tools import timespantools
 
 
 class VoiceSpecifier(ConsortObject):
@@ -146,6 +143,7 @@ class VoiceSpecifier(ConsortObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_color',
         '_music_specifier',
         '_timespan_maker',
         '_voice_identifiers',
@@ -155,11 +153,15 @@ class VoiceSpecifier(ConsortObject):
 
     def __init__(
         self,
+        color=None,
         music_specifier=None,
         timespan_maker=None,
         voice_identifiers=None,
         ):
         from consort import makers
+        if color is not None:
+            color = str(color)
+        self._color = color
         assert isinstance(music_specifier, makers.MusicSpecifier)
         self._music_specifier = music_specifier
         assert isinstance(timespan_maker, makers.TimespanMaker)
@@ -191,6 +193,7 @@ class VoiceSpecifier(ConsortObject):
             voice_identifiers=self.voice_identifiers,
             )
         timespan_inventory, final_offset = self.timespan_maker(
+            color=self.color,
             layer=layer,
             music_specifier=self.music_specifier,
             target_duration=target_duration,
@@ -198,9 +201,11 @@ class VoiceSpecifier(ConsortObject):
             )
         return timespan_inventory, final_offset
 
-    ### PUBLIC METHODS ###
-
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def color(self):
+        return self._color
 
     @property
     def music_specifier(self):
