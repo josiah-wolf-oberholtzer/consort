@@ -288,7 +288,11 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 )
             segment_product.scores.append(annotated_score)
 
-        segment_product.scores.append(segment_product.score)
+        if self.annotation_specification is not None:
+            if self.annotation_specification.show_unannotated_result:
+                segment_product.scores.append(segment_product.score)
+        else:
+            segment_product.scores.append(segment_product.score)
 
         lilypond_file = self._make_lilypond_file()
         for score in segment_product.scores:
