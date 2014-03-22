@@ -103,9 +103,9 @@ class GraceAgent(ConsortObject):
             grace_agent = music_specifier.grace_agent
             if grace_agent is None:
                 continue
-            seed = counter[grace_agent]
+            seed = counter[music_specifier]
             grace_agent(logical_tie, seed=seed)
-            counter[grace_agent] += 1
+            counter[music_specifier] += 1
 
     def reverse(self):
         counts = self.counts

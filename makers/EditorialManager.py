@@ -31,14 +31,14 @@ class EditorialManager(ConsortObject):
             )
         annotation_specification = \
             segment_product.segment_maker.annotation_specification
-        show_inner_bracket = \
-            annotation_specification.show_inner_bracket
+        hide_inner_bracket = \
+            annotation_specification.hide_inner_bracket
         for voice_name in voice_names:
             timespan_inventory = timespan_inventory_mapping[voice_name]
             inner_annotation, outer_annotation = \
                 EditorialManager._create_annotation_voices(
                     hide_brackets=hide_brackets,
-                    show_inner_bracket=show_inner_bracket,
+                    hide_inner_bracket=hide_inner_bracket,
                     timespan_inventory=timespan_inventory,
                     voice_name=voice_name,
                     )
@@ -52,7 +52,7 @@ class EditorialManager(ConsortObject):
     @staticmethod
     def _create_annotation_voices(
         hide_brackets=None,
-        show_inner_bracket=None,
+        hide_inner_bracket=None,
         timespan_inventory=None,
         voice_name=None,
         ):
@@ -87,7 +87,7 @@ class EditorialManager(ConsortObject):
                 continue
             outer_tuplet = scoretools.Tuplet(outer_duration, "c'1")
             outer_annotation.append(outer_tuplet)
-            if show_inner_bracket:
+            if not hide_inner_bracket:
                 inner_tuplets = [scoretools.Tuplet(inner_duration, "c'1")
                     for inner_duration in inner_durations]
                 inner_annotation.extend(inner_tuplets)

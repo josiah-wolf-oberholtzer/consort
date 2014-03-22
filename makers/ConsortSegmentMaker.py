@@ -191,15 +191,22 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     segment_product=segment_product,
                     )
                 manager = override(annotated_score)
-                manager.bar_line.stencil = False
-                manager.beam.stencil = False
-                manager.dots.stencil = False
-                manager.flag.stencil = False
-                manager.note_head.stencil = False
-                manager.rest.stencil = False
-                manager.span_bar.stencil = False
-                manager.stem.stencil = False
-                manager.tuplet_bracket.stencil = False
+                manager.bar_line.transparent = True
+                manager.beam.transparent = True
+                manager.dots.transparent = True
+                manager.flag.transparent = True
+                manager.note_head.transparent = True
+                manager.rest.transparent = True
+                manager.span_bar.transparent = True
+                manager.stem.transparent = True
+                manager.tie.transparent = True
+                manager.tuplet_bracket.transparent = True
+                manager.tuplet_number.transparent = True
+                prototype = scoretools.Voice
+                for voice in iterate(annotated_score).by_class(prototype):
+                    if voice.context_name != 'LHVoice':
+                        continue
+                    override(voice).tuplet_bracket.transparent = True
                 segment_product.scores.append(annotated_score)
 
             if self.annotation_specification.show_stage_2:
@@ -209,14 +216,21 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     segment_product=segment_product,
                     )
                 manager = override(annotated_score)
-                manager.bar_line.stencil = False
-                manager.beam.stencil = False
-                manager.dots.stencil = False
-                manager.flag.stencil = False
-                manager.note_head.stencil = False
-                manager.rest.stencil = False
-                manager.span_bar.stencil = False
-                manager.stem.stencil = False
+                manager.bar_line.transparent = True
+                manager.beam.transparent = True
+                manager.dots.transparent = True
+                manager.flag.transparent = True
+                manager.note_head.transparent = True
+                manager.rest.transparent = True
+                manager.span_bar.transparent = True
+                manager.stem.transparent = True
+                manager.tie.transparent = True
+                manager.tuplet_number.transparent = True
+                prototype = scoretools.Voice
+                for voice in iterate(annotated_score).by_class(prototype):
+                    if voice.context_name != 'LHVoice':
+                        continue
+                    override(voice).tuplet_bracket.transparent = True
                 segment_product.scores.append(annotated_score)
 
             if self.annotation_specification.show_stage_3:
@@ -226,12 +240,19 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     segment_product=segment_product,
                     )
                 manager = override(annotated_score)
-                manager.beam.stencil = False
-                manager.dots.stencil = False
-                manager.flag.stencil = False
-                manager.note_head.stencil = False
-                manager.rest.stencil = False
-                manager.stem.stencil = False
+                manager.beam.transparent = True
+                manager.dots.transparent = True
+                manager.flag.transparent = True
+                manager.note_head.transparent = True
+                manager.rest.transparent = True
+                manager.stem.transparent = True
+                manager.tie.transparent = True
+                manager.tuplet_number.transparent = True
+                prototype = scoretools.Voice
+                for voice in iterate(annotated_score).by_class(prototype):
+                    if voice.context_name != 'LHVoice':
+                        continue
+                    override(voice).tuplet_bracket.transparent = True
                 segment_product.scores.append(annotated_score)
 
             if self.annotation_specification.show_stage_4:
@@ -242,13 +263,6 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     )
                 segment_product.scores.append(annotated_score)
 
-        makers.GraceAgent.iterate_score(segment_product.score)
-        #makers.PitchAgent.iterate_score(segment_product.score)
-        #makers.AlterationAgent.iterate_score(segment_product.score)
-        #makers.RegisterAgent.iterate_score(segment_product.score)
-        #makers.ChordAgent.iterate_score(segment_product.score)
-        makers.AttachmentAgent.iterate_score(segment_product.score)
-
         if self.annotation_specification is not None and \
             self.annotation_specification.show_stage_5:
             score_copy = mutate(segment_product.score).copy()
@@ -257,6 +271,13 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 segment_product=segment_product,
                 )
             segment_product.scores.append(annotated_score)
+
+        makers.GraceAgent.iterate_score(segment_product.score)
+        #makers.PitchAgent.iterate_score(segment_product.score)
+        #makers.AlterationAgent.iterate_score(segment_product.score)
+        #makers.RegisterAgent.iterate_score(segment_product.score)
+        #makers.ChordAgent.iterate_score(segment_product.score)
+        makers.AttachmentAgent.iterate_score(segment_product.score)
 
         segment_product.scores.append(segment_product.score)
 
@@ -281,9 +302,10 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         if self.rehearsal_mark is not None:
             rehearsal_mark_text = 'mark \\markup {{ ' \
                 "\\override #'(box-padding . 0.5) " \
-                '\\box "{}" }}'
+                '\\box "{}" " " \\fontsize #-3 "{}" }}'
             rehearsal_mark_text = rehearsal_mark_text.format(
                 str(self.rehearsal_mark),
+                self.name or '',
                 )
             rehearsal_mark = indicatortools.LilyPondCommand(
                 rehearsal_mark_text)
