@@ -6,6 +6,7 @@ from consort.segments import base
 
 
 voice_specifier_one = makers.VoiceSpecifier(
+    color='red',
     music_specifier=makers.MusicSpecifier(
         rhythm_maker=materials.note_rhythm_maker,
         ),
@@ -26,6 +27,7 @@ voice_specifier_one = makers.VoiceSpecifier(
 
 segment_maker = new(base.segment_maker,
     annotation_specifier__show_stage_1=False,
+    annotation_specifier__show_stage_2=False,
     annotation_specifier__show_stage_4=False,
     annotation_specifier__show_stage_6=False,
     name='different performed durations: 1/4, 3/16 and 1/8',
