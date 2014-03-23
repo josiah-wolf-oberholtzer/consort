@@ -64,7 +64,6 @@ class RhythmManager(ConsortObject):
                     split_offsets = []
                     while meter_offsets and start_offset < meter_offsets[-1]:
                         split_offsets.append(meter_offsets.pop())
-                    print voice.name, music, split_offsets
                     if not split_offsets and len(music) == 1:
                         continue
                     split_offsets = [x - start_offset for x in split_offsets]
@@ -77,7 +76,6 @@ class RhythmManager(ConsortObject):
                     if split_durations:
                         mutate(outer_rest_container[:]).split(split_durations)
                     music[:] = outer_rest_container[:]
-                    print '\t', music
 
     @staticmethod
     def _leaf_is_tied(leaf):
@@ -438,17 +436,29 @@ class RhythmManager(ConsortObject):
         annotation_specifier=None,
         segment_product=None,
         ):
-        RhythmManager._populate_time_signature_context(segment_product)
-        RhythmManager._populate_rhythms(segment_product)
-        #if annotation_specifier is not None and \
-        #    annotation_specifier.show_stage_4:
-        #    segment_product.unrewritten_score = \
-        #        mutate(segment_product.score).copy()
+        with systemtools.Timer() as timer:
+            RhythmManager._populate_time_signature_context(segment_product)
+        print '\tpopulating time signature context', timer.elapsed_time
+
+        with systemtools.Timer() as timer:
+            RhythmManager._populate_rhythms(segment_product)
+        print '\tpopulating rhythms', timer.elapsed_time
+
+        if annotation_specifier is not None and \
+            annotation_specifier.show_stage_4:
+            segment_product.unrewritten_score = \
+                mutate(segment_product.score).copy()
+
         with systemtools.Timer() as timer:
             RhythmManager._consolidate_silences(segment_product)
-        print '\tconsolidate_silences:', timer.elapsed_time
+        print '\tconsolidating silences:', timer.elapsed_time
+
         with systemtools.Timer() as timer:
             RhythmManager._rewrite_meters(segment_product)
-        print '\trewrite_meters', timer.elapsed_time
-        RhythmManager._cleanup_silences(segment_product)
+        print '\trewriting _meters', timer.elapsed_time
+
+        with systemtools.Timer() as timer:
+            RhythmManager._cleanup_silences(segment_product)
+        print '\tcleaning up silences', timer.elapsed_time
+
         return segment_product
