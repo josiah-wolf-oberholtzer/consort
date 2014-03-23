@@ -12,7 +12,7 @@ from abjad.tools.topleveltools import override
 from consort.makers.ConsortObject import ConsortObject
 
 
-class EditorialManager(ConsortObject):
+class AnnotationManager(ConsortObject):
     r'''An editorial manager.
     '''
 
@@ -25,7 +25,7 @@ class EditorialManager(ConsortObject):
         from consort import makers
         rewritten_score = segment_product.score
         score_copy = mutate(rewritten_score).copy()
-        annotated_score = makers.EditorialManager.annotate(
+        annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
             segment_product=segment_product,
             )
@@ -55,7 +55,7 @@ class EditorialManager(ConsortObject):
         from consort import makers
         rewritten_score = segment_product.score
         score_copy = mutate(rewritten_score).copy()
-        annotated_score = makers.EditorialManager.annotate(
+        annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
             segment_product=segment_product,
             )
@@ -84,7 +84,7 @@ class EditorialManager(ConsortObject):
         from consort import makers
         rewritten_score = segment_product.rewritten_score
         score_copy = mutate(rewritten_score).copy()
-        annotated_score = makers.EditorialManager.annotate(
+        annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
             segment_product=segment_product,
             )
@@ -111,7 +111,7 @@ class EditorialManager(ConsortObject):
         from consort import makers
         unrewritten_score = segment_product.unrewritten_score
         score_copy = mutate(unrewritten_score).copy()
-        annotated_score = makers.EditorialManager.annotate(
+        annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
             segment_product=segment_product,
             )
@@ -123,7 +123,7 @@ class EditorialManager(ConsortObject):
         ):
         from consort import makers
         score_copy = mutate(segment_product.score).copy()
-        annotated_score = makers.EditorialManager.annotate(
+        annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
             segment_product=segment_product,
             )
@@ -138,7 +138,7 @@ class EditorialManager(ConsortObject):
         score = segment_product.score
         if should_copy:
             score = mutate(score).copy()
-        annotated_score = makers.EditorialManager.annotate(
+        annotated_score = makers.AnnotationManager.annotate(
             score=score,
             segment_product=segment_product,
             )
@@ -165,7 +165,7 @@ class EditorialManager(ConsortObject):
             for voice_name in voice_names:
                 timespan_inventory = timespan_inventory_mapping[voice_name]
                 inner_annotation, outer_annotation = \
-                    EditorialManager._create_annotation_voices(
+                    AnnotationManager._create_annotation_voices(
                         hide_brackets=hide_brackets,
                         hide_inner_bracket=hide_inner_bracket,
                         timespan_inventory=timespan_inventory,
@@ -215,7 +215,7 @@ class EditorialManager(ConsortObject):
             note = scoretools.Note(0, 1)
             outer_tuplet = scoretools.Tuplet(outer_duration, (note,))
             override(outer_tuplet).tuplet_bracket.color = color
-            EditorialManager._override_tuplet_edge_height(
+            AnnotationManager._override_tuplet_edge_height(
                 is_left_broken=is_left_broken,
                 is_right_broken=is_right_broken,
                 tuplet=outer_tuplet,
@@ -230,7 +230,7 @@ class EditorialManager(ConsortObject):
                     override(inner_tuplet).tuplet_bracket.color = color
                     inner_tuplets.append(inner_tuplet)
                 if len(inner_tuplets) == 1:
-                    EditorialManager._override_tuplet_edge_height(
+                    AnnotationManager._override_tuplet_edge_height(
                         is_left_broken=is_left_broken,
                         is_right_broken=is_right_broken,
                         tuplet=inner_tuplets[0],
@@ -291,7 +291,7 @@ class EditorialManager(ConsortObject):
         score=None,
         segment_product=None,
         ):
-        annotated_score = EditorialManager._create_all_annotation_voices(
+        annotated_score = AnnotationManager._create_all_annotation_voices(
             hide_brackets=hide_brackets,
             score=score,
             segment_product=segment_product,

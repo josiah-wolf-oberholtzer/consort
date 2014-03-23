@@ -190,16 +190,16 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         with timer:
             if self.annotation_specifier is not None:
                 if self.annotation_specifier.show_stage_1:
-                    makers.EditorialManager._annotate_stage_1(segment_product)
+                    makers.AnnotationManager._annotate_stage_1(segment_product)
                 if self.annotation_specifier.show_stage_2:
-                    makers.EditorialManager._annotate_stage_2(segment_product)
+                    makers.AnnotationManager._annotate_stage_2(segment_product)
                 if self.annotation_specifier.show_stage_3:
-                    makers.EditorialManager._annotate_stage_3(segment_product)
+                    makers.AnnotationManager._annotate_stage_3(segment_product)
                 if self.annotation_specifier.show_stage_4:
-                    makers.EditorialManager._annotate_stage_4(segment_product)
+                    makers.AnnotationManager._annotate_stage_4(segment_product)
                 if self.annotation_specifier.show_stage_5:
-                    makers.EditorialManager._annotate_stage_5(segment_product)
-        print 'EditorialManager:', timer.elapsed_time
+                    makers.AnnotationManager._annotate_stage_5(segment_product)
+        print 'AnnotationManager:', timer.elapsed_time
 
         with timer:
             makers.GraceAgent.iterate_score(segment_product.score)
@@ -220,7 +220,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     should_copy = True
                     if not self.annotation_specifier.show_unannotated_result:
                         should_copy = False
-                    makers.EditorialManager._annotate_stage_6(
+                    makers.AnnotationManager._annotate_stage_6(
                         segment_product=segment_product,
                         should_copy=should_copy,
                         )
@@ -228,7 +228,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     segment_product.scores.append(segment_product.score)
             else:
                 segment_product.scores.append(segment_product.score)
-        print 'EditorialManager:', timer.elapsed_time
+        print 'AnnotationManager:', timer.elapsed_time
 
         with timer:
             lilypond_file = self._make_lilypond_file()
