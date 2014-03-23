@@ -46,31 +46,38 @@ class RhythmManager(ConsortObject):
     def _consolidate_silences(segment_product):
         from consort import makers
         score = segment_product.score
-        for voice in iterate(score).by_class(scoretools.Voice):
-            meter_offsets = list(mathtools.cumulative_sums(
-                x.implied_time_signature.duration
-                for x in segment_product.meters))
-            for music in reversed(voice):
-                music_specifier = inspect_(music).get_indicator(
-                    makers.MusicSpecifier)
-                if not music_specifier.is_sentinel:
-                    continue
-                timespan = inspect_(music).get_timespan()
-                start_offset = timespan.start_offset
-                stop_offset = timespan.stop_offset
-                while meter_offsets and stop_offset <= meter_offsets[-1]:
-                    meter_offsets.pop()
-                split_offsets = []
-                while meter_offsets and start_offset < meter_offsets[-1]:
-                    split_offsets.append(meter_offsets.pop())
-                split_offsets = [x - start_offset for x in split_offsets]
-                split_durations = mathtools.cumulative_sums(
-                    split_offsets)[1:]
-                rests = scoretools.make_rests([timespan.duration])
-                rest_container = scoretools.Container(rests)
-                music[:] = [rest_container]
-                if split_durations:
-                    mutate(music[:]).split(split_durations)
+        with systemtools.ForbidUpdate(score):
+            for voice in iterate(score).by_class(scoretools.Voice):
+                meter_offsets = list(mathtools.cumulative_sums(
+                    x.implied_time_signature.duration
+                    for x in segment_product.meters))
+                for music in reversed(voice):
+                    music_specifier = inspect_(music).get_indicator(
+                        makers.MusicSpecifier)
+                    if not music_specifier.is_sentinel:
+                        continue
+                    timespan = inspect_(music).get_timespan()
+                    start_offset = timespan.start_offset
+                    stop_offset = timespan.stop_offset
+                    while meter_offsets and stop_offset <= meter_offsets[-1]:
+                        meter_offsets.pop()
+                    split_offsets = []
+                    while meter_offsets and start_offset < meter_offsets[-1]:
+                        split_offsets.append(meter_offsets.pop())
+                    print voice.name, music, split_offsets
+                    if not split_offsets and len(music) == 1:
+                        continue
+                    split_offsets = [x - start_offset for x in split_offsets]
+                    split_durations = mathtools.cumulative_sums(
+                        split_offsets)[1:]
+                    rests = scoretools.make_rests([timespan.duration])
+                    inner_rest_container = scoretools.Container(rests)
+                    outer_rest_container = scoretools.Container([
+                        inner_rest_container])
+                    if split_durations:
+                        mutate(outer_rest_container[:]).split(split_durations)
+                    music[:] = outer_rest_container[:]
+                    print '\t', music
 
     @staticmethod
     def _leaf_is_tied(leaf):
@@ -428,13 +435,20 @@ class RhythmManager(ConsortObject):
 
     @staticmethod
     def execute(
+        annotation_specifier=None,
         segment_product=None,
         ):
         RhythmManager._populate_time_signature_context(segment_product)
         RhythmManager._populate_rhythms(segment_product)
-        segment_product.unrewritten_score = \
-            mutate(segment_product.score).copy()
-        RhythmManager._consolidate_silences(segment_product)
-        RhythmManager._rewrite_meters(segment_product)
+        #if annotation_specifier is not None and \
+        #    annotation_specifier.show_stage_4:
+        #    segment_product.unrewritten_score = \
+        #        mutate(segment_product.score).copy()
+        with systemtools.Timer() as timer:
+            RhythmManager._consolidate_silences(segment_product)
+        print '\tconsolidate_silences:', timer.elapsed_time
+        with systemtools.Timer() as timer:
+            RhythmManager._rewrite_meters(segment_product)
+        print '\trewrite_meters', timer.elapsed_time
         RhythmManager._cleanup_silences(segment_product)
         return segment_product
