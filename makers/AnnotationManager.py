@@ -82,7 +82,7 @@ class AnnotationManager(ConsortObject):
         segment_product=None,
         ):
         from consort import makers
-        rewritten_score = segment_product.rewritten_score
+        rewritten_score = segment_product.score
         score_copy = mutate(rewritten_score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
