@@ -137,7 +137,25 @@ segment_maker = makers.ConsortSegmentMaker(
         ),
     target_duration=durationtools.Duration(4),
     tempo=indicatortools.Tempo((1, 8), 72),
-    voice_settings=(),
+    voice_settings=(
+        makers.VoiceSetting(
+            key='register_agent',
+            value=makers.RegisterAgent(),
+            voice_identifiers='Cello Voice',
+            ),
+        makers.VoiceSetting(
+            color='red',
+            key='register_agent',
+            value=makers.RegisterAgent(),
+            voice_identifiers=('Violin Voice', 'Viola Voice')
+            ),
+        makers.VoiceSetting(
+            color='blue',
+            key='register_agent',
+            value=makers.RegisterAgent(),
+            voice_identifiers=('Violin Voice', 'Viola Voice'),
+            ),
+        ),
     voice_specifiers=(
         red_voice_specifier,
         blue_voice_specifier,
