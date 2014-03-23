@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 import collections
-from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import datastructuretools
 from abjad.tools import sequencetools
 from abjad.tools import spannertools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
+from consort.makers.ConsortObject import ConsortObject
 
 
 class AttachmentSpecifier(ConsortObject):
@@ -83,7 +83,8 @@ class AttachmentSpecifier(ConsortObject):
         attachments=None,
         selector=None,
         ):
-        assert isinstance(attachments, collections.Sequence)
+        if not isinstance(attachments, collections.Sequence):
+            attachments = (attachments,)
         self._attachments = tuple(attachments)
         assert isinstance(selector, selectortools.Selector)
         self._selector = selector
