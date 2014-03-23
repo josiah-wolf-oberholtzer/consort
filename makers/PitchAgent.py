@@ -79,9 +79,12 @@ class PitchAgent(ConsortObject):
         segment = inspect_(logical_tie.head).get_parentage().root
         segment_duration = inspect_(segment).get_duration()
         start_offset = logical_tie.get_timespan().start_offset
+        pitch_segment_ratio = self.pitch_segment_ratio
+        if pitch_segment_ratio is None:
+            pitch_segment_ratio = (1,) * len(self.pitch_segments)
         pitch_segment_offsets = self._duration_and_ratio_to_offsets(
             duration=segment_duration,
-            ratio=self.pitch_segment_ratio,
+            ratio=pitch_segment_ratio,
             )
         pitch_segment_index = self._offset_and_offsets_to_index(
             offset=start_offset,
@@ -92,11 +95,11 @@ class PitchAgent(ConsortObject):
         current_pitch = pitch_segment[0]
         previous_leaf = inspect_(logical_tie.head).get_leaf(-1)
         previous_pitch = None
-        if previous_leaf is not None:
+        if isinstance(previous_leaf, scoretools.Note):
             previous_pitch = previous_leaf.written_pitch
             if 1 < len(set(pitch_segment)):
                 while previous_pitch == current_pitch:
-                    pitch_segment = pitch_segment.rotate(seed)
+                    pitch_segment = pitch_segment.rotate(1)
                     current_pitch = pitch_segment[0]
         for note in logical_tie:
             note.written_pitch = current_pitch
@@ -137,7 +140,8 @@ class PitchAgent(ConsortObject):
         counter = collections.Counter()
         for leaf in iterate(score).by_timeline(scoretools.Note):
             logical_tie = inspect_(leaf).get_logical_tie()
-            if leaf is not logical_tie.head:
+            if not isinstance(leaf, scoretools.Note) or \
+                leaf is not logical_tie.head:
                 continue
             prototype = makers.MusicSpecifier
             music_specifier = inspect_(leaf).get_effective(prototype)
