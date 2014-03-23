@@ -181,7 +181,7 @@ afterGraceFraction = #(cons 127 128)
         \override VerticalAxisGroup.staff-staff-spacing = #'(
             (basic-distance . 8)
             (minimum-distance . 8)
-            (padding . 12)
+            (padding . 9)
             (stretchability . 0)
             )
     }
@@ -252,7 +252,7 @@ afterGraceFraction = #(cons 127 128)
         \override TupletNumber.font-size = 1
         \override TupletNumber.text = #tuplet-number::calc-fraction-text
         \override VerticalAxisGroup.staff-staff-spacing = #'(
-            (basic-distance . 8)
+            (basic-distance . 6)
             (minimum-distance . 6)
             (padding . 4)
             (stretchability . 0)
