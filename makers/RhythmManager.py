@@ -23,9 +23,9 @@ class RhythmManager(ConsortObject):
     ### PRIVATE METHODS ###
 
     @staticmethod
-    def _cleanup_silences(segment_product):
+    def _cleanup_silences(segment_session):
         from consort import makers
-        score = segment_product.score
+        score = segment_session.score
         procedure = lambda x: isinstance(x, scoretools.MultimeasureRest)
         for voice in iterate(score).by_class(scoretools.Voice):
             for music in voice:
@@ -43,14 +43,14 @@ class RhythmManager(ConsortObject):
                     attach(spanner, group)
 
     @staticmethod
-    def _consolidate_silences(segment_product):
+    def _consolidate_silences(segment_session):
         from consort import makers
-        score = segment_product.score
+        score = segment_session.score
         with systemtools.ForbidUpdate(score):
             for voice in iterate(score).by_class(scoretools.Voice):
                 meter_offsets = list(mathtools.cumulative_sums(
                     x.implied_time_signature.duration
-                    for x in segment_product.meters))
+                    for x in segment_session.meters))
                 for music in reversed(voice):
                     music_specifier = inspect_(music).get_indicator(
                         makers.MusicSpecifier)
@@ -194,7 +194,7 @@ class RhythmManager(ConsortObject):
         return leading_silence, music, tailing_silence
 
     @staticmethod
-    def _populate_rhythms(segment_product):
+    def _populate_rhythms(segment_session):
         def grouper(timespan):
             music_specifier = None
             if isinstance(timespan, makers.PerformedTimespan):
@@ -206,16 +206,16 @@ class RhythmManager(ConsortObject):
         silent_music_specifier = makers.MusicSpecifier(
             is_sentinel=True,
             )
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        timespan_inventory_mapping = segment_session.timespan_inventory_mapping
         seeds = collections.Counter()
         voice_names = timespan_inventory_mapping.keys()
         voice_names = RhythmManager._sort_voice_names(
-            template=segment_product.segment_maker.template,
+            template=segment_session.segment_maker.template,
             voice_names=voice_names,
             )
         for voice_name in voice_names:
             timespan_inventory = timespan_inventory_mapping[voice_name]
-            voice = segment_product.score[voice_name]
+            voice = segment_session.score[voice_name]
             previous_silence = scoretools.Container()
             for music_specifier, timespans in itertools.groupby(
                 timespan_inventory, grouper):
@@ -240,7 +240,7 @@ class RhythmManager(ConsortObject):
                     RhythmManager._populate_rhythm_group(
                         durations=durations,
                         initial_offset=start_offset,
-                        meters=segment_product.meters,
+                        meters=segment_session.meters,
                         rhythm_maker=rhythm_maker,
                         seed=seeds[music_specifier],
                         )
@@ -272,9 +272,9 @@ class RhythmManager(ConsortObject):
                 voice.append(previous_silence)
 
     @staticmethod
-    def _populate_time_signature_context(segment_product):
-        score = segment_product.score
-        time_signatures = segment_product.time_signatures
+    def _populate_time_signature_context(segment_session):
+        score = segment_session.score
+        time_signatures = segment_session.time_signatures
         measures = scoretools.make_spacer_skip_measures(time_signatures)
         score['TimeSignatureContext'].extend(measures)
 
@@ -408,13 +408,13 @@ class RhythmManager(ConsortObject):
                 selection._attach_tie_spanner_to_leaf_pair()
 
     @staticmethod
-    def _rewrite_meters(segment_product):
-        score = segment_product.score
+    def _rewrite_meters(segment_session):
+        score = segment_session.score
         for voice in iterate(score).by_class(scoretools.Voice):
             for music in voice:
                 RhythmManager._rewrite_meter(
                     music=music,
-                    meters=segment_product.meters,
+                    meters=segment_session.meters,
                     )
 
     @staticmethod
@@ -434,31 +434,31 @@ class RhythmManager(ConsortObject):
     @staticmethod
     def execute(
         annotation_specifier=None,
-        segment_product=None,
+        segment_session=None,
         ):
         with systemtools.Timer() as timer:
-            RhythmManager._populate_time_signature_context(segment_product)
+            RhythmManager._populate_time_signature_context(segment_session)
         print '\tpopulating time signature context', timer.elapsed_time
 
         with systemtools.Timer() as timer:
-            RhythmManager._populate_rhythms(segment_product)
+            RhythmManager._populate_rhythms(segment_session)
         print '\tpopulating rhythms', timer.elapsed_time
 
         if annotation_specifier is not None and \
             annotation_specifier.show_stage_4:
-            segment_product.unrewritten_score = \
-                mutate(segment_product.score).copy()
+            segment_session.unrewritten_score = \
+                mutate(segment_session.score).copy()
 
         with systemtools.Timer() as timer:
-            RhythmManager._consolidate_silences(segment_product)
+            RhythmManager._consolidate_silences(segment_session)
         print '\tconsolidating silences:', timer.elapsed_time
 
         with systemtools.Timer() as timer:
-            RhythmManager._rewrite_meters(segment_product)
+            RhythmManager._rewrite_meters(segment_session)
         print '\trewriting _meters', timer.elapsed_time
 
         with systemtools.Timer() as timer:
-            RhythmManager._cleanup_silences(segment_product)
+            RhythmManager._cleanup_silences(segment_session)
         print '\tcleaning up silences', timer.elapsed_time
 
-        return segment_product
+        return segment_session

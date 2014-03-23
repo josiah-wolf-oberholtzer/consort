@@ -159,15 +159,15 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     def __call__(self):
         from consort import makers
 
-        segment_product = makers.SegmentProduct(segment_maker=self)
-        segment_product.score = self.template()
+        segment_session = makers.SegmentSession(segment_maker=self)
+        segment_session.score = self.template()
         timer = systemtools.Timer()
 
         with timer:
             print 'TimespanManager:'
-            segment_product = makers.TimespanManager.execute(
+            segment_session = makers.TimespanManager.execute(
                 permitted_time_signatures=self.permitted_time_signatures,
-                segment_product=segment_product,
+                segment_session=segment_session,
                 target_duration=self.target_duration,
                 template=self.template,
                 voice_settings=self.voice_settings,
@@ -177,9 +177,9 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         with timer:
             print 'RhythmManager:'
-            segment_product = makers.RhythmManager.execute(
+            segment_session = makers.RhythmManager.execute(
                 annotation_specifier=self.annotation_specifier,
-                segment_product=segment_product,
+                segment_session=segment_session,
                 )
             print '\ttotal:', timer.elapsed_time
 
@@ -187,39 +187,39 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             print 'AnnotationManager (1):'
             if self.annotation_specifier is not None:
                 if self.annotation_specifier.show_stage_1:
-                    makers.AnnotationManager._annotate_stage_1(segment_product)
+                    makers.AnnotationManager._annotate_stage_1(segment_session)
                 if self.annotation_specifier.show_stage_2:
-                    makers.AnnotationManager._annotate_stage_2(segment_product)
+                    makers.AnnotationManager._annotate_stage_2(segment_session)
                 if self.annotation_specifier.show_stage_3:
-                    makers.AnnotationManager._annotate_stage_3(segment_product)
+                    makers.AnnotationManager._annotate_stage_3(segment_session)
                 if self.annotation_specifier.show_stage_4:
-                    makers.AnnotationManager._annotate_stage_4(segment_product)
+                    makers.AnnotationManager._annotate_stage_4(segment_session)
                 if self.annotation_specifier.show_stage_5:
-                    makers.AnnotationManager._annotate_stage_5(segment_product)
+                    makers.AnnotationManager._annotate_stage_5(segment_session)
             print '\ttotal:', timer.elapsed_time
 
         with timer:
             print 'GraceAgent:'
-            makers.GraceAgent.iterate_score(segment_product.score)
+            makers.GraceAgent.iterate_score(segment_session.score)
             print '\ttotal:', timer.elapsed_time
 
         with timer:
             print 'PitchAgent:'
-            makers.PitchAgent.iterate_score(segment_product.score)
+            makers.PitchAgent.iterate_score(segment_session.score)
             print '\ttotal:', timer.elapsed_time
 
-        #makers.AlterationAgent.iterate_score(segment_product.score)
+        #makers.AlterationAgent.iterate_score(segment_session.score)
 
         with timer:
             print 'RegisterAgent:'
-            makers.RegisterAgent.iterate_score(segment_product.score)
+            makers.RegisterAgent.iterate_score(segment_session.score)
             print '\ttotal:', timer.elapsed_time
 
-        #makers.ChordAgent.iterate_score(segment_product.score)
+        #makers.ChordAgent.iterate_score(segment_session.score)
 
         with timer:
             print 'AttachmentAgent:'
-            makers.AttachmentAgent.iterate_score(segment_product.score)
+            makers.AttachmentAgent.iterate_score(segment_session.score)
             print '\ttotal:', timer.elapsed_time
 
         with timer:
@@ -230,17 +230,17 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     if not self.annotation_specifier.show_unannotated_result:
                         should_copy = False
                     makers.AnnotationManager._annotate_stage_6(
-                        segment_product=segment_product,
+                        segment_session=segment_session,
                         should_copy=should_copy,
                         )
                 if self.annotation_specifier.show_unannotated_result:
-                    segment_product.scores.append(segment_product.score)
+                    segment_session.scores.append(segment_session.score)
             else:
-                segment_product.scores.append(segment_product.score)
+                segment_session.scores.append(segment_session.score)
             print '\ttotal:', timer.elapsed_time
 
         lilypond_file = self._make_lilypond_file()
-        for score in segment_product.scores:
+        for score in segment_session.scores:
             score = self._configure_score(score)
             score_block = lilypondfiletools.Block(name='score')
             score_block.items.append(score)

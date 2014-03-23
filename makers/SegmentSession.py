@@ -3,8 +3,8 @@ from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import mathtools
 
 
-class SegmentProduct(ConsortObject):
-    r'''A segment product.
+class SegmentSession(ConsortObject):
+    r'''A segment-maker session.
     '''
 
     ### CLASS VARIABLES ###

@@ -20,14 +20,14 @@ class AnnotationManager(ConsortObject):
 
     @staticmethod
     def _annotate_stage_1(
-        segment_product=None,
+        segment_session=None,
         ):
         from consort import makers
-        rewritten_score = segment_product.score
+        rewritten_score = segment_session.score
         score_copy = mutate(rewritten_score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
         manager = override(annotated_score)
         manager.bar_line.transparent = True
@@ -46,18 +46,18 @@ class AnnotationManager(ConsortObject):
             if voice.context_name != 'LHVoice':
                 continue
             override(voice).tuplet_bracket.transparent = True
-        segment_product.scores.append(annotated_score)
+        segment_session.scores.append(annotated_score)
 
     @staticmethod
     def _annotate_stage_2(
-        segment_product=None,
+        segment_session=None,
         ):
         from consort import makers
-        rewritten_score = segment_product.score
+        rewritten_score = segment_session.score
         score_copy = mutate(rewritten_score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
         manager = override(annotated_score)
         manager.bar_line.transparent = True
@@ -75,18 +75,18 @@ class AnnotationManager(ConsortObject):
             if voice.context_name != 'LHVoice':
                 continue
             override(voice).tuplet_bracket.transparent = True
-        segment_product.scores.append(annotated_score)
+        segment_session.scores.append(annotated_score)
 
     @staticmethod
     def _annotate_stage_3(
-        segment_product=None,
+        segment_session=None,
         ):
         from consort import makers
-        rewritten_score = segment_product.score
+        rewritten_score = segment_session.score
         score_copy = mutate(rewritten_score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
         manager = override(annotated_score)
         manager.beam.transparent = True
@@ -102,63 +102,63 @@ class AnnotationManager(ConsortObject):
             if voice.context_name != 'LHVoice':
                 continue
             override(voice).tuplet_bracket.transparent = True
-        segment_product.scores.append(annotated_score)
+        segment_session.scores.append(annotated_score)
 
     @staticmethod
     def _annotate_stage_4(
-        segment_product=None,
+        segment_session=None,
         ):
         from consort import makers
-        unrewritten_score = segment_product.unrewritten_score
+        unrewritten_score = segment_session.unrewritten_score
         score_copy = mutate(unrewritten_score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
-        segment_product.scores.append(annotated_score)
+        segment_session.scores.append(annotated_score)
 
     @staticmethod
     def _annotate_stage_5(
-        segment_product=None,
+        segment_session=None,
         ):
         from consort import makers
-        score_copy = mutate(segment_product.score).copy()
+        score_copy = mutate(segment_session.score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score_copy,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
-        segment_product.scores.append(annotated_score)
+        segment_session.scores.append(annotated_score)
 
     @staticmethod
     def _annotate_stage_6(
-        segment_product=None,
+        segment_session=None,
         should_copy=True,
         ):
         from consort import makers
-        score = segment_product.score
+        score = segment_session.score
         if should_copy:
             score = mutate(score).copy()
         annotated_score = makers.AnnotationManager.annotate(
             score=score,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
-        segment_product.scores.append(annotated_score)
+        segment_session.scores.append(annotated_score)
 
     @staticmethod
     def _create_all_annotation_voices(
         hide_brackets=None,
         score=None,
-        segment_product=None,
+        segment_session=None,
         ):
         from consort import makers
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        timespan_inventory_mapping = segment_session.timespan_inventory_mapping
         voice_names = timespan_inventory_mapping.keys()
         voice_names = makers.RhythmManager._sort_voice_names(
-            template=segment_product.segment_maker.template,
+            template=segment_session.segment_maker.template,
             voice_names=voice_names,
             )
         annotation_specifier = \
-            segment_product.segment_maker.annotation_specifier
+            segment_session.segment_maker.annotation_specifier
         hide_inner_bracket = \
             annotation_specifier.hide_inner_bracket
         with systemtools.ForbidUpdate(score):
@@ -289,11 +289,11 @@ class AnnotationManager(ConsortObject):
     def annotate(
         hide_brackets=None,
         score=None,
-        segment_product=None,
+        segment_session=None,
         ):
         annotated_score = AnnotationManager._create_all_annotation_voices(
             hide_brackets=hide_brackets,
             score=score,
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
         return annotated_score

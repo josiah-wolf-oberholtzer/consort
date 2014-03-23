@@ -16,14 +16,14 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _apply_voice_settings(
-        segment_product=None,
+        segment_session=None,
         voice_settings=None,
         ):
         if voice_settings is None:
             return
-        segment_duration = segment_product.segment_duration
-        template = segment_product.segment_maker.template
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        segment_duration = segment_session.segment_duration
+        template = segment_session.segment_maker.template
+        timespan_inventory_mapping = segment_session.timespan_inventory_mapping
         for voice_setting in voice_settings:
             voice_setting(
                 segment_duration=segment_duration,
@@ -33,10 +33,10 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _cleanup_performed_timespans(
-        segment_product=None,
+        segment_session=None,
         ):
-        measure_offsets = segment_product.measure_offsets
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        measure_offsets = segment_session.measure_offsets
+        timespan_inventory_mapping = segment_session.timespan_inventory_mapping
         for voice_name in timespan_inventory_mapping:
             offsets = list(measure_offsets)
             timespan_inventory = timespan_inventory_mapping[voice_name]
@@ -68,14 +68,14 @@ class TimespanManager(ConsortObject):
     @staticmethod
     def _find_meters(
         permitted_time_signatures=None,
-        segment_product=None,
+        segment_session=None,
         target_duration=None,
         ):
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
         for timespan_inventory in \
-            segment_product.timespan_inventory_mapping.values():
+            segment_session.timespan_inventory_mapping.values():
             for timespan in timespan_inventory:
                 offset_counter[timespan.start_offset] += 1
                 offset_counter[timespan.stop_offset] += 1
@@ -86,18 +86,18 @@ class TimespanManager(ConsortObject):
             permitted_time_signatures,
             maximum_repetitions=None,
             )
-        segment_product.meters = tuple(meters)
-        segment_product.segment_duration = sum(
-            x.duration for x in segment_product.time_signatures)
+        segment_session.meters = tuple(meters)
+        segment_session.segment_duration = sum(
+            x.duration for x in segment_session.time_signatures)
 
     @staticmethod
     def _make_silent_timespans(
-        segment_product=None,
+        segment_session=None,
         template=None,
         ):
         from consort import makers
-        measure_offsets = segment_product.measure_offsets
-        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        measure_offsets = segment_session.measure_offsets
+        timespan_inventory_mapping = segment_session.timespan_inventory_mapping
         score = template()
         for voice in iterate(score).by_class(scoretools.Voice):
             voice_name = voice.name
@@ -119,7 +119,7 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _make_timespan_inventory_mapping(
-        segment_product=None,
+        segment_session=None,
         target_duration=None,
         template=None,
         voice_specifiers=None,
@@ -150,8 +150,8 @@ class TimespanManager(ConsortObject):
                 TimespanManager._resolve_timespan_inventories(
                     timespan_inventories)
             timespan_inventory_mapping[voice_name] = timespan_inventory
-        segment_product.segment_duration = segment_duration
-        segment_product.timespan_inventory_mapping = timespan_inventory_mapping
+        segment_session.segment_duration = segment_duration
+        segment_session.timespan_inventory_mapping = timespan_inventory_mapping
 
     @staticmethod
     def _resolve_timespan_inventories(
@@ -171,34 +171,34 @@ class TimespanManager(ConsortObject):
     @staticmethod
     def execute(
         permitted_time_signatures=None,
-        segment_product=None,
+        segment_session=None,
         target_duration=None,
         template=None,
         voice_settings=None,
         voice_specifiers=None,
         ):
         TimespanManager._make_timespan_inventory_mapping(
-            segment_product=segment_product,
+            segment_session=segment_session,
             target_duration=target_duration,
             template=template,
             voice_specifiers=voice_specifiers,
             )
         TimespanManager._find_meters(
             permitted_time_signatures=permitted_time_signatures,
-            segment_product=segment_product,
+            segment_session=segment_session,
             target_duration=target_duration,
             )
         TimespanManager._cleanup_performed_timespans(
-            segment_product=segment_product,
+            segment_session=segment_session,
             )
         TimespanManager._make_silent_timespans(
-            segment_product=segment_product,
+            segment_session=segment_session,
             template=template,
             )
-        #TimespanManager._create_dependent_timespans(segment_product)
-        #TimespanManager._remove_empty_trailing_measures(segment_product)
+        #TimespanManager._create_dependent_timespans(segment_session)
+        #TimespanManager._remove_empty_trailing_measures(segment_session)
         TimespanManager._apply_voice_settings(
-            segment_product=segment_product,
+            segment_session=segment_session,
             voice_settings=voice_settings,
             )
-        return segment_product
+        return segment_session
