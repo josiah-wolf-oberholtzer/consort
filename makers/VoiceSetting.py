@@ -106,6 +106,7 @@ class VoiceSetting(ConsortObject):
                 music_specifier=music_specifier,
                 )
             timespan_inventory.append(timespan)
+        timespan_inventory.sort()
 
     def _is_applicable_timespan(
         self,
