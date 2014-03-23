@@ -243,7 +243,8 @@ afterGraceFraction = #(cons 127 128)
         \override TrillPitchAccidental.whiteout = ##t
         \override TrillPitchHead.layer = 1000
         \override TrillPitchHead.whiteout = ##t
-        \override TrillSpanner.outside-staff-padding = 2
+        \override TrillSpanner.outside-staff-padding = 1
+        \override TrillSpanner.padding = 1
         \override TupletBracket.avoid-scripts = ##t
         \override TupletBracket.direction = #DOWN
         \override TupletBracket.full-length-to-extent = ##t
@@ -253,9 +254,9 @@ afterGraceFraction = #(cons 127 128)
         \override TupletNumber.text = #tuplet-number::calc-fraction-text
         \override VerticalAxisGroup.staff-staff-spacing = #'(
             (basic-distance . 6)
-            (minimum-distance . 6)
-            (padding . 4)
-            (stretchability . 0)
+            (minimum-distance . 8)
+            (padding . 6)
+            (stretchability . 30)
             )
         autoBeaming = ##f
         pedalSustainStyle = #'mixed
