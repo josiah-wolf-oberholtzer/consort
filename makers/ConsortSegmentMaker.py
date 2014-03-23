@@ -261,9 +261,15 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 )
             rehearsal_mark = indicatortools.LilyPondCommand(
                 rehearsal_mark_text)
-            attach(rehearsal_mark, score['TimeSignatureContext'][0])
+            attach(
+                rehearsal_mark,
+                score['TimeSignatureContext'].select_leaves()[0],
+                )
         if self.tempo is not None:
-            attach(self.tempo, score['TimeSignatureContext'][0])
+            attach(
+                self.tempo,
+                score['TimeSignatureContext'].select_leaves()[0],
+                )
         if self.is_final_segment:
             score.add_final_markup(self.final_markup)
             score.add_final_bar_line()
