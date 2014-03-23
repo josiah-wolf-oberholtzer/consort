@@ -21,32 +21,30 @@
 				s1 * 7/16
 			}
 			{
+				s1 * 7/16
+			}
+			{
+				\time 2/4
+				s1 * 1/2
+			}
+			{
+				s1 * 1/2
+			}
+			{
+				\time 7/16
+				s1 * 7/16
+			}
+			{
 				\time 3/8
 				s1 * 3/8
 			}
 			{
+				\time 2/4
+				s1 * 1/2
+			}
+			{
 				\time 5/16
 				s1 * 5/16
-			}
-			{
-				\time 2/4
-				s1 * 1/2
-			}
-			{
-				\time 7/16
-				s1 * 7/16
-			}
-			{
-				\time 2/4
-				s1 * 1/2
-			}
-			{
-				\time 7/16
-				s1 * 7/16
-			}
-			{
-				\time 2/4
-				s1 * 1/2
 			}
 		}
 		\context OuterStaffGroup = "Outer Staff Group" <<
@@ -58,43 +56,45 @@
 						\context LHVoice = "Violin Voice" {
 							{
 								\times 4/5 {
+									\override Hairpin #'circled-tip = ##t
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
+									c'16 -\accent [ [ \> \sfz (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									c'8
+									cs'8
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
-								}
-								{
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
+									b'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									f'16 ] ] \! )
+									\revert Hairpin #'circled-tip
+								}
+							}
+							{
+								{
+									r16
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\pitchedTrill
+									cs'16 \ppp ~ [ \startTrillSpan fs'
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									cs'16 ]
+									<> \stopTrillSpan
 								}
 							}
 							{
@@ -106,38 +106,176 @@
 								}
 							}
 							{
-								{
+								\times 2/3 {
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ ~ [
-								}
-								\times 4/5 {
-									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
+									\set stemRightBeamCount = #0
+									cs'8 ] ] )
+								}
+							}
+							{
+								\tweak #'text #tuplet-number::calc-fraction-text
+								\times 3/4 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									cs'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									cs'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									b'16 ] ] )
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									cs'8 \ppp ~ [ \startTrillSpan fs'
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									cs'8 ]
+									<> \stopTrillSpan
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									b'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									a'8 ] ] )
+								}
+							}
+							{
+								{
+									r4
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									b'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									a'8 ] ] )
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									d'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									af'8 ] ] )
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									cs'8 \ppp ~ [ \startTrillSpan fs'
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									cs'16 ]
+									<> \stopTrillSpan
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									d'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									af'8 ] ] )
+								}
+							}
+							{
+								{
+									r16
+								}
+								{
+									r8.
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									f'8 ] ] )
+								}
+							}
+							{
+								{
+									r16
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\pitchedTrill
+									cs'16 \ppp ~ [ \startTrillSpan fs'
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									cs'16 ]
+									<> \stopTrillSpan
+								}
+							}
+							{
+								{
+									r16
 									r8
 								}
 							}
@@ -145,81 +283,31 @@
 								\tweak #'text #tuplet-number::calc-fraction-text
 								\times 3/4 {
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #0
-									c'8 ] ]
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									f'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									f'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									ef'16 ] ] )
 								}
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
-								}
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/5 {
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8.
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									c'16 ] ]
-								}
-							}
-							{
-								{
-									r4
+									r8.
+									r16
 								}
 							}
 							{
@@ -228,240 +316,31 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-								}
-								{
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									c'16 ] ]
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									c'16 ] ]
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c'16 [ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									f'8 ] ] )
 								}
 							}
-						}
-						\context InnerAnnotation = "Violin Voice Inner Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
+							{
+								{
+									r16
+								}
 							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
+							{
+								{
+									\pitchedTrill
+									cs'4 \ppp \startTrillSpan fs'
+									<> \stopTrillSpan
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
+							{
+								{
+									r16
+								}
 							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-						}
-						\context OuterAnnotation = "Violin Voice Outer Annotation" {
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 7/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 7/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 						}
 					>>
 				>>
@@ -478,39 +357,30 @@
 								}
 							}
 							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-								}
 								\times 2/3 {
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									cs'8 ] ] )
+								}
+							}
+							{
+								{
+									r16
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									e'8. \ppp \startTrillSpan a'
+									<> \stopTrillSpan
 								}
 							}
 							{
@@ -525,355 +395,280 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									c'16 ~
+									cs'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									c'16 ] ]
-								}
-							}
-							{
-								{
-									r8
-								}
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								\times 4/5 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8.
-								}
-								{
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #0
-									c'8 ] ]
-								}
-							}
-							{
-								{
-									r8
-									r8
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c'16 [ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
-								}
-								\times 4/5 {
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8.
+									cs'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									b'16 ] ] )
 								}
 							}
 							{
 								{
-									r16
+									r8
+								}
+								{
 									r16
 								}
 							}
 							{
 								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c'16 [ ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									c'16 ] ]
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									e'8 \ppp \startTrillSpan a'
+									<> \stopTrillSpan
 								}
 							}
 							{
 								{
 									r8
-									r8
+									r16
 								}
 							}
 							{
-								\times 2/3 {
+								\times 4/5 {
+									\override Hairpin #'circled-tip = ##t
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #0
-									c'8 ] ]
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c'16 [ ~ [
+									b'16 -\accent [ [ \> \sfz (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									c'8
+									a'8
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									b'16
 									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16
+									\set stemRightBeamCount = #0
+									a'16 ] ] \! )
+									\revert Hairpin #'circled-tip
 								}
+							}
+							{
 								\tweak #'text #tuplet-number::calc-fraction-text
 								\times 3/4 {
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16
+									b'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									a'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									a'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									b'16 ] ] )
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
 									r8
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									e'8 \ppp ~ [ \startTrillSpan a'
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									e'8 ]
+									<> \stopTrillSpan
 								}
 							}
 							{
 								\times 2/3 {
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
+									\set stemRightBeamCount = #2
+									d'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									f'8 ] ] )
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\tweak #'text #tuplet-number::calc-fraction-text
+								\times 3/4 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									f'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									f'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									ef'16 ] ] )
 								}
 							}
-						}
-						\context InnerAnnotation = "Viola Voice Inner Annotation" {
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
+							{
+								{
+									r16
+								}
 							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\pitchedTrill
+									e'16 \ppp ~ [ \startTrillSpan a'
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									e'8 ]
+									<> \stopTrillSpan
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									f'8 ] ] )
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
+							{
+								{
+									r8
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
+							{
+								\times 4/5 {
+									\override Hairpin #'circled-tip = ##t
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent [ [ \> \sfz (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #1
+									f'8
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									ef'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ] \! )
+									\revert Hairpin #'circled-tip
+								}
 							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
+							{
+								\tweak #'text #tuplet-number::calc-fraction-text
+								\times 3/4 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									f'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									ef'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									ef'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ] )
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
+							{
+								{
+									r16
+								}
 							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
+							{
+								{
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									e'8 \ppp \startTrillSpan a'
+									<> \stopTrillSpan
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
+							{
+								{
+									r16
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									f'8 ] ] )
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-						}
-						\context OuterAnnotation = "Viola Voice Outer Annotation" {
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 7/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 7/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
 						}
 					>>
 				>>
@@ -891,22 +686,27 @@
 							}
 							{
 								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/5 {
+								\times 3/4 {
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-									\set stemLeftBeamCount = 1
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									cs'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									cs'16
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									b'16 ] ] )
 								}
 							}
 							{
@@ -920,7 +720,7 @@
 							{
 								{
 									\set stemRightBeamCount = 1
-									c'8
+									f'8 -\accent \fp
 								}
 							}
 							{
@@ -930,43 +730,30 @@
 							}
 							{
 								\times 4/5 {
+									\override Hairpin #'circled-tip = ##t
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
+									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c'16 [ [
+									\set stemRightBeamCount = #1
+									d'8 -\accent [ [ \> \sfz (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									c'8
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
+									ef'8.
 								}
 								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
-									\set stemLeftBeamCount = 2
+									b'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
+									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									a'8 ] ] \! )
+									\revert Hairpin #'circled-tip
 								}
 							}
 							{
@@ -977,71 +764,32 @@
 							{
 								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									b'16 -\accent [ [ \< \fp (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									c'8 [ ~ [
+									a'16 ~
 								}
 								\times 4/5 {
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16
+									a'16
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									c'8
+									f'8.
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #0
-									c'8 ] ]
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c'16 [ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									c'16 ] ]
+									e'16 ] ] \fff )
 								}
 							}
 							{
@@ -1055,40 +803,20 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
-								}
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/5 {
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8.
+									d'8 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									af'16 ] ] )
 								}
 							}
 							{
 								{
-									r4
+									r16
+								}
+								{
+									r8.
 								}
 							}
 							{
@@ -1097,34 +825,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ [
+									ef'16 -\accent \fp [ [ (
 									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-								}
-								{
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16
-									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
+									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									c'16 ] ]
+									c'8 ] ] )
 								}
 							}
 							{
@@ -1132,139 +838,93 @@
 									r8
 								}
 							}
-						}
-						\context InnerAnnotation = "Cello Voice Inner Annotation" {
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
+							{
+								{
+									\override Hairpin #'circled-tip = ##t
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #1
+									f'8 -\accent [ ~ [ \> \sfz (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									f'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #1
+									ef'16
+								}
+								\tweak #'text #tuplet-number::calc-fraction-text
+								\times 3/4 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #1
+									c'8
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									f'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									ef'16 ] ] \! )
+									\revert Hairpin #'circled-tip
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
+							{
+								{
+									r8.
+									r16
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #1
+									c'8 -\accent [ [ \< \fp (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #1
+									f'16 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									f'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									f'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									ef'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ] \fff )
+								}
 							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
+							{
+								{
+									r8
+									\bar "||"
+								}
 							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-						}
-						\context OuterAnnotation = "Cello Voice Outer Annotation" {
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 7/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 7/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\bar "||"
 						}
 					>>
 				>>
