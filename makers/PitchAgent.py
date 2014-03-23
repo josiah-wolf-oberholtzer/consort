@@ -72,6 +72,30 @@ class PitchAgent(ConsortObject):
         seed=0,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
+        segment = inspect_(logical_tie.head).get_parentage().root
+        segment_duration = inspect_(segment).get_duration()
+        start_offset = logical_tie.get_timespan().start_offset
+        pitch_segment_offsets = self._duration_and_ratio_to_offsets(
+            duration=segment_duration,
+            ratio=self.pitch_segment_ratio,
+            )
+        pitch_segment_index = self._offset_and_offsets_to_index(
+            offset=start_offset,
+            offsets=pitch_segment_offsets,
+            )
+        pitch_segment = self.pitch_segments[pitch_segment_index]
+        pitch_segment = pitch_segment.rotate(seed)
+        current_pitch = pitch_segment[0]
+        previous_leaf = inspect_(logical_tie.head).get_leaf(-1)
+        previous_pitch = None
+        if previous_leaf is not None:
+            previous_pitch = previous_leaf.written_pitch
+            if 1 < len(set(pitch_segment)):
+                while previous_pitch == current_pitch:
+                    pitch_segment = pitch_segment.rotate(seed)
+                    current_pitch = pitch_segment[0]
+        for note in logical_tie:
+            note.written_pitch = current_pitch
 
     ### PUBLIC METHODS ###
 
@@ -90,9 +114,9 @@ class PitchAgent(ConsortObject):
             pitch_agent = music_specifier.pitch_agent
             if pitch_agent is None:
                 continue
-            seed = counter[pitch_agent]
+            seed = counter[music_specifier]
             pitch_agent(logical_tie, seed=seed)
-            counter[pitch_agent] += 1
+            counter[music_specifier] += 1
 
     def reverse(self):
         pitch_segments = self.pitch_segments
