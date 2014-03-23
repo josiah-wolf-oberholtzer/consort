@@ -20,18 +20,20 @@ class VoiceSetting(ConsortObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_voice_identifiers',
+        '_color',
         '_key',
         '_value',
+        '_voice_identifiers',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        voice_identifiers=None,
+        color=None,
         key=None,
         value=None,
+        voice_identifiers=None,
         ):
         if voice_identifiers is not None:
             if isinstance(voice_identifiers, str):
@@ -39,6 +41,9 @@ class VoiceSetting(ConsortObject):
             if not isinstance(voice_identifiers, tuple):
                 voice_identifiers = tuple(voice_identifiers)
         self._voice_identifiers = voice_identifiers
+        if color is not None:
+            color = str(color)
+        self._color = color
         self._key = key
         self._value = value
 
@@ -90,9 +95,10 @@ class VoiceSetting(ConsortObject):
                     part = parts.pop(0)
                     object_ = getattr(object_, part)
                 value = value(object_)
+            kwargs = {key: value}
             music_specifier = new(
                 music_specifier,
-                key=value,
+                **kwargs
                 )
             timespan_inventory.remove(timespan)
             timespan = new(
@@ -106,13 +112,15 @@ class VoiceSetting(ConsortObject):
         segment_duration=None,
         timespan=None,
         ):
+        if self.color is not None:
+            return self.color == timespan.color
         return True
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def voice_identifiers(self):
-        return self._voice_identifiers
+    def color(self):
+        return self._color
 
     @property
     def key(self):
@@ -121,3 +129,7 @@ class VoiceSetting(ConsortObject):
     @property
     def value(self):
         return self._value
+
+    @property
+    def voice_identifiers(self):
+        return self._voice_identifiers

@@ -19,9 +19,17 @@ class TimespanManager(ConsortObject):
         segment_product=None,
         voice_settings=None,
         ):
-        if voice_settings is not None:
-            for context_setting in voice_settings:
-                context_setting(segment_product)
+        if voice_settings is None:
+            return
+        segment_duration = segment_product.segment_duration
+        template = segment_product.segment_maker.template
+        timespan_inventory_mapping = segment_product.timespan_inventory_mapping
+        for voice_setting in voice_settings:
+            voice_setting(
+                segment_duration=segment_duration,
+                template=template,
+                timespan_inventory_mapping=timespan_inventory_mapping,
+                )
 
     @staticmethod
     def _cleanup_performed_timespans(
