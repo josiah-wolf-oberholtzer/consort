@@ -209,7 +209,12 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             print '\ttotal:', timer.elapsed_time
 
         #makers.AlterationAgent.iterate_score(segment_product.score)
-        #makers.RegisterAgent.iterate_score(segment_product.score)
+
+        with timer:
+            print 'RegisterAgent:'
+            makers.RegisterAgent.iterate_score(segment_product.score)
+            print '\ttotal:', timer.elapsed_time
+
         #makers.ChordAgent.iterate_score(segment_product.score)
 
         with timer:
