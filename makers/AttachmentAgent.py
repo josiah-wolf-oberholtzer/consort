@@ -47,6 +47,8 @@ class AttachmentAgent(ConsortObject):
         seed=0,
         ):
         assert isinstance(music, scoretools.Container)
+        if self.attachment_specifiers is None:
+            return
         for attachment_specifier in self.attachment_specifiers:
             attachment_specifier(music, seed=seed)
 

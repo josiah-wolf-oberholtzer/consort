@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
+import bisect
 import collections
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
 from abjad.tools import scoretools
@@ -9,6 +10,7 @@ from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
+from consort.makers.ConsortObject import ConsortObject
 
 
 class PitchAgent(ConsortObject):
@@ -72,6 +74,8 @@ class PitchAgent(ConsortObject):
         seed=0,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
+        if self.pitch_segments is None:
+            return
         segment = inspect_(logical_tie.head).get_parentage().root
         segment_duration = inspect_(segment).get_duration()
         start_offset = logical_tie.get_timespan().start_offset
@@ -96,6 +100,32 @@ class PitchAgent(ConsortObject):
                     current_pitch = pitch_segment[0]
         for note in logical_tie:
             note.written_pitch = current_pitch
+
+    ### PRIVATE METHODS ###
+
+    def _duration_and_ratio_to_offsets(
+        self,
+        duration=None,
+        ratio=None,
+        ):
+        ratio_sum = sum(ratio)
+        duration_parts = []
+        for ratio_part in ratio:
+            multiplier = durationtools.Multiplier(ratio_part, ratio_sum)
+            duration_part = duration * multiplier
+            duration_parts.append(duration_part)
+        offsets = mathtools.cumulative_sums(duration_parts)
+        offsets = offsets[:-1]
+        return offsets
+
+    def _offset_and_offsets_to_index(
+        self,
+        offset=None,
+        offsets=None,
+        ):
+        if offset in offsets:
+            return offsets.index(offset)
+        return bisect.bisect(offsets, offset) - 1
 
     ### PUBLIC METHODS ###
 
