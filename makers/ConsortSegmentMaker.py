@@ -203,7 +203,11 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             makers.GraceAgent.iterate_score(segment_product.score)
             print '\ttotal:', timer.elapsed_time
 
-        #makers.PitchAgent.iterate_score(segment_product.score)
+        with timer:
+            print 'PitchAgent:'
+            makers.PitchAgent.iterate_score(segment_product.score)
+            print '\ttotal:', timer.elapsed_time
+
         #makers.AlterationAgent.iterate_score(segment_product.score)
         #makers.RegisterAgent.iterate_score(segment_product.score)
         #makers.ChordAgent.iterate_score(segment_product.score)
