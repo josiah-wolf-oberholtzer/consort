@@ -122,12 +122,15 @@ segment_maker = makers.ConsortSegmentMaker(
         #show_unannotated_result=False,
         show_unannotated_result=True,
         ),
+    name='a string trio',
     permitted_time_signatures=indicatortools.TimeSignatureInventory([
         (2, 4),
         (3, 8),
         (5, 16),
         (7, 16),
         ]),
+    rehearsal_mark='A',
+    target_duration=durationtools.Duration(4),
     template=makers.ConsortScoreTemplate(
         violin_count=1,
         viola_count=1,
@@ -135,7 +138,6 @@ segment_maker = makers.ConsortSegmentMaker(
         contrabass_count=0,
         split_hands=False,
         ),
-    target_duration=durationtools.Duration(4),
     tempo=indicatortools.Tempo((1, 8), 72),
     voice_settings=(
         makers.VoiceSetting(
