@@ -11,7 +11,7 @@ segment_maker = makers.ConsortSegmentMaker(
         show_stage_3=True,
         show_stage_4=True,
         show_stage_5=True,
-        show_stage_6=True,
+        show_annotated_result=True,
         show_unannotated_result=True,
         ),
     is_final_segment=False,

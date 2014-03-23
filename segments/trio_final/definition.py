@@ -118,7 +118,7 @@ blue_voice_specifier = makers.VoiceSpecifier(
 segment_maker = makers.ConsortSegmentMaker(
     annotation_specifier=makers.AnnotationSpecifier(
         #hide_inner_bracket=False,
-        #show_stage_6=True,
+        #show_annotated_result=True,
         #show_unannotated_result=False,
         show_unannotated_result=True,
         ),

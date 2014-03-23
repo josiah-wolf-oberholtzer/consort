@@ -225,7 +225,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         with timer:
             print 'AnnotationManager (2):'
             if self.annotation_specifier is not None:
-                if self.annotation_specifier.show_stage_6:
+                if self.annotation_specifier.show_annotated_result:
                     should_copy = True
                     if not self.annotation_specifier.show_unannotated_result:
                         should_copy = False

@@ -19,7 +19,7 @@ voice_specifier_one = makers.VoiceSpecifier(
 
 segment_maker = new(base.segment_maker,
     annotation_specifier__show_stage_4=False,
-    annotation_specifier__show_stage_6=False,
+    annotation_specifier__show_annotated_result=False,
     name='spans of time',
     permitted_time_signatures=indicatortools.TimeSignatureInventory([
         (2, 4),

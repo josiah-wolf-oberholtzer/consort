@@ -29,7 +29,7 @@ class AnnotationSpecifier(ConsortObject):
         '_show_stage_3',
         '_show_stage_4',
         '_show_stage_5',
-        '_show_stage_6',
+        '_show_annotated_result',
         '_show_unannotated_result',
         )
 
@@ -43,7 +43,7 @@ class AnnotationSpecifier(ConsortObject):
         show_stage_3=False,
         show_stage_4=False,
         show_stage_5=False,
-        show_stage_6=False,
+        show_annotated_result=False,
         show_unannotated_result=True,
         ):
         self._hide_inner_bracket = hide_inner_bracket
@@ -52,7 +52,7 @@ class AnnotationSpecifier(ConsortObject):
         self._show_stage_3 = show_stage_3
         self._show_stage_4 = show_stage_4
         self._show_stage_5 = show_stage_5
-        self._show_stage_6 = show_stage_6
+        self._show_annotated_result = show_annotated_result
         self._show_unannotated_result = show_unannotated_result
 
     ### PUBLIC PROPERTIES ###
@@ -82,8 +82,8 @@ class AnnotationSpecifier(ConsortObject):
         return self._show_stage_5
 
     @property
-    def show_stage_6(self):
-        return self._show_stage_6
+    def show_annotated_result(self):
+        return self._show_annotated_result
 
     @property
     def show_unannotated_result(self):
