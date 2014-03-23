@@ -76,7 +76,8 @@ class DynamicExpression(ConsortObject):
         lilypond_parser = lilypondparsertools.LilyPondParser
         known_dynamics = list(lilypond_parser.list_known_dynamics())
         known_dynamics.append('o')
-        assert hairpin_start_token in known_dynamics
+        assert hairpin_start_token in known_dynamics, \
+            (known_dynamics, hairpin_start_token)
         if hairpin_stop_token is not None:
             assert hairpin_stop_token in known_dynamics
         assert hairpin_start_token != 'o' or hairpin_stop_token != 'o'
