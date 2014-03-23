@@ -178,10 +178,10 @@ afterGraceFraction = #(cons 127 128)
         \override TimeSignature.break-visibility = #end-of-line-invisible
         \override TimeSignature.font-size = 3
         \override TimeSignature.style = #'numbered
-        \override VerticalAxisGroup.default-staff-staff-spacing = #'(
-            (basic-distance . 6)
+        \override VerticalAxisGroup.staff-staff-spacing = #'(
+            (basic-distance . 8)
             (minimum-distance . 8)
-            (padding . 6)
+            (padding . 12)
             (stretchability . 0)
             )
     }
@@ -255,7 +255,7 @@ afterGraceFraction = #(cons 127 128)
             (basic-distance . 8)
             (minimum-distance . 6)
             (padding . 4)
-            (stretchability . 100)
+            (stretchability . 0)
             )
         autoBeaming = ##f
         pedalSustainStyle = #'mixed
