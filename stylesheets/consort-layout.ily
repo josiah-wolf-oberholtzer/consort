@@ -18,7 +18,6 @@ afterGraceFraction = #(cons 127 128)
     \context {
         \Staff
         \remove Time_signature_engraver
-        \override TupletBracket.staff-padding = 6
     }
 
     %%% SPECIFIC %%%
@@ -35,7 +34,8 @@ afterGraceFraction = #(cons 127 128)
         \override Stem.stencil = ##f
         \override TupletBracket.dash-fraction = 0.125
         \override TupletBracket.dash-period = 1.0
-        \override TupletBracket.staff-padding = 8
+        \override TupletBracket.outside-staff-padding = 1
+        \override TupletBracket.outside-staff-priority = 999
         \override TupletBracket.style = #'dashed-line
         \override TupletNumber.stencil = ##f
     }
@@ -50,7 +50,8 @@ afterGraceFraction = #(cons 127 128)
         \override NoteHead.stencil = ##f
         \override Stem.stencil = ##f
         \override TupletNumber.stencil = ##f
-        \override TupletBracket.staff-padding = 10
+        \override TupletBracket.outside-staff-padding = 1
+        \override TupletBracket.outside-staff-priority = 1000
         \override NoteColumn.ignore-collision = ##t
     }
 
