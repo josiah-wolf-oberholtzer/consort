@@ -14,7 +14,7 @@
 			{
 				\time 2/4
 				\tempo 8=72
-				\mark \markup { \override #'(box-padding . 0.5) \box "A" " " \fontsize #-3 "a string trio" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "F" " " \fontsize #-3 "a string trio" }
 				s1 * 1/2
 			}
 			{

@@ -129,7 +129,7 @@ segment_maker = makers.ConsortSegmentMaker(
         (5, 16),
         (7, 16),
         ]),
-    rehearsal_mark='A',
+    rehearsal_mark='F',
     target_duration=durationtools.Duration(4),
     template=makers.ConsortScoreTemplate(
         violin_count=1,
