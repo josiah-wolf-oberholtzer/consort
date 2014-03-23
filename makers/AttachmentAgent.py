@@ -35,8 +35,10 @@ class AttachmentAgent(ConsortObject):
         prototype = makers.AttachmentSpecifier
         if attachment_specifiers is not None:
             assert all(isinstance(x, prototype) for x in attachment_specifiers)
-            assert len(attachment_specifiers)
-            attachment_specifiers = tuple(attachment_specifiers)
+            if len(attachment_specifiers):
+                attachment_specifiers = tuple(attachment_specifiers)
+            else:
+                attachment_specifiers = None
         self._attachment_specifiers = attachment_specifiers
 
     ### SPECIAL METHODS ###
