@@ -18,7 +18,6 @@ afterGraceFraction = #(cons 127 128)
     \context {
         \Staff
         \remove Time_signature_engraver
-        \override StaffSymbol.line-count = 1
         \override TupletBracket.staff-padding = 6
     }
 
