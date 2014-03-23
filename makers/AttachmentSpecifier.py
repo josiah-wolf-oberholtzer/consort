@@ -39,18 +39,32 @@ class AttachmentSpecifier(ConsortObject):
 
     ::
 
+        >>> attachment_specifier = makers.AttachmentSpecifier(
+        ...     attachments=(
+        ...         makers.DynamicExpression(
+        ...             hairpin_start_token='sfz',
+        ...             hairpin_stop_token='o',
+        ...             ),
+        ...         ),
+        ...     selector=selectortools.Selector().by_leaves().by_run(Note),
+        ...     )
+
+    ::
+
         >>> staff = Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
         >>> attachment_specifier(staff)
         >>> print format(staff)
         \new Staff {
-            c'8 -\accent
+            c'8 \sfz
             r8
-            d'8 -\accent
+            d'8 \sfz
             e'8
             r8
-            f'8 -\accent
+            \override Hairpin #'circled-tip = ##t
+            f'8 \> \sfz
             g'8
-            a'8
+            a'8 \!
+            \revert Hairpin #'circled-tip
         }
 
     '''
@@ -81,6 +95,7 @@ class AttachmentSpecifier(ConsortObject):
         music,
         seed=0,
         ):
+        from consort import makers
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
         all_attachments = sequencetools.rotate_sequence(all_attachments, seed)
         selections = self.selector(music)
@@ -93,6 +108,8 @@ class AttachmentSpecifier(ConsortObject):
             for attachment in attachments:
                 if isinstance(attachment, spannertools.Spanner):
                     attach(attachment, selection)
+                elif isinstance(attachment, makers.DynamicExpression):
+                    attachment(selection)
                 else:
                     for component in selection:
                         attach(attachment, component)
