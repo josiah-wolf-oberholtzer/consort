@@ -13,13 +13,6 @@ from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import persist
 from experimental.tools import segmentmakertools
 
-# stage 1: no notation, no barlines
-# stage 2: outer bracket, no barlines, no notation
-# stage 3: outer bracket, barlines, no notation
-# stage 4: outer bracket, barlines, notation (not rewritten)
-# stage 5: outer bracket, barlines, notation (rewritten)
-# stage 6: no brackets, barlines, notation (rewritten)
-
 
 class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     r'''A Consort segment-maker.
@@ -183,6 +176,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         with timer:
             segment_product = makers.RhythmManager.execute(
+                annotation_specifier=self.annotation_specifier,
                 segment_product=segment_product,
                 )
         print 'RhythmManager:', timer.elapsed_time
@@ -230,14 +224,12 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 segment_product.scores.append(segment_product.score)
         print 'AnnotationManager:', timer.elapsed_time
 
-        with timer:
-            lilypond_file = self._make_lilypond_file()
-            for score in segment_product.scores:
-                score = self._configure_score(score)
-                score_block = lilypondfiletools.Block(name='score')
-                score_block.items.append(score)
-                lilypond_file.items.append(score_block)
-        print 'SegmentMaker:', timer.elapsed_time
+        lilypond_file = self._make_lilypond_file()
+        for score in segment_product.scores:
+            score = self._configure_score(score)
+            score_block = lilypondfiletools.Block(name='score')
+            score_block.items.append(score)
+            lilypond_file.items.append(score_block)
 
         return lilypond_file
 
@@ -254,8 +246,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 )
             rehearsal_mark = indicatortools.LilyPondCommand(
                 rehearsal_mark_text)
-            attach(rehearsal_mark, score['TimeSignatureContext'][0],
-                scope=scoretools.Context)
+            attach(rehearsal_mark, score['TimeSignatureContext'][0])
         if self.tempo is not None:
             attach(self.tempo, score['TimeSignatureContext'][0])
         if self.is_final_segment:
