@@ -168,55 +168,76 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         segment_product = makers.SegmentProduct(segment_maker=self)
         segment_product.score = self.template()
+        timer = systemtools.Timer()
 
-        segment_product = makers.TimespanManager.execute(
-            permitted_time_signatures=self.permitted_time_signatures,
-            segment_product=segment_product,
-            target_duration=self.target_duration,
-            template=self.template,
-            voice_settings=self.voice_settings,
-            voice_specifiers=self.voice_specifiers,
-            )
+        with timer:
+            segment_product = makers.TimespanManager.execute(
+                permitted_time_signatures=self.permitted_time_signatures,
+                segment_product=segment_product,
+                target_duration=self.target_duration,
+                template=self.template,
+                voice_settings=self.voice_settings,
+                voice_specifiers=self.voice_specifiers,
+                )
+        print 'TimespanManager:', timer.elapsed_time
 
-        segment_product = makers.RhythmManager.execute(
-            segment_product=segment_product,
-            )
+        with timer:
+            segment_product = makers.RhythmManager.execute(
+                segment_product=segment_product,
+                )
+        print 'RhythmManager:', timer.elapsed_time
 
-        if self.annotation_specifier is not None:
-            if self.annotation_specifier.show_stage_1:
-                makers.EditorialManager._annotate_stage_1(segment_product)
-            if self.annotation_specifier.show_stage_2:
-                makers.EditorialManager._annotate_stage_2(segment_product)
-            if self.annotation_specifier.show_stage_3:
-                makers.EditorialManager._annotate_stage_3(segment_product)
-            if self.annotation_specifier.show_stage_4:
-                makers.EditorialManager._annotate_stage_4(segment_product)
-            if self.annotation_specifier.show_stage_5:
-                makers.EditorialManager._annotate_stage_5(segment_product)
+        with timer:
+            if self.annotation_specifier is not None:
+                if self.annotation_specifier.show_stage_1:
+                    makers.EditorialManager._annotate_stage_1(segment_product)
+                if self.annotation_specifier.show_stage_2:
+                    makers.EditorialManager._annotate_stage_2(segment_product)
+                if self.annotation_specifier.show_stage_3:
+                    makers.EditorialManager._annotate_stage_3(segment_product)
+                if self.annotation_specifier.show_stage_4:
+                    makers.EditorialManager._annotate_stage_4(segment_product)
+                if self.annotation_specifier.show_stage_5:
+                    makers.EditorialManager._annotate_stage_5(segment_product)
+        print 'EditorialManager:', timer.elapsed_time
 
-        makers.GraceAgent.iterate_score(segment_product.score)
+        with timer:
+            makers.GraceAgent.iterate_score(segment_product.score)
+        print 'GraceAgent:', timer.elapsed_time
+
         #makers.PitchAgent.iterate_score(segment_product.score)
         #makers.AlterationAgent.iterate_score(segment_product.score)
         #makers.RegisterAgent.iterate_score(segment_product.score)
         #makers.ChordAgent.iterate_score(segment_product.score)
-        makers.AttachmentAgent.iterate_score(segment_product.score)
 
-        if self.annotation_specifier is not None and \
-            self.annotation_specifier.show_stage_6:
-                makers.EditorialManager._annotate_stage_6(segment_product)
+        with timer:
+            makers.AttachmentAgent.iterate_score(segment_product.score)
+        print 'AttachmentAgent:', timer.elapsed_time
 
-        if self.annotation_specifier is not None:
-            if self.annotation_specifier.show_unannotated_result:
+        with timer:
+            if self.annotation_specifier is not None:
+                if self.annotation_specifier.show_stage_6:
+                    should_copy = True
+                    if not self.annotation_specifier.show_unannotated_result:
+                        should_copy = False
+                    makers.EditorialManager._annotate_stage_6(
+                        segment_product=segment_product,
+                        should_copy=should_copy,
+                        )
+                if self.annotation_specifier.show_unannotated_result:
+                    segment_product.scores.append(segment_product.score)
+            else:
                 segment_product.scores.append(segment_product.score)
-        else:
-            segment_product.scores.append(segment_product.score)
+        print 'EditorialManager:', timer.elapsed_time
 
-        lilypond_file = self._make_lilypond_file()
-        for score in segment_product.scores:
-            score = self._configure_score(score)
-            score_block = lilypondfiletools.Block(name='score')
-            score_block.items.append(score)
-            lilypond_file.items.append(score_block)
+        with timer:
+            lilypond_file = self._make_lilypond_file()
+            for score in segment_product.scores:
+                score = self._configure_score(score)
+                score_block = lilypondfiletools.Block(name='score')
+                score_block.items.append(score)
+                lilypond_file.items.append(score_block)
+        print 'SegmentMaker:', timer.elapsed_time
 
         return lilypond_file
 
