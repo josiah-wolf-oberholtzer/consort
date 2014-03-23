@@ -1,7 +1,7 @@
 afterGraceFraction = #(cons 127 128)
 
 \layout {
-    \accidentalStyle neo-modern-cautionary
+    \accidentalStyle dodecaphonic
     indent = 0
     ragged-bottom = ##t
     ragged-last = ##t
@@ -27,9 +27,11 @@ afterGraceFraction = #(cons 127 128)
         \name InnerAnnotation
         \type Engraver_group
         \alias Voice
+        \override Accidental.stencil = ##f
         \override Dots.stencil = ##f
         \override Flag.stencil = ##f
         \override NoteColumn.ignore-collision = ##t
+        \override NoteHead.no-ledgers = ##t
         \override NoteHead.stencil = ##f
         \override Stem.stencil = ##f
         \override TupletBracket.dash-fraction = 0.125
@@ -45,8 +47,10 @@ afterGraceFraction = #(cons 127 128)
         \name OuterAnnotation
         \type Engraver_group
         \alias Voice
+        \override Accidental.stencil = ##f
         \override Dots.stencil = ##f
         \override Flag.stencil = ##f
+        \override NoteHead.no-ledgers = ##t
         \override NoteHead.stencil = ##f
         \override Stem.stencil = ##f
         \override TupletNumber.stencil = ##f
