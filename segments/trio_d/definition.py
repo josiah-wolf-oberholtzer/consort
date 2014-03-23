@@ -2,20 +2,42 @@
 from abjad import durationtools
 from abjad import indicatortools
 from abjad import rhythmmakertools
+from abjad import scoretools
+from abjad import spannertools
+from experimental import selectortools
 from consort import makers
 
 
 red_voice_specifier = makers.VoiceSpecifier(
     color='red',
     music_specifier=makers.MusicSpecifier(
+        attachment_agent=makers.AttachmentAgent((
+#            makers.AttachmentSpecifier(
+#                attachments=indicatortools.Articulation('accent'),
+#                selector=selectortools.Selector().by_leaves().by_run(
+#                    scoretools.Note)[0],
+#                ),
+#            makers.AttachmentSpecifier(
+#                attachments=spannertools.Slur(),
+#                selector=selectortools.Selector().by_leaves().by_run(
+#                    scoretools.Note),
+#                ),
+#            makers.AttachmentSpecifier(
+#                attachments=(
+#                    makers.DynamicExpression('sfz', 'o'),
+#                    makers.DynamicExpression('fp', 'fff'),
+#                    ),
+#                selector=selectortools.Selector().by_leaves().by_run(
+#                    scoretools.Note),
+#                ),
+            )),
         rhythm_maker=rhythmmakertools.TaleaRhythmMaker(
             beam_specifier=rhythmmakertools.BeamSpecifier(
                 beam_divisions_together=True,
                 ),
-            #extra_counts_per_division=(1, 0, 2, 1, 0),
+            extra_counts_per_division=(1, 0, 2, 1, 0),
             talea=rhythmmakertools.Talea(
-                counts=(1,),
-                #counts=(1, 2, 1, 2, 3),
+                counts=(1, 2, 1, 2, 3),
                 denominator=16,
                 ),
             ),
@@ -46,7 +68,18 @@ red_voice_specifier = makers.VoiceSpecifier(
 
 blue_voice_specifier = makers.VoiceSpecifier(
     color='blue',
-    music_specifier=makers.MusicSpecifier(),
+    music_specifier=makers.MusicSpecifier(
+        attachment_agent=makers.AttachmentAgent((
+#            makers.AttachmentSpecifier(
+#                attachments=makers.DynamicExpression('ppp'),
+#                selector=selectortools.Selector().by_leaves(),
+#                ),
+#            makers.AttachmentSpecifier(
+#                attachments=spannertools.ComplexTrillSpanner(interval='P4'),
+#                selector=selectortools.Selector().by_leaves(),
+#                ),
+            )),
+        ),
     timespan_maker=makers.TimespanMaker(
         can_split=False,
         initial_silence_durations=(
@@ -78,7 +111,7 @@ segment_maker = makers.ConsortSegmentMaker(
         (5, 16),
         (7, 16),
         ]),
-    rehearsal_mark='C',
+    rehearsal_mark='D',
     target_duration=durationtools.Duration(4),
     template=makers.ConsortScoreTemplate(
         violin_count=1,
