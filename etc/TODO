@@ -16,3 +16,10 @@ CONSORT TODO
 
 5.  Meter rewriting should take into account divisions which cross more than
     one meter boundary.
+
+6.  Implement BowSpanner.
+
+7.  Meter rewriting should fuse pairs of tied 1/16th notes into 1/8th (Rei).
+
+8.  Implement a morphological model of melody, with a core line, ornamentation
+    possibilities around that core, attack phrasing and releases.
