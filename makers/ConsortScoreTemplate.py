@@ -19,7 +19,7 @@ class ConsortScoreTemplate(ConsortObject):
             \tag #'(Violin1 Violin2 Violin3 Violin4 Violin5 Violin6 Viola1 Viola2 Viola3 Viola4 Cello1 Cello2 Cello3 Contrabass1 Contrabass2)
             \context TimeSignatureContext = "TimeSignatureContext" {
             }
-            \context OuterStaffGroup = "Outer Staff Group" <<
+            \context StaffGroup = "Outer Staff Group" <<
                 \context ViolinStaffGroup = "Violin Staff Group" <<
                     \tag #'Violin1
                     \context PerformerStaffGroup = "Violin 1 Staff Group" <<
@@ -227,7 +227,7 @@ class ConsortScoreTemplate(ConsortObject):
             \tag #'(Violin1 Violin2 Viola Cello)
             \context TimeSignatureContext = "TimeSignatureContext" {
             }
-            \context OuterStaffGroup = "Outer Staff Group" <<
+            \context StaffGroup = "Outer Staff Group" <<
                 \context ViolinStaffGroup = "Violin Staff Group" <<
                     \tag #'Violin1
                     \context PerformerStaffGroup = "Violin 1 Staff Group" <<
@@ -301,7 +301,7 @@ class ConsortScoreTemplate(ConsortObject):
             \tag #'(Cello)
             \context TimeSignatureContext = "TimeSignatureContext" {
             }
-            \context OuterStaffGroup = "Outer Staff Group" <<
+            \context StaffGroup = "Outer Staff Group" <<
                 \context CelloStaffGroup = "Cello Staff Group" <<
                     \tag #'Cello
                     \context PerformerStaffGroup = "Cello Staff Group" <<
@@ -475,7 +475,6 @@ class ConsortScoreTemplate(ConsortObject):
         ### SCORE ###
 
         staff_group = scoretools.StaffGroup(
-            context_name='OuterStaffGroup',
             name='Outer Staff Group',
             )
 
