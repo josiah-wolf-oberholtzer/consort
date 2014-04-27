@@ -25,8 +25,9 @@ class BowSpanner(spannertools.Spanner):
     ::
 
         >>> attach(makers.BowSpanner(), staff[:])
+        >>> show(staff)
 
-    ::
+    ..  doctest::
 
         >>> print(format(staff))
         \new Staff {
