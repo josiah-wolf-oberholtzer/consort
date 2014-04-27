@@ -1,17 +1,8 @@
-	\context Score = "Score" \with {
-		\override Beam #'transparent = ##t
-		\override Dots #'transparent = ##t
-		\override Flag #'transparent = ##t
-		\override NoteHead #'transparent = ##t
-		\override Rest #'transparent = ##t
-		\override Stem #'transparent = ##t
-		\override Tie #'transparent = ##t
-		\override TupletNumber #'transparent = ##t
-	} <<
+	\context Score = "Score" <<
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "A3" " " \fontsize #-3 "different silences: 1/4 and 1/8" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6d" " " \fontsize #-3 "rotating rhythm patterns (4)" }
 				\tempo 8=72
 				\time 2/4
 				s1 * 1/2
@@ -21,8 +12,8 @@
 				s1 * 7/16
 			}
 			{
-				\time 2/4
-				s1 * 1/2
+				\time 3/8
+				s1 * 3/8
 			}
 			{
 				\time 5/16
@@ -30,9 +21,6 @@
 			}
 			{
 				\time 2/4
-				s1 * 1/2
-			}
-			{
 				s1 * 1/2
 			}
 			{
@@ -44,38 +32,75 @@
 				s1 * 1/2
 			}
 			{
-				\time 5/16
-				s1 * 5/16
+				\time 7/16
+				s1 * 7/16
+			}
+			{
+				\time 2/4
+				s1 * 1/2
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context ViolinStaffGroup = "Violin Staff Group" <<
+			\context StaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
-				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" <<
+				\context StringPerformerStaffGroup = "Violin Staff Group" <<
+					\context FingeringStaff = "Violin Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Violin Voice" \with {
-							\override TupletBracket #'transparent = ##t
-						} {
+						\context FingeringVoice = "Violin Voice" {
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
 								{
-									r4
+									r16
+								}
+								{
+									r8.
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
+									r8.
+								}
+								{
+									r4
 								}
 							}
 							{
@@ -86,23 +111,29 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
 									r8
 								}
 							}
 							{
-								{
+								\times 4/5 {
+									r16
+									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									c'8.
+									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -112,18 +143,37 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 ~ [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
 								}
+								{
+									r8
+								}
 							}
 							{
 								{
-									c'4
+									\set stemRightBeamCount = 2
+									c'16
 								}
 							}
 							{
@@ -133,8 +183,12 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -143,30 +197,14 @@
 								}
 							}
 							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
+								\times 4/5 {
+									r8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 						}
@@ -176,20 +214,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -214,20 +250,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -237,32 +271,33 @@
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\times 1/4 {
 								c'1
 							}
 							\revert TupletBracket #'color
 						}
 						\context OuterAnnotation = "Violin Voice Outer Annotation" {
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -281,33 +316,34 @@
 							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 1/4 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -315,33 +351,41 @@
 					>>
 				>>
 			>>
-			\context ViolaStaffGroup = "Viola Staff Group" <<
+			\context StaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
-				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" <<
+				\context StringPerformerStaffGroup = "Viola Staff Group" <<
+					\context FingeringStaff = "Viola Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Viola Voice" \with {
-							\override TupletBracket #'transparent = ##t
-						} {
+						\context FingeringVoice = "Viola Voice" {
 							{
 								{
-									c'4
+									r8
 								}
 							}
 							{
 								{
-									r4
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
 								}
-							}
-							{
-								{
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
+									r16
 								}
 							}
 							{
@@ -352,28 +396,10 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
 									r8
 								}
-							}
-							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
+									r8
 								}
 							}
 							{
@@ -388,8 +414,19 @@
 								}
 							}
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
@@ -399,13 +436,34 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
+									r8.
+								}
+								{
+									r4
 								}
 							}
 							{
@@ -416,46 +474,50 @@
 							}
 							{
 								{
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									r16
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
 									r4
 								}
 							}
 							{
 								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
 									\set stemRightBeamCount = 1
-									c'8.
+									c'8
 								}
 							}
 						}
 						\context InnerAnnotation = "Viola Voice Inner Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -480,20 +542,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -503,32 +563,39 @@
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\times 1/4 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 						}
 						\context OuterAnnotation = "Viola Voice Outer Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -547,33 +614,41 @@
 							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 7/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -581,17 +656,66 @@
 					>>
 				>>
 			>>
-			\context CelloStaffGroup = "Cello Staff Group" <<
+			\context StaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
-				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" <<
+				\context StringPerformerStaffGroup = "Cello Staff Group" <<
+					\context FingeringStaff = "Cello Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Cello Voice" \with {
-							\override TupletBracket #'transparent = ##t
-						} {
+						\context FingeringVoice = "Cello Voice" {
 							{
 								{
-									c'4
+									r4
+								}
+								{
+									r8
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									r16
+								}
+								{
+									r8.
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									r8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								{
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
@@ -601,13 +725,28 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
+									r16
 								}
 							}
 							{
@@ -623,27 +762,6 @@
 							}
 							{
 								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -654,8 +772,19 @@
 								}
 							}
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
@@ -665,69 +794,33 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
 								}
 							}
 						}
 						\context InnerAnnotation = "Cello Voice Inner Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
@@ -746,20 +839,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -772,33 +863,39 @@
 								c'1
 							}
 							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\times 1/4 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							\override TupletBracket #'color = #red
+							\times 1/4 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
 						}
 						\context OuterAnnotation = "Cello Voice Outer Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
@@ -813,50 +910,59 @@
 							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-								\bar "||"
-							}
-							\revert TupletBracket #'color
+							\bar "||"
 						}
 					>>
 				>>
 			>>
 		>>
 	>>
-}
 
 	\context Score = "Score" <<
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "A3" " " \fontsize #-3 "different silences: 1/4 and 1/8" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6d" " " \fontsize #-3 "rotating rhythm patterns (4)" }
 				\tempo 8=72
 				\time 2/4
 				s1 * 1/2
@@ -866,8 +972,8 @@
 				s1 * 7/16
 			}
 			{
-				\time 2/4
-				s1 * 1/2
+				\time 3/8
+				s1 * 3/8
 			}
 			{
 				\time 5/16
@@ -875,9 +981,6 @@
 			}
 			{
 				\time 2/4
-				s1 * 1/2
-			}
-			{
 				s1 * 1/2
 			}
 			{
@@ -889,36 +992,80 @@
 				s1 * 1/2
 			}
 			{
-				\time 5/16
-				s1 * 5/16
+				\time 7/16
+				s1 * 7/16
+			}
+			{
+				\time 2/4
+				s1 * 1/2
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context ViolinStaffGroup = "Violin Staff Group" <<
+			\context StaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
-				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" <<
+				\context StringPerformerStaffGroup = "Violin Staff Group" <<
+					\context FingeringStaff = "Violin Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Violin Voice" {
+						\context FingeringVoice = "Violin Voice" {
+							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
 							{
 								{
-									c'4
+									r16
+								}
+								{
+									r8.
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r4
 								}
-							}
-							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r8
+									\stopStaff
+									\once \override Staff.StaffSymbol.line-count = 1
+									\startStaff
+									R1 * 5/16
+									\stopStaff
+									\startStaff
 								}
 							}
 							{
@@ -929,23 +1076,29 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
 									r8
 								}
 							}
 							{
-								{
+								\times 4/5 {
+									r16
+									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									c'8.
+									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -955,18 +1108,37 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 ~ [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
 								}
+								{
+									r8
+								}
 							}
 							{
 								{
-									c'4
+									\set stemRightBeamCount = 2
+									c'16
 								}
 							}
 							{
@@ -976,8 +1148,12 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -986,30 +1162,14 @@
 								}
 							}
 							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
+								\times 4/5 {
+									r8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 						}
@@ -1019,20 +1179,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -1057,20 +1215,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -1080,32 +1236,33 @@
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\times 1/4 {
 								c'1
 							}
 							\revert TupletBracket #'color
 						}
 						\context OuterAnnotation = "Violin Voice Outer Annotation" {
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -1124,33 +1281,34 @@
 							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 1/4 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -1158,31 +1316,38 @@
 					>>
 				>>
 			>>
-			\context ViolaStaffGroup = "Viola Staff Group" <<
+			\context StaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
-				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" <<
+				\context StringPerformerStaffGroup = "Viola Staff Group" <<
+					\context FingeringStaff = "Viola Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Viola Voice" {
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
+						\context FingeringVoice = "Viola Voice" {
 							{
 								{
 									r8
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8.
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r8.
 								}
 							}
 							{
@@ -1193,28 +1358,10 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
 									r8
 								}
-							}
-							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
+									r8
 								}
 							}
 							{
@@ -1229,23 +1376,55 @@
 								}
 							}
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
 								{
-									r4
+									r8
+									r8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
+									r16
+									r8
+								}
+								{
+									r4
 									r8
 								}
 							}
@@ -1257,46 +1436,51 @@
 							}
 							{
 								{
-									r4
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									r16
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
-									c'4
-								}
-							}
-							{
-								{
+									r8
 									r8
 								}
 							}
 							{
 								{
 									\set stemRightBeamCount = 1
-									c'8.
+									c'8
 								}
 							}
 						}
 						\context InnerAnnotation = "Viola Voice Inner Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -1321,20 +1505,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -1344,32 +1526,39 @@
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\times 1/4 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 						}
 						\context OuterAnnotation = "Viola Voice Outer Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -1388,33 +1577,41 @@
 							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 7/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
@@ -1422,15 +1619,67 @@
 					>>
 				>>
 			>>
-			\context CelloStaffGroup = "Cello Staff Group" <<
+			\context StaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
-				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" <<
+				\context StringPerformerStaffGroup = "Cello Staff Group" <<
+					\context FingeringStaff = "Cello Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Cello Voice" {
+						\context FingeringVoice = "Cello Voice" {
 							{
 								{
-									c'4
+									r4
+									r8
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									r16
+								}
+								{
+									r8.
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									r8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								{
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -1440,13 +1689,28 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
+									r16
 								}
 							}
 							{
@@ -1462,27 +1726,6 @@
 							}
 							{
 								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -1493,8 +1736,19 @@
 								}
 							}
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
@@ -1504,69 +1758,33 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
 								}
 							}
 						}
 						\context InnerAnnotation = "Cello Voice Inner Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
@@ -1585,20 +1803,18 @@
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/8
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
-							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/4 {
 								c'1
@@ -1611,33 +1827,39 @@
 								c'1
 							}
 							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\times 1/4 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
+							\override TupletBracket #'color = #red
+							\times 1/8 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							\override TupletBracket #'color = #red
+							\times 1/4 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/8
 						}
 						\context OuterAnnotation = "Cello Voice Outer Annotation" {
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
 							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\times 1/8 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/4
-							\override TupletBracket #'color = #red
-							\times 1/4 {
-								c'1
-							}
-							\revert TupletBracket #'color
-							c'1 * 1/8
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
 							\times 3/16 {
@@ -1652,50 +1874,59 @@
 							\revert TupletBracket #'color
 							c'1 * 1/8
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
+							c'1 * 1/4
 							\override TupletBracket #'color = #red
 							\times 1/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
+							c'1 * 1/8
+							\override TupletBracket #'color = #red
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 7/16 {
+								c'1
+							}
+							\revert TupletBracket #'color
 							c'1 * 1/4
 							\override TupletBracket #'color = #red
-							\times 1/4 {
+							\tweak #'text #tuplet-number::calc-fraction-text
+							\times 3/8 {
 								c'1
 							}
 							\revert TupletBracket #'color
 							c'1 * 1/8
-							\override TupletBracket #'color = #red
-							\tweak #'text #tuplet-number::calc-fraction-text
-							\times 3/16 {
-								c'1
-								\bar "||"
-							}
-							\revert TupletBracket #'color
+							\bar "||"
 						}
 					>>
 				>>
 			>>
 		>>
 	>>
-}
 
 	\context Score = "Score" <<
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "A3" " " \fontsize #-3 "different silences: 1/4 and 1/8" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6d" " " \fontsize #-3 "rotating rhythm patterns (4)" }
 				\tempo 8=72
 				\time 2/4
 				s1 * 1/2
@@ -1705,8 +1936,8 @@
 				s1 * 7/16
 			}
 			{
-				\time 2/4
-				s1 * 1/2
+				\time 3/8
+				s1 * 3/8
 			}
 			{
 				\time 5/16
@@ -1714,9 +1945,6 @@
 			}
 			{
 				\time 2/4
-				s1 * 1/2
-			}
-			{
 				s1 * 1/2
 			}
 			{
@@ -1728,36 +1956,80 @@
 				s1 * 1/2
 			}
 			{
-				\time 5/16
-				s1 * 5/16
+				\time 7/16
+				s1 * 7/16
+			}
+			{
+				\time 2/4
+				s1 * 1/2
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context ViolinStaffGroup = "Violin Staff Group" <<
+			\context StaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
-				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" <<
+				\context StringPerformerStaffGroup = "Violin Staff Group" <<
+					\context FingeringStaff = "Violin Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Violin Voice" {
+						\context FingeringVoice = "Violin Voice" {
+							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
 							{
 								{
-									c'4
+									r16
+								}
+								{
+									r8.
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r4
 								}
-							}
-							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r8
+									\stopStaff
+									\once \override Staff.StaffSymbol.line-count = 1
+									\startStaff
+									R1 * 5/16
+									\stopStaff
+									\startStaff
 								}
 							}
 							{
@@ -1768,23 +2040,29 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
 									r8
 								}
 							}
 							{
-								{
+								\times 4/5 {
+									r16
+									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									c'8.
+									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -1794,18 +2072,37 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 ~ [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
 								}
+								{
+									r8
+								}
 							}
 							{
 								{
-									c'4
+									\set stemRightBeamCount = 2
+									c'16
 								}
 							}
 							{
@@ -1815,8 +2112,12 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -1825,61 +2126,52 @@
 								}
 							}
 							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
+								\times 4/5 {
+									r8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 						}
 					>>
 				>>
 			>>
-			\context ViolaStaffGroup = "Viola Staff Group" <<
+			\context StaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
-				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" <<
+				\context StringPerformerStaffGroup = "Viola Staff Group" <<
+					\context FingeringStaff = "Viola Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Viola Voice" {
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
+						\context FingeringVoice = "Viola Voice" {
 							{
 								{
 									r8
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8.
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r8.
 								}
 							}
 							{
@@ -1890,28 +2182,10 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
 									r8
 								}
-							}
-							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
+									r8
 								}
 							}
 							{
@@ -1926,23 +2200,55 @@
 								}
 							}
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
 								{
-									r4
+									r8
+									r8
 								}
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
+									r16
+									r8
+								}
+								{
+									r4
 									r8
 								}
 							}
@@ -1954,38 +2260,108 @@
 							}
 							{
 								{
-									r4
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									r16
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									c'8 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
-									c'4
-								}
-							}
-							{
-								{
+									r8
 									r8
 								}
 							}
 							{
 								{
 									\set stemRightBeamCount = 1
-									c'8.
+									c'8
 								}
 							}
 						}
 					>>
 				>>
 			>>
-			\context CelloStaffGroup = "Cello Staff Group" <<
+			\context StaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
-				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" <<
+				\context StringPerformerStaffGroup = "Cello Staff Group" <<
+					\context FingeringStaff = "Cello Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Cello Voice" {
+						\context FingeringVoice = "Cello Voice" {
 							{
 								{
-									c'4
+									r4
+									r8
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									r16
+								}
+								{
+									r8.
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									r8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16 ~
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -1995,13 +2371,28 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8 [
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
+								}
+								{
+									r16
 								}
 							}
 							{
@@ -2017,27 +2408,6 @@
 							}
 							{
 								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -2048,8 +2418,19 @@
 								}
 							}
 							{
+								\times 4/5 {
+									r8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									c'8. [
+								}
 								{
-									c'4
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
 								}
 							}
 							{
@@ -2059,40 +2440,28 @@
 							}
 							{
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									c'16 [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									c'16
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
 								{
 									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								{
-									c'4
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemRightBeamCount = 1
-									c'8.
 									\bar "||"
 								}
 							}
@@ -2102,3 +2471,4 @@
 			>>
 		>>
 	>>
+

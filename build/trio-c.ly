@@ -1,20 +1,10 @@
-\version "2.19.3"
-\language "english"
-
-#(ly:set-option 'relative-includes #t)
-
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-header.ily"
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout.ily"
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-paper.ily"
-
-\score {
 	\context Score = "Score" <<
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
 				\time 2/4
 				\tempo 8=72
-				\mark \markup { \override #'(box-padding . 0.5) \box "D" " " \fontsize #-3 "a string trio" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "C" " " \fontsize #-3 "a string trio" }
 				s1 * 1/2
 			}
 			{
@@ -56,20 +46,20 @@
 						\clef "treble"
 						\context FingeringVoice = "Violin Voice" {
 							{
-								\times 4/5 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
 									c'16 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
 									c'16
 									\set stemLeftBeamCount = 2
@@ -105,28 +95,32 @@
 							{
 								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									c'8 [ ~ [
+									c'16
 								}
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
 									c'16
 									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
+									\set stemRightBeamCount = #2
 									c'16
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									c'16 ] ]
 								}
 							}
 							{
@@ -140,12 +134,12 @@
 								}
 							}
 							{
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
+									\set stemRightBeamCount = #2
+									c'16 [ [
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
@@ -179,8 +173,16 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ]
 								}
 							}
 							{
@@ -194,17 +196,17 @@
 								}
 							}
 							{
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
 									c'16 [ [
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									c'16 ] ]
 								}
 							}
 							{
@@ -217,8 +219,16 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ]
 								}
 							}
 							{
@@ -243,18 +253,22 @@
 								}
 							}
 							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									c'16 ] ]
 								}
 							}
 							{
@@ -500,8 +514,16 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ]
 								}
 							}
 							{
@@ -521,18 +543,12 @@
 								}
 							}
 							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
 									c'16 [ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
@@ -571,28 +587,32 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ ~ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
 									c'16
 								}
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
+								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
 									c'16
 									\set stemLeftBeamCount = 2
@@ -621,12 +641,12 @@
 								}
 							}
 							{
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
+									\set stemRightBeamCount = #2
+									c'16 [ [
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
@@ -640,23 +660,22 @@
 								}
 							}
 							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/5 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
 									c'16 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									c'16 ] ]
 								}
 							}
 							{
@@ -676,8 +695,16 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ]
 								}
 							}
 							{
@@ -686,27 +713,27 @@
 								}
 							}
 							{
-								\times 4/5 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
 									c'16 [ [
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
 									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									c'16 ~
+									c'16
 								}
 								{
 									\set stemLeftBeamCount = 1
@@ -718,7 +745,7 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									c'16 ~
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
@@ -744,8 +771,16 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ]
 								}
 							}
 						}
@@ -946,18 +981,22 @@
 								}
 							}
 							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									c'16 ] ]
 								}
 							}
 							{
@@ -990,33 +1029,37 @@
 							{
 								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
-									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
 									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									c'16 ~
+									c'16
 								}
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/5 {
+								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
 									c'16
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8.
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
@@ -1030,17 +1073,17 @@
 								}
 							}
 							{
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
 									c'16 [ [
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									c'8
+									c'16
 								}
 								{
 									\set stemLeftBeamCount = 1
@@ -1052,7 +1095,7 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									c'16 ~
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
@@ -1072,8 +1115,21 @@
 							}
 							{
 								{
-									\set stemRightBeamCount = 1
-									c'8.
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 [ [
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ]
 								}
 							}
 							{
@@ -1085,12 +1141,12 @@
 								}
 							}
 							{
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #1
-									c'8 [ [
+									\set stemRightBeamCount = #2
+									c'16 [ [
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
@@ -1104,7 +1160,7 @@
 								}
 							}
 							{
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
@@ -1114,7 +1170,7 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									c'16 ~
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
@@ -1124,25 +1180,14 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									c'16 ~
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									c'8
+									c'16
 								}
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
 									c'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
@@ -1167,14 +1212,14 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c'16 [ ~ [
+									c'16 [ [
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
 									c'16
 								}
-								\times 2/3 {
+								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
@@ -1184,22 +1229,17 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									c'16 ~
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
 									c'16
 									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #1
-									c'16 ~
-									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
+									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c'8 ] ]
+									c'16 ] ]
 								}
 							}
 							{
@@ -1346,4 +1386,4 @@
 			>>
 		>>
 	>>
-}
+

@@ -1,20 +1,10 @@
-\version "2.19.3"
-\language "english"
-
-#(ly:set-option 'relative-includes #t)
-
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-header.ily"
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout.ily"
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-paper.ily"
-
-\score {
 	\context Score = "Score" <<
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
 				\time 2/4
 				\tempo 8=72
-				\mark \markup { \override #'(box-padding . 0.5) \box "F" " " \fontsize #-3 "a string trio" }
+				\mark \markup { \override #'(box-padding . 0.5) \box "E" " " \fontsize #-3 "a string trio" }
 				s1 * 1/2
 			}
 			{
@@ -67,17 +57,17 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									cs''8
+									c'8
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									b'16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									f''16 ] ] \! )
+									c'16 ] ] \! )
 									\revert Hairpin #'circled-tip
 								}
 							}
@@ -91,10 +81,10 @@
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\pitchedTrill
-									cs''16 \ppp ~ [ \startTrillSpan fs''
+									c'16 \ppp ~ [ \startTrillSpan f'
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									cs''16 ]
+									c'16 ]
 									<> \stopTrillSpan
 								}
 							}
@@ -117,7 +107,7 @@
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									cs''8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -132,17 +122,17 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									cs''16 ~
+									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									cs''16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									b'16 ] ] )
+									c'16 ] ] )
 								}
 							}
 							{
@@ -150,10 +140,10 @@
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
 									\pitchedTrill
-									e'''8 \ppp ~ [ \startTrillSpan a'''
+									c'8 \ppp ~ [ \startTrillSpan f'
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
-									e'''8 ]
+									c'8 ]
 									<> \stopTrillSpan
 								}
 							}
@@ -163,12 +153,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									b'16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									a'8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -182,12 +172,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									b'16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									a'8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -201,12 +191,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									d'16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									af'8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -214,10 +204,10 @@
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
 									\pitchedTrill
-									cs''8 \ppp ~ [ \startTrillSpan fs''
+									c'8 \ppp ~ [ \startTrillSpan f'
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									cs''16 ]
+									c'16 ]
 									<> \stopTrillSpan
 								}
 							}
@@ -227,12 +217,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									d'16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									af'8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -254,7 +244,7 @@
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									f''8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -267,10 +257,10 @@
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									\pitchedTrill
-									e'''16 \ppp ~ [ \startTrillSpan a'''
+									c'16 \ppp ~ [ \startTrillSpan f'
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									e'''16 ]
+									c'16 ]
 									<> \stopTrillSpan
 								}
 							}
@@ -292,17 +282,17 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									f''16 ~
+									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									f''16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									ef'16 ] ] )
+									c'16 ] ] )
 								}
 							}
 							{
@@ -322,7 +312,7 @@
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									f''8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -333,7 +323,7 @@
 							{
 								{
 									\pitchedTrill
-									cs''4 \ppp \startTrillSpan fs''
+									c'4 \ppp \startTrillSpan f'
 									<> \stopTrillSpan
 								}
 							}
@@ -363,12 +353,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									cs'8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -380,7 +370,7 @@
 								{
 									\set stemRightBeamCount = 1
 									\pitchedTrill
-									cs'8. \ppp \startTrillSpan fs'
+									c'8. \ppp \startTrillSpan f'
 									<> \stopTrillSpan
 								}
 							}
@@ -396,22 +386,22 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									cs'16 ~
+									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									cs'16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									b16 ] ] )
+									c'16 ] ] )
 								}
 							}
 							{
@@ -426,7 +416,7 @@
 								{
 									\set stemRightBeamCount = 1
 									\pitchedTrill
-									e''8 \ppp \startTrillSpan a''
+									c'8 \ppp \startTrillSpan f'
 									<> \stopTrillSpan
 								}
 							}
@@ -443,168 +433,17 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									b16 -\accent [ [ \> \sfz (
+									c'16 -\accent [ [ \> \sfz (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									a8
+									c'8
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									b16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									a16 ] ] \! )
-									\revert Hairpin #'circled-tip
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									b16 -\accent \sfz [ [ (
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									a16 ~
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									a16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									b16 ] ] )
-								}
-							}
-							{
-								{
-									r8
-								}
-								{
-									r8
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\pitchedTrill
-									cs'8 \ppp ~ [ \startTrillSpan fs'
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									cs'8 ]
-									<> \stopTrillSpan
-								}
-							}
-							{
-								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									d16 -\accent \sfz [ [ (
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #0
-									f'8 ] ] )
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c16 -\accent \sfz [ [ (
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									f'16 ~
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #2
-									f'16
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #2
-									\set stemRightBeamCount = #0
-									ef16 ] ] )
-								}
-							}
-							{
-								{
-									r16
-								}
-							}
-							{
-								{
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\pitchedTrill
-									e''16 \ppp ~ [ \startTrillSpan a''
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									e''8 ]
-									<> \stopTrillSpan
-								}
-							}
-							{
-								\times 2/3 {
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c16 -\accent \sfz [ [ (
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #0
-									f'8 ] ] )
-								}
-							}
-							{
-								{
-									r8
-								}
-							}
-							{
-								\times 4/5 {
-									\override Hairpin #'circled-tip = ##t
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #0
-									\set stemRightBeamCount = #2
-									c16 -\accent [ [ \> \sfz (
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #1
-									f'8
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\set stemLeftBeamCount = #1
-									\set stemRightBeamCount = #2
-									ef16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
@@ -620,22 +459,173 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									f16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									ef'16 ~
+									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									ef'16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c16 ] ] )
+									c'16 ] ] )
+								}
+							}
+							{
+								{
+									r8
+								}
+								{
+									r8
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 1
+									\pitchedTrill
+									c'8 \ppp ~ [ \startTrillSpan f'
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
+									<> \stopTrillSpan
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									c'8 ] ] )
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\tweak #'text #tuplet-number::calc-fraction-text
+								\times 3/4 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ] )
+								}
+							}
+							{
+								{
+									r16
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\pitchedTrill
+									c'16 \ppp ~ [ \startTrillSpan f'
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
+									<> \stopTrillSpan
+								}
+							}
+							{
+								\times 2/3 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #0
+									c'8 ] ] )
+								}
+							}
+							{
+								{
+									r8
+								}
+							}
+							{
+								\times 4/5 {
+									\override Hairpin #'circled-tip = ##t
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent [ [ \> \sfz (
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #1
+									c'8
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #1
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ] \! )
+									\revert Hairpin #'circled-tip
+								}
+							}
+							{
+								\tweak #'text #tuplet-number::calc-fraction-text
+								\times 3/4 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #0
+									\set stemRightBeamCount = #2
+									c'16 -\accent \sfz [ [ (
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #2
+									c'16
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									\set stemLeftBeamCount = #2
+									\set stemRightBeamCount = #0
+									c'16 ] ] )
 								}
 							}
 							{
@@ -647,7 +637,7 @@
 								{
 									\set stemRightBeamCount = 1
 									\pitchedTrill
-									cs'8 \ppp \startTrillSpan fs'
+									c'8 \ppp \startTrillSpan f'
 									<> \stopTrillSpan
 								}
 							}
@@ -662,12 +652,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									f'8 ] ] )
+									c'8 ] ] )
 								}
 							}
 						}
@@ -692,22 +682,22 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									c,16 -\accent \sfz [ [ (
+									c'16 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									cs16 ~
+									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									cs16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									b,16 ] ] )
+									c'16 ] ] )
 								}
 							}
 							{
@@ -721,7 +711,7 @@
 							{
 								{
 									\set stemRightBeamCount = 1
-									f8 -\accent \fp
+									c'8 -\accent \fp
 								}
 							}
 							{
@@ -736,24 +726,24 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #1
-									d,8 -\accent [ [ \> \sfz (
+									c'8 -\accent [ [ \> \sfz (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									ef8.
+									c'8.
 								}
 								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									b,16
+									c'16
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									a,8 ] ] \! )
+									c'8 ] ] \! )
 									\revert Hairpin #'circled-tip
 								}
 							}
@@ -768,29 +758,29 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									b,16 -\accent [ [ \< \fp (
+									c'16 -\accent [ [ \< \fp (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									a,16 ~
+									c'16 ~
 								}
 								\times 4/5 {
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									a,16
+									c'16
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									f8.
+									c'8.
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									e,16 ] ] \fff )
+									c'16 ] ] \fff )
 								}
 							}
 							{
@@ -804,12 +794,12 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #1
-									d,8 -\accent \sfz [ [ (
+									c'8 -\accent \sfz [ [ (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									af,16 ] ] )
+									c'16 ] ] )
 								}
 							}
 							{
@@ -826,12 +816,12 @@
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #2
-									ef16 -\accent \fp [ [ (
+									c'16 -\accent \fp [ [ (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #0
-									c,8 ] ] )
+									c'8 ] ] )
 								}
 							}
 							{
@@ -846,17 +836,17 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #1
-									f,8 -\accent [ ~ [ \> \sfz (
+									c'8 -\accent [ ~ [ \> \sfz (
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									f,16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									ef16
+									c'16
 								}
 								\tweak #'text #tuplet-number::calc-fraction-text
 								\times 3/4 {
@@ -864,17 +854,17 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #1
-									c,8
+									c'8
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									f16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									ef,16 ] ] \! )
+									c'16 ] ] \! )
 									\revert Hairpin #'circled-tip
 								}
 							}
@@ -890,34 +880,34 @@
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #0
 									\set stemRightBeamCount = #1
-									c8 -\accent [ [ \< \fp (
+									c'8 -\accent [ [ \< \fp (
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #1
-									f,16 ~
+									c'16 ~
 								}
 								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #1
 									\set stemRightBeamCount = #2
-									f,16 ~
+									c'16 ~
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									f,16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #2
-									ef16
+									c'16
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									\set stemLeftBeamCount = #2
 									\set stemRightBeamCount = #0
-									c,16 ] ] \fff )
+									c'16 ] ] \fff )
 								}
 							}
 							{
@@ -932,4 +922,4 @@
 			>>
 		>>
 	>>
-}
+

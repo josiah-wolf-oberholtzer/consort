@@ -50,13 +50,13 @@
 				s1 * 1/2
 			}
 		}
-		\context OuterStaffGroup = "Outer Staff Group" <<
-			\context ViolinStaffGroup = "Violin Staff Group" <<
+		\context StaffGroup = "Outer Staff Group" <<
+			\context StaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
-				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" <<
+				\context StringPerformerStaffGroup = "Violin Staff Group" <<
+					\context FingeringStaff = "Violin Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Violin Voice" {
+						\context FingeringVoice = "Violin Voice" {
 							{
 								{
 									\set stemLeftBeamCount = 0
@@ -362,12 +362,12 @@
 					>>
 				>>
 			>>
-			\context ViolaStaffGroup = "Viola Staff Group" <<
+			\context StaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
-				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" <<
+				\context StringPerformerStaffGroup = "Viola Staff Group" <<
+					\context FingeringStaff = "Viola Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Viola Voice" {
+						\context FingeringVoice = "Viola Voice" {
 							{
 								{
 									r8
@@ -675,12 +675,12 @@
 					>>
 				>>
 			>>
-			\context CelloStaffGroup = "Cello Staff Group" <<
+			\context StaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
-				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" <<
+				\context StringPerformerStaffGroup = "Cello Staff Group" <<
+					\context FingeringStaff = "Cello Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Cello Voice" {
+						\context FingeringVoice = "Cello Voice" {
 							{
 								{
 									r4
@@ -1019,13 +1019,13 @@
 				s1 * 1/2
 			}
 		}
-		\context OuterStaffGroup = "Outer Staff Group" <<
-			\context ViolinStaffGroup = "Violin Staff Group" <<
+		\context StaffGroup = "Outer Staff Group" <<
+			\context StaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
-				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" <<
+				\context StringPerformerStaffGroup = "Violin Staff Group" <<
+					\context FingeringStaff = "Violin Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Violin Voice" {
+						\context FingeringVoice = "Violin Voice" {
 							{
 								{
 									\set stemLeftBeamCount = 0
@@ -1337,12 +1337,12 @@
 					>>
 				>>
 			>>
-			\context ViolaStaffGroup = "Viola Staff Group" <<
+			\context StaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
-				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" <<
+				\context StringPerformerStaffGroup = "Viola Staff Group" <<
+					\context FingeringStaff = "Viola Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Viola Voice" {
+						\context FingeringVoice = "Viola Voice" {
 							{
 								{
 									r8
@@ -1673,12 +1673,12 @@
 					>>
 				>>
 			>>
-			\context CelloStaffGroup = "Cello Staff Group" <<
+			\context StaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
-				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" <<
+				\context StringPerformerStaffGroup = "Cello Staff Group" <<
+					\context FingeringStaff = "Cello Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Cello Voice" {
+						\context FingeringVoice = "Cello Voice" {
 							{
 								{
 									r4
@@ -2026,13 +2026,13 @@
 				s1 * 1/2
 			}
 		}
-		\context OuterStaffGroup = "Outer Staff Group" <<
-			\context ViolinStaffGroup = "Violin Staff Group" <<
+		\context StaffGroup = "Outer Staff Group" <<
+			\context StaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
-				\context PerformerStaffGroup = "Violin Staff Group" <<
-					\context LHStaff = "Violin Staff" <<
+				\context StringPerformerStaffGroup = "Violin Staff Group" <<
+					\context FingeringStaff = "Violin Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Violin Voice" {
+						\context FingeringVoice = "Violin Voice" {
 							{
 								{
 									\set stemLeftBeamCount = 0
@@ -2204,12 +2204,12 @@
 					>>
 				>>
 			>>
-			\context ViolaStaffGroup = "Viola Staff Group" <<
+			\context StaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
-				\context PerformerStaffGroup = "Viola Staff Group" <<
-					\context LHStaff = "Viola Staff" <<
+				\context StringPerformerStaffGroup = "Viola Staff Group" <<
+					\context FingeringStaff = "Viola Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Viola Voice" {
+						\context FingeringVoice = "Viola Voice" {
 							{
 								{
 									r8
@@ -2398,12 +2398,12 @@
 					>>
 				>>
 			>>
-			\context CelloStaffGroup = "Cello Staff Group" <<
+			\context StaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
-				\context PerformerStaffGroup = "Cello Staff Group" <<
-					\context LHStaff = "Cello Staff" <<
+				\context StringPerformerStaffGroup = "Cello Staff Group" <<
+					\context FingeringStaff = "Cello Staff" <<
 						\clef "percussion"
-						\context LHVoice = "Cello Voice" {
+						\context FingeringVoice = "Cello Voice" {
 							{
 								{
 									r4

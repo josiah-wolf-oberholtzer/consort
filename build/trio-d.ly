@@ -1,13 +1,3 @@
-\version "2.19.3"
-\language "english"
-
-#(ly:set-option 'relative-includes #t)
-
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-header.ily"
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout.ily"
-\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-paper.ily"
-
-\score {
 	\context Score = "Score" <<
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
@@ -1346,4 +1336,4 @@
 			>>
 		>>
 	>>
-}
+

@@ -1,7 +1,6 @@
 afterGraceFraction = #(cons 127 128)
 
 \layout {
-    \accidentalStyle dodecaphonic
     indent = 0
     ragged-bottom = ##t
     ragged-last = ##t
