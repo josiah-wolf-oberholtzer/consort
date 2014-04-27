@@ -48,7 +48,7 @@
 				s1 * 1/2
 			}
 		}
-		\context OuterStaffGroup = "Outer Staff Group" <<
+		\context StaffGroup = "Outer Staff Group" <<
 			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context PerformerStaffGroup = "Violin Staff Group" <<
@@ -911,7 +911,7 @@
 				s1 * 1/2
 			}
 		}
-		\context OuterStaffGroup = "Outer Staff Group" <<
+		\context StaffGroup = "Outer Staff Group" <<
 			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context PerformerStaffGroup = "Violin Staff Group" <<
@@ -1768,7 +1768,7 @@
 				s1 * 1/2
 			}
 		}
-		\context OuterStaffGroup = "Outer Staff Group" <<
+		\context StaffGroup = "Outer Staff Group" <<
 			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context PerformerStaffGroup = "Violin Staff Group" <<

@@ -3,9 +3,12 @@
 
 #(ly:set-option 'relative-includes #t)
 
+\include "../stylesheets/consort-header.ily"
 \include "../stylesheets/consort-paper.ily"
 \include "../stylesheets/consort-layout.ily"
-\include "../stylesheets/consort-header.ily"
+\include "../stylesheets/consort-layout-annotations.ily"
+\include "../stylesheets/consort-layout-strings.ily"
+
 
 \include "consort-time-01.ly"
 \include "consort-time-02.ly"
