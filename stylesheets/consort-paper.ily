@@ -2,7 +2,16 @@
 #(set-global-staff-size 11)
 
 \paper {
+
+    %%% MARGINS %%%
+
     bottom-margin = 10\mm
+    left-margin = 30\mm
+    right-margin = 10\mm
+    top-margin = 10\mm
+
+    %%% HEADERS AND FOOTERS %%%
+
     evenFooterMarkup = \markup \fill-line {
         " "
         \concat {
@@ -13,7 +22,6 @@
         }
     }
     evenHeaderMarkup = \markup \fill-line { " " }
-    left-margin = 30\mm
     oddFooterMarkup = \markup \fill-line {
         " "
         \concat {
@@ -24,14 +32,17 @@
         }
     }
     oddHeaderMarkup = \markup \fill-line { " " }
-    page-breaking = #ly:optimal-breaking
     print-first-page-number = ##f
     print-page-number = ##t
+
+    %%% PAGE BREAKING %%%
+
+    page-breaking = #ly:optimal-breaking
     ragged-bottom = ##f
     ragged-last-bottom = ##f
-    right-margin = 10\mm
     systems-per-page = 3
-    top-margin = 10\mm
+
+    %%% SPACING DETAILS %%%%
 
     markup-system-spacing = #'(
         (basic-distance . 0)
