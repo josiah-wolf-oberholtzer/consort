@@ -22,188 +22,188 @@ class ConsortScoreTemplate(ConsortObject):
             \context StaffGroup = "Outer Staff Group" <<
                 \context ViolinStaffGroup = "Violin Staff Group" <<
                     \tag #'Violin1
-                    \context PerformerStaffGroup = "Violin 1 Staff Group" <<
-                        \context RHStaff = "Violin 1 RH Staff" <<
-                            \context RHVoice = "Violin 1 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 1 Staff Group" <<
+                        \context StringBowingStaff = "Violin 1 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 1 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 1 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 1 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 1 LH Voice" {
+                            \context StringFingeringVoice = "Violin 1 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Violin2
-                    \context PerformerStaffGroup = "Violin 2 Staff Group" <<
-                        \context RHStaff = "Violin 2 RH Staff" <<
-                            \context RHVoice = "Violin 2 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 2 Staff Group" <<
+                        \context StringBowingStaff = "Violin 2 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 2 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 2 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 2 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 2 LH Voice" {
+                            \context StringFingeringVoice = "Violin 2 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Violin3
-                    \context PerformerStaffGroup = "Violin 3 Staff Group" <<
-                        \context RHStaff = "Violin 3 RH Staff" <<
-                            \context RHVoice = "Violin 3 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 3 Staff Group" <<
+                        \context StringBowingStaff = "Violin 3 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 3 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 3 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 3 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 3 LH Voice" {
+                            \context StringFingeringVoice = "Violin 3 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Violin4
-                    \context PerformerStaffGroup = "Violin 4 Staff Group" <<
-                        \context RHStaff = "Violin 4 RH Staff" <<
-                            \context RHVoice = "Violin 4 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 4 Staff Group" <<
+                        \context StringBowingStaff = "Violin 4 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 4 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 4 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 4 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 4 LH Voice" {
+                            \context StringFingeringVoice = "Violin 4 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Violin5
-                    \context PerformerStaffGroup = "Violin 5 Staff Group" <<
-                        \context RHStaff = "Violin 5 RH Staff" <<
-                            \context RHVoice = "Violin 5 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 5 Staff Group" <<
+                        \context StringBowingStaff = "Violin 5 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 5 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 5 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 5 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 5 LH Voice" {
+                            \context StringFingeringVoice = "Violin 5 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Violin6
-                    \context PerformerStaffGroup = "Violin 6 Staff Group" <<
-                        \context RHStaff = "Violin 6 RH Staff" <<
-                            \context RHVoice = "Violin 6 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 6 Staff Group" <<
+                        \context StringBowingStaff = "Violin 6 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 6 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 6 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 6 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 6 LH Voice" {
+                            \context StringFingeringVoice = "Violin 6 StringFingering Voice" {
                             }
                         >>
                     >>
                 >>
                 \context ViolaStaffGroup = "Viola Staff Group" <<
                     \tag #'Viola1
-                    \context PerformerStaffGroup = "Viola 1 Staff Group" <<
-                        \context RHStaff = "Viola 1 RH Staff" <<
-                            \context RHVoice = "Viola 1 RH Voice" {
+                    \context StringPerformerStaffGroup = "Viola 1 Staff Group" <<
+                        \context StringBowingStaff = "Viola 1 StringBowing Staff" <<
+                            \context StringBowingVoice = "Viola 1 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Viola 1 LH Staff" <<
+                        \context StringFingeringStaff = "Viola 1 StringFingering Staff" <<
                             \clef "alto"
-                            \context LHVoice = "Viola 1 LH Voice" {
+                            \context StringFingeringVoice = "Viola 1 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Viola2
-                    \context PerformerStaffGroup = "Viola 2 Staff Group" <<
-                        \context RHStaff = "Viola 2 RH Staff" <<
-                            \context RHVoice = "Viola 2 RH Voice" {
+                    \context StringPerformerStaffGroup = "Viola 2 Staff Group" <<
+                        \context StringBowingStaff = "Viola 2 StringBowing Staff" <<
+                            \context StringBowingVoice = "Viola 2 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Viola 2 LH Staff" <<
+                        \context StringFingeringStaff = "Viola 2 StringFingering Staff" <<
                             \clef "alto"
-                            \context LHVoice = "Viola 2 LH Voice" {
+                            \context StringFingeringVoice = "Viola 2 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Viola3
-                    \context PerformerStaffGroup = "Viola 3 Staff Group" <<
-                        \context RHStaff = "Viola 3 RH Staff" <<
-                            \context RHVoice = "Viola 3 RH Voice" {
+                    \context StringPerformerStaffGroup = "Viola 3 Staff Group" <<
+                        \context StringBowingStaff = "Viola 3 StringBowing Staff" <<
+                            \context StringBowingVoice = "Viola 3 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Viola 3 LH Staff" <<
+                        \context StringFingeringStaff = "Viola 3 StringFingering Staff" <<
                             \clef "alto"
-                            \context LHVoice = "Viola 3 LH Voice" {
+                            \context StringFingeringVoice = "Viola 3 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Viola4
-                    \context PerformerStaffGroup = "Viola 4 Staff Group" <<
-                        \context RHStaff = "Viola 4 RH Staff" <<
-                            \context RHVoice = "Viola 4 RH Voice" {
+                    \context StringPerformerStaffGroup = "Viola 4 Staff Group" <<
+                        \context StringBowingStaff = "Viola 4 StringBowing Staff" <<
+                            \context StringBowingVoice = "Viola 4 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Viola 4 LH Staff" <<
+                        \context StringFingeringStaff = "Viola 4 StringFingering Staff" <<
                             \clef "alto"
-                            \context LHVoice = "Viola 4 LH Voice" {
+                            \context StringFingeringVoice = "Viola 4 StringFingering Voice" {
                             }
                         >>
                     >>
                 >>
                 \context CelloStaffGroup = "Cello Staff Group" <<
                     \tag #'Cello1
-                    \context PerformerStaffGroup = "Cello 1 Staff Group" <<
-                        \context RHStaff = "Cello 1 RH Staff" <<
-                            \context RHVoice = "Cello 1 RH Voice" {
+                    \context StringPerformerStaffGroup = "Cello 1 Staff Group" <<
+                        \context StringBowingStaff = "Cello 1 StringBowing Staff" <<
+                            \context StringBowingVoice = "Cello 1 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Cello 1 LH Staff" <<
+                        \context StringFingeringStaff = "Cello 1 StringFingering Staff" <<
                             \clef "bass"
-                            \context LHVoice = "Cello 1 LH Voice" {
+                            \context StringFingeringVoice = "Cello 1 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Cello2
-                    \context PerformerStaffGroup = "Cello 2 Staff Group" <<
-                        \context RHStaff = "Cello 2 RH Staff" <<
-                            \context RHVoice = "Cello 2 RH Voice" {
+                    \context StringPerformerStaffGroup = "Cello 2 Staff Group" <<
+                        \context StringBowingStaff = "Cello 2 StringBowing Staff" <<
+                            \context StringBowingVoice = "Cello 2 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Cello 2 LH Staff" <<
+                        \context StringFingeringStaff = "Cello 2 StringFingering Staff" <<
                             \clef "bass"
-                            \context LHVoice = "Cello 2 LH Voice" {
+                            \context StringFingeringVoice = "Cello 2 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Cello3
-                    \context PerformerStaffGroup = "Cello 3 Staff Group" <<
-                        \context RHStaff = "Cello 3 RH Staff" <<
-                            \context RHVoice = "Cello 3 RH Voice" {
+                    \context StringPerformerStaffGroup = "Cello 3 Staff Group" <<
+                        \context StringBowingStaff = "Cello 3 StringBowing Staff" <<
+                            \context StringBowingVoice = "Cello 3 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Cello 3 LH Staff" <<
+                        \context StringFingeringStaff = "Cello 3 StringFingering Staff" <<
                             \clef "bass"
-                            \context LHVoice = "Cello 3 LH Voice" {
+                            \context StringFingeringVoice = "Cello 3 StringFingering Voice" {
                             }
                         >>
                     >>
                 >>
                 \context ContrabassStaffGroup = "Contrabass Staff Group" <<
                     \tag #'Contrabass1
-                    \context PerformerStaffGroup = "Contrabass 1 Staff Group" <<
-                        \context RHStaff = "Contrabass 1 RH Staff" <<
-                            \context RHVoice = "Contrabass 1 RH Voice" {
+                    \context StringPerformerStaffGroup = "Contrabass 1 Staff Group" <<
+                        \context StringBowingStaff = "Contrabass 1 StringBowing Staff" <<
+                            \context StringBowingVoice = "Contrabass 1 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Contrabass 1 LH Staff" <<
+                        \context StringFingeringStaff = "Contrabass 1 StringFingering Staff" <<
                             \clef "bass_8"
-                            \context LHVoice = "Contrabass 1 LH Voice" {
+                            \context StringFingeringVoice = "Contrabass 1 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Contrabass2
-                    \context PerformerStaffGroup = "Contrabass 2 Staff Group" <<
-                        \context RHStaff = "Contrabass 2 RH Staff" <<
-                            \context RHVoice = "Contrabass 2 RH Voice" {
+                    \context StringPerformerStaffGroup = "Contrabass 2 Staff Group" <<
+                        \context StringBowingStaff = "Contrabass 2 StringBowing Staff" <<
+                            \context StringBowingVoice = "Contrabass 2 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Contrabass 2 LH Staff" <<
+                        \context StringFingeringStaff = "Contrabass 2 StringFingering Staff" <<
                             \clef "bass_8"
-                            \context LHVoice = "Contrabass 2 LH Voice" {
+                            \context StringFingeringVoice = "Contrabass 2 StringFingering Voice" {
                             }
                         >>
                     >>
@@ -230,54 +230,54 @@ class ConsortScoreTemplate(ConsortObject):
             \context StaffGroup = "Outer Staff Group" <<
                 \context ViolinStaffGroup = "Violin Staff Group" <<
                     \tag #'Violin1
-                    \context PerformerStaffGroup = "Violin 1 Staff Group" <<
-                        \context RHStaff = "Violin 1 RH Staff" <<
-                            \context RHVoice = "Violin 1 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 1 Staff Group" <<
+                        \context StringBowingStaff = "Violin 1 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 1 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 1 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 1 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 1 LH Voice" {
+                            \context StringFingeringVoice = "Violin 1 StringFingering Voice" {
                             }
                         >>
                     >>
                     \tag #'Violin2
-                    \context PerformerStaffGroup = "Violin 2 Staff Group" <<
-                        \context RHStaff = "Violin 2 RH Staff" <<
-                            \context RHVoice = "Violin 2 RH Voice" {
+                    \context StringPerformerStaffGroup = "Violin 2 Staff Group" <<
+                        \context StringBowingStaff = "Violin 2 StringBowing Staff" <<
+                            \context StringBowingVoice = "Violin 2 StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Violin 2 LH Staff" <<
+                        \context StringFingeringStaff = "Violin 2 StringFingering Staff" <<
                             \clef "treble"
-                            \context LHVoice = "Violin 2 LH Voice" {
+                            \context StringFingeringVoice = "Violin 2 StringFingering Voice" {
                             }
                         >>
                     >>
                 >>
                 \context ViolaStaffGroup = "Viola Staff Group" <<
                     \tag #'Viola
-                    \context PerformerStaffGroup = "Viola Staff Group" <<
-                        \context RHStaff = "Viola RH Staff" <<
-                            \context RHVoice = "Viola RH Voice" {
+                    \context StringPerformerStaffGroup = "Viola Staff Group" <<
+                        \context StringBowingStaff = "Viola StringBowing Staff" <<
+                            \context StringBowingVoice = "Viola StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Viola LH Staff" <<
+                        \context StringFingeringStaff = "Viola StringFingering Staff" <<
                             \clef "alto"
-                            \context LHVoice = "Viola LH Voice" {
+                            \context StringFingeringVoice = "Viola StringFingering Voice" {
                             }
                         >>
                     >>
                 >>
                 \context CelloStaffGroup = "Cello Staff Group" <<
                     \tag #'Cello
-                    \context PerformerStaffGroup = "Cello Staff Group" <<
-                        \context RHStaff = "Cello RH Staff" <<
-                            \context RHVoice = "Cello RH Voice" {
+                    \context StringPerformerStaffGroup = "Cello Staff Group" <<
+                        \context StringBowingStaff = "Cello StringBowing Staff" <<
+                            \context StringBowingVoice = "Cello StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Cello LH Staff" <<
+                        \context StringFingeringStaff = "Cello StringFingering Staff" <<
                             \clef "bass"
-                            \context LHVoice = "Cello LH Voice" {
+                            \context StringFingeringVoice = "Cello StringFingering Voice" {
                             }
                         >>
                     >>
@@ -304,14 +304,14 @@ class ConsortScoreTemplate(ConsortObject):
             \context StaffGroup = "Outer Staff Group" <<
                 \context CelloStaffGroup = "Cello Staff Group" <<
                     \tag #'Cello
-                    \context PerformerStaffGroup = "Cello Staff Group" <<
-                        \context RHStaff = "Cello RH Staff" <<
-                            \context RHVoice = "Cello RH Voice" {
+                    \context StringPerformerStaffGroup = "Cello Staff Group" <<
+                        \context StringBowingStaff = "Cello StringBowing Staff" <<
+                            \context StringBowingVoice = "Cello StringBowing Voice" {
                             }
                         >>
-                        \context LHStaff = "Cello LH Staff" <<
+                        \context StringFingeringStaff = "Cello StringFingering Staff" <<
                             \clef "bass"
-                            \context LHVoice = "Cello LH Voice" {
+                            \context StringFingeringVoice = "Cello StringFingering Voice" {
                             }
                         >>
                     >>
@@ -404,7 +404,7 @@ class ConsortScoreTemplate(ConsortObject):
             name = instrument.instrument_name.title()
         pitch_range = instrument.pitch_range
         staff_group = scoretools.StaffGroup(
-            context_name='PerformerStaffGroup',
+            context_name='StringPerformerStaffGroup',
             name='{} Staff Group'.format(name),
             )
         tag_name = name.replace(' ', '')
@@ -416,42 +416,42 @@ class ConsortScoreTemplate(ConsortObject):
         attach(tag_command, staff_group)
         if self.split_hands:
             lh_voice = scoretools.Voice(
-                context_name='LHVoice',
-                name='{} LH Voice'.format(name),
+                context_name='StringFingeringVoice',
+                name='{} StringFingering Voice'.format(name),
                 )
             lh_staff = scoretools.Staff(
                 [
                     lh_voice
                     ],
-                context_name='LHStaff',
-                name='{} LH Staff'.format(name),
+                context_name='StringFingeringStaff',
+                name='{} StringFingering Staff'.format(name),
                 )
             lh_staff.is_simultaneous = True
             attach(pitch_range, lh_staff)
             attach(indicatortools.Clef(clef_name), lh_staff)
             rh_voice = scoretools.Voice(
-                context_name='RHVoice',
-                name='{} RH Voice'.format(name),
+                context_name='StringBowingVoice',
+                name='{} StringBowing Voice'.format(name),
                 )
             rh_staff = scoretools.Staff(
                 [
                     rh_voice
                     ],
-                context_name='RHStaff',
-                name='{} RH Staff'.format(name),
+                context_name='StringBowingStaff',
+                name='{} StringBowing Staff'.format(name),
                 )
             rh_staff.is_simultaneous = True
             staff_group.extend([rh_staff, lh_staff])
         else:
             lh_voice = scoretools.Voice(
-                context_name='LHVoice',
+                context_name='StringFingeringVoice',
                 name='{} Voice'.format(name),
                 )
             lh_staff = scoretools.Staff(
                 [
                     lh_voice
                     ],
-                context_name='LHStaff',
+                context_name='StringFingeringStaff',
                 name='{} Staff'.format(name),
                 )
             lh_staff.is_simultaneous = True
