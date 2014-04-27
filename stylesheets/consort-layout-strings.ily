@@ -2,81 +2,46 @@
 
     \context {
         \Voice
-        \name RHVoice
+        \name StringBowingVoice
         \type Engraver_group
         \alias Voice
     }
 
     \context {
         \Staff
-        \name RHStaff
+        \name StringBowingStaff
         \type Engraver_group
         \alias Staff
-        \accepts RHVoice
+        \accepts StringBowingVoice
     }
 
     \context {
         \Voice
-        \name LHVoice
+        \name StringFingeringVoice
         \type Engraver_group
         \alias Voice
     }
 
     \context {
         \Staff
-        \name LHStaff
+        \name StringFingeringStaff
         \type Engraver_group
         \alias Staff
-        \accepts LHVoice
+        \accepts StringFingeringVoice
     }
 
     \context {
         \StaffGroup
-        \name PerformerStaffGroup
+        \name StringPerformerStaffGroup
         \type Engraver_group
         \alias StaffGroup
-        \accepts RHStaff
-        \accepts LHStaff
-    }
-
-    \context {
-        \StaffGroup
-        \name ViolinStaffGroup
-        \type Engraver_group
-        \alias StaffGroup
-        \accepts PerformerStaffGroup
-    }
-
-    \context {
-        \StaffGroup
-        \name ViolaStaffGroup
-        \type Engraver_group
-        \alias StaffGroup
-        \accepts PerformerStaffGroup
-    }
-
-    \context {
-        \StaffGroup
-        \name CelloStaffGroup
-        \type Engraver_group
-        \alias StaffGroup
-        \accepts PerformerStaffGroup
-    }
-
-    \context {
-        \StaffGroup
-        \name ContrabassStaffGroup
-        \type Engraver_group
-        \alias StaffGroup
-        \accepts PerformerStaffGroup
+        \accepts StringBowingStaff
+        \accepts StringFingeringStaff
     }
 
     \context{
         \StaffGroup
-        \accepts ViolinStaffGroup
-        \accepts ViolaStaffGroup
-        \accepts CelloStaffGroup
-        \accepts ContrabassStaffGroup
+        \accepts StringPerformerStaffGroup
     }
 
 }
