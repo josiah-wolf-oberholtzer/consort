@@ -1,22 +1,82 @@
-.. Consort documentation master file, created by
-   sphinx-quickstart on Sun Apr 27 13:23:25 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+###########
+Consort API
+###########
 
-Welcome to Consort's documentation!
-===================================
+*************************
+Core composition packages
+*************************
 
-Contents:
+:py:mod:`makers <consort.makers>`
+=================================
 
-.. toctree::
-   :maxdepth: 2
+.. only:: html
 
+   .. toctree::
+      :hidden:
+      :maxdepth: 1
 
+      makers/index
 
-Indices and tables
-==================
+   .. toctree::
+      :maxdepth: 1
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+      makers/AlterationAgent
+      makers/AnnotationManager
+      makers/AnnotationSpecifier
+      makers/AttachmentAgent
+      makers/AttachmentSpecifier
+      makers/BowSpanner
+      makers/ChordAgent
+      makers/ConsortObject
+      makers/ConsortScoreTemplate
+      makers/ConsortSegmentMaker
+      makers/DynamicExpression
+      makers/GraceAgent
+      makers/MusicSpecifier
+      makers/PerformedTimespan
+      makers/PitchAgent
+      makers/PitchClassSegmentTransform
+      makers/PitchCurve
+      makers/RegisterAgent
+      makers/RhythmManager
+      makers/SegmentSession
+      makers/SilentTimespan
+      makers/TimespanMaker
+      makers/TimespanManager
+      makers/Transform
+      makers/VoiceSetting
+      makers/VoiceSpecifier
 
+.. only:: latex
+
+   Concrete classes
+   ----------------
+
+   .. toctree::
+
+      makers/AlterationAgent
+      makers/AnnotationManager
+      makers/AnnotationSpecifier
+      makers/AttachmentAgent
+      makers/AttachmentSpecifier
+      makers/BowSpanner
+      makers/ChordAgent
+      makers/ConsortObject
+      makers/ConsortScoreTemplate
+      makers/ConsortSegmentMaker
+      makers/DynamicExpression
+      makers/GraceAgent
+      makers/MusicSpecifier
+      makers/PerformedTimespan
+      makers/PitchAgent
+      makers/PitchClassSegmentTransform
+      makers/PitchCurve
+      makers/RegisterAgent
+      makers/RhythmManager
+      makers/SegmentSession
+      makers/SilentTimespan
+      makers/TimespanMaker
+      makers/TimespanManager
+      makers/Transform
+      makers/VoiceSetting
+      makers/VoiceSpecifier
