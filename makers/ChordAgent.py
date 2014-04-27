@@ -16,7 +16,7 @@ class ChordAgent(ConsortObject):
 
         >>> from consort import makers
         >>> chord_agent = makers.ChordAgent()
-        >>> print format(chord_agent)
+        >>> print(format(chord_agent))
         makers.ChordAgent()
 
     '''

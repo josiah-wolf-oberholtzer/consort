@@ -23,7 +23,7 @@ class GraceAgent(ConsortObject):
         >>> grace_agent = makers.GraceAgent(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
-        >>> print format(grace_agent)
+        >>> print(format(grace_agent))
         makers.GraceAgent(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),

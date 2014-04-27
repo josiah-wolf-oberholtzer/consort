@@ -34,7 +34,7 @@ class VoiceSpecifier(ConsortObject):
         ...         ),
         ...     voice_identifiers=('Violin \\d+ LH Voice', 'Viola LH Voice'),
         ...     )
-        >>> print format(voice_specifier)
+        >>> print(format(voice_specifier))
         makers.VoiceSpecifier(
             music_specifier=makers.MusicSpecifier(),
             timespan_maker=makers.TimespanMaker(
@@ -79,12 +79,12 @@ class VoiceSpecifier(ConsortObject):
 
     ::
 
-        >>> print final_duration
+        >>> print(final_duration)
         1
 
     ::
 
-        >>> print format(timespan_inventory)
+        >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(

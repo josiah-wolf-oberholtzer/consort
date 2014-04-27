@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 import os
 import re
 from abjad.tools import durationtools
@@ -45,7 +46,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         ...             ),
         ...         ),
         ...     )
-        >>> print format(segment_maker)
+        >>> print(format(segment_maker))
         makers.ConsortSegmentMaker(
             is_final_segment=False,
             permitted_time_signatures=indicatortools.TimeSignatureInventory(
@@ -90,6 +91,27 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     ::
 
         >>> lilypond_file = segment_maker()
+        TimespanManager:
+            total: ...
+        RhythmManager:
+            populating time signature context: ...
+            populating rhythms: ...
+            consolidating silences: ...
+            rewriting _meters: ...
+            cleaning up silences: ...
+            total: ...
+        AnnotationManager (1):
+            total: ...
+        GraceAgent:
+            total: ...
+        PitchAgent:
+            total: ...
+        RegisterAgent:
+            total: ...
+        AttachmentAgent:
+            total: ...
+        AnnotationManager (2):
+            total: ...
 
     '''
 
@@ -164,7 +186,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         timer = systemtools.Timer()
 
         with timer:
-            print 'TimespanManager:'
+            print('TimespanManager:')
             segment_session = makers.TimespanManager.execute(
                 permitted_time_signatures=self.permitted_time_signatures,
                 segment_session=segment_session,
@@ -173,18 +195,18 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 voice_settings=self.voice_settings,
                 voice_specifiers=self.voice_specifiers,
                 )
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print 'RhythmManager:'
+            print('RhythmManager:')
             segment_session = makers.RhythmManager.execute(
                 annotation_specifier=self.annotation_specifier,
                 segment_session=segment_session,
                 )
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print 'AnnotationManager (1):'
+            print('AnnotationManager (1):')
             if self.annotation_specifier is not None:
                 if self.annotation_specifier.show_stage_1:
                     makers.AnnotationManager._annotate_stage_1(segment_session)
@@ -196,34 +218,34 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     makers.AnnotationManager._annotate_stage_4(segment_session)
                 if self.annotation_specifier.show_stage_5:
                     makers.AnnotationManager._annotate_stage_5(segment_session)
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print 'GraceAgent:'
+            print('GraceAgent:')
             makers.GraceAgent.iterate_score(segment_session.score)
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print 'PitchAgent:'
+            print('PitchAgent:')
             makers.PitchAgent.iterate_score(segment_session.score)
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         #makers.AlterationAgent.iterate_score(segment_session.score)
 
         with timer:
-            print 'RegisterAgent:'
+            print('RegisterAgent:')
             makers.RegisterAgent.iterate_score(segment_session.score)
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         #makers.ChordAgent.iterate_score(segment_session.score)
 
         with timer:
-            print 'AttachmentAgent:'
+            print('AttachmentAgent:')
             makers.AttachmentAgent.iterate_score(segment_session.score)
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print 'AnnotationManager (2):'
+            print('AnnotationManager (2):')
             if self.annotation_specifier is not None:
                 if self.annotation_specifier.show_annotated_result:
                     should_copy = True
@@ -237,7 +259,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     segment_session.scores.append(segment_session.score)
             else:
                 segment_session.scores.append(segment_session.score)
-            print '\ttotal:', timer.elapsed_time
+            print('\ttotal:', timer.elapsed_time)
 
         lilypond_file = self._make_lilypond_file()
         for score in segment_session.scores:

@@ -19,7 +19,7 @@ class AttachmentSpecifier(ConsortObject):
         ...     attachments=(indicatortools.Articulation('>'),),
         ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
         ...     )
-        >>> print format(attachment_specifier)
+        >>> print(format(attachment_specifier))
         makers.AttachmentSpecifier(
             attachments=(
                 indicatortools.Articulation('>'),
@@ -53,7 +53,7 @@ class AttachmentSpecifier(ConsortObject):
 
         >>> staff = Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
         >>> attachment_specifier(staff)
-        >>> print format(staff)
+        >>> print(format(staff))
         \new Staff {
             c'8 \sfz
             r8

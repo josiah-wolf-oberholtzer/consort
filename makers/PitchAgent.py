@@ -20,7 +20,7 @@ class PitchAgent(ConsortObject):
 
         >>> from consort import makers
         >>> pitch_agent = makers.PitchAgent()
-        >>> print format(pitch_agent)
+        >>> print(format(pitch_agent))
         makers.PitchAgent()
 
     '''

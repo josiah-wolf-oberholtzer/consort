@@ -10,7 +10,7 @@ class MusicSpecifier(ConsortObject):
 
         >>> from consort import makers
         >>> music_specifier = makers.MusicSpecifier()
-        >>> print format(music_specifier)
+        >>> print(format(music_specifier))
         makers.MusicSpecifier()
 
     '''

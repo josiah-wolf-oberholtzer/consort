@@ -7,6 +7,60 @@ from abjad.tools.topleveltools import inspect_
 
 
 class BowSpanner(spannertools.Spanner):
+    r'''A bow spanner.
+
+    ::
+
+        >>> from consort import makers
+        >>> staff = Staff("c'4 c'4 c'4 c'4")
+        >>> attach(makers.BowSpanner(), staff[:])
+
+    ::
+
+        >>> attach(indicatortools.BowHairContactPoint((1, 4)), staff[0])
+        >>> attach(indicatortools.BowHairContactPoint((3, 4)), staff[1])
+        >>> attach(indicatortools.BowHairContactPoint((1, 2)), staff[2])
+        >>> attach(indicatortools.BowHairContactPoint((1, 1)), staff[3])
+
+    ::
+
+        >>> print(format(staff))
+        \new Staff {
+            \once \override NoteHead.stencil = #ly:text-interface::print
+            \once \override NoteHead.text = ^ \markup {
+                \vcenter
+                    \fraction
+                        1
+                        4
+                }
+            c'4 \glissando
+            \once \override NoteHead.stencil = #ly:text-interface::print
+            \once \override NoteHead.text = ^ \markup {
+                \vcenter
+                    \fraction
+                        3
+                        4
+                }
+            c'4 \glissando
+            \once \override NoteHead.stencil = #ly:text-interface::print
+            \once \override NoteHead.text = ^ \markup {
+                \vcenter
+                    \fraction
+                        1
+                        2
+                }
+            c'4 \glissando
+            \once \override NoteHead.stencil = #ly:text-interface::print
+            \once \override NoteHead.text = ^ \markup {
+                \vcenter
+                    \fraction
+                        1
+                        1
+                }
+            c'4
+        }
+
+    '''
 
     ### CLASS VARIABLES ###
 
@@ -26,16 +80,38 @@ class BowSpanner(spannertools.Spanner):
 
     ### PRIVATE METHODS ###
 
+    def _get_bowing_indicators(self, leaf):
+        inspector = inspect_(leaf)
+        bow_hair_contact_point = None
+        prototype = indicatortools.BowHairContactPoint
+        if inspector.has_indicator(prototype):
+            bow_hair_contact_point = inspector.get_indicator(prototype)
+        bow_pressure = None
+        prototype = indicatortools.BowPressure
+        if inspector.has_indicator(prototype):
+            bow_pressure = inspector.get_indicator(prototype)
+        bow_technique = None
+        #prototype = indicatortools.BowTechnique
+        #if inspector.has_indicator(prototype):
+        #    bow_technique = inspector.get_indicator(prototype)
+        string_contact_point = None
+        prototype = indicatortools.StringContactPoint
+        if inspector.has_indicator(prototype):
+            string_contact_point = inspector.get_indicator(prototype)
+        return (
+            bow_hair_contact_point,
+            bow_pressure,
+            bow_technique,
+            string_contact_point,
+            )
+
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
-        bow_hair_contact_point = inspect_(leaf).get_indicator(
-            indicatortools.BowHairContactPoint)
-        bow_pressure = inspect_(leaf).get_indicator(
-            indicatortools.BowPressure)
-        bow_technique = inspect_(leaf).get_indicator(
-            indicatortools.BowTechnique)
-        string_contact_point = inspect_(leaf).get_indicator(
-            indicatortools.StringContactPoint)
+        indicators = self._get_bowing_indicators(leaf)
+        bow_hair_contact_point = indicators[0]
+        bow_pressure = indicators[1]
+        bow_technique = indicators[2]
+        string_contact_point = indicators[3]
         if self._is_my_only_leaf(leaf):
             return lilypond_format_bundle
         self._make_bow_hair_contact_point_overrides(
@@ -50,7 +126,6 @@ class BowSpanner(spannertools.Spanner):
                 lilypond_format_bundle=lilypond_format_bundle,
                 string_contact_point=string_contact_point,
                 )
-
         return lilypond_format_bundle
 
     def _make_bow_hair_contact_point_overrides(
@@ -58,7 +133,6 @@ class BowSpanner(spannertools.Spanner):
         lilypond_format_bundle=None,
         bow_hair_contact_point=None,
         ):
-        bow_hair_contact_point = bow_hair_contact_point.markup
         stencil_override = lilypondnametools.LilyPondGrobOverride(
             grob_name='NoteHead',
             is_once=True,

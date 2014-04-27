@@ -17,7 +17,7 @@ class PitchCurve(ConsortObject):
         ...     pitches=(-6, 0, 9),
         ...     ratio=(2, 1),
         ...     )
-        >>> print format(pitch_curve)
+        >>> print(format(pitch_curve))
         makers.PitchCurve(
             pitches=pitchtools.PitchSegment(
                 (

@@ -11,7 +11,7 @@ class PerformedTimespan(timespantools.Timespan):
 
         >>> from consort import makers
         >>> timespan = makers.PerformedTimespan()
-        >>> print format(timespan)
+        >>> print(format(timespan))
         makers.PerformedTimespan(
             minimum_duration=durationtools.Duration(0, 1),
             start_offset=NegativeInfinity,

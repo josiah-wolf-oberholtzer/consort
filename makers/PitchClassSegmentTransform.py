@@ -13,7 +13,7 @@ class PitchClassSegmentTransform(ConsortObject):
         ...     inversion=True,
         ...     transposition=3,
         ...     )
-        >>> print format(pitch_class_transform)
+        >>> print(format(pitch_class_transform))
         makers.PitchClassSegmentTransform(
             inversion=True,
             transposition=3,

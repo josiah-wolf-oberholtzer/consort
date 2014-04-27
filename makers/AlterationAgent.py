@@ -17,7 +17,7 @@ class AlterationAgent(ConsortObject):
 
         >>> from consort import makers
         >>> alteration_agent = makers.AlterationAgent()
-        >>> print format(alteration_agent)
+        >>> print(format(alteration_agent))
         makers.AlterationAgent()
 
     '''

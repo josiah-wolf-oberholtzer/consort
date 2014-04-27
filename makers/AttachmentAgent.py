@@ -14,7 +14,7 @@ class AttachmentAgent(ConsortObject):
 
         >>> from consort import makers
         >>> attachment_agent = makers.AttachmentAgent()
-        >>> print format(attachment_agent)
+        >>> print(format(attachment_agent))
         makers.AttachmentAgent()
 
     '''

@@ -18,7 +18,7 @@ class TimespanMaker(ConsortObject):
         ...         durationtools.Duration(1, 4),
         ...         )
         ...     )
-        >>> print format(timespan_maker)
+        >>> print(format(timespan_maker))
         makers.TimespanMaker(
             initial_silence_durations=(
                 durationtools.Duration(0, 1),
@@ -46,7 +46,7 @@ class TimespanMaker(ConsortObject):
         ...     target_duration=target_duration,
         ...     voice_names=voice_names,
         ...     )
-        >>> print format(timespan_inventory)
+        >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
