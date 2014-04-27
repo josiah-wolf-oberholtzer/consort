@@ -2,32 +2,32 @@
 
     \context {
         \Voice
-        \name StringBowingVoice
+        \name BowingVoice
         \type Engraver_group
         \alias Voice
     }
 
     \context {
         \Staff
-        \name StringBowingStaff
+        \name BowingStaff
         \type Engraver_group
         \alias Staff
-        \accepts StringBowingVoice
+        \accepts BowingVoice
     }
 
     \context {
         \Voice
-        \name StringFingeringVoice
+        \name FingeringVoice
         \type Engraver_group
         \alias Voice
     }
 
     \context {
         \Staff
-        \name StringFingeringStaff
+        \name FingeringStaff
         \type Engraver_group
         \alias Staff
-        \accepts StringFingeringVoice
+        \accepts FingeringVoice
     }
 
     \context {
@@ -35,8 +35,8 @@
         \name StringPerformerStaffGroup
         \type Engraver_group
         \alias StaffGroup
-        \accepts StringBowingStaff
-        \accepts StringFingeringStaff
+        \accepts BowingStaff
+        \accepts FingeringStaff
     }
 
     \context{
