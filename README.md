@@ -1,7 +1,7 @@
 consort
 =======
 
-Tools for writing string music.
+High-level tools for formalized score control in Abjad.
 
 Requires:
 
