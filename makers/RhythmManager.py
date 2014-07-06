@@ -438,11 +438,11 @@ class RhythmManager(ConsortObject):
         ):
         with systemtools.Timer() as timer:
             RhythmManager._populate_time_signature_context(segment_session)
-        print '\tpopulating time signature context:', timer.elapsed_time
+        print('\tpopulating time signature context:', timer.elapsed_time)
 
         with systemtools.Timer() as timer:
             RhythmManager._populate_rhythms(segment_session)
-        print '\tpopulating rhythms:', timer.elapsed_time
+        print('\tpopulating rhythms:', timer.elapsed_time)
 
         if annotation_specifier is not None and \
             annotation_specifier.show_stage_4:
@@ -451,14 +451,14 @@ class RhythmManager(ConsortObject):
 
         with systemtools.Timer() as timer:
             RhythmManager._consolidate_silences(segment_session)
-        print '\tconsolidating silences:', timer.elapsed_time
+        print('\tconsolidating silences:', timer.elapsed_time)
 
         with systemtools.Timer() as timer:
             RhythmManager._rewrite_meters(segment_session)
-        print '\trewriting _meters:', timer.elapsed_time
+        print('\trewriting _meters:', timer.elapsed_time)
 
         with systemtools.Timer() as timer:
             RhythmManager._cleanup_silences(segment_session)
-        print '\tcleaning up silences:', timer.elapsed_time
+        print('\tcleaning up silences:', timer.elapsed_time)
 
         return segment_session
