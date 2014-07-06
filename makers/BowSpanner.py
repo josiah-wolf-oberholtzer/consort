@@ -12,7 +12,6 @@ class BowSpanner(spannertools.Spanner):
 
     ::
 
-        >>> from consort import makers
         >>> staff = Staff("c'4 c'4 c'4 c'4")
 
     ::
