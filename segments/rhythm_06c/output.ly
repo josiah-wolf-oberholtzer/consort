@@ -1,9 +1,15 @@
-\version "2.19.3"
+\version "2.19.6"
 \language "english"
 
 #(ly:set-option 'relative-includes #t)
 
 \include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-header.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-annotations.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-brass.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-keyboards.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-percussion.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-strings.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-winds.ily"
 \include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout.ily"
 \include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-paper.ily"
 
@@ -12,9 +18,9 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" " " \fontsize #-3 "rotating rhythm patterns (3)" }
-				\tempo 8=72
 				\time 2/4
+				\tempo 8=72
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" " " \fontsize #-3 "rotating rhythm patterns (3)" }
 				s1 * 1/2
 			}
 			{
@@ -51,11 +57,11 @@
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context StaffGroup = "Violin Staff Group" <<
+			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context StringPerformerStaffGroup = "Violin Staff Group" <<
 					\context FingeringStaff = "Violin Staff" <<
-						\clef "percussion"
+						\clef "treble"
 						\context FingeringVoice = "Violin Voice" {
 							{
 								{
@@ -355,11 +361,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Viola Staff Group" <<
+			\context ViolaStaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
 				\context StringPerformerStaffGroup = "Viola Staff Group" <<
 					\context FingeringStaff = "Viola Staff" <<
-						\clef "percussion"
+						\clef "alto"
 						\context FingeringVoice = "Viola Voice" {
 							{
 								{
@@ -666,11 +672,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Cello Staff Group" <<
+			\context CelloStaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
 				\context StringPerformerStaffGroup = "Cello Staff Group" <<
 					\context FingeringStaff = "Cello Staff" <<
-						\clef "percussion"
+						\clef "bass"
 						\context FingeringVoice = "Cello Voice" {
 							{
 								{
@@ -971,9 +977,9 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" " " \fontsize #-3 "rotating rhythm patterns (3)" }
-				\tempo 8=72
 				\time 2/4
+				\tempo 8=72
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" " " \fontsize #-3 "rotating rhythm patterns (3)" }
 				s1 * 1/2
 			}
 			{
@@ -1010,11 +1016,11 @@
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context StaffGroup = "Violin Staff Group" <<
+			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context StringPerformerStaffGroup = "Violin Staff Group" <<
 					\context FingeringStaff = "Violin Staff" <<
-						\clef "percussion"
+						\clef "treble"
 						\context FingeringVoice = "Violin Voice" {
 							{
 								{
@@ -1315,11 +1321,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Viola Staff Group" <<
+			\context ViolaStaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
 				\context StringPerformerStaffGroup = "Viola Staff Group" <<
 					\context FingeringStaff = "Viola Staff" <<
-						\clef "percussion"
+						\clef "alto"
 						\context FingeringVoice = "Viola Voice" {
 							{
 								{
@@ -1634,11 +1640,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Cello Staff Group" <<
+			\context CelloStaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
 				\context StringPerformerStaffGroup = "Cello Staff Group" <<
 					\context FingeringStaff = "Cello Staff" <<
-						\clef "percussion"
+						\clef "bass"
 						\context FingeringVoice = "Cello Voice" {
 							{
 								{
@@ -1947,9 +1953,9 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" " " \fontsize #-3 "rotating rhythm patterns (3)" }
-				\tempo 8=72
 				\time 2/4
+				\tempo 8=72
+				\mark \markup { \override #'(box-padding . 0.5) \box "B6c" " " \fontsize #-3 "rotating rhythm patterns (3)" }
 				s1 * 1/2
 			}
 			{
@@ -1986,11 +1992,11 @@
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context StaffGroup = "Violin Staff Group" <<
+			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context StringPerformerStaffGroup = "Violin Staff Group" <<
 					\context FingeringStaff = "Violin Staff" <<
-						\clef "percussion"
+						\clef "treble"
 						\context FingeringVoice = "Violin Voice" {
 							{
 								{
@@ -2151,11 +2157,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Viola Staff Group" <<
+			\context ViolaStaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
 				\context StringPerformerStaffGroup = "Viola Staff Group" <<
 					\context FingeringStaff = "Viola Staff" <<
-						\clef "percussion"
+						\clef "alto"
 						\context FingeringVoice = "Viola Voice" {
 							{
 								{
@@ -2328,11 +2334,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Cello Staff Group" <<
+			\context CelloStaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
 				\context StringPerformerStaffGroup = "Cello Staff Group" <<
 					\context FingeringStaff = "Cello Staff" <<
-						\clef "percussion"
+						\clef "bass"
 						\context FingeringVoice = "Cello Voice" {
 							{
 								{

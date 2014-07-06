@@ -1,9 +1,15 @@
-\version "2.19.3"
+\version "2.19.6"
 \language "english"
 
 #(ly:set-option 'relative-includes #t)
 
 \include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-header.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-annotations.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-brass.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-keyboards.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-percussion.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-strings.ily"
+\include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout-winds.ily"
 \include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-layout.ily"
 \include "/Users/josiah/Documents/Scores/consort/stylesheets/consort-paper.ily"
 
@@ -12,9 +18,9 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "C1" " " \fontsize #-3 "adding grace notes (every red attack)" }
-				\tempo 8=72
 				\time 2/4
+				\tempo 8=72
+				\mark \markup { \override #'(box-padding . 0.5) \box "C1" " " \fontsize #-3 "adding grace notes (every red attack)" }
 				s1 * 1/2
 			}
 			{
@@ -51,11 +57,11 @@
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context StaffGroup = "Violin Staff Group" <<
+			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context StringPerformerStaffGroup = "Violin Staff Group" <<
 					\context FingeringStaff = "Violin Staff" <<
-						\clef "percussion"
+						\clef "treble"
 						\context FingeringVoice = "Violin Voice" {
 							{
 								{
@@ -125,14 +131,8 @@
 									c'16. -\accent [
 									\set stemLeftBeamCount = 3
 									\set stemRightBeamCount = 0
+									\afterGrace
 									c'32 ]
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -142,87 +142,68 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
 								}
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
 									\set stemRightBeamCount = 1
-									c'8
+									c'8.
+								}
+							}
+							{
+								{
+									\afterGrace
+									r4
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									\afterGrace
+									r4
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\afterGrace
+									c'16 [
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -233,7 +214,7 @@
 							{
 								\times 4/5 {
 									\afterGrace
-									r16
+									r8.
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -244,9 +225,9 @@
 										\revert Stem #'length
 									}
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\afterGrace
-									c'8 [
+									c'16 [
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -256,51 +237,33 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									c'8 ~
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
 								}
 								{
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
-									c'16 ]
+									c'8 ]
 								}
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r4
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -310,6 +273,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
 									\afterGrace
@@ -324,10 +291,20 @@
 										\revert Stem #'length
 									}
 								}
-								{
+								\times 4/5 {
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
-									c'8 ~
+									\afterGrace
+									c'8.
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\afterGrace
@@ -350,10 +327,7 @@
 								{
 									r8
 								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\afterGrace
 									r16
 									{
@@ -365,25 +339,12 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 1
+									c'8
 								}
 							}
 							{
@@ -399,13 +360,8 @@
 							{
 								{
 									r32
-									r8
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -415,6 +371,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -427,7 +387,7 @@
 							{
 								\times 4/5 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -437,22 +397,8 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									c'8 ]
+									c'8.
 								}
 							}
 						}
@@ -630,11 +576,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Viola Staff Group" <<
+			\context ViolaStaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
 				\context StringPerformerStaffGroup = "Viola Staff Group" <<
 					\context FingeringStaff = "Viola Staff" <<
-						\clef "percussion"
+						\clef "alto"
 						\context FingeringVoice = "Viola Voice" {
 							{
 								{
@@ -643,13 +589,25 @@
 									c'16. -\accent [
 									\set stemLeftBeamCount = 3
 									\set stemRightBeamCount = 0
+									\afterGrace
 									c'32 ]
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 								}
 							}
 							{
-								\times 2/3 {
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									\afterGrace
-									r16
+									c'16 [
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -659,10 +617,15 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 2
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
 									\afterGrace
-									c'8 [
+									c'16
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -672,8 +635,6 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-								}
-								{
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\afterGrace
@@ -694,24 +655,7 @@
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemRightBeamCount = 1
-									c'8
+									r4
 								}
 							}
 							{
@@ -729,13 +673,8 @@
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -745,6 +684,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -819,79 +762,27 @@
 							{
 								{
 									r8
+									\afterGrace
 									r8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 								}
 							}
 							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
+									c'8 ~ [
 								}
-								{
+								\times 4/5 {
 									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8.
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
-								}
-							}
-							{
-								{
-									r16
-									r16
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\afterGrace
 									c'16
@@ -905,18 +796,42 @@
 										\revert Stem #'length
 									}
 									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
 							{
 								{
-									r8
+									r16
 									r8
 								}
-							}
-							{
-								\times 2/3 {
+								{
 									\afterGrace
 									r16
 									{
@@ -928,8 +843,48 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemRightBeamCount = 1
-									c'8
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									r8
+									\afterGrace
+									r8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\afterGrace
+									c'16 [
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -956,7 +911,7 @@
 								\tweak #'text #tuplet-number::calc-fraction-text
 								\times 3/4 {
 									\afterGrace
-									r16
+									r8.
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -966,37 +921,15 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
 									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
 								}
 							}
 							{
 								{
 									r8
-									r8
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1006,6 +939,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -1185,11 +1122,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Cello Staff Group" <<
+			\context CelloStaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
 				\context StringPerformerStaffGroup = "Cello Staff Group" <<
 					\context FingeringStaff = "Cello Staff" <<
-						\clef "percussion"
+						\clef "bass"
 						\context FingeringVoice = "Cello Voice" {
 							{
 								{
@@ -1205,11 +1142,6 @@
 								{
 									r32
 									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
 									\afterGrace
 									r16
 									{
@@ -1221,22 +1153,13 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									c'16 ]
@@ -1262,40 +1185,24 @@
 							}
 							{
 								{
+									\afterGrace
 									r16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 								}
 							}
 							{
-								\times 4/5 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									c'8 ~
-								}
-								{
+									c'8 ~ [
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\afterGrace
@@ -1310,9 +1217,24 @@
 										\revert Stem #'length
 									}
 									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
+									\set stemRightBeamCount = 1
 									\afterGrace
 									c'16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1335,62 +1257,7 @@
 							{
 								\times 2/3 {
 									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-								}
-								{
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									c'8 ~
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
-								}
-							}
-							{
-								{
 									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1403,7 +1270,22 @@
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									c'16 ~ [
-									\set stemLeftBeamCount = 2
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\afterGrace
 									c'16
@@ -1423,13 +1305,8 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1439,19 +1316,14 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemRightBeamCount = 1
-									c'8
 								}
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\times 4/5 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									\afterGrace
-									r16
+									c'16 [
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1461,6 +1333,31 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
+								}
+							}
+							{
+								{
+									r4
+								}
+								{
+									\afterGrace
+									r4
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
 									\afterGrace
@@ -1752,9 +1649,9 @@
 		\tag #'(Violin Viola Cello)
 		\context TimeSignatureContext = "TimeSignatureContext" {
 			{
-				\mark \markup { \override #'(box-padding . 0.5) \box "C1" " " \fontsize #-3 "adding grace notes (every red attack)" }
-				\tempo 8=72
 				\time 2/4
+				\tempo 8=72
+				\mark \markup { \override #'(box-padding . 0.5) \box "C1" " " \fontsize #-3 "adding grace notes (every red attack)" }
 				s1 * 1/2
 			}
 			{
@@ -1791,11 +1688,11 @@
 			}
 		}
 		\context StaffGroup = "Outer Staff Group" <<
-			\context StaffGroup = "Violin Staff Group" <<
+			\context ViolinStaffGroup = "Violin Staff Group" <<
 				\tag #'Violin
 				\context StringPerformerStaffGroup = "Violin Staff Group" <<
 					\context FingeringStaff = "Violin Staff" <<
-						\clef "percussion"
+						\clef "treble"
 						\context FingeringVoice = "Violin Voice" {
 							{
 								{
@@ -1865,14 +1762,8 @@
 									c'16. -\accent [
 									\set stemLeftBeamCount = 3
 									\set stemRightBeamCount = 0
+									\afterGrace
 									c'32 ]
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1882,87 +1773,68 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
 								}
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
-								}
-							}
-							{
-								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
 									\set stemRightBeamCount = 1
-									c'8
+									c'8.
+								}
+							}
+							{
+								{
+									\afterGrace
+									r4
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									\afterGrace
+									r4
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\afterGrace
+									c'16 [
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -1973,7 +1845,7 @@
 							{
 								\times 4/5 {
 									\afterGrace
-									r16
+									r8.
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1984,9 +1856,9 @@
 										\revert Stem #'length
 									}
 									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
+									\set stemRightBeamCount = 2
 									\afterGrace
-									c'8 [
+									c'16 [
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -1996,9 +1868,9 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 1
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 1
-									c'8 ~
+									c'16 ~
 								}
 								{
 									\set stemLeftBeamCount = 1
@@ -2014,33 +1886,15 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 0
-									c'16 ]
+									c'8 ]
 								}
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r4
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2050,6 +1904,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
 									\afterGrace
@@ -2064,10 +1922,20 @@
 										\revert Stem #'length
 									}
 								}
-								{
+								\times 4/5 {
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
-									c'8 ~
+									\afterGrace
+									c'8.
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\afterGrace
@@ -2090,10 +1958,7 @@
 								{
 									r8
 								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
+								{
 									\afterGrace
 									r16
 									{
@@ -2105,25 +1970,12 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 1
+									c'8
 								}
 							}
 							{
@@ -2139,13 +1991,8 @@
 							{
 								{
 									r32
-									r8
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2155,6 +2002,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -2167,7 +2018,7 @@
 							{
 								\times 4/5 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2177,33 +2028,19 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 0
-									c'8 ]
+									c'8.
 								}
 							}
 						}
 					>>
 				>>
 			>>
-			\context StaffGroup = "Viola Staff Group" <<
+			\context ViolaStaffGroup = "Viola Staff Group" <<
 				\tag #'Viola
 				\context StringPerformerStaffGroup = "Viola Staff Group" <<
 					\context FingeringStaff = "Viola Staff" <<
-						\clef "percussion"
+						\clef "alto"
 						\context FingeringVoice = "Viola Voice" {
 							{
 								{
@@ -2212,37 +2049,52 @@
 									c'16. -\accent [
 									\set stemLeftBeamCount = 3
 									\set stemRightBeamCount = 0
+									\afterGrace
 									c'32 ]
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 								}
 							}
 							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-								}
 								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\afterGrace
+									c'16 [
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									c'16 ~
+								}
+								\times 4/5 {
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 2
+									\afterGrace
+									c'16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 1
 									\afterGrace
@@ -2263,24 +2115,7 @@
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemRightBeamCount = 1
-									c'8
+									r4
 								}
 							}
 							{
@@ -2298,13 +2133,8 @@
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2314,6 +2144,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -2388,79 +2222,27 @@
 							{
 								{
 									r8
+									\afterGrace
 									r8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 								}
 							}
 							{
-								\times 2/3 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
+									c'8 ~ [
 								}
-								{
+								\times 4/5 {
 									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8.
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
-								}
-							}
-							{
-								{
-									r16
-									r16
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 2
 									\afterGrace
 									c'16
@@ -2474,18 +2256,42 @@
 										\revert Stem #'length
 									}
 									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									c'16 ]
 								}
 							}
 							{
 								{
-									r8
+									r16
 									r8
 								}
-							}
-							{
-								\times 2/3 {
+								{
 									\afterGrace
 									r16
 									{
@@ -2497,8 +2303,48 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemRightBeamCount = 1
-									c'8
+								}
+							}
+							{
+								{
+									\set stemRightBeamCount = 2
+									c'16
+								}
+							}
+							{
+								{
+									r8
+									\afterGrace
+									r8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
+									\afterGrace
+									c'16 [
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 2
+									\set stemRightBeamCount = 0
+									c'16 ]
 								}
 							}
 							{
@@ -2525,7 +2371,7 @@
 								\tweak #'text #tuplet-number::calc-fraction-text
 								\times 3/4 {
 									\afterGrace
-									r16
+									r8.
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2535,37 +2381,15 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
-									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
 									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
 								}
 							}
 							{
 								{
 									r8
-									r8
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2575,6 +2399,10 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemRightBeamCount = 1
 									c'8
 								}
@@ -2583,11 +2411,11 @@
 					>>
 				>>
 			>>
-			\context StaffGroup = "Cello Staff Group" <<
+			\context CelloStaffGroup = "Cello Staff Group" <<
 				\tag #'Cello
 				\context StringPerformerStaffGroup = "Cello Staff Group" <<
 					\context FingeringStaff = "Cello Staff" <<
-						\clef "percussion"
+						\clef "bass"
 						\context FingeringVoice = "Cello Voice" {
 							{
 								{
@@ -2603,11 +2431,6 @@
 								{
 									r32
 									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
 									\afterGrace
 									r16
 									{
@@ -2619,22 +2442,13 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+								}
+							}
+							{
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									c'16 ~ [
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
 									\set stemLeftBeamCount = 2
 									\set stemRightBeamCount = 0
 									c'16 ]
@@ -2660,40 +2474,24 @@
 							}
 							{
 								{
+									\afterGrace
 									r16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
 								}
 							}
 							{
-								\times 4/5 {
-									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									c'8 ~
-								}
-								{
+									c'8 ~ [
 									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\afterGrace
@@ -2708,9 +2506,24 @@
 										\revert Stem #'length
 									}
 									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 2
+									\set stemRightBeamCount = 1
 									\afterGrace
 									c'16
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2733,62 +2546,7 @@
 							{
 								\times 2/3 {
 									\afterGrace
-									r16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 0
-									\set stemRightBeamCount = 1
-									\afterGrace
-									c'8 [
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-								}
-								{
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 1
-									c'8 ~
-									\set stemLeftBeamCount = 1
-									\set stemRightBeamCount = 2
-									\afterGrace
-									c'16
-									{
-										\override Flag #'stroke-style = #"grace"
-										\override Script #'font-size = #0.5
-										\override Stem #'length = #8
-										c'16
-										\revert Flag #'stroke-style
-										\revert Script #'font-size
-										\revert Stem #'length
-									}
-									\set stemLeftBeamCount = 2
-									\set stemRightBeamCount = 0
-									c'16 ]
-								}
-							}
-							{
-								{
 									r8
-								}
-							}
-							{
-								\tweak #'text #tuplet-number::calc-fraction-text
-								\times 3/4 {
-									\afterGrace
-									r16
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2801,7 +2559,22 @@
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 2
 									c'16 ~ [
-									\set stemLeftBeamCount = 2
+								}
+								{
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 1
+									\afterGrace
+									c'8
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+									\set stemLeftBeamCount = 1
 									\set stemRightBeamCount = 2
 									\afterGrace
 									c'16
@@ -2821,13 +2594,8 @@
 							}
 							{
 								{
-									r4
-								}
-							}
-							{
-								\times 2/3 {
 									\afterGrace
-									r16
+									r8
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2837,19 +2605,14 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
-									\set stemRightBeamCount = 1
-									c'8
 								}
 							}
 							{
 								{
-									r8
-								}
-							}
-							{
-								\times 4/5 {
+									\set stemLeftBeamCount = 0
+									\set stemRightBeamCount = 2
 									\afterGrace
-									r16
+									c'16 [
 									{
 										\override Flag #'stroke-style = #"grace"
 										\override Script #'font-size = #0.5
@@ -2859,6 +2622,31 @@
 										\revert Script #'font-size
 										\revert Stem #'length
 									}
+									\set stemLeftBeamCount = 1
+									\set stemRightBeamCount = 0
+									c'8 ]
+								}
+							}
+							{
+								{
+									r4
+								}
+								{
+									\afterGrace
+									r4
+									{
+										\override Flag #'stroke-style = #"grace"
+										\override Script #'font-size = #0.5
+										\override Stem #'length = #8
+										c'16
+										\revert Flag #'stroke-style
+										\revert Script #'font-size
+										\revert Stem #'length
+									}
+								}
+							}
+							{
+								{
 									\set stemLeftBeamCount = 0
 									\set stemRightBeamCount = 1
 									\afterGrace
