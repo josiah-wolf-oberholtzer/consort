@@ -32,7 +32,10 @@ class VoiceSpecifier(ConsortObject):
         ...             durationtools.Duration(1, 4),
         ...             ),
         ...         ),
-        ...     voice_identifiers=('Violin \\d+ LH Voice', 'Viola LH Voice'),
+        ...     voice_identifiers=(
+        ...         'Violin \\d+ Bowing Voice',
+        ...         'Viola Bowing Voice',
+        ...         ),
         ...     )
         >>> print(format(voice_specifier))
         makers.VoiceSpecifier(
@@ -57,7 +60,10 @@ class VoiceSpecifier(ConsortObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            voice_identifiers=('Violin \\d+ LH Voice', 'Viola LH Voice'),
+            voice_identifiers=(
+                'Violin \\d+ Bowing Voice',
+                'Viola Bowing Voice',
+                ),
             )
 
     ::
@@ -93,7 +99,7 @@ class VoiceSpecifier(ConsortObject):
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
-                    voice_name='Violin 1 LH Voice',
+                    voice_name='Violin 1 Bowing Voice',
                     ),
                 makers.PerformedTimespan(
                     layer=1,
@@ -101,7 +107,7 @@ class VoiceSpecifier(ConsortObject):
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 2),
-                    voice_name='Viola LH Voice',
+                    voice_name='Viola Bowing Voice',
                     ),
                 makers.PerformedTimespan(
                     layer=1,
@@ -109,7 +115,7 @@ class VoiceSpecifier(ConsortObject):
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
-                    voice_name='Violin 2 LH Voice',
+                    voice_name='Violin 2 Bowing Voice',
                     ),
                 makers.PerformedTimespan(
                     layer=1,
@@ -117,7 +123,7 @@ class VoiceSpecifier(ConsortObject):
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(1, 1),
-                    voice_name='Violin 1 LH Voice',
+                    voice_name='Violin 1 Bowing Voice',
                     ),
                 makers.PerformedTimespan(
                     layer=1,
@@ -125,7 +131,7 @@ class VoiceSpecifier(ConsortObject):
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
-                    voice_name='Violin 2 LH Voice',
+                    voice_name='Violin 2 Bowing Voice',
                     ),
                 makers.PerformedTimespan(
                     layer=1,
@@ -133,7 +139,7 @@ class VoiceSpecifier(ConsortObject):
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
-                    voice_name='Viola LH Voice',
+                    voice_name='Viola Bowing Voice',
                     ),
                 ]
             )
