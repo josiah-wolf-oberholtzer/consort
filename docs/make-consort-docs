@@ -6,51 +6,53 @@ import consort
 from abjad.tools import documentationtools
 
 
+class ConsortAPIGenerator(documentationtools.AbjadAPIGenerator):
+
+    _api_title = 'Consort API'
+
+    @property
+    def docs_api_index_path(self):
+        consort_path = consort.__path__[0]
+        return os.path.join(
+            consort_path,
+            'docs',
+            'source',
+            'index.rst',
+            )
+
+    @property
+    def package_prefix(self):
+        return ('consort.',)
+
+    @property
+    def path_definitions(self):
+        consort_path = consort.__path__[0]
+        code_path = os.path.join(
+            consort_path,
+            )
+        docs_path = os.path.join(
+            consort_path,
+            'docs',
+            'source',
+            )
+        package_prefix = 'consort.'
+        triple = (
+            code_path,
+            docs_path,
+            package_prefix,
+            )
+        all_triples = (triple,)
+        return all_triples
+
+    @property
+    def root_package(self):
+        return 'consort'
+
+    @property
+    def tools_package_path_index(self):
+        return 1
+
 
 if __name__ == '__main__':
-
-    consort_path = consort.__path__[0]
-
-    class ConsortAPIGenerator(documentationtools.AbjadAPIGenerator):
-
-        _api_title = 'Consort API'
-
-        @property
-        def docs_api_index_path(self):
-            return os.path.join(
-                consort_path,
-                'docs',
-                'source',
-                'index.rst',
-                )
-
-        @property
-        def path_definitions(self):
-            makers_code_path = os.path.join(
-                consort_path,
-                )
-            makers_docs_path = os.path.join(
-                consort_path,
-                'docs',
-                'source',
-                )
-            makers_package_prefix = 'consort.'
-            makers_triple = (
-                makers_code_path,
-                makers_docs_path,
-                makers_package_prefix,
-                )
-            all_triples = (makers_triple,)
-            return all_triples
-
-        @property
-        def root_package(self):
-            return 'consort'
-
-        @property
-        def tools_package_path_index(self):
-            return 1
-
-
     api_generator = ConsortAPIGenerator()
     api_generator(verbose=True)
