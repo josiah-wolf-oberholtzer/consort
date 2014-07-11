@@ -198,6 +198,7 @@ class VoiceSpecifier(ConsortObject):
             template=template,
             voice_identifiers=self.voice_identifiers,
             )
+        assert voice_names, voice_names
         timespan_inventory, final_offset = self.timespan_maker(
             color=self.color,
             layer=layer,
