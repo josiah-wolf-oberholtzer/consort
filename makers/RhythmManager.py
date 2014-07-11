@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 import collections
 import itertools
 from abjad.tools import durationtools
@@ -455,7 +456,7 @@ class RhythmManager(ConsortObject):
 
         with systemtools.Timer() as timer:
             RhythmManager._rewrite_meters(segment_session)
-        print('\trewriting _meters:', timer.elapsed_time)
+        print('\trewriting meters:', timer.elapsed_time)
 
         with systemtools.Timer() as timer:
             RhythmManager._cleanup_silences(segment_session)

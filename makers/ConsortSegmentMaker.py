@@ -42,7 +42,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         ...         makers.VoiceSpecifier(
         ...             music_specifier=makers.MusicSpecifier(),
         ...             timespan_maker=makers.TimespanMaker(),
-        ...             voice_identifiers=('Violin \\d+ LH Voice',),
+        ...             voice_identifiers=('Violin \\d+ Bowing Voice',),
         ...             ),
         ...         ),
         ...     )
@@ -64,7 +64,10 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 split_hands=True,
                 use_percussion_clefs=False,
                 ),
-            tempo=indicatortools.Tempo(durationtools.Duration(1, 4), 72),
+            tempo=indicatortools.Tempo(
+                duration=durationtools.Duration(1, 4),
+                units_per_minute=72,
+                ),
             voice_specifiers=(
                 makers.VoiceSpecifier(
                     music_specifier=makers.MusicSpecifier(),
@@ -83,7 +86,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                         synchronize_groupings=False,
                         synchronize_step=False,
                         ),
-                    voice_identifiers=('Violin \\d+ LH Voice',),
+                    voice_identifiers=('Violin \\d+ Bowing Voice',),
                     ),
                 ),
             )
@@ -97,7 +100,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             populating time signature context: ...
             populating rhythms: ...
             consolidating silences: ...
-            rewriting _meters: ...
+            rewriting meters: ...
             cleaning up silences: ...
             total: ...
         AnnotationManager (1):
@@ -161,7 +164,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             target_duration = durationtools.Duration(target_duration)
         self._target_duration = target_duration
         self._template = template
-        if tempo is not None:
+        if tempo is not None and not isinstance(tempo, indicatortools.Tempo):
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
         if voice_settings is not None:
@@ -340,14 +343,14 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             ...     contrabass_count=1,
             ...     )
             >>> voice_identifiers = (
-            ...     'Violin \\d+ LH Voice',
-            ...     'Viola LH Voice',
+            ...     'Violin \\d+ Bowing Voice',
+            ...     'Viola Bowing Voice',
             ...     )
             >>> makers.ConsortSegmentMaker.find_voice_names(
             ...     template=template,
             ...     voice_identifiers=voice_identifiers,
             ...     )
-            ('Violin 1 LH Voice', 'Violin 2 LH Voice', 'Viola LH Voice')
+            ('Violin 1 Bowing Voice', 'Violin 2 Bowing Voice', 'Viola Bowing Voice')
 
         '''
         score = template()
