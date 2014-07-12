@@ -24,7 +24,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
                     ),
                 item_class=pitchtools.NamedPitch,
                 ),
-            structural_pitch=pitchtools.NumberedPitch(0),
+            structural_pitch=pitchtools.NamedPitch("c'"),
             tailing_pitches=pitchtools.PitchSegment(
                 (
                     pitchtools.NamedPitch('bf'),
@@ -62,16 +62,11 @@ class HarmonicFieldEntry(abctools.AbjadObject):
         leading_pitches = leading_pitches or ()
         leading_pitches = pitchtools.PitchSegment(leading_pitches)
         self._leading_pitches = leading_pitches
-        structural_pitch = pitchtools.NumberedPitch(structural_pitch)
+        structural_pitch = pitchtools.NamedPitch(structural_pitch)
         self._structural_pitch = structural_pitch
         tailing_pitches = tailing_pitches or ()
         tailing_pitches = pitchtools.PitchSegment(tailing_pitches)
         self._tailing_pitches = tailing_pitches
-
-    ### PRIVATE METHODS ###
-
-    def _transpose_pitch_wrapped_to_range(self, pitch, interval, pitch_range):
-        pass
 
     ### PRIVATE PROPERTIES ###
 
@@ -106,6 +101,60 @@ class HarmonicFieldEntry(abctools.AbjadObject):
         self,
         axis=None,
         ):
+        r'''Inverts harmonic field entry.
+
+        ::
+
+            >>> inverted_entry = entry.invert()
+            >>> print(format(inverted_entry))
+            makers.HarmonicFieldEntry(
+                leading_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch('g'),
+                        pitchtools.NamedPitch('af'),
+                        pitchtools.NamedPitch('b'),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                structural_pitch=pitchtools.NamedPitch("c'"),
+                tailing_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("d'"),
+                        pitchtools.NamedPitch("f'"),
+                        pitchtools.NamedPitch("e'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                )
+
+        Inverts harmonic field entry around `axis`.
+
+        ::
+
+            >>> inverted_entry = entry.invert(axis="d'")
+            >>> print(format(inverted_entry))
+            makers.HarmonicFieldEntry(
+                leading_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch('b'),
+                        pitchtools.NamedPitch("c'"),
+                        pitchtools.NamedPitch("ds'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                structural_pitch=pitchtools.NamedPitch("e'"),
+                tailing_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("fs'"),
+                        pitchtools.NamedPitch("a'"),
+                        pitchtools.NamedPitch("gs'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                )
+
+        Returns new harmonic field entry.
+        '''
         from abjad.tools import pitchtools
         axis = axis or pitchtools.NamedPitch("c'")
         leading_pitches = self.leading_pitches
@@ -124,6 +173,34 @@ class HarmonicFieldEntry(abctools.AbjadObject):
     def invert_ornamental_pitches(
         self,
         ):
+        r'''Inverts ornamental pitches around structural pitch.
+
+        ::
+
+            >>> inverted_entry = entry.invert_ornamental_pitches()
+            >>> print(format(inverted_entry))
+            makers.HarmonicFieldEntry(
+                leading_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch('g'),
+                        pitchtools.NamedPitch('af'),
+                        pitchtools.NamedPitch('b'),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                structural_pitch=pitchtools.NamedPitch("c'"),
+                tailing_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("d'"),
+                        pitchtools.NamedPitch("f'"),
+                        pitchtools.NamedPitch("e'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                )
+
+        Returns new harmonic field entry.
+        '''
         axis = self.structural_pitch
         leading_pitches = self.leading_pitches
         if leading_pitches is not None:
@@ -139,6 +216,35 @@ class HarmonicFieldEntry(abctools.AbjadObject):
     def retrograde(
         self,
         ):
+        r'''Retrogrades harmonic field entry ornamental pitches around the
+        structural pitch.
+
+        ::
+
+            >>> retrograded_entry = entry.retrograde()
+            >>> print(format(retrograded_entry))
+            makers.HarmonicFieldEntry(
+                leading_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch('af'),
+                        pitchtools.NamedPitch('g'),
+                        pitchtools.NamedPitch('bf'),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                structural_pitch=pitchtools.NamedPitch("c'"),
+                tailing_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("df'"),
+                        pitchtools.NamedPitch("e'"),
+                        pitchtools.NamedPitch("f'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                )
+
+        Returns new harmonic field entry
+        '''
         leading_pitches = self.tailing_pitches
         tailing_pitches = self.leading_pitches
         if leading_pitches is not None:
@@ -150,47 +256,39 @@ class HarmonicFieldEntry(abctools.AbjadObject):
             tailing_pitches=tailing_pitches,
             )
 
-    def rotate_octaves(
+    def rotate(
         self,
         expr,
-        bounding_pitch_range,
         ):
-        interval = 12 * expr
-        leading_pitches = self.tailing_pitches
-        tailing_pitches = self.leading_pitches
-        if leading_pitches is not None:
-            leading_pitches = [
-                self._transpose_pitch_wrapped_to_range(
-                    leading_pitch,
-                    interval,
-                    bounding_pitch_range,
-                    )
-                for leading_pitch in leading_pitches
-                ]
-        structural_pitch = self._transpose_pitch_wrapped_to_range(
-            self.structural_pitch,
-            interval,
-            bounding_pitch_range,
-            )
-        if tailing_pitches is not None:
-            tailing_pitches = [
-                self._transpose_pitch_wrapped_to_range(
-                    tailing_pitch,
-                    interval,
-                    bounding_pitch_range,
-                    )
-                for tailing_pitch in tailing_pitches
-                ]
-        return new(self,
-            leading_pitches=leading_pitches,
-            structural_pitch=structural_pitch,
-            tailing_pitches=tailing_pitches,
-            )
+        r'''Rotates harmonic field entry pitches, maintaining the structural
+        pitch. 
 
-    def rotate_pitch_classes(
-        self,
-        expr,
-        ):
+        ::
+
+            >>> rotated_entry = entry.rotate(1)
+            >>> print(format(rotated_entry))
+            makers.HarmonicFieldEntry(
+                leading_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("e'"),
+                        pitchtools.NamedPitch("d'"),
+                        pitchtools.NamedPitch('b'),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                structural_pitch=pitchtools.NamedPitch("c'"),
+                tailing_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("f'"),
+                        pitchtools.NamedPitch("e'"),
+                        pitchtools.NamedPitch("df'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                )
+        
+        Returns new harmonic field entry.
+        '''
         leading_pitches = self.tailing_pitches
         tailing_pitches = self.leading_pitches
         if leading_pitches is not None:
@@ -212,6 +310,34 @@ class HarmonicFieldEntry(abctools.AbjadObject):
         self,
         expr,
         ):
+        r'''Transposes all pitches in harmonic field entry.
+
+        ::
+
+            >>> transposed_entry = entry.transpose('M2')
+            >>> print(format(transposed_entry))
+            makers.HarmonicFieldEntry(
+                leading_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("g'"),
+                        pitchtools.NamedPitch("fs'"),
+                        pitchtools.NamedPitch("ef'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                structural_pitch=pitchtools.NamedPitch("d'"),
+                tailing_pitches=pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("c'"),
+                        pitchtools.NamedPitch('a'),
+                        pitchtools.NamedPitch('bf'),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                )
+
+        Returns new harmonic field entry.
+        '''
         leading_pitches = self.leading_pitches
         if leading_pitches is not None:
             leading_pitches = leading_pitches.transpose(expr)
