@@ -3,7 +3,7 @@ from abjad.tools import pitchtools
 from abjad.tools import datastructuretools
 
 
-class HarmonicField(datastructuretools.TypedList):
+class HarmonicField(datastructuretools.TypedTuple):
     r'''A harmonic field.
 
     ::
@@ -27,7 +27,7 @@ class HarmonicField(datastructuretools.TypedList):
         ...     ])
         >>> print(format(harmonic_field))
         makers.HarmonicField(
-            [
+            (
                 makers.HarmonicFieldEntry(
                     leading_pitches=pitchtools.PitchSegment(
                         (
@@ -75,14 +75,16 @@ class HarmonicField(datastructuretools.TypedList):
                         item_class=pitchtools.NamedPitch,
                         ),
                     ),
-                ]
+                )
             )
 
     '''
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ()
+    __slots__ = (
+        '_structural_pitches',
+        )
 
     ### INITIALIZER ###
 
@@ -96,12 +98,17 @@ class HarmonicField(datastructuretools.TypedList):
         entries = [self._item_callable(x) for x in items]
         for entry in entries:
             mapping[float(entry.structural_pitch)] = entry
-        items = list(mapping.values())
-        datastructuretools.TypedList.__init__(
+        items = sorted(
+            mapping.values(),
+            key=lambda x: x.structural_pitch,
+            )
+        datastructuretools.TypedTuple.__init__(
             self,
             items=items,
             item_class=consort.makers.HarmonicFieldEntry,
-            keep_sorted=True,
+            )
+        self._structural_pitches = pitchtools.PitchSegment(
+            [x.structural_pitch for x in self],
             )
 
     ### PRIVATE METHODS ###
@@ -159,55 +166,55 @@ class HarmonicField(datastructuretools.TypedList):
             >>> inverted_field = harmonic_field.invert("d'")
             >>> print(format(inverted_field))
             makers.HarmonicField(
-                [
+                (
                     makers.HarmonicFieldEntry(
                         leading_pitches=pitchtools.PitchSegment(
                             (
-                                pitchtools.NamedPitch("ef'"),
-                                pitchtools.NamedPitch("d'"),
+                                pitchtools.NamedPitch('b,'),
+                                pitchtools.NamedPitch('cs'),
+                                pitchtools.NamedPitch('f'),
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
-                        structural_pitch=pitchtools.NamedPitch("c'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("d'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("g'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("ef'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f'"),
-                                pitchtools.NamedPitch("a'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f''"),
-                                pitchtools.NamedPitch("ef''"),
-                                pitchtools.NamedPitch("b'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("c''"),
+                        structural_pitch=pitchtools.NamedPitch('e'),
                         tailing_pitches=pitchtools.PitchSegment(
                             (),
                             item_class=pitchtools.NamedPitch,
                             ),
                         ),
-                    ]
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch('a'),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("cs'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch('b'),
+                                pitchtools.NamedPitch('g'),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("cs'"),
+                                pitchtools.NamedPitch("d'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("e'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("d'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    )
                 )
 
         Returns new harmonic field.
@@ -222,7 +229,7 @@ class HarmonicField(datastructuretools.TypedList):
         for entry in matching_entries:
             altered_entry = entry.invert(axis=axis)
             altered_entries.append(altered_entry)
-        all_entries = nonmatching_entries + matching_entries
+        all_entries = nonmatching_entries + altered_entries
         return type(self)(all_entries)
 
     def invert_ornamental_pitches(
@@ -238,19 +245,35 @@ class HarmonicField(datastructuretools.TypedList):
             >>> inverted_field = harmonic_field.invert_ornamental_pitches()
             >>> print(format(inverted_field))
             makers.HarmonicField(
-                [
+                (
                     makers.HarmonicFieldEntry(
                         leading_pitches=pitchtools.PitchSegment(
                             (
-                                pitchtools.NamedPitch("ef'"),
-                                pitchtools.NamedPitch("d'"),
+                                pitchtools.NamedPitch('a'),
+                                pitchtools.NamedPitch('bf'),
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
                         structural_pitch=pitchtools.NamedPitch("c'"),
                         tailing_pitches=pitchtools.PitchSegment(
                             (
-                                pitchtools.NamedPitch("d'"),
+                                pitchtools.NamedPitch('bf'),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("cf'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("ef'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("df'"),
+                                pitchtools.NamedPitch('bff'),
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
@@ -259,24 +282,8 @@ class HarmonicField(datastructuretools.TypedList):
                         leading_pitches=pitchtools.PitchSegment(
                             (
                                 pitchtools.NamedPitch("g'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("ef'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f'"),
                                 pitchtools.NamedPitch("a'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f''"),
-                                pitchtools.NamedPitch("ef''"),
-                                pitchtools.NamedPitch("b'"),
+                                pitchtools.NamedPitch("df''"),
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
@@ -286,7 +293,7 @@ class HarmonicField(datastructuretools.TypedList):
                             item_class=pitchtools.NamedPitch,
                             ),
                         ),
-                    ]
+                    )
                 )
 
         Returns new harmonic field.
@@ -299,7 +306,7 @@ class HarmonicField(datastructuretools.TypedList):
         for entry in matching_entries:
             altered_entry = entry.invert_ornamental_pitches()
             altered_entries.append(altered_entry)
-        all_entries = nonmatching_entries + matching_entries
+        all_entries = nonmatching_entries + altered_entries
         return type(self)(all_entries)
 
     def retrograde(
@@ -315,42 +322,10 @@ class HarmonicField(datastructuretools.TypedList):
             >>> retrograded_field = harmonic_field.retrograde()
             >>> print(format(retrograded_field))
             makers.HarmonicField(
-                [
+                (
                     makers.HarmonicFieldEntry(
                         leading_pitches=pitchtools.PitchSegment(
                             (
-                                pitchtools.NamedPitch("f''"),
-                                pitchtools.NamedPitch("ef''"),
-                                pitchtools.NamedPitch("b'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("c''"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("g'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("ef'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f'"),
-                                pitchtools.NamedPitch("a'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("ef'"),
                                 pitchtools.NamedPitch("d'"),
                                 ),
                             item_class=pitchtools.NamedPitch,
@@ -359,11 +334,43 @@ class HarmonicField(datastructuretools.TypedList):
                         tailing_pitches=pitchtools.PitchSegment(
                             (
                                 pitchtools.NamedPitch("d'"),
+                                pitchtools.NamedPitch("ef'"),
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
                         ),
-                    ]
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("a'"),
+                                pitchtools.NamedPitch("f'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("ef'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("g'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("c''"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("b'"),
+                                pitchtools.NamedPitch("ef''"),
+                                pitchtools.NamedPitch("f''"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    )
                 )
 
         Returns new harmonic field.
@@ -376,7 +383,7 @@ class HarmonicField(datastructuretools.TypedList):
         for entry in matching_entries:
             altered_entry = entry.retrograde()
             altered_entries.append(altered_entry)
-        all_entries = nonmatching_entries + matching_entries
+        all_entries = nonmatching_entries + altered_entries
         return type(self)(all_entries)
 
     def rotate(
@@ -392,9 +399,46 @@ class HarmonicField(datastructuretools.TypedList):
             >>> rotated_field = harmonic_field.rotate(1)
             >>> print(format(rotated_field))
             makers.HarmonicField(
-                [
+                (
                     makers.HarmonicFieldEntry(
                         leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch('bf'),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("c'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("ef'"),
+                                pitchtools.NamedPitch("d'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch('bff'),
+                                pitchtools.NamedPitch("cf'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("ef'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("g'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("c''"),
+                        tailing_pitches=pitchtools.PitchSegment(
                             (
                                 pitchtools.NamedPitch("f''"),
                                 pitchtools.NamedPitch("ef''"),
@@ -402,45 +446,8 @@ class HarmonicField(datastructuretools.TypedList):
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
-                        structural_pitch=pitchtools.NamedPitch("c''"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (),
-                            item_class=pitchtools.NamedPitch,
-                            ),
                         ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("g'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("ef'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f'"),
-                                pitchtools.NamedPitch("a'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("ef'"),
-                                pitchtools.NamedPitch("d'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("c'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("d'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    ]
+                    )
                 )
 
         Returns new harmonic field.
@@ -453,7 +460,7 @@ class HarmonicField(datastructuretools.TypedList):
         for entry in matching_entries:
             altered_entry = entry.rotate(expr)
             altered_entries.append(altered_entry)
-        all_entries = nonmatching_entries + matching_entries
+        all_entries = nonmatching_entries + altered_entries
         return type(self)(all_entries)
 
     def transpose(
@@ -469,55 +476,55 @@ class HarmonicField(datastructuretools.TypedList):
             >>> transposed_field = harmonic_field.transpose('M2')
             >>> print(format(transposed_field))
             makers.HarmonicField(
-                [
+                (
                     makers.HarmonicFieldEntry(
                         leading_pitches=pitchtools.PitchSegment(
                             (
-                                pitchtools.NamedPitch("f''"),
-                                pitchtools.NamedPitch("ef''"),
+                                pitchtools.NamedPitch("f'"),
+                                pitchtools.NamedPitch("e'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("d'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("e'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("a'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("f'"),
+                        tailing_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("g'"),
                                 pitchtools.NamedPitch("b'"),
                                 ),
                             item_class=pitchtools.NamedPitch,
                             ),
-                        structural_pitch=pitchtools.NamedPitch("c''"),
+                        ),
+                    makers.HarmonicFieldEntry(
+                        leading_pitches=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("g''"),
+                                pitchtools.NamedPitch("f''"),
+                                pitchtools.NamedPitch("cs''"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        structural_pitch=pitchtools.NamedPitch("d''"),
                         tailing_pitches=pitchtools.PitchSegment(
                             (),
                             item_class=pitchtools.NamedPitch,
                             ),
                         ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("g'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("ef'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("f'"),
-                                pitchtools.NamedPitch("a'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    makers.HarmonicFieldEntry(
-                        leading_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("ef'"),
-                                pitchtools.NamedPitch("d'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        structural_pitch=pitchtools.NamedPitch("c'"),
-                        tailing_pitches=pitchtools.PitchSegment(
-                            (
-                                pitchtools.NamedPitch("d'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
-                            ),
-                        ),
-                    ]
+                    )
                 )
 
         Returns new harmonic field.
@@ -530,7 +537,7 @@ class HarmonicField(datastructuretools.TypedList):
         for entry in matching_entries:
             altered_entry = entry.transpose(expr)
             altered_entries.append(altered_entry)
-        all_entries = nonmatching_entries + matching_entries
+        all_entries = nonmatching_entries + altered_entries
         return type(self)(all_entries)
 
     ### PUBLIC PROPERTIES ###
@@ -583,3 +590,20 @@ class HarmonicField(datastructuretools.TypedList):
         maximum = max(pitches)
         pitch_range = pitchtools.PitchRange.from_pitches(minimum, maximum)
         return pitch_range
+
+    @property
+    def structural_pitches(self):
+        r'''Gets all structural pitches in harmonic field.
+
+        ::
+
+            >>> for pitch in harmonic_field.structural_pitches:
+            ...     pitch
+            ...
+            NamedPitch("c'")
+            NamedPitch("ef'")
+            NamedPitch("c''")
+
+        Returns pitch segment.
+        '''
+        return self._structural_pitches
