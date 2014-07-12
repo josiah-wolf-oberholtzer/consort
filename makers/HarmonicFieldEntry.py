@@ -98,37 +98,37 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
     def invert(
         self,
-        expr,
         axis=None,
-        structural_pitch_class_subset=None,
         ):
+        from abjad.tools import pitchtools
+        axis = axis or pitchtools.NamedPitch("c'")
         pass
 
     def invert_grace_pitches(
         self,
-        structural_pitch_class_subset=None,
         ):
         pass
 
     def retrograde(
         self,
-        structural_pitch_class_subset=None,
         ):
         pass
 
-    def rotate(
+    def rotate_octaves(
         self,
         expr,
-        structural_pitch_class_subset=None,
+        ):
+        pass
+
+    def rotate_pitch_classes(
+        self,
+        expr,
         ):
         pass
 
     def transpose(
         self,
         expr,
-        include_grace_pitches=True,
-        include_structural_pitches=True,
-        structural_pitch_class_subset=None,
         ):
         pass
 

@@ -27,6 +27,35 @@ class HarmonicField(datastructuretools.TypedList):
             keep_sorted=True,
             )
 
+    ### PRIVATE METHODS ###
+
+    def _find_matching_entries(
+        self,
+        structural_pitch_class_subset=None,
+        structural_pitch_range=None,
+        ):
+        from abjad.tools import pitchtools
+        matching_entries, nonmatching_entries = self[:], []
+        if structural_pitch_class_subset:
+            pitch_clas_set = pitchtools.PitchClassSet(
+                items=structural_pitch_class_subset,
+                item_class=pitchtools.NumberedPitchClass,
+                )
+            for entry in tuple(matching_entries):
+                structural_pitch = entry.structural_pitch
+                structural_pitch_class = structural_pitch.numbered_pitch_class
+                if structural_pitch_class not in pitch_clas_set:
+                    matching_entries.remove(entry)
+                    nonmatching_entries.append(entry)
+        if structural_pitch_range:
+            pitch_range = pitchtools.PitchRange(structural_pitch_range)
+            for entry in tuple(matching_entries):
+                structural_pitch = entry.structural_pitch
+                if structural_pitch not in pitch_range:
+                    matching_entries.remove(entry)
+                    nonmatching_entries.append(entry)
+        return matching_entries, nonmatching_entries
+
     ### PRIVATE PROPERTIES ###
 
     @property
@@ -43,49 +72,102 @@ class HarmonicField(datastructuretools.TypedList):
 
     def invert(
         self,
-        expr,
         axis=None,
         structural_pitch_class_subset=None,
+        structural_pitch_range=None,
         ):
-        pass
+        from abjad.tools import pitchtools
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        axis = axis or pitchtools.NamedPitch("c'")
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.invert(axis=axis)
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
 
     def invert_grace_pitches(
         self,
         structural_pitch_class_subset=None,
+        structural_pitch_range=None,
         ):
-        pass
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.invert_grace_pitches()
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
 
     def retrograde(
         self,
         structural_pitch_class_subset=None,
+        structural_pitch_range=None,
         ):
-        pass
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.retrograde()
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
 
     def rotate_pitch_classes(
         self,
         expr,
         structural_pitch_class_subset=None,
+        structural_pitch_range=None,
         ):
-        pass
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.rotate_pitch_classes(expr)
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
 
     def rotate_octaves(
         self,
         expr,
         structural_pitch_class_subset=None,
+        structural_pitch_range=None,
         ):
-        pass
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.rotate_octaves(expr)
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
 
     def transpose(
         self,
         expr,
-        include_grace_pitches=True,
-        include_structural_pitches=True,
         structural_pitch_class_subset=None,
+        structural_pitch_range=None,
         ):
-        pass
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def octave_range(self):
-        pass
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.transpose(expr)
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
