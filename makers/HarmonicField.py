@@ -1,7 +1,7 @@
 from abjad.tools import datastructuretools
 
 
-class HarmonicField(datastructuretools.TypedFrozenset):
+class HarmonicField(datastructuretools.TypedList):
 
     ### CLASS VARIABLES ###
 
@@ -16,15 +16,15 @@ class HarmonicField(datastructuretools.TypedFrozenset):
         import consort
         mapping = {}
         items = items or []
-        entries = [consort.makers.HarmonicFieldEntry(x)
-            for x in items]
+        entries = [self._item_callable(x) for x in items]
         for entry in entries:
             mapping[float(entry.structural_pitch)] = entry
         items = list(mapping.values())
-        datastructuretools.TypedFrozenset.__init__(
+        datastructuretools.TypedList.__init__(
             self,
             items=items,
             item_class=consort.makers.HarmonicFieldEntry,
+            keep_sorted=True,
             )
 
     ### PRIVATE PROPERTIES ###
@@ -33,6 +33,11 @@ class HarmonicField(datastructuretools.TypedFrozenset):
     def _attribute_manifest(self):
         from abjad.tools import systemtools
         return systemtools.AttributeManifest()
+
+    @property
+    def _item_callable(self):
+        import consort
+        return consort.makers.HarmonicFieldEntry
 
     ### PUBLIC METHODS ###
 

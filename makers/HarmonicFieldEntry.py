@@ -72,7 +72,27 @@ class HarmonicFieldEntry(abctools.AbjadObject):
     @property
     def _attribute_manifest(self):
         from abjad.tools import systemtools
-        return systemtools.AttributeManifest()
+        from scoremanager import idetools
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='leading_grace_pitches',
+                display_string='leading grace pitches',
+                command='lp',
+                editor=idetools.getters.get_string,
+                ),
+            systemtools.AttributeDetail(
+                name='structural_pitch',
+                display_string='structural pitch',
+                command='sp',
+                editor=idetools.getters.get_string,
+                ),
+            systemtools.AttributeDetail(
+                name='tailing_grace_pitches',
+                display_string='tailing grace pitches',
+                command='tp',
+                editor=idetools.getters.get_string,
+                ),
+            )
 
     ### PUBLIC METHODS ###
 
