@@ -74,6 +74,45 @@ class HarmonicFieldEntry(abctools.AbjadObject):
         from abjad.tools import systemtools
         return systemtools.AttributeManifest()
 
+    ### PUBLIC METHODS ###
+
+    def invert(
+        self,
+        expr,
+        axis=None,
+        structural_pitch_class_subset=None,
+        ):
+        pass
+
+    def invert_grace_pitches(
+        self,
+        structural_pitch_class_subset=None,
+        ):
+        pass
+
+    def retrograde(
+        self,
+        structural_pitch_class_subset=None,
+        ):
+        pass
+
+    def rotate(
+        self,
+        expr,
+        structural_pitch_class_subset=None,
+        ):
+        pass
+
+    def transpose(
+        self,
+        expr,
+        include_grace_pitches=True,
+        include_structural_pitches=True,
+        structural_pitch_class_subset=None,
+        ):
+        :qa
+        pass
+
     ### PUBLIC PROPERTIES ###
 
     @property
