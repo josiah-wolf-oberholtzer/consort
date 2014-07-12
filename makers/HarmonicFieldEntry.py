@@ -110,7 +110,6 @@ class HarmonicFieldEntry(abctools.AbjadObject):
         include_structural_pitches=True,
         structural_pitch_class_subset=None,
         ):
-        :qa
         pass
 
     ### PUBLIC PROPERTIES ###
