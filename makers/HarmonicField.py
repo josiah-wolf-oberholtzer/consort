@@ -2,6 +2,81 @@ from abjad.tools import datastructuretools
 
 
 class HarmonicField(datastructuretools.TypedList):
+    r'''A harmonic field.
+
+    ::
+
+        >>> import consort
+        >>> harmonic_field = consort.makers.HarmonicField([
+        ...     consort.makers.HarmonicFieldEntry(
+        ...         leading_pitches="ef' d'",
+        ...         structural_pitch="c'",
+        ...         tailing_pitches="d'",
+        ...         ),
+        ...     consort.makers.HarmonicFieldEntry(
+        ...         leading_pitches="g'",
+        ...         structural_pitch="ef'",
+        ...         tailing_pitches="f' a'",
+        ...         ),
+        ...     consort.makers.HarmonicFieldEntry(
+        ...         leading_pitches="f'' ef'' b'",
+        ...         structural_pitch="c''",
+        ...         ),
+        ...     ])
+        >>> print(format(harmonic_field))
+        makers.HarmonicField(
+            [
+                makers.HarmonicFieldEntry(
+                    leading_pitches=pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("ef'"),
+                            pitchtools.NamedPitch("d'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    structural_pitch=pitchtools.NamedPitch("c'"),
+                    tailing_pitches=pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("d'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                makers.HarmonicFieldEntry(
+                    leading_pitches=pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("g'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    structural_pitch=pitchtools.NamedPitch("ef'"),
+                    tailing_pitches=pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("f'"),
+                            pitchtools.NamedPitch("a'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                makers.HarmonicFieldEntry(
+                    leading_pitches=pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("f''"),
+                            pitchtools.NamedPitch("ef''"),
+                            pitchtools.NamedPitch("b'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    structural_pitch=pitchtools.NamedPitch("c''"),
+                    tailing_pitches=pitchtools.PitchSegment(
+                        (),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                ]
+            )
+
+    '''
 
     ### CLASS VARIABLES ###
 
