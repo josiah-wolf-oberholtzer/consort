@@ -89,7 +89,7 @@ class HarmonicField(datastructuretools.TypedList):
         all_entries = nonmatching_entries + matching_entries
         return type(self)(all_entries)
 
-    def invert_grace_pitches(
+    def invert_ornamental_pitches(
         self,
         structural_pitch_class_subset=None,
         structural_pitch_range=None,
@@ -100,7 +100,7 @@ class HarmonicField(datastructuretools.TypedList):
             )
         altered_entries = []
         for entry in matching_entries:
-            altered_entry = entry.invert_grace_pitches()
+            altered_entry = entry.invert_ornamental_pitches()
             altered_entries.append(altered_entry)
         all_entries = nonmatching_entries + matching_entries
         return type(self)(all_entries)
@@ -117,6 +117,25 @@ class HarmonicField(datastructuretools.TypedList):
         altered_entries = []
         for entry in matching_entries:
             altered_entry = entry.retrograde()
+            altered_entries.append(altered_entry)
+        all_entries = nonmatching_entries + matching_entries
+        return type(self)(all_entries)
+
+    def rotate_octaves(
+        self,
+        expr,
+        structural_pitch_class_subset=None,
+        structural_pitch_range=None,
+        ):
+        matching_entries, nonmatching_entries = self._find_matching_entries(
+            structural_pitch_class_subset=structural_pitch_class_subset,
+            structural_pitch_range=structural_pitch_range,
+            )
+        bounding_pitch_range = self.pitch_range
+        altered_entries = []
+        for entry in matching_entries:
+            altered_entry = entry.rotate_octaves(
+                expr, bounding_pitch_range)
             altered_entries.append(altered_entry)
         all_entries = nonmatching_entries + matching_entries
         return type(self)(all_entries)
@@ -138,23 +157,6 @@ class HarmonicField(datastructuretools.TypedList):
         all_entries = nonmatching_entries + matching_entries
         return type(self)(all_entries)
 
-    def rotate_octaves(
-        self,
-        expr,
-        structural_pitch_class_subset=None,
-        structural_pitch_range=None,
-        ):
-        matching_entries, nonmatching_entries = self._find_matching_entries(
-            structural_pitch_class_subset=structural_pitch_class_subset,
-            structural_pitch_range=structural_pitch_range,
-            )
-        altered_entries = []
-        for entry in matching_entries:
-            altered_entry = entry.rotate_octaves(expr)
-            altered_entries.append(altered_entry)
-        all_entries = nonmatching_entries + matching_entries
-        return type(self)(all_entries)
-
     def transpose(
         self,
         expr,
@@ -171,3 +173,21 @@ class HarmonicField(datastructuretools.TypedList):
             altered_entries.append(altered_entry)
         all_entries = nonmatching_entries + matching_entries
         return type(self)(all_entries)
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def pitches(self):
+        pitches = []
+        for entry in self:
+            pitches.extend(entry.pitches)
+        return tuple(pitches)
+
+    @property
+    def pitch_range(self):
+        from abjad.tools import pitchtools
+        pitches = self.pitches
+        minimum = min(pitches)
+        maximum = max(pitches)
+        pitch_range = pitchtools.PitchRange.from_pitches(minimum, maximum)
+        return pitch_range
