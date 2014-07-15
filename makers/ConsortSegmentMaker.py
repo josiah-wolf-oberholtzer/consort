@@ -40,7 +40,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         ...             voice_identifiers=('Violin \\d+ Bowing Voice',),
         ...             ),
         ...         ),
-        ...     target_duration=2,
+        ...     duration_in_seconds=2,
         ...     tempo=indicatortools.Tempo((1, 4), 72),
         ...     time_signatures=(
         ...         (5, 8),
@@ -79,7 +79,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                     voice_identifiers=('Violin \\d+ Bowing Voice',),
                     ),
                 ),
-            target_duration=durationtools.Duration(2, 1),
+            duration_in_seconds=durationtools.Duration(2, 1),
             tempo=indicatortools.Tempo(
                 duration=durationtools.Duration(1, 4),
                 units_per_minute=72,
@@ -127,7 +127,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         '_time_signatures',
         '_rehearsal_mark',
         '_settings',
-        '_target_duration',
+        '_duration_in_seconds',
         '_score_template',
         '_tempo',
         )
@@ -142,7 +142,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         rehearsal_mark=None,
         score_template=None,
         settings=None,
-        target_duration=None,
+        duration_in_seconds=None,
         tempo=None,
         time_signatures=None,
         ):
@@ -151,24 +151,15 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             self,
             name=name,
             )
-        self._annotation_specifier = annotation_specifier
-        self._is_final_segment = bool(is_final_segment)
-        if time_signatures is not None:
-            time_signatures = indicatortools.TimeSignatureInventory(
-                items=time_signatures,
-                )
-        self._time_signatures = time_signatures
-        self._rehearsal_mark = rehearsal_mark
-        if target_duration is not None:
-            target_duration = durationtools.Duration(target_duration)
-        self._target_duration = target_duration
-        self._score_template = score_template
-        if tempo is not None and not isinstance(tempo, indicatortools.Tempo):
-            tempo = indicatortools.Tempo(tempo)
-        self._tempo = tempo
+        self.set_annotation_specifier(annotation_specifier)
+        self.set_duration_in_seconds(duration_in_seconds)
+        self.set_is_final_segment(is_final_segment) 
+        self.set_rehearsal_mark(rehearsal_mark)
+        self.set_score_template(score_template)
+        self.set_tempo(tempo)
+        self.set_time_signatures(time_signatures)
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
-            assert settings
             prototype = (makers.VoiceSetting, makers.VoiceSpecifier)
             assert all(isinstance(x, prototype) for x in settings)
             settings = list(settings)
@@ -186,10 +177,10 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         with timer:
             print('TimespanManager:')
             segment_session = makers.TimespanManager.execute(
+                score_template=self.score_template,
                 segment_session=segment_session,
                 settings=self.settings,
                 target_duration=self.target_duration,
-                score_template=self.score_template,
                 time_signatures=self.time_signatures,
                 )
             print('\ttotal:', timer.elapsed_time)
@@ -354,11 +345,53 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     ### PUBLIC METHODS ###
 
+    def add_settings(self, setting):
+        from consort import makers
+        prototype = (makers.VoiceSetting, makers.VoiceSpecifier)
+        assert isinstance(setting, prototype)
+        self._settings.append(setting)
+
+    def set_annotation_specifier(self, annotation_specifier=None):
+        from consort import makers
+        prototype = (makers.AnnotationSpecifier, type(None))
+        assert isinstance(annotation_specifier, prototype)
+        self._annotation_specifier = annotation_specifier
+
+    def set_duration_in_seconds(self, duration_in_seconds=None):
+        if duration_in_seconds is not None:
+            duration_in_seconds = durationtools.Duration(duration_in_seconds)
+        self._duration_in_seconds = duration_in_seconds
+
+    def set_rehearsal_mark(self, rehearsal_mark=None):
+        self._rehearsal_mark = rehearsal_mark
+
+    def set_is_final_segment(self, is_final_segment=False):
+        self._is_final_segment = bool(is_final_segment)
+
+    def set_score_template(self, score_template=None):
+        self._score_template = score_template
+
+    def set_tempo(self, tempo=None):
+        if tempo is not None and not isinstance(tempo, indicatortools.Tempo):
+            tempo = indicatortools.Tempo(tempo)
+        self._tempo = tempo
+
+    def set_time_signatures(self, time_signatures=None):
+        if time_signatures is not None:
+            time_signatures = indicatortools.TimeSignatureInventory(
+                items=time_signatures,
+                )
+        self._time_signatures = time_signatures
+
     ### PUBLIC PROPERTIES ###
 
     @property
     def annotation_specifier(self):
         return self._annotation_specifier
+
+    @property
+    def duration_in_seconds(self):
+        return self._duration_in_seconds
 
     @property
     def final_markup(self):
@@ -437,7 +470,16 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     @property
     def target_duration(self):
-        return self._target_duration
+        tempo = self.tempo
+        tempo_duration_in_seconds = durationtools.Duration(
+            tempo.duration_to_milliseconds(tempo.duration),
+            1000,
+            )
+        target_duration = durationtools.Duration((
+            self.duration_in_seconds / tempo_duration_in_seconds
+            ).limit_denominator(16))
+        target_duration *= tempo.duration
+        return target_duration
 
     @property
     def tempo(self):

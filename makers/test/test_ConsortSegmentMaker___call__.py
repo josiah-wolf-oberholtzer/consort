@@ -1,9 +1,11 @@
+# -*- encoding: utf -*-
+from abjad import *
 from consort import makers
 
 
 def test_ConsortSegmentMaker___call___01():
 
-    template = makers.ConsortScoreTemplate(
+    score_template = makers.ConsortScoreTemplate(
         violin_count=2,
         viola_count=1,
         cello_count=1,
@@ -11,18 +13,19 @@ def test_ConsortSegmentMaker___call___01():
         )
 
     segment_maker = makers.ConsortSegmentMaker(
-        permitted_time_signatures=(
-            (5, 8),
-            (7, 16),
-            ),
-        target_duration=2,
-        template=template,
-        voice_specifiers=(
+        duration_in_seconds=2,
+        score_template=score_template,
+        settings=(
             makers.VoiceSpecifier(
                 music_specifier=makers.MusicSpecifier(),
                 timespan_maker=makers.TimespanMaker(),
-                voice_identifiers=('Violin \\d+ LH Voice',),
+                voice_identifiers=('Violin \\d+ Bowing Voice',),
                 ),
+            ),
+        tempo=Tempo((1, 4), 60),
+        time_signatures=(
+            (5, 8),
+            (7, 16),
             ),
         )
 
