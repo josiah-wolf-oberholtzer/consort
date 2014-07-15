@@ -16,7 +16,6 @@ class Proportions(datastructuretools.TypedList):
         datastructuretools.TypedList.__init__(
             self,
             items=items,
-            item_class=list,
             )
 
     ### PRIVATE PROPERTIES ###
