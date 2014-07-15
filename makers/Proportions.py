@@ -28,6 +28,24 @@ class Proportions(abctools.AbjadObject, collections.Sequence):
     def __len__(self):
         return len(self._proportions)
 
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _attribute_manifest(self):
+        from abjad.tools import systemtools
+        return systemtools.AttributeManifest()
+
+    @property
+    def _storage_format_specification(self):
+        from abjad.tools import systemtools
+        return systemtools.StorageFormatSpecification(
+            self,
+            positional_argument_values=(
+                tuple(self),
+                ),
+            keyword_argument_names=(),
+            )
+
     ### PUBLIC METHODS ###
 
     def get_segment_duration_in_seconds(self, segment_index, total_seconds):
