@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+import collections
+import importlib
 import os
 import re
 from abjad.tools import durationtools
@@ -11,7 +13,6 @@ from abjad.tools import systemtools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
-from abjad.tools.topleveltools import persist
 from experimental.tools import segmentmakertools
 
 
@@ -21,7 +22,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     ::
 
         >>> from consort import makers
-        >>> template = makers.ConsortScoreTemplate(
+        >>> score_template = makers.ConsortScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -31,32 +32,25 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     ::
 
         >>> segment_maker = makers.ConsortSegmentMaker(
-        ...     permitted_time_signatures=(
-        ...         (5, 8),
-        ...         (7, 16),
-        ...         ),
-        ...     target_duration=2,
-        ...     tempo=indicatortools.Tempo((1, 4), 72),
-        ...     template=template,
-        ...     voice_specifiers=(
+        ...     score_template=score_template,
+        ...     settings=(
         ...         makers.VoiceSpecifier(
         ...             music_specifier=makers.MusicSpecifier(),
         ...             timespan_maker=makers.TimespanMaker(),
         ...             voice_identifiers=('Violin \\d+ Bowing Voice',),
         ...             ),
         ...         ),
+        ...     target_duration=2,
+        ...     tempo=indicatortools.Tempo((1, 4), 72),
+        ...     time_signatures=(
+        ...         (5, 8),
+        ...         (7, 16),
+        ...         ),
         ...     )
         >>> print(format(segment_maker))
         makers.ConsortSegmentMaker(
             is_final_segment=False,
-            permitted_time_signatures=indicatortools.TimeSignatureInventory(
-                [
-                    indicatortools.TimeSignature((5, 8)),
-                    indicatortools.TimeSignature((7, 16)),
-                    ]
-                ),
-            target_duration=durationtools.Duration(2, 1),
-            template=makers.ConsortScoreTemplate(
+            score_template=makers.ConsortScoreTemplate(
                 violin_count=2,
                 viola_count=1,
                 cello_count=1,
@@ -64,11 +58,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 split_hands=True,
                 use_percussion_clefs=False,
                 ),
-            tempo=indicatortools.Tempo(
-                duration=durationtools.Duration(1, 4),
-                units_per_minute=72,
-                ),
-            voice_specifiers=(
+            settings=(
                 makers.VoiceSpecifier(
                     music_specifier=makers.MusicSpecifier(),
                     timespan_maker=makers.TimespanMaker(
@@ -88,6 +78,17 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                         ),
                     voice_identifiers=('Violin \\d+ Bowing Voice',),
                     ),
+                ),
+            target_duration=durationtools.Duration(2, 1),
+            tempo=indicatortools.Tempo(
+                duration=durationtools.Duration(1, 4),
+                units_per_minute=72,
+                ),
+            time_signatures=indicatortools.TimeSignatureInventory(
+                [
+                    indicatortools.TimeSignature((5, 8)),
+                    indicatortools.TimeSignature((7, 16)),
+                    ]
                 ),
             )
 
@@ -123,13 +124,12 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     __slots__ = (
         '_annotation_specifier',
         '_is_final_segment',
-        '_permitted_time_signatures',
+        '_time_signatures',
         '_rehearsal_mark',
+        '_settings',
         '_target_duration',
-        '_template',
+        '_score_template',
         '_tempo',
-        '_voice_settings',
-        '_voice_specifiers',
         )
 
     ### INITIALIZER ###
@@ -139,13 +139,12 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         annotation_specifier=None,
         is_final_segment=False,
         name=None,
-        permitted_time_signatures=None,
         rehearsal_mark=None,
+        score_template=None,
+        settings=None,
         target_duration=None,
-        template=None,
         tempo=None,
-        voice_settings=None,
-        voice_specifiers=None,
+        time_signatures=None,
         ):
         from consort import makers
         segmentmakertools.SegmentMaker.__init__(
@@ -154,30 +153,26 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             )
         self._annotation_specifier = annotation_specifier
         self._is_final_segment = bool(is_final_segment)
-        if permitted_time_signatures is not None:
-            permitted_time_signatures = indicatortools.TimeSignatureInventory(
-                items=permitted_time_signatures,
+        if time_signatures is not None:
+            time_signatures = indicatortools.TimeSignatureInventory(
+                items=time_signatures,
                 )
-        self._permitted_time_signatures = permitted_time_signatures
+        self._time_signatures = time_signatures
         self._rehearsal_mark = rehearsal_mark
         if target_duration is not None:
             target_duration = durationtools.Duration(target_duration)
         self._target_duration = target_duration
-        self._template = template
+        self._score_template = score_template
         if tempo is not None and not isinstance(tempo, indicatortools.Tempo):
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
-        if voice_settings is not None:
-            assert all(isinstance(x, makers.VoiceSetting)
-                for x in voice_settings)
-            voice_settings = tuple(voice_settings)
-        self._voice_settings = voice_settings
-        if voice_specifiers is not None:
-            voice_specifiers = tuple(voice_specifiers)
-            assert len(voice_specifiers)
-            assert all(isinstance(x, makers.VoiceSpecifier)
-                for x in voice_specifiers)
-        self._voice_specifiers = voice_specifiers
+        if settings is not None:
+            assert isinstance(settings, collections.Sequence)
+            assert settings
+            prototype = (makers.VoiceSetting, makers.VoiceSpecifier)
+            assert all(isinstance(x, prototype) for x in settings)
+            settings = list(settings)
+        self._settings = settings
 
     ### SPECIAL METHODS ###
 
@@ -185,18 +180,17 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         from consort import makers
 
         segment_session = makers.SegmentSession(segment_maker=self)
-        segment_session.score = self.template()
+        segment_session.score = self.score_template()
         timer = systemtools.Timer()
 
         with timer:
             print('TimespanManager:')
             segment_session = makers.TimespanManager.execute(
-                permitted_time_signatures=self.permitted_time_signatures,
                 segment_session=segment_session,
+                settings=self.settings,
                 target_duration=self.target_duration,
-                template=self.template,
-                voice_settings=self.voice_settings,
-                voice_specifiers=self.voice_specifiers,
+                score_template=self.score_template,
+                time_signatures=self.time_signatures,
                 )
             print('\ttotal:', timer.elapsed_time)
 
@@ -273,6 +267,9 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         return lilypond_file
 
+    def __illustrate__(self):
+        return self()
+
     ### PRIVATE METHODS ###
 
     def _configure_score(self, score):
@@ -303,40 +300,17 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         assert inspect_(score).is_well_formed()
         return score
 
-    def _make_lilypond_file(self):
-        lilypond_file = lilypondfiletools.LilyPondFile()
-        lilypond_file.use_relative_includes = True
-        for file_path in self.stylesheet_file_paths:
-            lilypond_file.file_initial_user_includes.append(file_path)
-        lilypond_file.file_initial_system_comments[:] = []
-        return lilypond_file
-
-    ### PUBLIC METHODS ###
-
-    def build_and_persist(self, current_file_path):
-        current_directory_path = os.path.dirname(os.path.abspath(
-            os.path.expanduser(current_file_path)))
-        pdf_file_path = os.path.join(
-            current_directory_path,
-            'output.pdf',
-            )
-        lilypond_file = self()
-        persist(lilypond_file).as_pdf(
-            pdf_file_path=pdf_file_path,
-            remove_ly=False,
-            )
-
     @staticmethod
-    def find_voice_names(
-        template=None,
+    def _find_voice_names(
+        score_template=None,
         voice_identifiers=None,
         ):
-        r'''Find voice names matching `voice_identifiers` in `template`:
+        r'''Find voice names matching `voice_identifiers` in `score_template`:
 
         ::
 
             >>> from consort import makers
-            >>> template = makers.ConsortScoreTemplate(
+            >>> score_template = makers.ConsortScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
             ...     cello_count=1,
@@ -346,14 +320,14 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             ...     'Violin \\d+ Bowing Voice',
             ...     'Viola Bowing Voice',
             ...     )
-            >>> makers.ConsortSegmentMaker.find_voice_names(
-            ...     template=template,
+            >>> makers.ConsortSegmentMaker._find_voice_names(
+            ...     score_template=score_template,
             ...     voice_identifiers=voice_identifiers,
             ...     )
             ('Violin 1 Bowing Voice', 'Violin 2 Bowing Voice', 'Viola Bowing Voice')
 
         '''
-        score = template()
+        score = score_template()
         all_voice_names = [voice.name for voice in
             iterate(score).by_class(scoretools.Voice)]
         matched_voice_names = set()
@@ -370,20 +344,15 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         selected_voice_names = tuple(selected_voice_names)
         return selected_voice_names
 
-    @staticmethod
-    def get_segment_target_duration(
-        target_duration_in_seconds=None,
-        tempo=None,
-        ):
-        tempo_duration_in_seconds = durationtools.Duration(
-            tempo.duration_to_milliseconds(tempo.duration),
-            1000,
-            )
-        target_segment_duration = durationtools.Duration((
-            target_duration_in_seconds / tempo_duration_in_seconds
-            ).limit_denominator(16))
-        target_segment_duration *= tempo.duration
-        return target_segment_duration
+    def _make_lilypond_file(self):
+        lilypond_file = lilypondfiletools.LilyPondFile()
+        lilypond_file.use_relative_includes = True
+        for file_path in self.stylesheet_file_paths:
+            lilypond_file.file_initial_user_includes.append(file_path)
+        lilypond_file.file_initial_system_comments[:] = []
+        return lilypond_file
+
+    ### PUBLIC METHODS ###
 
     ### PUBLIC PROPERTIES ###
 
@@ -393,7 +362,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     @property
     def final_markup(self):
-        from consort.__metadata__ import metadata
+        metadata = self.score_package_metadata
         right_column = markuptools.MarkupCommand(
             'right-column', [
                 ' ',
@@ -418,19 +387,42 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         return self._is_final_segment
 
     @property
-    def permitted_time_signatures(self):
-        return self._permitted_time_signatures
-
-    @property
     def rehearsal_mark(self):
         return self._rehearsal_mark
 
     @property
+    def score_package_metadata(self):
+        command = 'from {}.__metadata__ import metadata'
+        namespace = {}
+        exec(command, namespace, namespace)
+        metadata = namespace['metadata']
+        return metadata
+
+    @property
+    def score_package_module(self):
+        module = importlib.import_module(self.score_package_name)
+        return module
+
+    @property
+    def score_package_name(self):
+        return 'consort'
+
+    @property
+    def score_package_path(self):
+        return self.score_package_module.__path__[0]
+
+    @property
+    def score_template(self):
+        return self._score_template
+
+    @property
+    def settings(self):
+        return tuple(self._settings)
+
+    @property
     def stylesheet_file_paths(self):
-        import consort
-        consort_path = consort.__path__[0]
         stylesheets_path = os.path.join(
-            consort_path,
+            self.score_package_path,
             'stylesheets',
             )
         stylesheet_file_names = os.listdir(stylesheets_path)
@@ -444,10 +436,6 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         return stylesheet_file_paths
 
     @property
-    def template(self):
-        return self._template
-
-    @property
     def target_duration(self):
         return self._target_duration
 
@@ -456,9 +444,5 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         return self._tempo
 
     @property
-    def voice_settings(self):
-        return self._voice_settings
-
-    @property
-    def voice_specifiers(self):
-        return self._voice_specifiers
+    def time_signatures(self):
+        return self._time_signatures

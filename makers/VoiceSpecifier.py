@@ -71,7 +71,7 @@ class VoiceSpecifier(ConsortObject):
 
         >>> layer = 1
         >>> target_duration = durationtools.Duration(1)
-        >>> template = makers.ConsortScoreTemplate(
+        >>> score_template = makers.ConsortScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -80,7 +80,7 @@ class VoiceSpecifier(ConsortObject):
         >>> timespan_inventory, final_duration = voice_specifier(
         ...     layer=layer,
         ...     target_duration=target_duration,
-        ...     template=template,
+        ...     score_template=score_template,
         ...     )
 
     ::
@@ -185,7 +185,7 @@ class VoiceSpecifier(ConsortObject):
         self,
         layer=None,
         target_duration=None,
-        template=None,
+        score_template=None,
         ):
         from consort import makers
         if layer is None:
@@ -193,9 +193,9 @@ class VoiceSpecifier(ConsortObject):
         layer = int(layer)
         target_duration = durationtools.Duration(target_duration)
         assert 0 < target_duration
-        assert template is not None
-        voice_names = makers.ConsortSegmentMaker.find_voice_names(
-            template=template,
+        assert score_template is not None
+        voice_names = makers.ConsortSegmentMaker._find_voice_names(
+            score_template=score_template,
             voice_identifiers=self.voice_identifiers,
             )
         assert voice_names, voice_names

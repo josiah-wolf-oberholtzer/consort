@@ -211,7 +211,7 @@ class RhythmManager(ConsortObject):
         seeds = collections.Counter()
         voice_names = timespan_inventory_mapping.keys()
         voice_names = RhythmManager._sort_voice_names(
-            template=segment_session.segment_maker.template,
+            score_template=segment_session.segment_maker.score_template,
             voice_names=voice_names,
             )
         for voice_name in voice_names:
@@ -420,11 +420,11 @@ class RhythmManager(ConsortObject):
 
     @staticmethod
     def _sort_voice_names(
-        template=None,
+        score_template=None,
         voice_names=None,
         ):
         result = []
-        score = template()
+        score = score_template()
         for voice in iterate(score).by_class(scoretools.Voice):
             if voice.name in voice_names:
                 result.append(voice.name)
