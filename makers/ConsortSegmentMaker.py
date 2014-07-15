@@ -172,6 +172,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
         segment_session = makers.SegmentSession(segment_maker=self)
         segment_session.score = self.score_template()
+        assert isinstance(segment_session.score, scoretools.Score)
         timer = systemtools.Timer()
 
         with timer:
@@ -179,7 +180,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             segment_session = makers.TimespanManager.execute(
                 score_template=self.score_template,
                 segment_session=segment_session,
-                settings=self.settings,
+                settings=self.settings or (),
                 target_duration=self.target_duration,
                 time_signatures=self.time_signatures,
                 )
@@ -450,6 +451,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     @property
     def settings(self):
+        if self._settings is None:
+            return None
         return tuple(self._settings)
 
     @property
