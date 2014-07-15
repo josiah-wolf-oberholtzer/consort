@@ -1,32 +1,23 @@
 # -*- encoding: utf-8 -*-
-import collections
-from abjad.tools import abctools
+from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import sequencetools
 
 
-class Proportions(abctools.AbjadObject, collections.Sequence):
+class Proportions(datastructuretools.TypedList):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = (
-        '_proportions',
-        )
+    __slots__ = ()
 
     ### INITIALIZER ###
 
-    def __init__(self, proportions=None):
-        proportions = proportions or []
-        proportions = tuple(proportions)
-        self._proportions = proportions
-
-    ### SPECIAL METHODS ###
-
-    def __getitem__(self, item):
-        return self._proportions[item]
-
-    def __len__(self):
-        return len(self._proportions)
+    def __init__(self, items=None):
+        datastructuretools.TypedList.__init__(
+            self,
+            items=items,
+            item_class=list,
+            )
 
     ### PRIVATE PROPERTIES ###
 
@@ -34,21 +25,6 @@ class Proportions(abctools.AbjadObject, collections.Sequence):
     def _attribute_manifest(self):
         from abjad.tools import systemtools
         return systemtools.AttributeManifest()
-
-    @property
-    def _item_callable(self):
-        return list
-
-    @property
-    def _storage_format_specification(self):
-        from abjad.tools import systemtools
-        return systemtools.StorageFormatSpecification(
-            self,
-            positional_argument_values=(
-                tuple(self),
-                ),
-            keyword_argument_names=(),
-            )
 
     ### PUBLIC METHODS ###
 
