@@ -36,6 +36,10 @@ class Proportions(abctools.AbjadObject, collections.Sequence):
         return systemtools.AttributeManifest()
 
     @property
+    def _item_callable(self):
+        return list
+
+    @property
     def _storage_format_specification(self):
         from abjad.tools import systemtools
         return systemtools.StorageFormatSpecification(
