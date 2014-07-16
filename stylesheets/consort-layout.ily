@@ -86,7 +86,7 @@ afterGraceFraction = #(cons 127 128)
         \Score
         \accepts TimeSignatureContext
         \accepts SinglePerformerGroup
-        \accepts MultiplerPerformerGroup
+        \accepts MultiplePerformerGroup
         \remove Metronome_mark_engraver
         \remove Mark_engraver
         \remove Bar_number_engraver
