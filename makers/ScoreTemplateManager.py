@@ -3,6 +3,7 @@ from abjad.tools import abctools
 from abjad.tools import indicatortools
 from abjad.tools import scoretools
 from abjad.tools.topleveltools import attach
+from abjad.tools.topleveltools import set_
 
 
 class ScoreTemplateManager(abctools.AbjadObject):
@@ -12,19 +13,18 @@ class ScoreTemplateManager(abctools.AbjadObject):
     @staticmethod
     def make_performer_group(instrument, context_name=None, label=None):
         context_name = context_name or 'SinglePerformerGroup'
-        label = label or instrument.instrument_name.replace(' ', '-').lower()
         name = '{} Performer Group'.format(instrument.instrument_name.title())
         performer_group = scoretools.StaffGroup(
             context_name='SinglePerformerGroup',
             name=name,
             )
         performer_group.is_simultaneous = True
-        tag = indicatortools.LilyPondCommand(
-            name='keepWithTag #"score.{}"'.format(label),
-            format_slot='before',
-            )
-        attach(tag, performer_group)
-        attach(instrument, performer_group, scope=scoretools.StaffGroup)
+        label = label or instrument.instrument_name.replace(' ', '-').lower()
+        label = 'score.{}'.format(label)
+        ScoreTemplateManager.attach_tag(label, performer_group)
+        manager = set_(performer_group)
+        manager.instrument_name = instrument.instrument_name_markup
+        manager.short_instrument_name = instrument.short_instrument_name_markup
         return performer_group, label
 
     @staticmethod
@@ -137,17 +137,14 @@ class ScoreTemplateManager(abctools.AbjadObject):
             name='TimeSignatureContext',
             )
         labels = '.'.join(labels)
-        tag = indicatortools.LilyPondCommand(
-            name='keepWithTag #"score.{}"'.format(labels),
-            format_slot='before',
-            )
-        attach(tag, time_signature_context)
+        label = 'score.{}'.format(labels)
+        ScoreTemplateManager.attach_tag(label, time_signature_context)
         return time_signature_context
 
     @staticmethod
     def attach_tag(label, context):
         tag = indicatortools.LilyPondCommand(
-            name='keepWithTag #"{}"'.format(label),
+            name="keepWithTag #'{}".format(label),
             format_slot='before',
             )
         attach(tag, context) 
