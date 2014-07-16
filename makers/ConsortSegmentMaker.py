@@ -464,6 +464,8 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         stylesheet_file_names = os.listdir(stylesheets_path)
         stylesheet_file_paths = []
         for file_name in stylesheet_file_names:
+            if not file_name.endswith('.ily'):
+                continue
             full_path = os.path.join(
                 stylesheets_path,
                 file_name,
