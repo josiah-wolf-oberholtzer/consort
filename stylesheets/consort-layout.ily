@@ -60,12 +60,33 @@ afterGraceFraction = #(cons 127 128)
             )
     }
 
+    %%% SINGLE PERFORMER GROUP %%%
+
+    \context {
+        \StaffGroup
+        \name SinglePerformerGroup
+        \type Engraver_group
+        \alias StaffGroup
+        \accepts Staff
+    }
+
+    %%% MULTIPLE PERFORMER GROUP %%%
+
+    \context {
+        \StaffGroup
+        \name MultiplePerformerGroup
+        \type Engraver_group
+        \alias StaffGroup
+        \accepts SinglePerformerGroup
+    }
+
     %%% SCORE %%%
 
     \context {
         \Score
         \accepts TimeSignatureContext
-        \accepts StaffGroup
+        \accepts SinglePerformerGroup
+        \accepts MultiplerPerformerGroup
         \remove Metronome_mark_engraver
         \remove Mark_engraver
         \remove Bar_number_engraver
@@ -92,8 +113,6 @@ afterGraceFraction = #(cons 127 128)
         \override NoteColumn.ignore-collision = ##t
         \override OttavaBracket.add-stem-support = ##t
         \override OttavaBracket.padding = 2
-        %\override PhrasingSlur.dash-definition = #'((0 1 0.5 0.5))
-        %\override Slur.dash-definition = #'((0 1 0.5 0.5))
         \override SpacingSpanner.base-shortest-duration = #(ly:make-moment 1 64)
         \override SpacingSpanner.strict-grace-spacing = ##f
         \override SpacingSpanner.strict-note-spacing = ##f
