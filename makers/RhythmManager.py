@@ -450,9 +450,9 @@ class RhythmManager(ConsortObject):
             segment_session.unrewritten_score = \
                 mutate(segment_session.score).copy()
 
-        with systemtools.Timer() as timer:
-            RhythmManager._consolidate_silences(segment_session)
-        print('\tconsolidating silences:', timer.elapsed_time)
+        #with systemtools.Timer() as timer:
+        #    RhythmManager._consolidate_silences(segment_session)
+        #print('\tconsolidating silences:', timer.elapsed_time)
 
         with systemtools.Timer() as timer:
             RhythmManager._rewrite_meters(segment_session)
@@ -461,5 +461,7 @@ class RhythmManager(ConsortObject):
         with systemtools.Timer() as timer:
             RhythmManager._cleanup_silences(segment_session)
         print('\tcleaning up silences:', timer.elapsed_time)
+
+        print(format(segment_session.score))
 
         return segment_session
