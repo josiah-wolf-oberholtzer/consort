@@ -12,10 +12,10 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_performer_group(instrument, context_name=None, label=None):
-        context_name = context_name or 'SinglePerformerGroup'
+        context_name = context_name or 'PerformerGroup'
         name = '{} Performer Group'.format(instrument.instrument_name.title())
         performer_group = scoretools.StaffGroup(
-            context_name='SinglePerformerGroup',
+            context_name='PerformerGroup',
             name=name,
             )
         performer_group.is_simultaneous = True

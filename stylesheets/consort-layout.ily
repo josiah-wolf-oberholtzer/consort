@@ -64,7 +64,7 @@ afterGraceFraction = #(cons 127 128)
 
     \context {
         \StaffGroup
-        \name SinglePerformerGroup
+        \name PerformerGroup
         \type Engraver_group
         \alias StaffGroup
         \accepts Staff
@@ -74,10 +74,10 @@ afterGraceFraction = #(cons 127 128)
 
     \context {
         \StaffGroup
-        \name MultiplePerformerGroup
+        \name EnsembleGroup
         \type Engraver_group
         \alias StaffGroup
-        \accepts SinglePerformerGroup
+        \accepts PerformerGroup
     }
 
     %%% SCORE %%%
@@ -85,8 +85,8 @@ afterGraceFraction = #(cons 127 128)
     \context {
         \Score
         \accepts TimeSignatureContext
-        \accepts SinglePerformerGroup
-        \accepts MultiplePerformerGroup
+        \accepts PerformerGroup
+        \accepts EnsembleGroup
         \remove Metronome_mark_engraver
         \remove Mark_engraver
         \remove Bar_number_engraver

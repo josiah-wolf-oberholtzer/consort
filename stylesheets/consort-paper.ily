@@ -40,7 +40,6 @@
     page-breaking = #ly:optimal-breaking
     ragged-bottom = ##f
     ragged-last-bottom = ##f
-    systems-per-page = 3
 
     %%% SPACING DETAILS %%%%
 
@@ -64,4 +63,3 @@
         (stretchability . 100)
         )
 }
-
