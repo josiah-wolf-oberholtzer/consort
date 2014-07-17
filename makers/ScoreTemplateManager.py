@@ -11,11 +11,15 @@ class ScoreTemplateManager(abctools.AbjadObject):
     ### PUBLIC METHODS ###
 
     @staticmethod
-    def make_performer_group(instrument, context_name=None, label=None):
+    def make_performer_group(
+        context_name=None,
+        instrument=None,
+        label=None,
+        ):
         context_name = context_name or 'PerformerGroup'
         name = '{} Performer Group'.format(instrument.instrument_name.title())
         performer_group = scoretools.StaffGroup(
-            context_name='PerformerGroup',
+            context_name=context_name,
             name=name,
             )
         performer_group.is_simultaneous = True
@@ -29,13 +33,13 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_single_basic_performer(
-        instrument,
         context_name=None,
+        instrument=None,
         label=None,
         ):
         performer_group, label = ScoreTemplateManager.make_performer_group(
-            instrument,
             context_name=context_name,
+            instrument=instrument,
             label=label,
             )
         name = instrument.instrument_name.title()
@@ -53,7 +57,9 @@ class ScoreTemplateManager(abctools.AbjadObject):
     @staticmethod
     def make_single_piano_performer(instrument):
         performer_group, label = ScoreTemplateManager.make_performer_group(
-            instrument)
+            context_name='PianoPerformerGroup',
+            instrument=instrument,
+            )
         name = instrument.instrument_name.title()
         upper_staff = scoretools.Staff(
             [
@@ -90,7 +96,9 @@ class ScoreTemplateManager(abctools.AbjadObject):
     @staticmethod
     def make_single_string_performer(instrument):
         performer_group, label = ScoreTemplateManager.make_performer_group(
-            instrument)
+            context_name='StringPerformerGroup',
+            instrument=instrument,
+            )
         name = instrument.instrument_name.title()
         bowing_staff = scoretools.Staff(
             [
@@ -117,7 +125,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
     @staticmethod
     def make_single_wind_performer(instrument):
         performer_group, label = ScoreTemplateManager.make_performer_group(
-            instrument)
+            instrument=instrument,
+            )
         name = instrument.instrument_name.title()
         wind_staff = scoretools.Staff(
             [

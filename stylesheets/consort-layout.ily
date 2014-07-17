@@ -1,6 +1,7 @@
 afterGraceFraction = #(cons 127 128)
 
 \layout {
+
     indent = 0
     ragged-bottom = ##t
     ragged-last = ##t
@@ -156,4 +157,5 @@ afterGraceFraction = #(cons 127 128)
         proportionalNotationDuration = #(ly:make-moment 1 48)
         tupletFullLength = ##t
     }
+
 }
