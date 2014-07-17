@@ -6,7 +6,7 @@
         \type Engraver_group
         \alias StaffGroup
         \accepts Staff
-        \override StaffSymbol #'color = #red
+        systemStartDelimiter = #'SystemStartBrace
     }
 
     \context {
