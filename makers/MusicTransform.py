@@ -29,8 +29,20 @@ class MusicTransform(MusicSetting):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self):
-        pass
+    def __call__(
+        self,
+        layer,
+        score_template,
+        target_duration,
+        timespan_inventory,
+        ):
+        voice_names = MusicSetting.__call__(
+            layer,
+            score_template,
+            target_duration,
+            timespan_inventory,
+            )
+
 
     def __getattr__(self, name):
         if name in self._transforms:

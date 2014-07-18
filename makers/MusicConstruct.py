@@ -34,8 +34,27 @@ class MusicConstruct(MusicSetting):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self):
-        pass
+    def __call__(
+        self,
+        layer,
+        score_template,
+        target_duration,
+        timespan_inventory,
+        ):
+        target_timespans, voice_names = MusicSetting.__call__(
+            layer,
+            score_template,
+            target_duration,
+            timespan_inventory,
+            )
+        timespan_inventory = self.timespan_maker(
+            color=self.color,
+            layer=layer,
+            music_specifier=self.music_specifier,
+            target_duration=target_duration,
+            timespan_inventory=timespan_inventory,
+            voice_names=voice_names,
+            )
 
     ### PUBLIC PROPERTIES ###
 

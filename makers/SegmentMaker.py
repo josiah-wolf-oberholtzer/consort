@@ -10,6 +10,7 @@ from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
 from abjad.tools import scoretools
 from abjad.tools import systemtools
+from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
@@ -488,6 +489,13 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
     @property
     def tempo(self):
         return self._tempo
+
+    @property
+    def timespan(self):
+        return timespantools.Timespan(
+            start_offset=0,
+            stop_offset=self.target_duration,
+            )
 
     @property
     def permitted_time_signatures(self):

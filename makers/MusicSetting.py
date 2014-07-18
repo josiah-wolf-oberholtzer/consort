@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import abc
 from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import timespantools
@@ -42,13 +43,33 @@ class MusicSetting(abctools.AbjadObject):
 
     ### SPECIAL METHODS ###
 
+    @abc.abstractmethod
     def __call__(
         self,
         layer,
+        score_template,
         target_duration,
-        timespan_inventory=None,
+        timespan_inventory,
         ):
-        raise NotImplementedError
+        from consort import makers
+        assert 0 < target_duration
+        assert score_template is not None
+
+        voice_names = makers.SegmentMaker._find_voice_names(
+            score_template=score_template,
+            voice_identifier=self.voice_identifier,
+            )
+        assert voice_names, voice_names
+
+        target_timespans = timespantools.TimespanInventory([
+            timespantools.Timespan(0, target_duration),
+            ])
+        if isinstance(self.timespan_identifier, timespantools.Timespan):
+            target_timespans = target_timespans & self.timespan_identifier
+        elif isinstance(self.timespan_identifier, makers.RatioPartsExpression):
+            parts = self.timespan_identifier(target_timespans[0])
+            target_timespans = target_timespans & parts
+        return target_timespans, voice_names
 
     ### PUBLIC PROPERTIES ###
 
