@@ -99,38 +99,44 @@ class TimespanManager(ConsortObject):
                 timespan_inventory.sort()
 
     @staticmethod
-    def _make_voicewise_timespan_inventories(
+    def _make_timespan_inventory(
         score_template=None,
         settings=None,
         target_duration=None,
         ):
-        voicewise_timespan_inventories = {}
-        segment_duration = durationtools.Duration(0)
-        for layer, voice_specifier in enumerate(settings):
-            timespan_inventory, final_duration = voice_specifier(
+        timespan_inventory = timespantools.TimespanInventory()
+        for layer, setting in enumerate(settings):
+            setting(
                 layer=layer,
-                target_duration=target_duration,
                 score_template=score_template,
+                target_duration=target_duration,
+                timespan_inventory=timespan_inventory,
                 )
-            if segment_duration < final_duration:
-                segment_duration = final_duration
-            for timespan in timespan_inventory:
-                voice_name, layer = timespan.voice_name, timespan.layer
-                if voice_name not in voicewise_timespan_inventories:
-                    voicewise_timespan_inventories[voice_name] = []
-                    for _ in range(len(settings)):
-                        voicewise_timespan_inventories[voice_name].append(
-                            timespantools.TimespanInventory())
-                voicewise_timespan_inventories[voice_name][layer].append(
-                    timespan)
-                voicewise_timespan_inventories[voice_name][layer].sort()
+        return timespan_inventory
+
+    @staticmethod
+    def _make_voicewise_timespan_inventories(
+        settings_count=None,
+        timespan_inventory=None,
+        ):
+        voicewise_timespan_inventories = {}
+        for timespan in timespan_inventory:
+            voice_name, layer = timespan.voice_name, timespan.layer
+            if voice_name not in voicewise_timespan_inventories:
+                voicewise_timespan_inventories[voice_name] = []
+                for _ in range(settings_count):
+                    voicewise_timespan_inventories[voice_name].append(
+                        timespantools.TimespanInventory())
+            voicewise_timespan_inventories[voice_name][layer].append(
+                timespan)
+            voicewise_timespan_inventories[voice_name][layer].sort()
         for voice_name in voicewise_timespan_inventories:
             timespan_inventories = voicewise_timespan_inventories[voice_name]
             timespan_inventory = \
                 TimespanManager._resolve_timespan_inventories(
                     timespan_inventories)
             voicewise_timespan_inventories[voice_name] = timespan_inventory
-        return voicewise_timespan_inventories, segment_duration
+        return voicewise_timespan_inventories
 
     @staticmethod
     def _resolve_timespan_inventories(
@@ -155,14 +161,18 @@ class TimespanManager(ConsortObject):
         score_template=None,
         settings=None,
         ):
+        timespan_inventory = TimespanManager._make_timespan_inventory(
+            score_template=score_template,
+            settings=settings,
+            target_duration=target_duration,
+            )
+        segment_session.segment_duration = timespan_inventory.stop_offset
 
-        voicewise_timespan_inventories, segment_duration = \
+        voicewise_timespan_inventories = \
             TimespanManager._make_voicewise_timespan_inventories(
-                score_template=score_template,
-                settings=settings,
-                target_duration=target_duration,
+                settings_count=len(settings),
+                timespan_inventory=timespan_inventory,
                 )
-        segment_session.segment_duration = segment_duration
         segment_session.voicewise_timespan_inventories = \
             voicewise_timespan_inventories
 
@@ -178,8 +188,10 @@ class TimespanManager(ConsortObject):
         TimespanManager._cleanup_performed_timespans(
             segment_session=segment_session,
             )
+
         TimespanManager._make_silent_timespans(
             segment_session=segment_session,
             score_template=score_template,
             )
+            
         return segment_session

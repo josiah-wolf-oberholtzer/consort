@@ -78,16 +78,11 @@ class SegmentSetting(ConsortObject):
         ...     cello_count=1,
         ...     contrabass_count=1,
         ...     )
-        >>> timespan_inventory, final_duration = voice_specifier(
+        >>> timespan_inventory = voice_specifier(
         ...     layer=layer,
         ...     target_duration=target_duration,
         ...     score_template=score_template,
         ...     )
-
-    ::
-
-        >>> print(final_duration)
-        1
 
     ::
 
@@ -199,8 +194,9 @@ class SegmentSetting(ConsortObject):
     def __call__(
         self,
         layer=None,
-        target_duration=None,
         score_template=None,
+        target_duration=None,
+        timespan_inventory=None,
         ):
         from consort import makers
         if layer is None:
@@ -214,14 +210,15 @@ class SegmentSetting(ConsortObject):
             voice_identifier=self.voice_identifier,
             )
         assert voice_names, voice_names
-        timespan_inventory, final_offset = self.timespan_maker(
+        timespan_inventory = self.timespan_maker(
             color=self.color,
             layer=layer,
             music_specifier=self.music_specifier,
             target_duration=target_duration,
+            timespan_inventory=timespan_inventory,
             voice_names=voice_names,
             )
-        return timespan_inventory, final_offset
+        return timespan_inventory
 
     ### PUBLIC PROPERTIES ###
 

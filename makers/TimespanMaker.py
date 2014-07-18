@@ -42,7 +42,7 @@ class TimespanMaker(ConsortObject):
 
         >>> voice_names = ('Violin', 'Viola')
         >>> target_duration = Duration(1)
-        >>> timespan_inventory, final_duration = timespan_maker(
+        >>> timespan_inventory = timespan_maker(
         ...     target_duration=target_duration,
         ...     voice_names=voice_names,
         ...     )
@@ -148,8 +148,13 @@ class TimespanMaker(ConsortObject):
         layer=None,
         music_specifier=None,
         target_duration=None,
+        timespan_inventory=None,
         voice_names=None,
         ):
+
+        if timespan_inventory is None:
+            timespan_inventory = timespantools.TimespanInventory()
+        assert isinstance(timespan_inventory, timespantools.TimespanInventory)
 
         initial_silence_durations = self.initial_silence_durations
         if len(initial_silence_durations) < 2:
@@ -181,12 +186,7 @@ class TimespanMaker(ConsortObject):
         else:
             procedure = self._make_without_synchronized_step
 
-        #print initial_silence_durations
-        #print playing_durations
-        #print playing_groupings
-        #print silence_durations
-
-        timespan_inventory, final_offset = procedure(
+        new_timespan_inventory, final_offset = procedure(
             color=color,
             initial_silence_durations=initial_silence_durations,
             layer=layer,
@@ -198,12 +198,10 @@ class TimespanMaker(ConsortObject):
             voice_names=voice_names,
             )
 
-        if target_duration < final_offset:
-            final_offset = durationtools.Offset(target_duration)
-
+        timespan_inventory.extend(new_timespan_inventory)
         timespan_inventory.sort()
 
-        return timespan_inventory, final_offset
+        return timespan_inventory
 
     ### PRIVATE METHODS ###
 

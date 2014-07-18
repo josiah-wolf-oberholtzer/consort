@@ -9,11 +9,10 @@ target_duration = Duration(1)
 
 def test_TimespanMaker_01():
     timespan_maker = makers.TimespanMaker()
-    timespan_inventory, final_offset = timespan_maker(
+    timespan_inventory = timespan_maker(
         target_duration=target_duration,
         voice_names=voice_names,
         )
-    assert final_offset == 1
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
         r'''
@@ -56,11 +55,10 @@ def test_TimespanMaker_02():
             Duration(1, 4),
             ),
         )
-    timespan_inventory, final_offset = timespan_maker(
+    timespan_inventory = timespan_maker(
         target_duration=target_duration,
         voice_names=voice_names,
         )
-    assert final_offset == 1
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
         r'''
@@ -100,11 +98,10 @@ def test_TimespanMaker_03():
     timespan_maker = makers.TimespanMaker(
         synchronize_step=True,
         )
-    timespan_inventory, final_offset = timespan_maker(
+    timespan_inventory = timespan_maker(
         target_duration=target_duration,
         voice_names=voice_names,
         )
-    assert final_offset == 1
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
         r'''
@@ -147,11 +144,10 @@ def test_TimespanMaker_04():
             Duration(1, 4),
             ),
         )
-    timespan_inventory, final_offset = timespan_maker(
+    timespan_inventory = timespan_maker(
         target_duration=target_duration,
         voice_names=voice_names,
         )
-    assert final_offset == 1
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
         r'''
@@ -201,11 +197,10 @@ def test_TimespanMaker_05():
             ),
         synchronize_step=True,
         )
-    timespan_inventory, final_offset = timespan_maker(
+    timespan_inventory = timespan_maker(
         target_duration=target_duration,
         voice_names=voice_names,
         )
-    assert final_offset == 1
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
         r'''
@@ -252,11 +247,10 @@ def test_TimespanMaker_06():
             Duration(1, 4),
             ),
         )
-    timespan_inventory, final_offset = timespan_maker(
+    timespan_inventory = timespan_maker(
         target_duration=target_duration,
         voice_names=voice_names,
         )
-    assert final_offset == 1
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
         r'''
