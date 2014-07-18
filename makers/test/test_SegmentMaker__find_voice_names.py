@@ -2,7 +2,7 @@ from consort import makers
 
 
 def test_SegmentMaker__find_voice_names_01():
-    score_template = makers.ConsortScoreTemplate(
+    score_template = makers.StringOrchestraScoreTemplate(
         violin_count=2,
         viola_count=1,
         cello_count=1,

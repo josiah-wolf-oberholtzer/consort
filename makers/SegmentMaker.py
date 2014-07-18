@@ -22,7 +22,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
     ::
 
         >>> from consort import makers
-        >>> score_template = makers.ConsortScoreTemplate(
+        >>> score_template = makers.StringOrchestraScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -50,7 +50,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         >>> print(format(segment_maker))
         makers.SegmentMaker(
             is_final_segment=False,
-            score_template=makers.ConsortScoreTemplate(
+            score_template=makers.StringOrchestraScoreTemplate(
                 violin_count=2,
                 viola_count=1,
                 cello_count=1,
@@ -301,7 +301,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         ::
 
             >>> from consort import makers
-            >>> score_template = makers.ConsortScoreTemplate(
+            >>> score_template = makers.StringOrchestraScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
             ...     cello_count=1,

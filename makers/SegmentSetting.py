@@ -72,7 +72,7 @@ class SegmentSetting(ConsortObject):
 
         >>> layer = 1
         >>> target_duration = durationtools.Duration(1)
-        >>> score_template = makers.ConsortScoreTemplate(
+        >>> score_template = makers.StringOrchestraScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,

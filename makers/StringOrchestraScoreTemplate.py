@@ -6,13 +6,13 @@ from abjad.tools import instrumenttools
 from abjad.tools import scoretools
 
 
-class ConsortScoreTemplate(ConsortObject):
+class StringOrchestraScoreTemplate(ConsortObject):
     r'''String orchestra score template.
 
     ::
 
         >>> from consort import makers
-        >>> template = makers.ConsortScoreTemplate()
+        >>> template = makers.StringOrchestraScoreTemplate()
         >>> score = template()
         >>> print(format(score))
         \context Score = "Score" <<
@@ -215,7 +215,7 @@ class ConsortScoreTemplate(ConsortObject):
 
     ::
 
-        >>> template = makers.ConsortScoreTemplate(
+        >>> template = makers.StringOrchestraScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -289,7 +289,7 @@ class ConsortScoreTemplate(ConsortObject):
 
     ::
 
-        >>> template = makers.ConsortScoreTemplate(
+        >>> template = makers.StringOrchestraScoreTemplate(
         ...     violin_count=0,
         ...     viola_count=0,
         ...     cello_count=1,
