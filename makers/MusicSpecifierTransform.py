@@ -39,7 +39,7 @@ class MusicSpecifierTransform(ConsortObject):
         self,
         segment_duration=None,
         template=None,
-        voicewise_timespan_inventories=None,
+        voicewise_timespans=None,
         ):
         from consort import makers
         voice_names = makers.SegmentMaker._find_voice_names(
@@ -47,9 +47,9 @@ class MusicSpecifierTransform(ConsortObject):
             voice_identifier=self.voice_identifier,
             )
         for voice_name in voice_names:
-            if voice_name not in voicewise_timespan_inventories:
+            if voice_name not in voicewise_timespans:
                 continue
-            timespan_inventory = voicewise_timespan_inventories[voice_name]
+            timespan_inventory = voicewise_timespans[voice_name]
             self._apply_setting(
                 segment_duration=segment_duration,
                 timespan_inventory=timespan_inventory,

@@ -151,8 +151,8 @@ class AnnotationManager(ConsortObject):
         segment_session=None,
         ):
         from consort import makers
-        voicewise_timespan_inventories = segment_session.voicewise_timespan_inventories
-        voice_names = voicewise_timespan_inventories.keys()
+        voicewise_timespans = segment_session.voicewise_timespans
+        voice_names = voicewise_timespans.keys()
         voice_names = makers.RhythmManager._sort_voice_names(
             template=segment_session.segment_maker.template,
             voice_names=voice_names,
@@ -163,7 +163,7 @@ class AnnotationManager(ConsortObject):
             annotation_specifier.hide_inner_bracket
         with systemtools.ForbidUpdate(score):
             for voice_name in voice_names:
-                timespan_inventory = voicewise_timespan_inventories[voice_name]
+                timespan_inventory = voicewise_timespans[voice_name]
                 inner_annotation, outer_annotation = \
                     AnnotationManager._create_annotation_voices(
                         hide_brackets=hide_brackets,

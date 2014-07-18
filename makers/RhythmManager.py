@@ -207,15 +207,15 @@ class RhythmManager(ConsortObject):
         silent_music_specifier = makers.MusicSpecifier(
             is_sentinel=True,
             )
-        voicewise_timespan_inventories = segment_session.voicewise_timespan_inventories
+        voicewise_timespans = segment_session.voicewise_timespans
         seeds = collections.Counter()
-        voice_names = voicewise_timespan_inventories.keys()
+        voice_names = voicewise_timespans.keys()
         voice_names = RhythmManager._sort_voice_names(
             score_template=segment_session.segment_maker.score_template,
             voice_names=voice_names,
             )
         for voice_name in voice_names:
-            timespan_inventory = voicewise_timespan_inventories[voice_name]
+            timespan_inventory = voicewise_timespans[voice_name]
             voice = segment_session.score[voice_name]
             previous_silence = scoretools.Container()
             for music_specifier, timespans in itertools.groupby(

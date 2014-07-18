@@ -19,10 +19,10 @@ class TimespanManager(ConsortObject):
         segment_session=None,
         ):
         measure_offsets = segment_session.measure_offsets
-        voicewise_timespan_inventories = segment_session.voicewise_timespan_inventories
-        for voice_name in voicewise_timespan_inventories:
+        voicewise_timespans = segment_session.voicewise_timespans
+        for voice_name in voicewise_timespans:
             offsets = list(measure_offsets)
-            timespan_inventory = voicewise_timespan_inventories[voice_name]
+            timespan_inventory = voicewise_timespans[voice_name]
             timespan_inventory.sort()
             split_inventory = timespantools.TimespanInventory()
             for timespan in timespan_inventory:
@@ -46,19 +46,19 @@ class TimespanManager(ConsortObject):
                     else:
                         split_inventory.append(timespan)
             split_inventory.sort()
-            voicewise_timespan_inventories[voice_name] = split_inventory
+            voicewise_timespans[voice_name] = split_inventory
 
     @staticmethod
     def _find_meters(
         permitted_time_signatures=None,
         target_duration=None,
-        voicewise_timespan_inventories=None,
+        voicewise_timespans=None,
         ):
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
         for timespan_inventory in \
-            voicewise_timespan_inventories.values():
+            voicewise_timespans.values():
             for timespan in timespan_inventory:
                 offset_counter[timespan.start_offset] += 1
                 offset_counter[timespan.stop_offset] += 1
@@ -78,14 +78,14 @@ class TimespanManager(ConsortObject):
         ):
         from consort import makers
         measure_offsets = segment_session.measure_offsets
-        voicewise_timespan_inventories = segment_session.voicewise_timespan_inventories
+        voicewise_timespans = segment_session.voicewise_timespans
         score = score_template()
         for voice in iterate(score).by_class(scoretools.Voice):
             voice_name = voice.name
-            if voice_name not in voicewise_timespan_inventories:
-                voicewise_timespan_inventories[voice_name] = \
+            if voice_name not in voicewise_timespans:
+                voicewise_timespans[voice_name] = \
                     timespantools.TimespanInventory()
-            timespan_inventory = voicewise_timespan_inventories[voice_name]
+            timespan_inventory = voicewise_timespans[voice_name]
             silence_inventory = timespantools.TimespanInventory()
             silence = makers.SilentTimespan(
                 start_offset=0,
@@ -115,28 +115,28 @@ class TimespanManager(ConsortObject):
         return timespan_inventory
 
     @staticmethod
-    def _make_voicewise_timespan_inventories(
+    def _make_voicewise_timespans(
         settings_count=None,
         timespan_inventory=None,
         ):
-        voicewise_timespan_inventories = {}
+        voicewise_timespans = {}
         for timespan in timespan_inventory:
             voice_name, layer = timespan.voice_name, timespan.layer
-            if voice_name not in voicewise_timespan_inventories:
-                voicewise_timespan_inventories[voice_name] = []
+            if voice_name not in voicewise_timespans:
+                voicewise_timespans[voice_name] = []
                 for _ in range(settings_count):
-                    voicewise_timespan_inventories[voice_name].append(
+                    voicewise_timespans[voice_name].append(
                         timespantools.TimespanInventory())
-            voicewise_timespan_inventories[voice_name][layer].append(
+            voicewise_timespans[voice_name][layer].append(
                 timespan)
-            voicewise_timespan_inventories[voice_name][layer].sort()
-        for voice_name in voicewise_timespan_inventories:
-            timespan_inventories = voicewise_timespan_inventories[voice_name]
+            voicewise_timespans[voice_name][layer].sort()
+        for voice_name in voicewise_timespans:
+            timespan_inventories = voicewise_timespans[voice_name]
             timespan_inventory = \
                 TimespanManager._resolve_timespan_inventories(
                     timespan_inventories)
-            voicewise_timespan_inventories[voice_name] = timespan_inventory
-        return voicewise_timespan_inventories
+            voicewise_timespans[voice_name] = timespan_inventory
+        return voicewise_timespans
 
     @staticmethod
     def _resolve_timespan_inventories(
@@ -168,18 +168,18 @@ class TimespanManager(ConsortObject):
             )
         segment_session.segment_duration = timespan_inventory.stop_offset
 
-        voicewise_timespan_inventories = \
-            TimespanManager._make_voicewise_timespan_inventories(
+        voicewise_timespans = \
+            TimespanManager._make_voicewise_timespans(
                 settings_count=len(settings),
                 timespan_inventory=timespan_inventory,
                 )
-        segment_session.voicewise_timespan_inventories = \
-            voicewise_timespan_inventories
+        segment_session.voicewise_timespans = \
+            voicewise_timespans
 
         meters = TimespanManager._find_meters(
             permitted_time_signatures=permitted_time_signatures,
             target_duration=target_duration,
-            voicewise_timespan_inventories=voicewise_timespan_inventories,
+            voicewise_timespans=voicewise_timespans,
             )
         segment_session.meters = tuple(meters)
         segment_session.segment_duration = sum(
@@ -190,8 +190,8 @@ class TimespanManager(ConsortObject):
             )
 
         TimespanManager._make_silent_timespans(
-            segment_session=segment_session,
             score_template=score_template,
+            segment_session=segment_session,
             )
             
         return segment_session
