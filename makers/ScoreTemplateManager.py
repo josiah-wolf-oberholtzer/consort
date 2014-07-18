@@ -24,8 +24,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         performer_group.is_simultaneous = True
         label = label or instrument.instrument_name.replace(' ', '-').lower()
-        label = 'score.{}'.format(label)
-        ScoreTemplateManager.attach_tag(label, performer_group)
+        total_label = 'score.{}'.format(label)
+        ScoreTemplateManager.attach_tag(total_label, performer_group)
         manager = set_(performer_group)
         manager.instrument_name = instrument.instrument_name_markup
         manager.short_instrument_name = instrument.short_instrument_name_markup
@@ -145,7 +145,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             context_name='TimeSignatureContext',
             name='TimeSignatureContext',
             )
-        labels = '.'.join(labels)
+        labels = '.'.join(sorted(labels))
         label = 'score.{}'.format(labels)
         ScoreTemplateManager.attach_tag(label, time_signature_context)
         return time_signature_context
