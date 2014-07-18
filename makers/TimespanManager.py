@@ -101,7 +101,7 @@ class TimespanManager(ConsortObject):
                 timespan_inventory.sort()
 
     @staticmethod
-    def _make_timespan_inventory_mapping(
+    def _make_voicewise_timespan_inventories(
         segment_session=None,
         target_duration=None,
         score_template=None,
@@ -159,7 +159,7 @@ class TimespanManager(ConsortObject):
         score_template=None,
         settings=None,
         ):
-        TimespanManager._make_timespan_inventory_mapping(
+        TimespanManager._make_voicewise_timespan_inventories(
             segment_session=segment_session,
             target_duration=target_duration,
             score_template=score_template,
