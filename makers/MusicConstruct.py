@@ -21,6 +21,7 @@ class MusicConstruct(MusicSetting):
         timespan_maker=None,
         voice_identifier=None,
         ):
+        from consort import makers
         MusicSetting.__init__(
             self,
             color=color,
@@ -47,14 +48,16 @@ class MusicConstruct(MusicSetting):
             target_duration,
             timespan_inventory,
             )
-        timespan_inventory = self.timespan_maker(
-            color=self.color,
-            layer=layer,
-            music_specifier=self.music_specifier,
-            target_duration=target_duration,
-            timespan_inventory=timespan_inventory,
-            voice_names=voice_names,
-            )
+        for target_timespan in target_timespans:
+            timespan_inventory = self.timespan_maker(
+                color=self.color,
+                layer=layer,
+                music_specifier=self.music_specifier,
+                target_timespan=target_timespan,
+                timespan_inventory=timespan_inventory,
+                voice_names=voice_names,
+                )
+        return timespan_inventory
 
     ### PUBLIC PROPERTIES ###
 
@@ -65,4 +68,3 @@ class MusicConstruct(MusicSetting):
     @property
     def timespan_maker(self):
         return self._timespan_maker
-

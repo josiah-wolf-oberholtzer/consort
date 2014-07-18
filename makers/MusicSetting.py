@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import abc
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import timespantools
 
 
@@ -30,6 +29,7 @@ class MusicSetting(abctools.AbjadObject):
         if timespan_identifier is not None:
             prototype = (
                 timespantools.Timespan,
+                timespantools.TimespanInventory,
                 makers.RatioPartsExpression,
                 )
             assert isinstance(timespan_identifier, prototype)
@@ -66,6 +66,10 @@ class MusicSetting(abctools.AbjadObject):
             ])
         if isinstance(self.timespan_identifier, timespantools.Timespan):
             target_timespans = target_timespans & self.timespan_identifier
+        elif isinstance(self.timespan_identifier,
+            timespantools.TimespanInventory):
+            for timespan in self.timespan_identifier:
+                target_timespans = target_timespans - timespan
         elif isinstance(self.timespan_identifier, makers.RatioPartsExpression):
             parts = self.timespan_identifier(target_timespans[0])
             target_timespans = target_timespans & parts
