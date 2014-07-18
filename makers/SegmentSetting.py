@@ -3,7 +3,7 @@ from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import durationtools
 
 
-class VoiceSpecifier(ConsortObject):
+class SegmentSetting(ConsortObject):
     r'''A voice specifier.
 
     Voice specifiers bundle three things:
@@ -20,7 +20,7 @@ class VoiceSpecifier(ConsortObject):
     ::
 
         >>> from consort import makers
-        >>> voice_specifier = makers.VoiceSpecifier(
+        >>> voice_specifier = makers.SegmentSetting(
         ...     music_specifier=makers.MusicSpecifier(),
         ...     timespan_maker=makers.TimespanMaker(
         ...         initial_silence_durations=(
@@ -39,7 +39,7 @@ class VoiceSpecifier(ConsortObject):
         ...         ),
         ...     )
         >>> print(format(voice_specifier))
-        makers.VoiceSpecifier(
+        makers.SegmentSetting(
             music_specifier=makers.MusicSpecifier(),
             timespan_maker=makers.TimespanMaker(
                 initial_silence_durations=(

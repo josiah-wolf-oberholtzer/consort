@@ -34,7 +34,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         >>> segment_maker = makers.ConsortSegmentMaker(
         ...     score_template=score_template,
         ...     settings=(
-        ...         makers.VoiceSpecifier(
+        ...         makers.SegmentSetting(
         ...             music_specifier=makers.MusicSpecifier(),
         ...             timespan_maker=makers.TimespanMaker(),
         ...             voice_identifier=('Violin \\d+ Bowing Voice',),
@@ -59,7 +59,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                 use_percussion_clefs=False,
                 ),
             settings=(
-                makers.VoiceSpecifier(
+                makers.SegmentSetting(
                     music_specifier=makers.MusicSpecifier(),
                     timespan_maker=makers.TimespanMaker(
                         initial_silence_durations=(),
@@ -159,7 +159,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         self.set_time_signatures(time_signatures)
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
-            prototype = (makers.VoiceSetting, makers.VoiceSpecifier)
+            prototype = (makers.VoiceSetting, makers.SegmentSetting)
             assert all(isinstance(x, prototype) for x in settings)
             settings = list(settings)
         self._settings = settings
@@ -347,7 +347,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     def add_settings(self, setting):
         from consort import makers
-        prototype = (makers.VoiceSetting, makers.VoiceSpecifier)
+        prototype = (makers.VoiceSetting, makers.SegmentSetting)
         assert isinstance(setting, prototype)
         self._settings.append(setting)
 
