@@ -3,14 +3,13 @@ from consort.makers.ConsortObject import ConsortObject
 from abjad.tools.topleveltools import new
 
 
-class VoiceSetting(ConsortObject):
+class MusicSpecifierTransform(ConsortObject):
     r'''A voice setting.
 
     ::
 
         >>> from consort import makers
-        >>> voice_setting = makers.VoiceSetting(
-        ...     voice_identifier=r'Violin \d+ LH Voice',
+        >>> voice_setting = makers.MusicSpecifierTransform(
         ...     key='rhythm_maker',
         ...     value=rhythmmakertools.NoteRhythmMaker(),
         ...     )
@@ -20,30 +19,17 @@ class VoiceSetting(ConsortObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_color',
         '_key',
         '_value',
-        '_voice_identifiers',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        color=None,
         key=None,
         value=None,
-        voice_identifier=None,
         ):
-        if voice_identifier is not None:
-            if isinstance(voice_identifier, str):
-                voice_identifier = (voice_identifier,)
-            if not isinstance(voice_identifier, tuple):
-                voice_identifier = tuple(voice_identifier)
-        self._voice_identifiers = voice_identifier
-        if color is not None:
-            color = str(color)
-        self._color = color
         self._key = key
         self._value = value
 
@@ -120,17 +106,9 @@ class VoiceSetting(ConsortObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def color(self):
-        return self._color
-
-    @property
     def key(self):
         return self._key
 
     @property
     def value(self):
         return self._value
-
-    @property
-    def voice_identifier(self):
-        return self._voice_identifiers

@@ -49,6 +49,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         ...     )
         >>> print(format(segment_maker))
         makers.SegmentMaker(
+            duration_in_seconds=durationtools.Duration(2, 1),
             is_final_segment=False,
             score_template=makers.StringOrchestraScoreTemplate(
                 violin_count=2,
@@ -79,7 +80,6 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
                     voice_identifier=('Violin \\d+ Bowing Voice',),
                     ),
                 ),
-            duration_in_seconds=durationtools.Duration(2, 1),
             tempo=indicatortools.Tempo(
                 duration=durationtools.Duration(1, 4),
                 units_per_minute=72,
@@ -122,13 +122,13 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
 
     __slots__ = (
         '_annotation_specifier',
-        '_is_final_segment',
-        '_time_signatures',
-        '_rehearsal_mark',
-        '_settings',
         '_duration_in_seconds',
+        '_is_final_segment',
+        '_rehearsal_mark',
         '_score_template',
+        '_settings',
         '_tempo',
+        '_time_signatures',
         )
 
     ### INITIALIZER ###
@@ -136,12 +136,12 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
     def __init__(
         self,
         annotation_specifier=None,
+        duration_in_seconds=None,
         is_final_segment=False,
         name=None,
         rehearsal_mark=None,
         score_template=None,
         settings=None,
-        duration_in_seconds=None,
         tempo=None,
         time_signatures=None,
         ):
@@ -159,7 +159,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         self.set_time_signatures(time_signatures)
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
-            prototype = (makers.VoiceSetting, makers.SegmentSetting)
+            prototype = (makers.MusicSpecifierTransform, makers.SegmentSetting)
             assert all(isinstance(x, prototype) for x in settings)
             settings = list(settings)
         self._settings = settings
@@ -347,7 +347,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
 
     def add_settings(self, setting):
         from consort import makers
-        prototype = (makers.VoiceSetting, makers.SegmentSetting)
+        prototype = (makers.MusicSpecifierTransform, makers.SegmentSetting)
         assert isinstance(setting, prototype)
         self._settings.append(setting)
 
