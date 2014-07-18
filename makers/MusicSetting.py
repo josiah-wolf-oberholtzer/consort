@@ -48,22 +48,18 @@ class MusicSetting(abctools.AbjadObject):
         self,
         layer,
         score_template,
-        target_duration,
-        timespan_inventory,
+        target_timespan,
+        timespan_inventory=None,
         ):
         from consort import makers
-        assert 0 < target_duration
         assert score_template is not None
-
         voice_names = makers.SegmentMaker._find_voice_names(
             score_template=score_template,
             voice_identifier=self.voice_identifier,
             )
         assert voice_names, voice_names
-
-        target_timespans = timespantools.TimespanInventory([
-            timespantools.Timespan(0, target_duration),
-            ])
+        assert isinstance(target_timespan, timespantools.Timespan)
+        target_timespans = timespantools.TimespanInventory([target_timespan])
         if isinstance(self.timespan_identifier, timespantools.Timespan):
             target_timespans = target_timespans & self.timespan_identifier
         elif isinstance(self.timespan_identifier,
@@ -73,7 +69,9 @@ class MusicSetting(abctools.AbjadObject):
         elif isinstance(self.timespan_identifier, makers.RatioPartsExpression):
             parts = self.timespan_identifier(target_timespans[0])
             target_timespans = target_timespans & parts
-        return target_timespans, voice_names
+        if timespan_inventory is None:
+            timespan_inventory = timespantools.TimespanInventory()
+        return target_timespans, voice_names, timespan_inventory
 
     ### PUBLIC PROPERTIES ###
 

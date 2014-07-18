@@ -35,16 +35,18 @@ class MusicTransform(MusicSetting):
         self,
         layer,
         score_template,
-        target_duration,
-        timespan_inventory,
+        target_timespan,
+        timespan_inventory=None,
         ):
         from consort import makers
-        target_timespans, voice_names = MusicSetting.__call__(
-            layer,
-            score_template,
-            target_duration,
-            timespan_inventory,
-            )
+        target_timespans, voice_names, timespan_inventory = \
+            MusicSetting.__call__(
+                self,
+                layer,
+                score_template,
+                target_timespan,
+                timespan_inventory,
+                )
         for target_timespan in target_timespans:
             inequality = timespantools.timespan_2_intersects_timespan_1(
                 timespan_1=target_timespan,

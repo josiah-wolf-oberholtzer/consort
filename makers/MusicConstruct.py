@@ -3,6 +3,140 @@ from consort.makers.MusicSetting import MusicSetting
 
 
 class MusicConstruct(MusicSetting):
+    r'''A music construct.
+
+    ::
+
+        >>> from consort import makers
+        >>> red_setting = makers.MusicConstruct(
+        ...     color='red',
+        ...     music_specifier=makers.MusicSpecifier(),
+        ...     timespan_maker=makers.TimespanMaker(
+        ...         initial_silence_durations=(
+        ...             durationtools.Duration(0, 1),
+        ...             durationtools.Duration(1, 4),
+        ...             ),
+        ...         playing_durations=(
+        ...             durationtools.Duration(1, 4),
+        ...             durationtools.Duration(1, 2),
+        ...             durationtools.Duration(1, 4),
+        ...             ),
+        ...         ),
+        ...     voice_identifier=(
+        ...         'Violin \\d+ Bowing Voice',
+        ...         'Viola Bowing Voice',
+        ...         ),
+        ...     )
+        >>> print(format(red_setting))
+        makers.MusicConstruct(
+            color='red',
+            music_specifier=makers.MusicSpecifier(),
+            timespan_maker=makers.TimespanMaker(
+                initial_silence_durations=(
+                    durationtools.Duration(0, 1),
+                    durationtools.Duration(1, 4),
+                    ),
+                minimum_duration=durationtools.Duration(1, 8),
+                playing_durations=(
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 2),
+                    durationtools.Duration(1, 4),
+                    ),
+                playing_groupings=(1,),
+                repeat=True,
+                silence_durations=(
+                    durationtools.Duration(1, 4),
+                    ),
+                step_anchor=Right,
+                synchronize_groupings=False,
+                synchronize_step=False,
+                ),
+            voice_identifier=(
+                'Violin \\d+ Bowing Voice',
+                'Viola Bowing Voice',
+                ),
+            )
+
+    ::
+
+        >>> layer = 1
+        >>> target_timespan = timespantools.Timespan(1, 2)
+        >>> score_template = makers.StringOrchestraScoreTemplate(
+        ...     violin_count=2,
+        ...     viola_count=1,
+        ...     cello_count=1,
+        ...     contrabass_count=1,
+        ...     )
+        >>> timespan_inventory = red_setting(
+        ...     layer=layer,
+        ...     score_template=score_template,
+        ...     target_timespan=target_timespan,
+        ...     )
+
+    ::
+
+        >>> print(format(timespan_inventory))
+        timespantools.TimespanInventory(
+            [
+                makers.PerformedTimespan(
+                    color='red',
+                    layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(5, 4),
+                    voice_name='Violin 1 Bowing Voice',
+                    ),
+                makers.PerformedTimespan(
+                    color='red',
+                    layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 2),
+                    voice_name='Viola Bowing Voice',
+                    ),
+                makers.PerformedTimespan(
+                    color='red',
+                    layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(5, 4),
+                    stop_offset=durationtools.Offset(3, 2),
+                    voice_name='Violin 2 Bowing Voice',
+                    ),
+                makers.PerformedTimespan(
+                    color='red',
+                    layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(3, 2),
+                    stop_offset=durationtools.Offset(2, 1),
+                    voice_name='Violin 1 Bowing Voice',
+                    ),
+                makers.PerformedTimespan(
+                    color='red',
+                    layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(7, 4),
+                    stop_offset=durationtools.Offset(2, 1),
+                    voice_name='Violin 2 Bowing Voice',
+                    ),
+                makers.PerformedTimespan(
+                    color='red',
+                    layer=1,
+                    minimum_duration=durationtools.Duration(1, 8),
+                    music_specifier=makers.MusicSpecifier(),
+                    start_offset=durationtools.Offset(7, 4),
+                    stop_offset=durationtools.Offset(2, 1),
+                    voice_name='Viola Bowing Voice',
+                    ),
+                ]
+            )
+
+
+    '''
 
     ### CLASS VARIABLES ###
 
@@ -39,15 +173,17 @@ class MusicConstruct(MusicSetting):
         self,
         layer,
         score_template,
-        target_duration,
-        timespan_inventory,
+        target_timespan,
+        timespan_inventory=None,
         ):
-        target_timespans, voice_names = MusicSetting.__call__(
-            layer,
-            score_template,
-            target_duration,
-            timespan_inventory,
-            )
+        target_timespans, voice_names, timespan_inventory = \
+            MusicSetting.__call__(
+                self,
+                layer,
+                score_template,
+                target_timespan,
+                timespan_inventory,
+                )
         for target_timespan in target_timespans:
             timespan_inventory = self.timespan_maker(
                 color=self.color,

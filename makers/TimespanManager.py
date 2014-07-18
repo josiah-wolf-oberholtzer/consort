@@ -102,12 +102,13 @@ class TimespanManager(ConsortObject):
         settings=None,
         target_duration=None,
         ):
+        target_timespan = timespantools.Timespan(0, target_duration)
         timespan_inventory = timespantools.TimespanInventory()
         for layer, setting in enumerate(settings):
             setting(
                 layer=layer,
                 score_template=score_template,
-                target_duration=target_duration,
+                target_timespan=target_timespan,
                 timespan_inventory=timespan_inventory,
                 )
         return timespan_inventory
