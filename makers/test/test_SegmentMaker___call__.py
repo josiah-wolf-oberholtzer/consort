@@ -3,7 +3,7 @@ from abjad import *
 from consort import makers
 
 
-def test_ConsortSegmentMaker___call___01():
+def test_SegmentMaker___call___01():
 
     score_template = makers.ConsortScoreTemplate(
         violin_count=2,
@@ -12,7 +12,7 @@ def test_ConsortSegmentMaker___call___01():
         contrabass_count=0,
         )
 
-    segment_maker = makers.ConsortSegmentMaker(
+    segment_maker = makers.SegmentMaker(
         duration_in_seconds=2,
         score_template=score_template,
         settings=(

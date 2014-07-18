@@ -209,7 +209,7 @@ class SegmentSetting(ConsortObject):
         target_duration = durationtools.Duration(target_duration)
         assert 0 < target_duration
         assert score_template is not None
-        voice_names = makers.ConsortSegmentMaker._find_voice_names(
+        voice_names = makers.SegmentMaker._find_voice_names(
             score_template=score_template,
             voice_identifier=self.voice_identifier,
             )

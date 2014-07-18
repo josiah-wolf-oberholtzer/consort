@@ -56,7 +56,7 @@ class VoiceSetting(ConsortObject):
         timespan_inventory_mapping=None,
         ):
         from consort import makers
-        voice_names = makers.ConsortSegmentMaker._find_voice_names(
+        voice_names = makers.SegmentMaker._find_voice_names(
             template=template,
             voice_identifier=self.voice_identifier,
             )

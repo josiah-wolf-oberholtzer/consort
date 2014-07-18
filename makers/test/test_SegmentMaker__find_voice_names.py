@@ -1,7 +1,7 @@
 from consort import makers
 
 
-def test_ConsortSegmentMaker__find_voice_names_01():
+def test_SegmentMaker__find_voice_names_01():
     score_template = makers.ConsortScoreTemplate(
         violin_count=2,
         viola_count=1,
@@ -12,7 +12,7 @@ def test_ConsortSegmentMaker__find_voice_names_01():
         'Violin \\d+ Bowing Voice',
         'Viola Bowing Voice',
         )
-    found_voice_names = makers.ConsortSegmentMaker._find_voice_names(
+    found_voice_names = makers.SegmentMaker._find_voice_names(
         score_template=score_template,
         voice_identifier=voice_identifier,
         )

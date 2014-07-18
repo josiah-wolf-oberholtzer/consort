@@ -16,7 +16,7 @@ from abjad.tools.topleveltools import iterate
 from experimental.tools import segmentmakertools
 
 
-class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
+class SegmentMaker(segmentmakertools.SegmentMaker):
     r'''A Consort segment-maker.
 
     ::
@@ -31,7 +31,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
 
     ::
 
-        >>> segment_maker = makers.ConsortSegmentMaker(
+        >>> segment_maker = makers.SegmentMaker(
         ...     score_template=score_template,
         ...     settings=(
         ...         makers.SegmentSetting(
@@ -48,7 +48,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         ...         ),
         ...     )
         >>> print(format(segment_maker))
-        makers.ConsortSegmentMaker(
+        makers.SegmentMaker(
             is_final_segment=False,
             score_template=makers.ConsortScoreTemplate(
                 violin_count=2,
@@ -311,7 +311,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             ...     'Violin \\d+ Bowing Voice',
             ...     'Viola Bowing Voice',
             ...     )
-            >>> makers.ConsortSegmentMaker._find_voice_names(
+            >>> makers.SegmentMaker._find_voice_names(
             ...     score_template=score_template,
             ...     voice_identifier=voice_identifier,
             ...     )
