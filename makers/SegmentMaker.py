@@ -51,7 +51,6 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         >>> print(format(segment_maker))
         makers.SegmentMaker(
             duration_in_seconds=durationtools.Duration(2, 1),
-            is_final_segment=False,
             score_template=makers.StringOrchestraScoreTemplate(
                 violin_count=2,
                 viola_count=1,
@@ -138,7 +137,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         self,
         annotation_specifier=None,
         duration_in_seconds=None,
-        is_final_segment=False,
+        is_final_segment=None,
         name=None,
         rehearsal_mark=None,
         score_template=None,
@@ -400,18 +399,98 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
     def set_rehearsal_mark(self, rehearsal_mark=None):
         self._rehearsal_mark = rehearsal_mark
 
-    def set_is_final_segment(self, is_final_segment=False):
-        self._is_final_segment = bool(is_final_segment)
+    def set_is_final_segment(self, is_final_segment=None):
+        r'''
+
+        ::
+
+            >>> from consort import makers
+            >>> segment_maker = makers.SegmentMaker()
+            >>> segment_maker.set_is_final_segment(True)
+            >>> print(format(segment_maker))
+            makers.SegmentMaker(
+                is_final_segment=True,
+                )
+
+        '''
+        if not is_final_segment:
+            is_final_segment = None
+        else:
+            is_final_segment = True
+        self._is_final_segment = is_final_segment
 
     def set_score_template(self, score_template=None):
+        r'''
+
+        ::
+
+            >>> from consort import makers
+            >>> segment_maker = makers.SegmentMaker()
+            >>> score_template = makers.StringOrchestraScoreTemplate(
+            ...     violin_count=2,
+            ...     viola_count=1,
+            ...     cello_count=1,
+            ...     contrabass_count=0,
+            ...     )
+            >>> segment_maker.set_score_template(score_template)
+            >>> print(format(segment_maker))
+            makers.SegmentMaker(
+                score_template=makers.StringOrchestraScoreTemplate(
+                    violin_count=2,
+                    viola_count=1,
+                    cello_count=1,
+                    contrabass_count=0,
+                    split_hands=True,
+                    use_percussion_clefs=False,
+                    ),
+                )
+
+        '''
         self._score_template = score_template
 
     def set_tempo(self, tempo=None):
+        r'''
+
+        ::
+
+            >>> from consort import makers
+            >>> segment_maker = makers.SegmentMaker()
+            >>> tempo = indicatortools.Tempo((1, 4), 52)
+            >>> segment_maker.set_tempo(tempo)
+            >>> print(format(segment_maker))
+            makers.SegmentMaker(
+                tempo=indicatortools.Tempo(
+                    duration=durationtools.Duration(1, 4),
+                    units_per_minute=52,
+                    ),
+                )
+
+        '''
         if tempo is not None and not isinstance(tempo, indicatortools.Tempo):
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
 
     def set_permitted_time_signatures(self, permitted_time_signatures=None):
+        r'''
+
+        ::
+
+            >>> from consort import makers
+            >>> segment_maker = makers.SegmentMaker()
+            >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
+            >>> segment_maker.set_permitted_time_signatures(time_signatures)
+            >>> print(format(segment_maker))
+            makers.SegmentMaker(
+                permitted_time_signatures=indicatortools.TimeSignatureInventory(
+                    [
+                        indicatortools.TimeSignature((3, 4)),
+                        indicatortools.TimeSignature((2, 4)),
+                        indicatortools.TimeSignature((5, 8)),
+                        ]
+                    ),
+                )
+
+        '''
         if permitted_time_signatures is not None:
             permitted_time_signatures = indicatortools.TimeSignatureInventory(
                 items=permitted_time_signatures,
