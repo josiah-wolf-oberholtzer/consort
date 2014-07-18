@@ -462,6 +462,4 @@ class RhythmManager(ConsortObject):
             RhythmManager._cleanup_silences(segment_session)
         print('\tcleaning up silences:', timer.elapsed_time)
 
-        print(format(segment_session.score))
-
         return segment_session
