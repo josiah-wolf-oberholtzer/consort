@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 from abjad.tools import durationtools
+from abjad.tools import timespantools
 
 
-class SegmentSetting(ConsortObject):
+class SegmentSetting(abctools.AbjadObject):
     r'''A voice specifier.
 
     Voice specifiers bundle three things:
@@ -202,7 +203,7 @@ class SegmentSetting(ConsortObject):
         if layer is None:
             layer = 0
         layer = int(layer)
-        target_duration = durationtools.Duration(target_duration)
+        target_timespan = timespantools.Timespan(0, target_duration)
         assert 0 < target_duration
         assert score_template is not None
         voice_names = makers.SegmentMaker._find_voice_names(
@@ -214,7 +215,7 @@ class SegmentSetting(ConsortObject):
             color=self.color,
             layer=layer,
             music_specifier=self.music_specifier,
-            target_duration=target_duration,
+            target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
             voice_names=voice_names,
             )

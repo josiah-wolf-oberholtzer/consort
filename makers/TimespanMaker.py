@@ -41,9 +41,9 @@ class TimespanMaker(ConsortObject):
     ::
 
         >>> voice_names = ('Violin', 'Viola')
-        >>> target_duration = Duration(1)
+        >>> target_timespan = timespantools.Timespan(0, 1)
         >>> timespan_inventory = timespan_maker(
-        ...     target_duration=target_duration,
+        ...     target_timespan=target_timespan,
         ...     voice_names=voice_names,
         ...     )
         >>> print(format(timespan_inventory))
@@ -147,7 +147,7 @@ class TimespanMaker(ConsortObject):
         color=None,
         layer=None,
         music_specifier=None,
-        target_duration=None,
+        target_timespan=None,
         timespan_inventory=None,
         voice_names=None,
         ):
@@ -194,7 +194,7 @@ class TimespanMaker(ConsortObject):
             playing_durations=playing_durations,
             playing_groupings=playing_groupings,
             silence_durations=silence_durations,
-            target_duration=target_duration,
+            target_timespan=target_timespan,
             voice_names=voice_names,
             )
 
@@ -238,16 +238,16 @@ class TimespanMaker(ConsortObject):
         playing_durations=None,
         playing_groupings=None,
         silence_durations=None,
-        target_duration=None,
+        target_timespan=None,
         voice_names=None,
         ):
         timespan_inventory = timespantools.TimespanInventory()
-        start_offset = durationtools.Offset(0)
+        start_offset = target_timespan.start_offset
+        stop_offset = target_timespan.stop_offset
         if initial_silence_durations:
             start_offset += initial_silence_durations()[0]
         can_continue = True
-        while start_offset < target_duration and can_continue:
-            #print float(start_offset), float(target_duration)
+        while start_offset < stop_offset and can_continue:
             if self.synchronize_groupings:
                 grouping = playing_groupings()[0]
                 durations = playing_durations(grouping)
@@ -258,7 +258,7 @@ class TimespanMaker(ConsortObject):
                     durations = playing_durations(grouping)
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
-                maximum_offset = min(maximum_offset, target_duration)
+                maximum_offset = min(maximum_offset, stop_offset)
                 if self.step_anchor is Left:
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
@@ -296,22 +296,24 @@ class TimespanMaker(ConsortObject):
         playing_durations=None,
         playing_groupings=None,
         silence_durations=None,
-        target_duration=None,
+        target_timespan=None,
         voice_names=None,
         ):
         timespan_inventory = timespantools.TimespanInventory()
+        start_offset = target_timespan.start_offset
+        stop_offset = target_timespan.stop_offset
         final_offset = durationtools.Offset(0)
         for voice_name in voice_names:
-            start_offset = durationtools.Offset(0)
+            start_offset = target_timespan.start_offset
             if initial_silence_durations:
                 start_offset += initial_silence_durations()[0]
-            while start_offset < target_duration:
+            while start_offset < stop_offset:
                 silence_duration = silence_durations()[0]
                 grouping = playing_groupings()[0]
                 durations = playing_durations(grouping)
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
-                maximum_offset = min(maximum_offset, target_duration)
+                maximum_offset = min(maximum_offset, stop_offset)
                 if self.step_anchor is Left:
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
