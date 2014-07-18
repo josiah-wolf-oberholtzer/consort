@@ -51,14 +51,14 @@ class TimespanManager(ConsortObject):
     @staticmethod
     def _find_meters(
         permitted_time_signatures=None,
-        segment_session=None,
         target_duration=None,
+        voicewise_timespan_inventories=None,
         ):
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
         for timespan_inventory in \
-            segment_session.voicewise_timespan_inventories.values():
+            voicewise_timespan_inventories.values():
             for timespan in timespan_inventory:
                 offset_counter[timespan.start_offset] += 1
                 offset_counter[timespan.stop_offset] += 1
@@ -69,9 +69,7 @@ class TimespanManager(ConsortObject):
             permitted_time_signatures,
             maximum_repetitions=None,
             )
-        segment_session.meters = tuple(meters)
-        segment_session.segment_duration = sum(
-            x.duration for x in segment_session.time_signatures)
+        return meters
 
     @staticmethod
     def _make_silent_timespans(
@@ -102,10 +100,9 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _make_voicewise_timespan_inventories(
-        segment_session=None,
-        target_duration=None,
         score_template=None,
         settings=None,
+        target_duration=None,
         ):
         voicewise_timespan_inventories = {}
         segment_duration = durationtools.Duration(0)
@@ -133,8 +130,7 @@ class TimespanManager(ConsortObject):
                 TimespanManager._resolve_timespan_inventories(
                     timespan_inventories)
             voicewise_timespan_inventories[voice_name] = timespan_inventory
-        segment_session.segment_duration = segment_duration
-        segment_session.voicewise_timespan_inventories = voicewise_timespan_inventories
+        return voicewise_timespan_inventories, segment_duration
 
     @staticmethod
     def _resolve_timespan_inventories(
@@ -159,17 +155,26 @@ class TimespanManager(ConsortObject):
         score_template=None,
         settings=None,
         ):
-        TimespanManager._make_voicewise_timespan_inventories(
-            segment_session=segment_session,
-            target_duration=target_duration,
-            score_template=score_template,
-            settings=settings,
-            )
-        TimespanManager._find_meters(
+
+        voicewise_timespan_inventories, segment_duration = \
+            TimespanManager._make_voicewise_timespan_inventories(
+                score_template=score_template,
+                settings=settings,
+                target_duration=target_duration,
+                )
+        segment_session.segment_duration = segment_duration
+        segment_session.voicewise_timespan_inventories = \
+            voicewise_timespan_inventories
+
+        meters = TimespanManager._find_meters(
             permitted_time_signatures=permitted_time_signatures,
-            segment_session=segment_session,
             target_duration=target_duration,
+            voicewise_timespan_inventories=voicewise_timespan_inventories,
             )
+        segment_session.meters = tuple(meters)
+        segment_session.segment_duration = sum(
+            x.duration for x in segment_session.time_signatures)
+
         TimespanManager._cleanup_performed_timespans(
             segment_session=segment_session,
             )
@@ -177,6 +182,4 @@ class TimespanManager(ConsortObject):
             segment_session=segment_session,
             score_template=score_template,
             )
-        #TimespanManager._create_dependent_timespans(segment_session)
-        #TimespanManager._remove_empty_trailing_measures(segment_session)
         return segment_session
