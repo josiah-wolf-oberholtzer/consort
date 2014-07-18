@@ -16,10 +16,9 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _cleanup_performed_timespans(
-        segment_session=None,
+        measure_offsets=None,
+        voicewise_timespans=None,
         ):
-        measure_offsets = segment_session.measure_offsets
-        voicewise_timespans = segment_session.voicewise_timespans
         for voice_name in voicewise_timespans:
             offsets = list(measure_offsets)
             timespan_inventory = voicewise_timespans[voice_name]
@@ -73,12 +72,11 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _make_silent_timespans(
-        segment_session=None,
+        measure_offsets=None,
         score_template=None,
+        voicewise_timespans=None,
         ):
         from consort import makers
-        measure_offsets = segment_session.measure_offsets
-        voicewise_timespans = segment_session.voicewise_timespans
         score = score_template()
         for voice in iterate(score).by_class(scoretools.Voice):
             voice_name = voice.name
@@ -161,20 +159,18 @@ class TimespanManager(ConsortObject):
         score_template=None,
         settings=None,
         ):
+
         timespan_inventory = TimespanManager._make_timespan_inventory(
             score_template=score_template,
             settings=settings,
             target_duration=target_duration,
             )
-        segment_session.segment_duration = timespan_inventory.stop_offset
 
-        voicewise_timespans = \
-            TimespanManager._make_voicewise_timespans(
-                settings_count=len(settings),
-                timespan_inventory=timespan_inventory,
-                )
-        segment_session.voicewise_timespans = \
-            voicewise_timespans
+        voicewise_timespans = TimespanManager._make_voicewise_timespans(
+            settings_count=len(settings),
+            timespan_inventory=timespan_inventory,
+            )
+        segment_session.voicewise_timespans = voicewise_timespans
 
         meters = TimespanManager._find_meters(
             permitted_time_signatures=permitted_time_signatures,
@@ -182,16 +178,16 @@ class TimespanManager(ConsortObject):
             voicewise_timespans=voicewise_timespans,
             )
         segment_session.meters = tuple(meters)
-        segment_session.segment_duration = sum(
-            x.duration for x in segment_session.time_signatures)
 
         TimespanManager._cleanup_performed_timespans(
-            segment_session=segment_session,
+            measure_offsets=segment_session.measure_offsets,
+            voicewise_timespans=voicewise_timespans,
             )
 
         TimespanManager._make_silent_timespans(
+            measure_offsets=segment_session.measure_offsets,
             score_template=score_template,
-            segment_session=segment_session,
+            voicewise_timespans=voicewise_timespans,
             )
             
         return segment_session

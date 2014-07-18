@@ -13,7 +13,6 @@ class SegmentSession(ConsortObject):
         'meters',
         'score',
         'scores',
-        'segment_duration',
         'segment_maker',
         'voicewise_timespans',
         'unrewritten_score',
@@ -28,7 +27,6 @@ class SegmentSession(ConsortObject):
         self.meters = None
         self.score = None
         self.scores = []
-        self.segment_duration = None
         self.segment_maker = segment_maker
         self.voicewise_timespans = None
         self.unrewritten_score = None
@@ -50,6 +48,10 @@ class SegmentSession(ConsortObject):
         measure_durations = [x.duration for x in self.time_signatures]
         measure_offsets = mathtools.cumulative_sums(measure_durations)
         return measure_offsets
+
+    @property
+    def segment_duration(self):
+        return sum(x.duration for x in self.time_signatures)
 
     @property
     def time_signatures(self):
