@@ -10,7 +10,8 @@ class VoiceSpecifier(ConsortObject):
 
     - a music specifier
     - a timespan maker
-    - a sequence of voice identifiers
+    - an optional voice identifier
+    - an optional timespan identifier
 
     They represent the complete logic for how a collection of timespans should
     be arranged in time, on what voices, with what music specifiers to
@@ -32,7 +33,7 @@ class VoiceSpecifier(ConsortObject):
         ...             durationtools.Duration(1, 4),
         ...             ),
         ...         ),
-        ...     voice_identifiers=(
+        ...     voice_identifier=(
         ...         'Violin \\d+ Bowing Voice',
         ...         'Viola Bowing Voice',
         ...         ),
@@ -60,7 +61,7 @@ class VoiceSpecifier(ConsortObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            voice_identifiers=(
+            voice_identifier=(
                 'Violin \\d+ Bowing Voice',
                 'Viola Bowing Voice',
                 ),
@@ -151,8 +152,9 @@ class VoiceSpecifier(ConsortObject):
     __slots__ = (
         '_color',
         '_music_specifier',
+        '_timespan_identifier',
         '_timespan_maker',
-        '_voice_identifiers',
+        '_voice_identifier',
         )
 
     ### INITIALIZER ###
@@ -161,23 +163,36 @@ class VoiceSpecifier(ConsortObject):
         self,
         color=None,
         music_specifier=None,
+        timespan_identifier=None,
         timespan_maker=None,
-        voice_identifiers=None,
+        voice_identifier=None,
         ):
         from consort import makers
+
         if color is not None:
             color = str(color)
         self._color = color
+
         assert isinstance(music_specifier, makers.MusicSpecifier)
         self._music_specifier = music_specifier
+
+        if timespan_identifier is not None:
+            prototype = (
+                timespantools.Timespan,
+                makers.RatioPartsExpression,
+                )
+            assert isinstance(timespan_identifier, prototype)
+        self._timespan_identifier = timespan_identifier
+            
         assert isinstance(timespan_maker, makers.TimespanMaker)
         self._timespan_maker = timespan_maker
-        if isinstance(voice_identifiers, str):
-            voice_identifiers = (voice_identifiers,)
-        assert isinstance(voice_identifiers, tuple)
-        assert len(voice_identifiers)
-        assert all(isinstance(x, str) for x in voice_identifiers)
-        self._voice_identifiers = voice_identifiers
+
+        if voice_identifier is not None:
+            if isinstance(voice_identifier, str):
+                voice_identifier = (voice_identifier,)
+            voice_identifier = tuple(voice_identifier)
+            assert all(isinstance(x, str) for x in voice_identifier)
+        self._voice_identifier = voice_identifier
 
     ### SPECIAL METHODS ###
 
@@ -196,7 +211,7 @@ class VoiceSpecifier(ConsortObject):
         assert score_template is not None
         voice_names = makers.ConsortSegmentMaker._find_voice_names(
             score_template=score_template,
-            voice_identifiers=self.voice_identifiers,
+            voice_identifier=self.voice_identifier,
             )
         assert voice_names, voice_names
         timespan_inventory, final_offset = self.timespan_maker(
@@ -219,9 +234,13 @@ class VoiceSpecifier(ConsortObject):
         return self._music_specifier
 
     @property
+    def timespan_identifier(self):
+        return self._timespan_identifier
+
+    @property
     def timespan_maker(self):
         return self._timespan_maker
 
     @property
-    def voice_identifiers(self):
-        return self._voice_identifiers
+    def voice_identifier(self):
+        return self._voice_identifier

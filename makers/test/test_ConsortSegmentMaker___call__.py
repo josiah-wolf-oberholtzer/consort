@@ -19,7 +19,7 @@ def test_ConsortSegmentMaker___call___01():
             makers.VoiceSpecifier(
                 music_specifier=makers.MusicSpecifier(),
                 timespan_maker=makers.TimespanMaker(),
-                voice_identifiers=('Violin \\d+ Bowing Voice',),
+                voice_identifier=('Violin \\d+ Bowing Voice',),
                 ),
             ),
         tempo=Tempo((1, 4), 60),

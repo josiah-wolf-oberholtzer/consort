@@ -10,7 +10,7 @@ class VoiceSetting(ConsortObject):
 
         >>> from consort import makers
         >>> voice_setting = makers.VoiceSetting(
-        ...     voice_identifiers=r'Violin \d+ LH Voice',
+        ...     voice_identifier=r'Violin \d+ LH Voice',
         ...     key='rhythm_maker',
         ...     value=rhythmmakertools.NoteRhythmMaker(),
         ...     )
@@ -33,14 +33,14 @@ class VoiceSetting(ConsortObject):
         color=None,
         key=None,
         value=None,
-        voice_identifiers=None,
+        voice_identifier=None,
         ):
-        if voice_identifiers is not None:
-            if isinstance(voice_identifiers, str):
-                voice_identifiers = (voice_identifiers,)
-            if not isinstance(voice_identifiers, tuple):
-                voice_identifiers = tuple(voice_identifiers)
-        self._voice_identifiers = voice_identifiers
+        if voice_identifier is not None:
+            if isinstance(voice_identifier, str):
+                voice_identifier = (voice_identifier,)
+            if not isinstance(voice_identifier, tuple):
+                voice_identifier = tuple(voice_identifier)
+        self._voice_identifiers = voice_identifier
         if color is not None:
             color = str(color)
         self._color = color
@@ -58,7 +58,7 @@ class VoiceSetting(ConsortObject):
         from consort import makers
         voice_names = makers.ConsortSegmentMaker._find_voice_names(
             template=template,
-            voice_identifiers=self.voice_identifiers,
+            voice_identifier=self.voice_identifier,
             )
         for voice_name in voice_names:
             if voice_name not in timespan_inventory_mapping:
@@ -132,5 +132,5 @@ class VoiceSetting(ConsortObject):
         return self._value
 
     @property
-    def voice_identifiers(self):
+    def voice_identifier(self):
         return self._voice_identifiers

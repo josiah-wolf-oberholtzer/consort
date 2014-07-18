@@ -37,7 +37,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         ...         makers.VoiceSpecifier(
         ...             music_specifier=makers.MusicSpecifier(),
         ...             timespan_maker=makers.TimespanMaker(),
-        ...             voice_identifiers=('Violin \\d+ Bowing Voice',),
+        ...             voice_identifier=('Violin \\d+ Bowing Voice',),
         ...             ),
         ...         ),
         ...     duration_in_seconds=2,
@@ -76,7 +76,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
                         synchronize_groupings=False,
                         synchronize_step=False,
                         ),
-                    voice_identifiers=('Violin \\d+ Bowing Voice',),
+                    voice_identifier=('Violin \\d+ Bowing Voice',),
                     ),
                 ),
             duration_in_seconds=durationtools.Duration(2, 1),
@@ -294,9 +294,9 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
     @staticmethod
     def _find_voice_names(
         score_template=None,
-        voice_identifiers=None,
+        voice_identifier=None,
         ):
-        r'''Find voice names matching `voice_identifiers` in `score_template`:
+        r'''Find voice names matching `voice_identifier` in `score_template`:
 
         ::
 
@@ -307,13 +307,13 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
             ...     cello_count=1,
             ...     contrabass_count=1,
             ...     )
-            >>> voice_identifiers = (
+            >>> voice_identifier = (
             ...     'Violin \\d+ Bowing Voice',
             ...     'Viola Bowing Voice',
             ...     )
             >>> makers.ConsortSegmentMaker._find_voice_names(
             ...     score_template=score_template,
-            ...     voice_identifiers=voice_identifiers,
+            ...     voice_identifier=voice_identifier,
             ...     )
             ('Violin 1 Bowing Voice', 'Violin 2 Bowing Voice', 'Viola Bowing Voice')
 
@@ -322,7 +322,7 @@ class ConsortSegmentMaker(segmentmakertools.SegmentMaker):
         all_voice_names = [voice.name for voice in
             iterate(score).by_class(scoretools.Voice)]
         matched_voice_names = set()
-        for voice_identifier in voice_identifiers:
+        for voice_identifier in voice_identifier:
             pattern = re.compile(voice_identifier)
             for voice_name in all_voice_names:
                 match = pattern.match(voice_name)

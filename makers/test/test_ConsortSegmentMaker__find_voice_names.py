@@ -8,13 +8,13 @@ def test_ConsortSegmentMaker__find_voice_names_01():
         cello_count=1,
         contrabass_count=1,
         )
-    voice_identifiers = (
+    voice_identifier = (
         'Violin \\d+ Bowing Voice',
         'Viola Bowing Voice',
         )
     found_voice_names = makers.ConsortSegmentMaker._find_voice_names(
         score_template=score_template,
-        voice_identifiers=voice_identifiers,
+        voice_identifier=voice_identifier,
         )
     assert found_voice_names == (
         'Violin 1 Bowing Voice',
