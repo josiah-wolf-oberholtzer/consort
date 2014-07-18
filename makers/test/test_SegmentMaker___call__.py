@@ -23,7 +23,7 @@ def test_SegmentMaker___call___01():
                 ),
             ),
         tempo=Tempo((1, 4), 60),
-        time_signatures=(
+        permitted_time_signatures=(
             (5, 8),
             (7, 16),
             ),

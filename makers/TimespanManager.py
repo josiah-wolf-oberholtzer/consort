@@ -50,7 +50,7 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def _find_meters(
-        time_signatures=None,
+        permitted_time_signatures=None,
         segment_session=None,
         target_duration=None,
         ):
@@ -66,7 +66,7 @@ class TimespanManager(ConsortObject):
             offset_counter[target_duration] += 1
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
-            time_signatures,
+            permitted_time_signatures,
             maximum_repetitions=None,
             )
         segment_session.meters = tuple(meters)
@@ -153,7 +153,7 @@ class TimespanManager(ConsortObject):
 
     @staticmethod
     def execute(
-        time_signatures=None,
+        permitted_time_signatures=None,
         segment_session=None,
         target_duration=None,
         score_template=None,
@@ -166,7 +166,7 @@ class TimespanManager(ConsortObject):
             settings=settings,
             )
         TimespanManager._find_meters(
-            time_signatures=time_signatures,
+            permitted_time_signatures=permitted_time_signatures,
             segment_session=segment_session,
             target_duration=target_duration,
             )

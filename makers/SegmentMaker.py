@@ -42,7 +42,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         ...         ),
         ...     duration_in_seconds=2,
         ...     tempo=indicatortools.Tempo((1, 4), 72),
-        ...     time_signatures=(
+        ...     permitted_time_signatures=(
         ...         (5, 8),
         ...         (7, 16),
         ...         ),
@@ -84,7 +84,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
                 duration=durationtools.Duration(1, 4),
                 units_per_minute=72,
                 ),
-            time_signatures=indicatortools.TimeSignatureInventory(
+            permitted_time_signatures=indicatortools.TimeSignatureInventory(
                 [
                     indicatortools.TimeSignature((5, 8)),
                     indicatortools.TimeSignature((7, 16)),
@@ -128,7 +128,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         '_score_template',
         '_settings',
         '_tempo',
-        '_time_signatures',
+        '_permitted_time_signatures',
         )
 
     ### INITIALIZER ###
@@ -143,7 +143,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         score_template=None,
         settings=None,
         tempo=None,
-        time_signatures=None,
+        permitted_time_signatures=None,
         ):
         from consort import makers
         segmentmakertools.SegmentMaker.__init__(
@@ -156,7 +156,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         self.set_rehearsal_mark(rehearsal_mark)
         self.set_score_template(score_template)
         self.set_tempo(tempo)
-        self.set_time_signatures(time_signatures)
+        self.set_permitted_time_signatures(permitted_time_signatures)
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
             prototype = (makers.MusicSpecifierTransform, makers.SegmentSetting)
@@ -181,7 +181,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
                 segment_session=segment_session,
                 settings=self.settings or (),
                 target_duration=self.target_duration,
-                time_signatures=self.time_signatures,
+                permitted_time_signatures=self.permitted_time_signatures,
                 )
             print('\ttotal:', timer.elapsed_time)
 
@@ -376,12 +376,12 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
 
-    def set_time_signatures(self, time_signatures=None):
-        if time_signatures is not None:
-            time_signatures = indicatortools.TimeSignatureInventory(
-                items=time_signatures,
+    def set_permitted_time_signatures(self, permitted_time_signatures=None):
+        if permitted_time_signatures is not None:
+            permitted_time_signatures = indicatortools.TimeSignatureInventory(
+                items=permitted_time_signatures,
                 )
-        self._time_signatures = time_signatures
+        self._permitted_time_signatures = permitted_time_signatures
 
     ### PUBLIC PROPERTIES ###
 
@@ -490,5 +490,5 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         return self._tempo
 
     @property
-    def time_signatures(self):
-        return self._time_signatures
+    def permitted_time_signatures(self):
+        return self._permitted_time_signatures
