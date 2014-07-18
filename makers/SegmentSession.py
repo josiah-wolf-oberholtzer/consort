@@ -15,7 +15,7 @@ class SegmentSession(ConsortObject):
         'scores',
         'segment_duration',
         'segment_maker',
-        'timespan_inventory_mapping',
+        'voicewise_timespan_inventories',
         'unrewritten_score',
         )
 
@@ -30,7 +30,7 @@ class SegmentSession(ConsortObject):
         self.scores = []
         self.segment_duration = None
         self.segment_maker = segment_maker
-        self.timespan_inventory_mapping = None
+        self.voicewise_timespan_inventories = None
         self.unrewritten_score = None
 
     ### PRIVATE PROPERTIES ###
