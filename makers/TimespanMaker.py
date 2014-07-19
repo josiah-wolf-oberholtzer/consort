@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from abjad import *
-from consort.makers.ConsortObject import ConsortObject
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import timespantools
+from consort.makers.ConsortObject import ConsortObject
+import collections
 
 
 class TimespanMaker(ConsortObject):
@@ -115,26 +115,41 @@ class TimespanMaker(ConsortObject):
         if can_split is not None:
             can_split = bool(can_split)
         self._can_split = can_split
+
+        if not isinstance(initial_silence_durations, collections.Sequence):
+            initial_silence_durations = (initial_silence_durations,)
         initial_silence_durations = tuple(durationtools.Duration(x)
             for x in initial_silence_durations)
         assert all(0 <= x for x in initial_silence_durations)
         self._initial_silence_durations = initial_silence_durations
+
         self._minimum_duration = durationtools.Duration(minimum_duration)
+
+        if not isinstance(playing_durations, collections.Sequence):
+            playing_durations = (playing_durations,)
         playing_durations = tuple(durationtools.Duration(x)
             for x in playing_durations)
         assert len(playing_durations)
         assert all(0 < x for x in playing_durations)
         self._playing_durations = playing_durations
+
+        if not isinstance(playing_groupings, collections.Sequence):
+            playing_groupings = (playing_groupings,)
         playing_groupings = tuple(int(x) for x in playing_groupings)
         assert len(playing_groupings)
         assert all(0 < x for x in playing_groupings)
         self._playing_groupings = playing_groupings
+
         self._repeat = bool(repeat)
+
+        if not isinstance(silence_durations, collections.Sequence):
+            silence_durations = (silence_durations,)
         silence_durations = tuple(durationtools.Duration(x)
             for x in silence_durations)
         assert len(silence_durations)
         assert all(0 < x for x in silence_durations)
         self._silence_durations = silence_durations
+
         assert step_anchor in (Left, Right)
         self._step_anchor = step_anchor
         self._synchronize_groupings = bool(synchronize_groupings)

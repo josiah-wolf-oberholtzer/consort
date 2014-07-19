@@ -68,7 +68,8 @@ class MusicSetting(abctools.AbjadObject):
                 target_timespans = target_timespans - timespan
         elif isinstance(self.timespan_identifier, makers.RatioPartsExpression):
             parts = self.timespan_identifier(target_timespans[0])
-            target_timespans = target_timespans & parts
+            for part in parts:
+                target_timespans = target_timespans & part
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         return target_timespans, voice_names, timespan_inventory
