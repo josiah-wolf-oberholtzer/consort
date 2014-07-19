@@ -59,6 +59,8 @@ class MusicTransform(MusicSetting):
                     continue
                 if self.color and timespan.color != self.color:
                     continue
+                if timespan.voice_name not in voice_names:
+                    continue
                 intersecting_timespans.append(timespan)
             for timespan in intersecting_timespans:
                 timespan_inventory.remove(timespan)
@@ -102,4 +104,4 @@ class MusicTransform(MusicSetting):
 
     @property
     def transforms(self):
-        return self.transforms.copy()
+        return self._transforms.copy()
