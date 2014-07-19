@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import timespantools
@@ -142,12 +143,13 @@ class TimespanMaker(ConsortObject):
 
         self._repeat = bool(repeat)
 
-        if not isinstance(silence_durations, collections.Sequence):
-            silence_durations = (silence_durations,)
-        silence_durations = tuple(durationtools.Duration(x)
-            for x in silence_durations)
-        assert len(silence_durations)
-        assert all(0 < x for x in silence_durations)
+        if silence_durations is not None:
+            if not isinstance(silence_durations, collections.Sequence):
+                silence_durations = (silence_durations,)
+            silence_durations = tuple(durationtools.Duration(x)
+                for x in silence_durations)
+            assert len(silence_durations)
+            #assert all(0 < x for x in silence_durations)
         self._silence_durations = silence_durations
 
         assert step_anchor in (Left, Right)
@@ -191,6 +193,8 @@ class TimespanMaker(ConsortObject):
             playing_groupings)()
 
         silence_durations = self.silence_durations
+        if silence_durations is None:
+            silence_durations = (durationtools.Duration(0),)
         if len(silence_durations) < 2:
             silence_durations *= 2
         silence_durations = datastructuretools.StatalServer(
@@ -200,6 +204,11 @@ class TimespanMaker(ConsortObject):
             procedure = self._make_with_synchronized_step
         else:
             procedure = self._make_without_synchronized_step
+
+        #print(format(initial_silence_durations))
+        #print(format(playing_durations))
+        #print(format(playing_groupings))
+        #print(format(silence_durations))
 
         new_timespan_inventory, final_offset = procedure(
             color=color,
@@ -322,7 +331,8 @@ class TimespanMaker(ConsortObject):
             start_offset = target_timespan.start_offset
             if initial_silence_durations:
                 start_offset += initial_silence_durations()[0]
-            while start_offset < stop_offset:
+            can_continue = True
+            while start_offset < stop_offset and can_continue:
                 silence_duration = silence_durations()[0]
                 grouping = playing_groupings()[0]
                 durations = playing_durations(grouping)
@@ -335,6 +345,7 @@ class TimespanMaker(ConsortObject):
                 current_offset = start_offset
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
+                        can_continue = False
                         break
                     timespan = self._make_performed_timespan(
                         color=color,

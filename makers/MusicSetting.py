@@ -59,17 +59,21 @@ class MusicSetting(abctools.AbjadObject):
             )
         assert voice_names, voice_names
         assert isinstance(target_timespan, timespantools.Timespan)
-        target_timespans = timespantools.TimespanInventory([target_timespan])
-        if isinstance(self.timespan_identifier, timespantools.Timespan):
-            target_timespans = target_timespans & self.timespan_identifier
-        elif isinstance(self.timespan_identifier,
-            timespantools.TimespanInventory):
-            for timespan in self.timespan_identifier:
-                target_timespans = target_timespans - timespan
-        elif isinstance(self.timespan_identifier, makers.RatioPartsExpression):
-            parts = self.timespan_identifier(target_timespans[0])
-            for part in parts:
-                target_timespans = target_timespans & part
+        if self.timespan_identifier is None:
+            target_timespans = timespantools.TimespanInventory([
+                target_timespan,
+                ])
+        elif isinstance(self.timespan_identifier, timespantools.Timespan):
+            target_timespans = target_timespan & self.timespan_identifier
+        else:
+            if isinstance(self.timespan_identifier, makers.RatioPartsExpression):
+                mask_timespans = self.timespan_identifier(target_timespan)
+            else:
+                mask_timespans = self.timespan_identifier
+            target_timespans = timespantools.TimespanInventory()
+            for mask_timespan in mask_timespans:
+                available_timespans = target_timespan & mask_timespan
+                target_timespans.extend(available_timespans)
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         return target_timespans, voice_names, timespan_inventory
