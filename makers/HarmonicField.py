@@ -80,6 +80,23 @@ class HarmonicField(datastructuretools.TypedTuple):
 
     ### PRIVATE METHODS ###
 
+    def _find_nearest_entries(
+        self,
+        structural_pitch,
+        entry_count=1,
+        pitch_range=None,
+        ):
+        entry_count = int(entry_count)
+        structural_pitch = pitchtools.NamedPitch(structural_pitch)
+        entries = sorted(self,
+            key=lambda x: abs(
+                (x.structural_pitch - structural_pitch).semitones
+                ),
+            )
+        if pitch_range is not None:
+            entries = [x for x in entries if x in pitch_range]
+        return entries[:entry_count]
+
     def _find_matching_entries(
         self,
         structural_pitch_class_subset=None,
