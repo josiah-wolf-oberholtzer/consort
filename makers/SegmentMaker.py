@@ -109,7 +109,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
             total: ...
         PitchMaker:
             total: ...
-        AttachmentAgent:
+        AttachmentMaker:
             total: ...
         AnnotationManager (2):
             total: ...
@@ -217,8 +217,8 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
             print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print('AttachmentAgent:')
-            makers.AttachmentAgent.iterate_score(segment_session.score)
+            print('AttachmentMaker:')
+            makers.AttachmentMaker.iterate_score(segment_session.score)
             print('\ttotal:', timer.elapsed_time)
 
         with timer:

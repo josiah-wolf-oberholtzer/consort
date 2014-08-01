@@ -7,15 +7,15 @@ from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
-class AttachmentAgent(ConsortObject):
+class AttachmentMaker(ConsortObject):
     r'''An attachment agent.
 
     ::
 
         >>> from consort import makers
-        >>> attachment_agent = makers.AttachmentAgent()
-        >>> print(format(attachment_agent))
-        makers.AttachmentAgent()
+        >>> attachment_maker = makers.AttachmentMaker()
+        >>> print(format(attachment_maker))
+        makers.AttachmentMaker()
 
     '''
 
@@ -66,15 +66,15 @@ class AttachmentAgent(ConsortObject):
             for container in voice:
                 prototype = makers.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
-                attachment_agent = music_specifier.attachment_agent
-                if attachment_agent is None:
+                attachment_maker = music_specifier.attachment_maker
+                if attachment_maker is None:
                     continue
-                seed = counter[attachment_agent]
-                attachment_agent(
+                seed = counter[attachment_maker]
+                attachment_maker(
                     container,
                     seed=seed,
                     )
-                counter[attachment_agent] += 1
+                counter[attachment_maker] += 1
 
     def reverse(self):
         attachment_specifiers = self.attachment_specifiers

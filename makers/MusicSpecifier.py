@@ -18,7 +18,7 @@ class MusicSpecifier(ConsortObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_attachment_agent',
+        '_attachment_maker',
         '_grace_maker',
         '_is_sentinel',
         '_pitch_maker',
@@ -29,16 +29,16 @@ class MusicSpecifier(ConsortObject):
 
     def __init__(
         self,
-        attachment_agent=None,
+        attachment_maker=None,
         grace_maker=None,
         is_sentinel=None,
         pitch_maker=None,
         rhythm_maker=None,
         ):
         from consort import makers
-        if attachment_agent is not None:
-            assert isinstance(attachment_agent, makers.AttachmentAgent)
-        self._attachment_agent = attachment_agent
+        if attachment_maker is not None:
+            assert isinstance(attachment_maker, makers.AttachmentMaker)
+        self._attachment_maker = attachment_maker
         if grace_maker is not None:
             assert isinstance(grace_maker, makers.GraceMaker)
         self._grace_maker = grace_maker
@@ -55,8 +55,8 @@ class MusicSpecifier(ConsortObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def attachment_agent(self):
-        return self._attachment_agent
+    def attachment_maker(self):
+        return self._attachment_maker
 
     @property
     def grace_maker(self):
