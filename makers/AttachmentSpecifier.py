@@ -84,10 +84,13 @@ class AttachmentSpecifier(abctools.AbjadValueObject):
         attachments=None,
         selector=None,
         ):
-        if not isinstance(attachments, collections.Sequence):
-            attachments = (attachments,)
-        self._attachments = tuple(attachments)
-        assert isinstance(selector, selectortools.Selector)
+        if attachments is not None:
+            if not isinstance(attachments, collections.Sequence):
+                attachments = (attachments,)
+            attachments = tuple(attachments)
+        self._attachments = attachments
+        if selector is not None:
+            assert isinstance(selector, selectortools.Selector)
         self._selector = selector
 
     ### PUBLIC METHODS ###
@@ -97,6 +100,8 @@ class AttachmentSpecifier(abctools.AbjadValueObject):
         music,
         seed=0,
         ):
+        if not self.attachments or not self.selector:
+            return
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
         all_attachments = sequencetools.rotate_sequence(all_attachments, seed)
         selections = self.selector(music)

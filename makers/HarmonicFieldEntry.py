@@ -38,7 +38,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
     def __init__(
         self,
         leading_pitches=None,
-        structural_pitch=None,
+        structural_pitch=0,
         tailing_pitches=None,
         ):
         from abjad.tools import pitchtools

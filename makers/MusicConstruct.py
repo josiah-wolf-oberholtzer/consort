@@ -162,9 +162,11 @@ class MusicConstruct(MusicSetting):
             timespan_identifier=timespan_identifier,
             voice_identifier=voice_identifier,
             )
-        assert isinstance(music_specifier, makers.MusicSpecifier)
+        if music_specifier is not None:
+            assert isinstance(music_specifier, makers.MusicSpecifier)
         self._music_specifier = music_specifier
-        assert isinstance(timespan_maker, makers.TimespanMaker)
+        if timespan_maker is not None:
+            assert isinstance(timespan_maker, makers.TimespanMaker)
         self._timespan_maker = timespan_maker
 
     ### SPECIAL METHODS ###

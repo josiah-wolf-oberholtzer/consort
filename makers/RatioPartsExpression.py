@@ -16,8 +16,8 @@ class RatioPartsExpression(abctools.AbjadObject):
         ...     )
         >>> print(format(expression))
         makers.RatioPartsExpression(
-            mathtools.Ratio(1, 2, 1),
-            (0, 2)
+            ratio=mathtools.Ratio(1, 2, 1),
+            parts=(0, 2),
             )
 
     ::
@@ -44,12 +44,16 @@ class RatioPartsExpression(abctools.AbjadObject):
 
     ### INITIALIZER ###
 
-    def __init__(self, ratio, parts):
+    def __init__(self,
+        ratio=(1, 1),
+        parts=0,
+        ):
         if not isinstance(ratio, mathtools.Ratio):
             ratio = mathtools.Ratio(ratio)
         self._ratio = ratio
         if isinstance(parts, int):
             parts = (parts,)
+        assert all(0 <= _ < len(ratio) for _ in parts)
         parts = tuple(parts)
         self._parts = parts
 

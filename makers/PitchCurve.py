@@ -68,8 +68,8 @@ class PitchCurve(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        pitches=None,
-        ratio=None,
+        pitches=(0, 0),
+        ratio=(1,),
         ):
         ratio = mathtools.Ratio([abs(x) for x in ratio])
         self._ratio = ratio
