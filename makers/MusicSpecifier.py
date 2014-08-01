@@ -21,7 +21,7 @@ class MusicSpecifier(ConsortObject):
         '_attachment_agent',
         '_grace_maker',
         '_is_sentinel',
-        '_pitch_agent',
+        '_pitch_maker',
         '_rhythm_maker',
         )
 
@@ -32,7 +32,7 @@ class MusicSpecifier(ConsortObject):
         attachment_agent=None,
         grace_maker=None,
         is_sentinel=None,
-        pitch_agent=None,
+        pitch_maker=None,
         rhythm_maker=None,
         ):
         from consort import makers
@@ -45,9 +45,9 @@ class MusicSpecifier(ConsortObject):
         if is_sentinel is not None:
             is_sentinel = bool(is_sentinel)
         self._is_sentinel = is_sentinel
-        if pitch_agent is not None:
-            assert isinstance(pitch_agent, makers.PitchAgent)
-        self._pitch_agent = pitch_agent
+        if pitch_maker is not None:
+            assert isinstance(pitch_maker, makers.PitchMaker)
+        self._pitch_maker = pitch_maker
         if rhythm_maker is not None:
             assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
@@ -67,8 +67,8 @@ class MusicSpecifier(ConsortObject):
         return self._is_sentinel
 
     @property
-    def pitch_agent(self):
-        return self._pitch_agent
+    def pitch_maker(self):
+        return self._pitch_maker
 
     @property
     def rhythm_maker(self):

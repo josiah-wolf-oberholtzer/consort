@@ -13,15 +13,15 @@ from abjad.tools.topleveltools import new
 from consort.makers.ConsortObject import ConsortObject
 
 
-class PitchAgent(ConsortObject):
+class PitchMaker(ConsortObject):
     r'''A pitch agent.
 
     ::
 
         >>> from consort import makers
-        >>> pitch_agent = makers.PitchAgent()
-        >>> print(format(pitch_agent))
-        makers.PitchAgent()
+        >>> pitch_maker = makers.PitchMaker()
+        >>> print(format(pitch_maker))
+        makers.PitchMaker()
 
     '''
 
@@ -145,11 +145,11 @@ class PitchAgent(ConsortObject):
                 continue
             prototype = makers.MusicSpecifier
             music_specifier = inspect_(leaf).get_effective(prototype)
-            pitch_agent = music_specifier.pitch_agent
-            if pitch_agent is None:
+            pitch_maker = music_specifier.pitch_maker
+            if pitch_maker is None:
                 continue
             seed = counter[music_specifier]
-            pitch_agent(logical_tie, seed=seed)
+            pitch_maker(logical_tie, seed=seed)
             counter[music_specifier] += 1
 
     def reverse(self):
