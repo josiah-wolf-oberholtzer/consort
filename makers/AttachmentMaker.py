@@ -1,9 +1,6 @@
 # -*- encoding: utf-8 -*-
-import collections
 from abjad.tools import abctools
 from abjad.tools import scoretools
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
@@ -55,26 +52,6 @@ class AttachmentMaker(abctools.AbjadValueObject):
             attachment_specifier(music, seed=seed)
 
     ### PUBLIC METHODS ###
-
-    @staticmethod
-    def iterate_score(
-        score,
-        ):
-        from consort import makers
-        counter = collections.Counter()
-        for voice in iterate(score).by_class(scoretools.Voice):
-            for container in voice:
-                prototype = makers.MusicSpecifier
-                music_specifier = inspect_(container).get_effective(prototype)
-                attachment_maker = music_specifier.attachment_maker
-                if attachment_maker is None:
-                    continue
-                seed = counter[attachment_maker]
-                attachment_maker(
-                    container,
-                    seed=seed,
-                    )
-                counter[attachment_maker] += 1
 
     def reverse(self):
         attachment_specifiers = self.attachment_specifiers

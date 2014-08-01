@@ -8,7 +8,6 @@ from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 from abjad.tools import abctools
 
@@ -131,26 +130,6 @@ class PitchMaker(abctools.AbjadValueObject):
         return bisect.bisect(offsets, offset) - 1
 
     ### PUBLIC METHODS ###
-
-    @staticmethod
-    def iterate_score(
-        score,
-        ):
-        from consort import makers
-        counter = collections.Counter()
-        for leaf in iterate(score).by_timeline(scoretools.Note):
-            logical_tie = inspect_(leaf).get_logical_tie()
-            if not isinstance(leaf, scoretools.Note) or \
-                leaf is not logical_tie.head:
-                continue
-            prototype = makers.MusicSpecifier
-            music_specifier = inspect_(leaf).get_effective(prototype)
-            pitch_maker = music_specifier.pitch_maker
-            if pitch_maker is None:
-                continue
-            seed = counter[music_specifier]
-            pitch_maker(logical_tie, seed=seed)
-            counter[music_specifier] += 1
 
     def reverse(self):
         pitch_segments = self.pitch_segments
