@@ -14,17 +14,17 @@ from abjad.tools.topleveltools import override
 from abjad.tools.topleveltools import new
 
 
-class GraceAgent(ConsortObject):
+class GraceMaker(ConsortObject):
     r'''A grace agent.
 
     ::
 
         >>> from consort import makers
-        >>> grace_agent = makers.GraceAgent(
+        >>> grace_maker = makers.GraceMaker(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
-        >>> print(format(grace_agent))
-        makers.GraceAgent(
+        >>> print(format(grace_maker))
+        makers.GraceMaker(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),
             )
@@ -100,11 +100,11 @@ class GraceAgent(ConsortObject):
                 continue
             prototype = makers.MusicSpecifier
             music_specifier = inspect_(leaf).get_effective(prototype)
-            grace_agent = music_specifier.grace_agent
-            if grace_agent is None:
+            grace_maker = music_specifier.grace_maker
+            if grace_maker is None:
                 continue
             seed = counter[music_specifier]
-            grace_agent(logical_tie, seed=seed)
+            grace_maker(logical_tie, seed=seed)
             counter[music_specifier] += 1
 
     def reverse(self):

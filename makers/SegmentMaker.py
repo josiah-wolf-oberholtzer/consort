@@ -105,7 +105,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
             total: ...
         AnnotationManager (1):
             total: ...
-        GraceAgent:
+        GraceMaker:
             total: ...
         PitchAgent:
             total: ...
@@ -207,8 +207,8 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
             print('\ttotal:', timer.elapsed_time)
 
         with timer:
-            print('GraceAgent:')
-            makers.GraceAgent.iterate_score(segment_session.score)
+            print('GraceMaker:')
+            makers.GraceMaker.iterate_score(segment_session.score)
             print('\ttotal:', timer.elapsed_time)
 
         with timer:
