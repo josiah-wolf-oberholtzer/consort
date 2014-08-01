@@ -19,24 +19,24 @@ class AttachmentMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_attachment_specifiers',
+        '_attachment_expressions',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        attachment_specifiers=None,
+        attachment_expressions=None,
         ):
         from consort import makers
-        prototype = makers.AttachmentSpecifier
-        if attachment_specifiers is not None:
-            assert all(isinstance(x, prototype) for x in attachment_specifiers)
-            if len(attachment_specifiers):
-                attachment_specifiers = tuple(attachment_specifiers)
+        prototype = makers.AttachmentExpression
+        if attachment_expressions is not None:
+            assert all(isinstance(x, prototype) for x in attachment_expressions)
+            if len(attachment_expressions):
+                attachment_expressions = tuple(attachment_expressions)
             else:
-                attachment_specifiers = None
-        self._attachment_specifiers = attachment_specifiers
+                attachment_expressions = None
+        self._attachment_expressions = attachment_expressions
 
     ### SPECIAL METHODS ###
 
@@ -46,37 +46,37 @@ class AttachmentMaker(abctools.AbjadValueObject):
         seed=0,
         ):
         assert isinstance(music, scoretools.Container)
-        if self.attachment_specifiers is None:
+        if self.attachment_expressions is None:
             return
-        for attachment_specifier in self.attachment_specifiers:
-            attachment_specifier(music, seed=seed)
+        for attachment_expression in self.attachment_expressions:
+            attachment_expression(music, seed=seed)
 
     ### PUBLIC METHODS ###
 
     def reverse(self):
-        attachment_specifiers = self.attachment_specifiers
-        if attachment_specifiers is None:
+        attachment_expressions = self.attachment_expressions
+        if attachment_expressions is None:
             return new(self)
-        attachment_specifiers = [
-            attachment_specifier.reverse()
-            for attachment_specifier in attachment_specifiers
+        attachment_expressions = [
+            attachment_expression.reverse()
+            for attachment_expression in attachment_expressions
             ]
         return new(self,
-            attachment_specifiers=attachment_specifiers,
+            attachment_expressions=attachment_expressions,
             )
 
     def rotate(self, n=0):
-        attachment_specifiers = self.attachment_specifiers
-        attachment_specifiers = [
-            attachment_specifier.rotate(n)
-            for attachment_specifier in attachment_specifiers
+        attachment_expressions = self.attachment_expressions
+        attachment_expressions = [
+            attachment_expression.rotate(n)
+            for attachment_expression in attachment_expressions
             ]
         return new(self,
-            attachment_specifiers=attachment_specifiers,
+            attachment_expressions=attachment_expressions,
             )
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def attachment_specifiers(self):
-        return self._attachment_specifiers
+    def attachment_expressions(self):
+        return self._attachment_expressions

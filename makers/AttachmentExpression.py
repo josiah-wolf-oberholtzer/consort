@@ -10,18 +10,18 @@ from experimental.tools import selectortools
 from abjad.tools import abctools
 
 
-class AttachmentSpecifier(abctools.AbjadValueObject):
+class AttachmentExpression(abctools.AbjadValueObject):
     r'''An attachment specifier.
 
     ::
 
         >>> from consort import makers
-        >>> attachment_specifier = makers.AttachmentSpecifier(
+        >>> attachment_expression = makers.AttachmentExpression(
         ...     attachments=(indicatortools.Articulation('>'),),
         ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
         ...     )
-        >>> print(format(attachment_specifier))
-        makers.AttachmentSpecifier(
+        >>> print(format(attachment_expression))
+        makers.AttachmentExpression(
             attachments=(
                 indicatortools.Articulation('>'),
                 ),
@@ -40,7 +40,7 @@ class AttachmentSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> attachment_specifier = makers.AttachmentSpecifier(
+        >>> attachment_expression = makers.AttachmentExpression(
         ...     attachments=(
         ...         makers.DynamicExpression(
         ...             hairpin_start_token='sfz',
@@ -53,7 +53,7 @@ class AttachmentSpecifier(abctools.AbjadValueObject):
     ::
 
         >>> staff = Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
-        >>> attachment_specifier(staff)
+        >>> attachment_expression(staff)
         >>> print(format(staff))
         \new Staff {
             c'8 \sfz
