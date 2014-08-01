@@ -208,17 +208,17 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
 
         with timer:
             print('GraceMaker:')
-            makers.GraceMaker.iterate_score(segment_session.score)
+            self._process_score(segment_session.score, 'grace_maker')
             print('\ttotal:', timer.elapsed_time)
 
         with timer:
             print('PitchMaker:')
-            makers.PitchMaker.iterate_score(segment_session.score)
+            self._process_score(segment_session.score, 'pitch_maker')
             print('\ttotal:', timer.elapsed_time)
 
         with timer:
             print('AttachmentMaker:')
-            makers.AttachmentMaker.iterate_score(segment_session.score)
+            self._process_score(segment_session.score, 'attachment_maker')
             print('\ttotal:', timer.elapsed_time)
 
         with timer:
@@ -331,6 +331,20 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
             lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
+
+    def _process_score(self, score, keyword_name):
+        from consort import makers
+        counter = collections.Counter()
+        for voice in iterate(score).by_class(scoretools.Voice):
+            for container in voice:
+                prototype = makers.MusicSpecifier
+                music_specifier = inspect_(container).get_effective(prototype)
+                maker = getattr(music_specifier, keyword_name)
+                if maker is None:
+                    continue
+                seed = counter[maker]
+                maker(container, seed=seed)
+                counter[maker] += 1
 
     ### PUBLIC METHODS ###
 
