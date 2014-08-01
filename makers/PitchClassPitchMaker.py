@@ -12,15 +12,15 @@ from abjad.tools.topleveltools import new
 from abjad.tools import abctools
 
 
-class PitchMaker(abctools.AbjadValueObject):
-    r'''A pitch agent.
+class PitchClassPitchMaker(abctools.AbjadValueObject):
+    r'''A pitch-class pitch maker.
 
     ::
 
         >>> from consort import makers
-        >>> pitch_maker = makers.PitchMaker()
+        >>> pitch_maker = makers.PitchClassPitchMaker()
         >>> print(format(pitch_maker))
-        makers.PitchMaker()
+        makers.PitchClassPitchMaker()
 
     '''
 

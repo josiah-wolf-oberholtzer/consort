@@ -12,7 +12,7 @@ from abjad.tools.topleveltools import new
 
 
 class GraceMaker(abctools.AbjadValueObject):
-    r'''A grace agent.
+    r'''A grace maker.
 
     ::
 

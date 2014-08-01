@@ -5,7 +5,7 @@ from abjad.tools.topleveltools import new
 
 
 class AttachmentMaker(abctools.AbjadValueObject):
-    r'''An attachment agent.
+    r'''An attachment maker.
 
     ::
 
