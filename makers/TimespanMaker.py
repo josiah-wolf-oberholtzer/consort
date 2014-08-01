@@ -3,11 +3,11 @@ from __future__ import print_function
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import timespantools
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 import collections
 
 
-class TimespanMaker(ConsortObject):
+class TimespanMaker(abctools.AbjadValueObject):
     r'''A timespan maker.
 
     ::

@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 from abjad import *
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class DynamicExpression(ConsortObject):
+class DynamicExpression(abctools.AbjadValueObject):
     r'''A dynamic expression.
 
     ..  container:: example

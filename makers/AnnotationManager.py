@@ -9,10 +9,10 @@ from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
 from abjad.tools.topleveltools import override
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class AnnotationManager(ConsortObject):
+class AnnotationManager(abctools.AbjadValueObject):
     r'''An editorial manager.
     '''
 

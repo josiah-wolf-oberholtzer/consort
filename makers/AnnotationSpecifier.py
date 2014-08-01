@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class AnnotationSpecifier(ConsortObject):
+class AnnotationSpecifier(abctools.AbjadValueObject):
     r'''An annotation specifier.
 
     Annotated stages:

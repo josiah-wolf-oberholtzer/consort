@@ -10,10 +10,10 @@ from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class PitchMaker(ConsortObject):
+class PitchMaker(abctools.AbjadValueObject):
     r'''A pitch agent.
 
     ::

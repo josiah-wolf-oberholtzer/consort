@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import scoretools
@@ -14,7 +14,7 @@ from abjad.tools.topleveltools import override
 from abjad.tools.topleveltools import new
 
 
-class GraceMaker(ConsortObject):
+class GraceMaker(abctools.AbjadValueObject):
     r'''A grace agent.
 
     ::

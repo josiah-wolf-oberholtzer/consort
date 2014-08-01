@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 from abjad import attach
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import scoretools
 
 
-class StringOrchestraScoreTemplate(ConsortObject):
+class StringOrchestraScoreTemplate(abctools.AbjadValueObject):
     r'''String orchestra score template.
 
     ::

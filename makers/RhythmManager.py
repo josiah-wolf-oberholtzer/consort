@@ -14,10 +14,10 @@ from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class RhythmManager(ConsortObject):
+class RhythmManager(abctools.AbjadValueObject):
     r'''A rhythm manager.
     '''
 

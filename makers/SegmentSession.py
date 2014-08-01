@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 from abjad.tools import mathtools
 
 
-class SegmentSession(ConsortObject):
+class SegmentSession(abctools.AbjadValueObject):
     r'''A segment-maker session.
     '''
 

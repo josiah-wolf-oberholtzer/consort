@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class Transform(ConsortObject):
+class Transform(abctools.AbjadValueObject):
     r'''A transform.
     '''
 

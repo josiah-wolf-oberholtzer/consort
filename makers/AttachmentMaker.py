@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 import collections
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 from abjad.tools import scoretools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 
 
-class AttachmentMaker(ConsortObject):
+class AttachmentMaker(abctools.AbjadValueObject):
     r'''An attachment agent.
 
     ::

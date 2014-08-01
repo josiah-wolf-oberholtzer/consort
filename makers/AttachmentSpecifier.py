@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 import collections
 from abjad.tools import datastructuretools
 from abjad.tools import sequencetools
@@ -6,10 +7,10 @@ from abjad.tools import spannertools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
-from consort.makers.ConsortObject import ConsortObject
+from abjad.tools import abctools
 
 
-class AttachmentSpecifier(ConsortObject):
+class AttachmentSpecifier(abctools.AbjadValueObject):
     r'''An attachment specifier.
 
     ::
@@ -96,7 +97,6 @@ class AttachmentSpecifier(ConsortObject):
         music,
         seed=0,
         ):
-        from consort import makers
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
         all_attachments = sequencetools.rotate_sequence(all_attachments, seed)
         selections = self.selector(music)
@@ -109,7 +109,7 @@ class AttachmentSpecifier(ConsortObject):
             for attachment in attachments:
                 if isinstance(attachment, spannertools.Spanner):
                     attach(attachment, selection)
-                elif isinstance(attachment, makers.DynamicExpression):
+                elif hasattr(attachment, '__call__'):
                     attachment(selection)
                 else:
                     for component in selection:
