@@ -7,18 +7,18 @@ from abjad.tools import pitchtools
 from abjad.tools.topleveltools import new
 
 
-class PitchCurve(abctools.AbjadValueObject):
+class BreakPointFunction(abctools.AbjadValueObject):
     r'''A pitch curve.
 
     ::
 
         >>> from consort import makers
-        >>> pitch_curve = makers.PitchCurve(
+        >>> break_point_function = makers.BreakPointFunction(
         ...     pitches=(-6, 0, 9),
         ...     ratio=(2, 1),
         ...     )
-        >>> print(format(pitch_curve))
-        makers.PitchCurve(
+        >>> print(format(break_point_function))
+        makers.BreakPointFunction(
             pitches=pitchtools.PitchSegment(
                 (
                     pitchtools.NamedPitch('fs'),
@@ -32,27 +32,27 @@ class PitchCurve(abctools.AbjadValueObject):
 
     ::
 
-        >>> pitch_curve(0)
+        >>> break_point_function(0)
         NamedPitch('fs')
 
     ::
 
-        >>> pitch_curve((1, 3))
+        >>> break_point_function((1, 3))
         NamedPitch('a')
 
     ::
 
-        >>> pitch_curve((1, 2))
+        >>> break_point_function((1, 2))
         NamedPitch('b')
 
     ::
 
-        >>> pitch_curve((2, 3))
+        >>> break_point_function((2, 3))
         NamedPitch("c'")
 
     ::
 
-        >>> pitch_curve(1)
+        >>> break_point_function(1)
         NamedPitch("a'")
 
     '''
