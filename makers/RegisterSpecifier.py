@@ -51,11 +51,12 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     def find_register(
         self,
-        division_position,
-        phrase_position,
-        segment_position,
+        attack_point_signature,
         seed=0,
         ):
+        division_position = attack_point_signature.division_position
+        phrase_position = attack_point_signature.phrase_position
+        segment_position = attack_point_signature.segment_position
         seed = int(seed)
         register = self.center_pitch
         if self.division_deviations:
