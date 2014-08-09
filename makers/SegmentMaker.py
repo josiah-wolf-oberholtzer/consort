@@ -14,10 +14,10 @@ from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
-from experimental.tools import segmentmakertools
+from experimental.tools import makertools
 
 
-class SegmentMaker(segmentmakertools.SegmentMaker):
+class SegmentMaker(makertools.SegmentMaker):
     r'''A Consort segment-maker.
 
     ::
@@ -144,7 +144,7 @@ class SegmentMaker(segmentmakertools.SegmentMaker):
         permitted_time_signatures=None,
         ):
         from consort import makers
-        segmentmakertools.SegmentMaker.__init__(
+        makertools.SegmentMaker.__init__(
             self,
             name=name,
             )
