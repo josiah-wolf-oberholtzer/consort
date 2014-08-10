@@ -348,7 +348,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### PUBLIC METHODS ###
 
-    def add_construct(
+    def add_setting(
         self,
         color=None,
         music_specifier=None,
@@ -357,36 +357,14 @@ class SegmentMaker(makertools.SegmentMaker):
         voice_identifier=None,
         ):
         from consort import makers
-        construct = makers.MusicConstruct(
+        setting = makers.MusicConstruct(
             color=color,
             music_specifier=music_specifier,
             timespan_identifier=timespan_identifier,
             timespan_maker=timespan_maker,
             voice_identifier=voice_identifier,
             )
-        self.add_setting(construct)
-
-    def add_setting(self, setting):
-        from consort import makers
-        prototype = makers.MusicSetting
-        assert isinstance(setting, prototype)
         self._settings.append(setting)
-
-    def add_transform(
-        self,
-        color=None,
-        timespan_identifier=None,
-        voice_identifier=None,
-        **kwargs
-        ):
-        from consort import makers
-        transform = makers.MusicTransform(
-            color=color,
-            timespan_identifier=timespan_identifier,
-            voice_identifier=voice_identifier,
-            **kwargs
-            )
-        self.add_setting(transform)
 
     def set_annotation_specifier(self, annotation_specifier=None):
         from consort import makers
