@@ -1,14 +1,15 @@
 # -*- encoding: utf-8 -*-
-from consort.makers.MusicSetting import MusicSetting
+from abjad.tools import abctools
+from abjad.tools import timespantools
 
 
-class MusicConstruct(MusicSetting):
-    r'''A music construct.
+class MusicSetting(abctools.AbjadValueObject):
+    r'''A music setting.
 
     ::
 
         >>> from consort import makers
-        >>> red_setting = makers.MusicConstruct(
+        >>> red_setting = makers.MusicSetting(
         ...     color='red',
         ...     music_specifier=makers.MusicSpecifier(),
         ...     timespan_maker=makers.TimespanMaker(
@@ -28,7 +29,7 @@ class MusicConstruct(MusicSetting):
         ...         ),
         ...     )
         >>> print(format(red_setting))
-        makers.MusicConstruct(
+        makers.MusicSetting(
             color='red',
             music_specifier=makers.MusicSpecifier(),
             timespan_maker=makers.TimespanMaker(
@@ -141,7 +142,9 @@ class MusicConstruct(MusicSetting):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_music_specifier',
+        '_color',
+        '_music_specifiers',
+        '_timespan_identifier',
         '_timespan_maker',
         )
 
@@ -150,21 +153,26 @@ class MusicConstruct(MusicSetting):
     def __init__(
         self,
         color=None,
-        music_specifier=None,
         timespan_identifier=None,
         timespan_maker=None,
-        voice_identifier=None,
+        **music_specifiers
         ):
         from consort import makers
-        MusicSetting.__init__(
-            self,
-            color=color,
-            timespan_identifier=timespan_identifier,
-            voice_identifier=voice_identifier,
-            )
-        if music_specifier is not None:
-            assert isinstance(music_specifier, makers.MusicSpecifier)
-        self._music_specifier = music_specifier
+        if color is not None:
+            color = str(color)
+        self._color = color
+        if timespan_identifier is not None:
+            prototype = (
+                timespantools.Timespan,
+                timespantools.TimespanInventory,
+                makers.RatioPartsExpression,
+                )
+            assert isinstance(timespan_identifier, prototype)
+        self._timespan_identifier = timespan_identifier
+        prototype = (type(None), makers.MusicSpecifier)
+        for music_specifier in music_specifiers.values():
+            assert isinstance(music_specifier, prototype)
+        self._music_specifiers = music_specifiers
         if timespan_maker is not None:
             assert isinstance(timespan_maker, makers.TimespanMaker)
         self._timespan_maker = timespan_maker
@@ -178,14 +186,31 @@ class MusicConstruct(MusicSetting):
         target_timespan,
         timespan_inventory=None,
         ):
-        target_timespans, voice_names, timespan_inventory = \
-            MusicSetting.__call__(
-                self,
-                layer,
-                score_template,
+        from consort import makers
+        assert score_template is not None
+        voice_names = makers.SegmentMaker._find_voice_names(
+            score_template=score_template,
+            voice_identifier=self.voice_identifier,
+            )
+        assert voice_names, voice_names
+        assert isinstance(target_timespan, timespantools.Timespan)
+        if self.timespan_identifier is None:
+            target_timespans = timespantools.TimespanInventory([
                 target_timespan,
-                timespan_inventory,
-                )
+                ])
+        elif isinstance(self.timespan_identifier, timespantools.Timespan):
+            target_timespans = target_timespan & self.timespan_identifier
+        else:
+            if isinstance(self.timespan_identifier, makers.RatioPartsExpression):
+                mask_timespans = self.timespan_identifier(target_timespan)
+            else:
+                mask_timespans = self.timespan_identifier
+            target_timespans = timespantools.TimespanInventory()
+            for mask_timespan in mask_timespans:
+                available_timespans = target_timespan & mask_timespan
+                target_timespans.extend(available_timespans)
+        if timespan_inventory is None:
+            timespan_inventory = timespantools.TimespanInventory()
         for target_timespan in target_timespans:
             timespan_inventory = self.timespan_maker(
                 color=self.color,
@@ -200,9 +225,21 @@ class MusicConstruct(MusicSetting):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def music_specifier(self):
-        return self._music_specifier
+    def color(self):
+        return self._color
+
+    @property
+    def music_specifiers(self):
+        return self._music_specifiers
+
+    @property
+    def timespan_identifier(self):
+        return self._timespan_identifier
 
     @property
     def timespan_maker(self):
         return self._timespan_maker
+
+    @property
+    def voice_identifier(self):
+        return self._voice_identifier
