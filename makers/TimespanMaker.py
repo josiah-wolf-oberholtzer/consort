@@ -42,11 +42,14 @@ class TimespanMaker(abctools.AbjadValueObject):
 
     ::
 
-        >>> voice_names = ('Violin', 'Viola')
+        >>> music_specifiers = {
+        ...     'Violin': None,
+        ...     'Viola': None,
+        ...     }
         >>> target_timespan = timespantools.Timespan(0, 1)
         >>> timespan_inventory = timespan_maker(
+        ...     music_specifiers=music_specifiers,
         ...     target_timespan=target_timespan,
-        ...     voice_names=voice_names,
         ...     )
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
@@ -164,10 +167,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         self,
         color=None,
         layer=None,
-        music_specifier=None,
+        music_specifiers=None,
         target_timespan=None,
         timespan_inventory=None,
-        voice_names=None,
         ):
 
         if target_timespan is None:
@@ -218,12 +220,11 @@ class TimespanMaker(abctools.AbjadValueObject):
             color=color,
             initial_silence_durations=initial_silence_durations,
             layer=layer,
-            music_specifier=music_specifier,
             playing_durations=playing_durations,
             playing_groupings=playing_groupings,
+            music_specifiers=music_specifiers,
             silence_durations=silence_durations,
             target_timespan=target_timespan,
-            voice_names=voice_names,
             )
 
         timespan_inventory.extend(new_timespan_inventory)
@@ -262,12 +263,11 @@ class TimespanMaker(abctools.AbjadValueObject):
         color=None,
         initial_silence_durations=None,
         layer=None,
-        music_specifier=None,
         playing_durations=None,
         playing_groupings=None,
+        music_specifiers=None,
         silence_durations=None,
         target_timespan=None,
-        voice_names=None,
         ):
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
@@ -280,7 +280,7 @@ class TimespanMaker(abctools.AbjadValueObject):
                 grouping = playing_groupings()[0]
                 durations = playing_durations(grouping)
             silence_duration = silence_durations()[0]
-            for voice_name in voice_names:
+            for voice_name, music_specifier in music_specifiers.items():
                 if not self.synchronize_groupings:
                     grouping = playing_groupings()[0]
                     durations = playing_durations(grouping)
@@ -320,18 +320,17 @@ class TimespanMaker(abctools.AbjadValueObject):
         color=None,
         initial_silence_durations=None,
         layer=None,
-        music_specifier=None,
         playing_durations=None,
         playing_groupings=None,
+        music_specifiers=None,
         silence_durations=None,
         target_timespan=None,
-        voice_names=None,
         ):
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         final_offset = durationtools.Offset(0)
-        for voice_name in voice_names:
+        for voice_name, music_specifier in music_specifiers.items():
             start_offset = target_timespan.start_offset
             if initial_silence_durations:
                 start_offset += initial_silence_durations()[0]
