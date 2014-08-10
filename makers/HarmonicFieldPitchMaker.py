@@ -14,7 +14,7 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
 
     __slots__ = (
         '_allow_repetition',
-        '_chord_specifiers',
+        '_chord_specifiers'
         '_harmonic_fields',
         '_register_specifier',
         )

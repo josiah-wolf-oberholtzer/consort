@@ -160,7 +160,7 @@ class SegmentMaker(makertools.SegmentMaker):
             prototype = makers.MusicSetting
             assert all(isinstance(x, prototype) for x in settings)
             settings = list(settings)
-        self._settings = settings
+        self._settings = settings or []
 
     ### SPECIAL METHODS ###
 
@@ -537,6 +537,10 @@ class SegmentMaker(makertools.SegmentMaker):
         return self._is_final_segment
 
     @property
+    def permitted_time_signatures(self):
+        return self._permitted_time_signatures
+
+    @property
     def rehearsal_mark(self):
         return self._rehearsal_mark
 
@@ -612,7 +616,3 @@ class SegmentMaker(makertools.SegmentMaker):
             start_offset=0,
             stop_offset=self.target_duration,
             )
-
-    @property
-    def permitted_time_signatures(self):
-        return self._permitted_time_signatures

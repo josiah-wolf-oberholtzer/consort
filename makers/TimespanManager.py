@@ -66,7 +66,8 @@ class TimespanManager(abctools.AbjadValueObject):
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
-            maximum_repetitions=None,
+            discard_final_orphan_downbeat=False,
+            maximum_repetitions=2,
             )
         return meters
 

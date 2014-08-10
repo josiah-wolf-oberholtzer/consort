@@ -154,7 +154,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         voicewise_timespans = segment_session.voicewise_timespans
         voice_names = voicewise_timespans.keys()
         voice_names = makers.RhythmManager._sort_voice_names(
-            template=segment_session.segment_maker.template,
+            score_template=segment_session.segment_maker.score_template,
             voice_names=voice_names,
             )
         annotation_specifier = \
@@ -175,6 +175,7 @@ class AnnotationManager(abctools.AbjadValueObject):
                 parentage = inspect_(voice).get_parentage(
                     include_self=False)
                 parent = parentage[0]
+                parent.is_simultaneous = True
                 parent.append(inner_annotation)
                 parent.append(outer_annotation)
         return score
@@ -212,8 +213,14 @@ class AnnotationManager(abctools.AbjadValueObject):
                 inner_note = mutate(outer_note).copy()
                 inner_annotation_items.append(inner_note)
                 continue
-            note = scoretools.Note(0, 1)
-            outer_tuplet = scoretools.Tuplet(outer_duration, (note,))
+            if outer_duration != 1:
+                note = scoretools.Note(0, 1)
+                outer_tuplet = scoretools.Tuplet(outer_duration, (note,))
+            else:
+                note = scoretools.Note(0, (1, 2))
+                outer_tuplet = scoretools.Tuplet(2 * outer_duration, (note,))
+            if not color:
+                color = 'black'
             override(outer_tuplet).tuplet_bracket.color = color
             AnnotationManager._override_tuplet_edge_height(
                 is_left_broken=is_left_broken,
@@ -224,9 +231,14 @@ class AnnotationManager(abctools.AbjadValueObject):
             if not hide_inner_bracket:
                 inner_tuplets = []
                 for inner_duration in inner_durations:
-                    note = scoretools.Note(0, 1)
-                    inner_tuplet = scoretools.Tuplet(
-                        inner_duration, (note,))
+                    if inner_duration != 1:
+                        note = scoretools.Note(0, 1)
+                        inner_tuplet = scoretools.Tuplet(
+                            inner_duration, (note,))
+                    else:
+                        note = scoretools.Note(0, (1, 2))
+                        inner_tuplet = scoretools.Tuplet(
+                            2, (note,))
                     override(inner_tuplet).tuplet_bracket.color = color
                     inner_tuplets.append(inner_tuplet)
                 if len(inner_tuplets) == 1:

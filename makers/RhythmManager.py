@@ -79,22 +79,6 @@ class RhythmManager(abctools.AbjadValueObject):
                     music[:] = outer_rest_container[:]
 
     @staticmethod
-    def _leaf_is_tied(leaf):
-        prototype = spannertools.Tie
-        leaf_tie = None
-        if inspect_(leaf).get_spanners(prototype):
-            leaf_tie = inspect_(leaf).get_spanner(prototype)
-        else:
-            return False
-        next_leaf = inspect_(leaf).get_leaf(1)
-        if next_leaf is not None:
-            if inspect_(next_leaf).get_spanners(prototype):
-                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
-                if leaf_tie is next_leaf_tie:
-                    return True
-        return False
-
-    @staticmethod
     def _iterate_music_and_meters(
         meters=None,
         music=None,
@@ -119,6 +103,22 @@ class RhythmManager(abctools.AbjadValueObject):
             if 1 < len(current_meters):
                 next_meter = current_meters[1]
             yield container, current_meter, next_meter, current_initial_offset
+
+    @staticmethod
+    def _leaf_is_tied(leaf):
+        prototype = spannertools.Tie
+        leaf_tie = None
+        if inspect_(leaf).get_spanners(prototype):
+            leaf_tie = inspect_(leaf).get_spanner(prototype)
+        else:
+            return False
+        next_leaf = inspect_(leaf).get_leaf(1)
+        if next_leaf is not None:
+            if inspect_(next_leaf).get_spanners(prototype):
+                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
+                if leaf_tie is next_leaf_tie:
+                    return True
+        return False
 
     @staticmethod
     def _populate_rhythm_group(

@@ -5,6 +5,7 @@ from abjad.tools import durationtools
 from abjad.tools import timespantools
 from abjad.tools import abctools
 import collections
+from scoremanager import idetools
 
 
 class TimespanMaker(abctools.AbjadValueObject):
@@ -168,6 +169,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         timespan_inventory=None,
         voice_names=None,
         ):
+
+        if target_timespan is None:
+            raise TypeError
 
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
@@ -366,6 +370,74 @@ class TimespanMaker(abctools.AbjadValueObject):
             if final_offset < start_offset:
                 final_offset = start_offset
         return timespan_inventory, final_offset
+
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _attribute_manifest(self):
+        from abjad.tools import systemtools
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='can_split',
+                display_string='can split',
+                command='cp',
+                editor=idetools.getters.get_boolean,
+                ),
+            systemtools.AttributeDetail(
+                name='initial_silence_durations',
+                display_string='initial silence durations',
+                command='is',
+                editor=idetools.getters.get_durations,
+                ),
+            systemtools.AttributeDetail(
+                name='minimum_duration',
+                display_string='minimum duration',
+                command='md',
+                editor=idetools.getters.get_duration,
+                ),
+            systemtools.AttributeDetail(
+                name='playing_durations',
+                display_string='playing durations',
+                command='pd',
+                editor=idetools.getters.get_durations,
+                ),
+            systemtools.AttributeDetail(
+                name='playing_groupings',
+                display_string='playing groupings',
+                command='pg',
+                editor=idetools.getters.get_nonnegative_integers,
+                ),
+            systemtools.AttributeDetail(
+                name='repeat',
+                display_string='repeat',
+                command='rp',
+                editor=idetools.getters.get_boolean,
+                ),
+            systemtools.AttributeDetail(
+                name='silence_durations',
+                display_string='silence durations',
+                command='sd',
+                editor=idetools.getters.get_durations,
+                ),
+            systemtools.AttributeDetail(
+                name='step_anchor',
+                display_string='step anchor',
+                command='sa',
+                editor=idetools.getters.get_durations,
+                ),
+            systemtools.AttributeDetail(
+                name='synchronize_groupings',
+                display_string='synchonize groupings',
+                command='sg',
+                editor=idetools.getters.get_boolean,
+                ),
+            systemtools.AttributeDetail(
+                name='synchronize_step',
+                display_string='synchonize step',
+                command='sy',
+                editor=idetools.getters.get_boolean,
+                ),
+            )
 
     ### PUBLIC PROPERTIES ###
 

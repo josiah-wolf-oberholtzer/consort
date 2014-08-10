@@ -94,32 +94,44 @@ class ScoreTemplateManager(abctools.AbjadObject):
         return performer_group, label
 
     @staticmethod
-    def make_single_string_performer(instrument):
+    def make_single_string_performer(instrument, split=True):
         performer_group, label = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
             )
         name = instrument.instrument_name.title()
-        bowing_staff = scoretools.Staff(
-            [
-                scoretools.Voice(
-                    name='{} Bowing Voice'.format(name),
-                    ),
-                ],
-            context_name='BowingStaff',
-            name='{} Bowing Staff'.format(name),
-            )
-        fingering_staff = scoretools.Staff(
-            [
-                scoretools.Voice(
-                    name='{} Fingering Voice'.format(name),
-                    ),
-                ],
-            context_name='FingeringStaff',
-            name='{} Fingering Staff'.format(name),
-            )
-        performer_group.append(bowing_staff)
-        performer_group.append(fingering_staff)
+        if split:
+            bowing_staff = scoretools.Staff(
+                [
+                    scoretools.Voice(
+                        name='{} Bowing Voice'.format(name),
+                        ),
+                    ],
+                context_name='BowingStaff',
+                name='{} Bowing Staff'.format(name),
+                )
+            fingering_staff = scoretools.Staff(
+                [
+                    scoretools.Voice(
+                        name='{} Fingering Voice'.format(name),
+                        ),
+                    ],
+                context_name='FingeringStaff',
+                name='{} Fingering Staff'.format(name),
+                )
+            performer_group.append(bowing_staff)
+            performer_group.append(fingering_staff)
+        else:
+            staff = scoretools.Staff(
+                [
+                    scoretools.Voice(
+                        name='{} Voice'.format(name),
+                        ),
+                    ],
+                context_name='StringStaff',
+                name='{} Staff'.format(name),
+                )
+            performer_group.append(staff)
         return performer_group, label
 
     @staticmethod

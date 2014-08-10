@@ -2,6 +2,13 @@
 
     \context {
         \Staff
+        \name StringStaff
+        \type Engraver_group
+        \alias Staff
+    }
+
+    \context {
+        \Staff
         \name BowingStaff
         \type Engraver_group
         \alias Staff
@@ -21,6 +28,7 @@
         \alias StaffGroup
         \accepts BowingStaff
         \accepts FingeringStaff
+        \accepts StringStaff
     }
 
     \context {
