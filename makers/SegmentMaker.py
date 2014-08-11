@@ -35,10 +35,10 @@ class SegmentMaker(makertools.SegmentMaker):
         >>> segment_maker = makers.SegmentMaker(
         ...     score_template=score_template,
         ...     settings=(
-        ...         makers.MusicConstruct(
-        ...             music_specifier=makers.MusicSpecifier(),
+        ...         makers.MusicSetting(
         ...             timespan_maker=makers.TimespanMaker(),
-        ...             voice_identifier=('Violin \\d+ Bowing Voice',),
+        ...             violin_1_bowing_voice=makers.MusicSpecifier(),
+        ...             violin_2_bowing_voice=makers.MusicSpecifier(),
         ...             ),
         ...         ),
         ...     duration_in_seconds=2,
@@ -60,8 +60,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 use_percussion_clefs=False,
                 ),
             settings=(
-                makers.MusicConstruct(
-                    music_specifier=makers.MusicSpecifier(),
+                makers.MusicSetting(
                     timespan_maker=makers.TimespanMaker(
                         initial_silence_durations=(),
                         minimum_duration=durationtools.Duration(1, 8),
@@ -77,7 +76,8 @@ class SegmentMaker(makertools.SegmentMaker):
                         synchronize_groupings=False,
                         synchronize_step=False,
                         ),
-                    voice_identifier=('Violin \\d+ Bowing Voice',),
+                    violin_1_bowing_voice=makers.MusicSpecifier(),
+                    violin_2_bowing_voice=makers.MusicSpecifier(),
                     ),
                 ),
             tempo=indicatortools.Tempo(
@@ -346,6 +346,21 @@ class SegmentMaker(makertools.SegmentMaker):
                 maker(container, seed=seed)
                 counter[maker] += 1
 
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _storage_format_specification(self):
+        from abjad.tools import systemtools
+        manager = systemtools.StorageFormatManager
+        keyword_argument_names = manager.get_keyword_argument_names(self)
+        keyword_argument_names = list(keyword_argument_names)
+        if not self.settings:
+            keyword_argument_names.remove('settings')
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=keyword_argument_names
+            )
+
     ### PUBLIC METHODS ###
 
     def add_setting(
@@ -357,7 +372,7 @@ class SegmentMaker(makertools.SegmentMaker):
         voice_identifier=None,
         ):
         from consort import makers
-        setting = makers.MusicConstruct(
+        setting = makers.MusicSetting(
             color=color,
             music_specifier=music_specifier,
             timespan_identifier=timespan_identifier,
