@@ -14,7 +14,7 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
 
     __slots__ = (
         '_allow_repetition',
-        '_chord_specifiers'
+        '_chord_specifiers',
         '_harmonic_fields',
         '_register_specifier',
         )
@@ -31,16 +31,18 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
         from consort import makers
         self._allow_repetition = bool(allow_repetition)
         prototype = makers.ChordSpecifier
-        if isinstance(chord_specifiers, prototype):
-            chord_specifiers = (chord_specifiers,)
-        assert all(isinstance(x, prototype) for x in chord_specifiers)
-        chord_specifiers = sequencetools.CyclicTuple(chord_specifiers)
+        if chord_specifiers:
+            if isinstance(chord_specifiers, prototype):
+                chord_specifiers = (chord_specifiers,)
+            assert all(isinstance(x, prototype) for x in chord_specifiers)
+            chord_specifiers = sequencetools.CyclicTuple(chord_specifiers)
         self._chord_specifiers = chord_specifiers
         prototype = makers.HarmonicField
-        if isinstance(harmonic_fields, prototype):
-            harmonic_fields = (harmonic_fields,)
-        assert all(isinstance(x, prototype) for x in harmonic_fields)
-        harmonic_fields = sequencetools.CyclicTuple(harmonic_fields)
+        if harmonic_fields:
+            if isinstance(harmonic_fields, prototype):
+                harmonic_fields = (harmonic_fields,)
+            assert all(isinstance(x, prototype) for x in harmonic_fields)
+            harmonic_fields = sequencetools.CyclicTuple(harmonic_fields)
         self._harmonic_fields = harmonic_fields
         if register_specifier is not None:
             assert isinstance(register_specifier, makers.RegisterSpecifier)
@@ -109,26 +111,28 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
             attack_point_signature,
             seed=seed
             )
-        harmonic_field = self.harmonic_fields[seed]
-        harmonic_field_entries = harmonic_field._find_nearest_entries(
-            register,
-            entry_count=2,
-            pitch_range=pitch_range,
-            )
-        harmonic_field_entry = harmonic_field_entries[0]
-        structural_pitch = harmonic_field_entry.structural_pitch
-        if not self.allow_repetition:
-            if structural_pitch == previous_pitch:
-                structural_pitch = harmonic_field_entries[1]
-        for note in logical_tie:
-            note.written_pitch = structural_pitch
+        if self.harmonic_fields:
+            harmonic_field = self.harmonic_fields[seed]
+            harmonic_field_entries = harmonic_field._find_nearest_entries(
+                register,
+                entry_count=2,
+                pitch_range=pitch_range,
+                )
+            harmonic_field_entry = harmonic_field_entries[0]
+            structural_pitch = harmonic_field_entry.structural_pitch
+            if not self.allow_repetition:
+                if structural_pitch == previous_pitch:
+                    structural_pitch = harmonic_field_entries[1]
+            for note in logical_tie:
+                note.written_pitch = structural_pitch
         if self.chord_specifiers:
             chord_specifier = self.chord_specifiers[seed]
             chord_specifier(
                 logical_tie,
                 pitch_range=pitch_range,
                 )
-        self._process_grace_notes(logical_tie, harmonic_field_entry)
+        if self.harmonic_fields:
+            self._process_grace_notes(logical_tie, harmonic_field_entry)
         return structural_pitch
 
     ### PUBLIC PROPERTIES ###
@@ -146,5 +150,5 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
         return self._harmonic_fields
 
     @property
-    def register_specifer(self):
+    def register_specifier(self):
         return self._register_specifier
