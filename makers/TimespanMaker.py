@@ -462,7 +462,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             systemtools.AttributeDetail(
                 name='initial_silence_talea',
                 display_string='initial silence talea',
-                command='is',
+                command='it',
                 editor=rhythmmakertools.Talea,
                 ),
             systemtools.AttributeDetail(
@@ -474,7 +474,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             systemtools.AttributeDetail(
                 name='playing_talea',
                 display_string='playing talea',
-                command='pd',
+                command='pt',
                 editor=rhythmmakertools.Talea,
                 ),
             systemtools.AttributeDetail(
@@ -492,7 +492,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             systemtools.AttributeDetail(
                 name='silence_talea',
                 display_string='silence talea',
-                command='sd',
+                command='st',
                 editor=rhythmmakertools.Talea,
                 ),
             systemtools.AttributeDetail(
