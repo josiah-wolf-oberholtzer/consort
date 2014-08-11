@@ -81,6 +81,88 @@ class TimespanMaker(abctools.AbjadValueObject):
                 ]
             )
 
+    ::
+
+        >>> timespan_maker = new(timespan_maker,
+        ...     initial_silence_durations=(),
+        ...     synchronize_step=True,
+        ...     )
+        >>> timespan_inventory = timespan_maker(
+        ...     music_specifiers=music_specifiers,
+        ...     target_timespan=target_timespan,
+        ...     )
+        >>> print(format(timespan_inventory))
+        timespantools.TimespanInventory(
+            [
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Violin',
+                    ),
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Viola',
+                    ),
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Violin',
+                    ),
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Viola',
+                    ),
+                ]
+            )
+
+    ::
+
+        >>> timespan_maker = new(timespan_maker,
+        ...     initial_silence_durations=(
+        ...         durationtools.Duration(0),
+        ...         durationtools.Duration(1, 8),
+        ...         ),
+        ...     )
+        >>> timespan_inventory = timespan_maker(
+        ...     music_specifiers=music_specifiers,
+        ...     target_timespan=target_timespan,
+        ...     )
+        >>> print(format(timespan_inventory))
+        timespantools.TimespanInventory(
+            [
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Viola',
+                    ),
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Violin',
+                    ),
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(7, 8),
+                    voice_name='Viola',
+                    ),
+                makers.PerformedTimespan(
+                    minimum_duration=durationtools.Duration(1, 8),
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Violin',
+                    ),
+                ]
+            )
+
     '''
 
     ### CLASS VARIABLES ###
@@ -121,11 +203,12 @@ class TimespanMaker(abctools.AbjadValueObject):
             can_split = bool(can_split)
         self._can_split = can_split
 
-        if not isinstance(initial_silence_durations, collections.Sequence):
-            initial_silence_durations = (initial_silence_durations,)
-        initial_silence_durations = tuple(durationtools.Duration(x)
-            for x in initial_silence_durations)
-        assert all(0 <= x for x in initial_silence_durations)
+        if initial_silence_durations is not None:
+            if not isinstance(initial_silence_durations, collections.Sequence):
+                initial_silence_durations = (initial_silence_durations,)
+            initial_silence_durations = tuple(durationtools.Duration(x)
+                for x in initial_silence_durations)
+            assert all(0 <= x for x in initial_silence_durations)
         self._initial_silence_durations = initial_silence_durations
 
         self._minimum_duration = durationtools.Duration(minimum_duration)
@@ -153,7 +236,6 @@ class TimespanMaker(abctools.AbjadValueObject):
             silence_durations = tuple(durationtools.Duration(x)
                 for x in silence_durations)
             assert len(silence_durations)
-            #assert all(0 < x for x in silence_durations)
         self._silence_durations = silence_durations
 
         assert step_anchor in (Left, Right)
@@ -180,11 +262,12 @@ class TimespanMaker(abctools.AbjadValueObject):
         assert isinstance(timespan_inventory, timespantools.TimespanInventory)
 
         initial_silence_durations = self.initial_silence_durations
+        if not initial_silence_durations:
+            initial_silence_durations = (durationtools.Duration(0),)
         if len(initial_silence_durations) < 2:
             initial_silence_durations *= 2
-        if initial_silence_durations:
-            initial_silence_durations = datastructuretools.StatalServer(
-                initial_silence_durations)()
+        initial_silence_durations = datastructuretools.StatalServer(
+            initial_silence_durations)()
 
         playing_durations = self.playing_durations
         if len(playing_durations) < 2:
@@ -281,16 +364,27 @@ class TimespanMaker(abctools.AbjadValueObject):
                 durations = playing_durations(grouping)
             silence_duration = silence_durations()[0]
             for voice_name, music_specifier in music_specifiers.items():
+                initial_silence_duration = initial_silence_durations()[0]
                 if not self.synchronize_groupings:
                     grouping = playing_groupings()[0]
                     durations = playing_durations(grouping)
-                maximum_offset = start_offset + sum(durations) + \
-                    silence_duration
+                maximum_offset = (
+                    start_offset +
+                    sum(durations) +
+                    silence_duration +
+                    initial_silence_duration
+                    )
                 maximum_offset = min(maximum_offset, stop_offset)
                 if self.step_anchor is Left:
-                    maximum_offset = min(maximum_offset,
-                        start_offset + silence_duration)
-                current_offset = start_offset
+                    maximum_offset = min(
+                        maximum_offset,
+                        (
+                            initial_silence_duration +
+                            start_offset +
+                            silence_duration
+                            ),
+                        )
+                current_offset = start_offset + initial_silence_duration
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
