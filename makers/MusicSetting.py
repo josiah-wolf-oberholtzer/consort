@@ -1,6 +1,9 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad.tools import abctools
+from abjad.tools import durationtools
 from abjad.tools import timespantools
+from abjad.tools.topleveltools import inspect_
 
 
 class MusicSetting(abctools.AbjadValueObject):
@@ -11,7 +14,6 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> from consort import makers
         >>> red_setting = makers.MusicSetting(
         ...     color='red',
-        ...     music_specifier=makers.MusicSpecifier(),
         ...     timespan_maker=makers.TimespanMaker(
         ...         initial_silence_durations=(
         ...             durationtools.Duration(0, 1),
@@ -23,15 +25,13 @@ class MusicSetting(abctools.AbjadValueObject):
         ...             durationtools.Duration(1, 4),
         ...             ),
         ...         ),
-        ...     voice_identifier=(
-        ...         'Violin \\d+ Bowing Voice',
-        ...         'Viola Bowing Voice',
-        ...         ),
+        ...     viola_bowing_voice=makers.MusicSpecifier(),
+        ...     violin_1_bowing_voice=makers.MusicSpecifier(),
+        ...     violin_2_bowing_voice=makers.MusicSpecifier(),
         ...     )
         >>> print(format(red_setting))
         makers.MusicSetting(
             color='red',
-            music_specifier=makers.MusicSpecifier(),
             timespan_maker=makers.TimespanMaker(
                 initial_silence_durations=(
                     durationtools.Duration(0, 1),
@@ -52,10 +52,9 @@ class MusicSetting(abctools.AbjadValueObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            voice_identifier=(
-                'Violin \\d+ Bowing Voice',
-                'Viola Bowing Voice',
-                ),
+            viola_bowing_voice=makers.MusicSpecifier(),
+            violin_1_bowing_voice=makers.MusicSpecifier(),
+            violin_2_bowing_voice=makers.MusicSpecifier(),
             )
 
     ::
@@ -188,11 +187,19 @@ class MusicSetting(abctools.AbjadValueObject):
         ):
         from consort import makers
         assert score_template is not None
-        voice_names = makers.SegmentMaker._find_voice_names(
-            score_template=score_template,
-            voice_identifier=self.voice_identifier,
+        score = score_template()
+        voice_pairs = []
+        for name, music_specifier in self.music_specifiers.items():
+            voice_name = score_template.voice_name_abbreviations[name]
+            voice = score[voice_name]
+            voice_pair = (voice, music_specifier)
+            voice_pairs.append(voice_pair)
+        voice_pairs.sort(
+            key=lambda x: inspect_(x[0]).get_parentage().score_index,
             )
-        assert voice_names, voice_names
+        music_specifiers = collections.OrderedDict()
+        for voice, music_specifier in voice_pairs:
+            music_specifiers[voice.name] = music_specifier
         assert isinstance(target_timespan, timespantools.Timespan)
         if self.timespan_identifier is None:
             target_timespans = timespantools.TimespanInventory([
@@ -215,12 +222,30 @@ class MusicSetting(abctools.AbjadValueObject):
             timespan_inventory = self.timespan_maker(
                 color=self.color,
                 layer=layer,
-                music_specifier=self.music_specifier,
+                music_specifiers=music_specifiers,
                 target_timespan=target_timespan,
                 timespan_inventory=timespan_inventory,
-                voice_names=voice_names,
                 )
         return timespan_inventory
+
+    def __getattr__(self, item):
+        if item in self.music_specifiers:
+            return self.music_specifiers[item]
+        return object.__getattribute__(self, item)
+
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _storage_format_specification(self):
+        from abjad.tools import systemtools
+        manager = systemtools.StorageFormatManager
+        keyword_argument_names = manager.get_keyword_argument_names(self)
+        keyword_argument_names = list(keyword_argument_names)
+        keyword_argument_names.extend(sorted(self.music_specifiers))
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=keyword_argument_names
+            )
 
     ### PUBLIC PROPERTIES ###
 
@@ -239,7 +264,3 @@ class MusicSetting(abctools.AbjadValueObject):
     @property
     def timespan_maker(self):
         return self._timespan_maker
-
-    @property
-    def voice_identifier(self):
-        return self._voice_identifier
