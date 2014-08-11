@@ -231,7 +231,6 @@ class AnnotationManager(abctools.AbjadValueObject):
             if not hide_inner_bracket:
                 inner_tuplets = []
                 for inner_duration in inner_durations:
-                    print(inner_duration)
                     if inner_duration != 1:
                         note = scoretools.Note(0, 1)
                         inner_tuplet = scoretools.Tuplet(
@@ -269,13 +268,11 @@ class AnnotationManager(abctools.AbjadValueObject):
             name='{} Inner Annotation'.format(voice_name),
             context_name='InnerAnnotation',
             )
-        print(format(inner_annotation))
         outer_annotation = scoretools.Context(
             outer_annotation_items,
             name='{} Outer Annotation'.format(voice_name),
             context_name='OuterAnnotation',
             )
-        print(format(outer_annotation))
         if hide_brackets:
             override(inner_annotation).tuplet_bracket.transparent = True
             override(outer_annotation).tuplet_bracket.transparent = True
