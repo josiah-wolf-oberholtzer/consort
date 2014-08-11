@@ -62,15 +62,16 @@ class SegmentMaker(makertools.SegmentMaker):
             settings=(
                 makers.MusicSetting(
                     timespan_maker=makers.TimespanMaker(
-                        initial_silence_durations=(),
                         minimum_duration=durationtools.Duration(1, 8),
-                        playing_durations=(
-                            durationtools.Duration(1, 4),
+                        playing_talea=rhythmmakertools.Talea(
+                            counts=(4,),
+                            denominator=16,
                             ),
                         playing_groupings=(1,),
                         repeat=True,
-                        silence_durations=(
-                            durationtools.Duration(1, 4),
+                        silence_talea=rhythmmakertools.Talea(
+                            counts=(4,),
+                            denominator=16,
                             ),
                         step_anchor=Right,
                         synchronize_groupings=False,

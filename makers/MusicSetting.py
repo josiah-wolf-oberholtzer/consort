@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import abctools
-from abjad.tools import durationtools
+from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import inspect_
 
@@ -15,14 +15,13 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> red_setting = makers.MusicSetting(
         ...     color='red',
         ...     timespan_maker=makers.TimespanMaker(
-        ...         initial_silence_durations=(
-        ...             durationtools.Duration(0, 1),
-        ...             durationtools.Duration(1, 4),
+        ...         initial_silence_talea=rhythmmakertools.Talea(
+        ...             counts=(0, 4),
+        ...             denominator=16,
         ...             ),
-        ...         playing_durations=(
-        ...             durationtools.Duration(1, 4),
-        ...             durationtools.Duration(1, 2),
-        ...             durationtools.Duration(1, 4),
+        ...         playing_talea=rhythmmakertools.Talea(
+        ...             counts=(4, 8, 4),
+        ...             denominator=16,
         ...             ),
         ...         ),
         ...     viola_bowing_voice=makers.MusicSpecifier(),
@@ -33,20 +32,20 @@ class MusicSetting(abctools.AbjadValueObject):
         makers.MusicSetting(
             color='red',
             timespan_maker=makers.TimespanMaker(
-                initial_silence_durations=(
-                    durationtools.Duration(0, 1),
-                    durationtools.Duration(1, 4),
+                initial_silence_talea=rhythmmakertools.Talea(
+                    counts=(0, 4),
+                    denominator=16,
                     ),
                 minimum_duration=durationtools.Duration(1, 8),
-                playing_durations=(
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 2),
-                    durationtools.Duration(1, 4),
+                playing_talea=rhythmmakertools.Talea(
+                    counts=(4, 8, 4),
+                    denominator=16,
                     ),
                 playing_groupings=(1,),
                 repeat=True,
-                silence_durations=(
-                    durationtools.Duration(1, 4),
+                silence_talea=rhythmmakertools.Talea(
+                    counts=(4,),
+                    denominator=16,
                     ),
                 step_anchor=Right,
                 synchronize_groupings=False,

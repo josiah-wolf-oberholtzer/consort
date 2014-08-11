@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
+from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
-from abjad.tools import abctools
 import collections
 from scoremanager import idetools
 
@@ -15,25 +16,27 @@ class TimespanMaker(abctools.AbjadValueObject):
 
         >>> from consort import makers
         >>> timespan_maker = makers.TimespanMaker(
-        ...     initial_silence_durations=(
-        ...         durationtools.Duration(0),
-        ...         durationtools.Duration(1, 4),
+        ...     initial_silence_talea=rhythmmakertools.Talea(
+        ...         counts=(0, 4),
+        ...         denominator=16,
         ...         )
         ...     )
         >>> print(format(timespan_maker))
         makers.TimespanMaker(
-            initial_silence_durations=(
-                durationtools.Duration(0, 1),
-                durationtools.Duration(1, 4),
+            initial_silence_talea=rhythmmakertools.Talea(
+                counts=(0, 4),
+                denominator=16,
                 ),
             minimum_duration=durationtools.Duration(1, 8),
-            playing_durations=(
-                durationtools.Duration(1, 4),
+            playing_talea=rhythmmakertools.Talea(
+                counts=(4,),
+                denominator=16,
                 ),
             playing_groupings=(1,),
             repeat=True,
-            silence_durations=(
-                durationtools.Duration(1, 4),
+            silence_talea=rhythmmakertools.Talea(
+                counts=(4,),
+                denominator=16,
                 ),
             step_anchor=Right,
             synchronize_groupings=False,
@@ -84,7 +87,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     ::
 
         >>> timespan_maker = new(timespan_maker,
-        ...     initial_silence_durations=(),
+        ...     initial_silence_talea=None,
         ...     synchronize_step=True,
         ...     )
         >>> timespan_inventory = timespan_maker(
@@ -124,9 +127,9 @@ class TimespanMaker(abctools.AbjadValueObject):
     ::
 
         >>> timespan_maker = new(timespan_maker,
-        ...     initial_silence_durations=(
-        ...         durationtools.Duration(0),
-        ...         durationtools.Duration(1, 8),
+        ...     initial_silence_talea=rhythmmakertools.Talea(
+        ...         counts=(0, 2),
+        ...         denominator=16,
         ...         ),
         ...     )
         >>> timespan_inventory = timespan_maker(
@@ -169,12 +172,12 @@ class TimespanMaker(abctools.AbjadValueObject):
 
     __slots__ = (
         '_can_split',
-        '_initial_silence_durations',
+        '_initial_silence_talea',
         '_minimum_duration',
-        '_playing_durations',
+        '_playing_talea',
         '_playing_groupings',
         '_repeat',
-        '_silence_durations',
+        '_silence_talea',
         '_step_anchor',
         '_synchronize_groupings',
         '_synchronize_step',
@@ -185,15 +188,17 @@ class TimespanMaker(abctools.AbjadValueObject):
     def __init__(
         self,
         can_split=None,
-        initial_silence_durations=(),
+        initial_silence_talea=None,
         minimum_duration=durationtools.Duration(1, 8),
-        playing_durations=(
-            durationtools.Duration(1, 4),
+        playing_talea=rhythmmakertools.Talea(
+            counts=[4],
+            denominator=16,
             ),
         playing_groupings=(1,),
         repeat=True,
-        silence_durations=(
-            durationtools.Duration(1, 4),
+        silence_talea=rhythmmakertools.Talea(
+            counts=[4],
+            denominator=16,
             ),
         step_anchor=Right,
         synchronize_groupings=False,
@@ -203,23 +208,18 @@ class TimespanMaker(abctools.AbjadValueObject):
             can_split = bool(can_split)
         self._can_split = can_split
 
-        if initial_silence_durations is not None:
-            if not isinstance(initial_silence_durations, collections.Sequence):
-                initial_silence_durations = (initial_silence_durations,)
-            initial_silence_durations = tuple(durationtools.Duration(x)
-                for x in initial_silence_durations)
-            assert all(0 <= x for x in initial_silence_durations)
-        self._initial_silence_durations = initial_silence_durations
+        if initial_silence_talea is not None:
+            assert isinstance(initial_silence_talea, rhythmmakertools.Talea)
+            assert initial_silence_talea.counts
+            assert all(0 <= x for x in initial_silence_talea.counts)
+        self._initial_silence_talea = initial_silence_talea
 
         self._minimum_duration = durationtools.Duration(minimum_duration)
 
-        if not isinstance(playing_durations, collections.Sequence):
-            playing_durations = (playing_durations,)
-        playing_durations = tuple(durationtools.Duration(x)
-            for x in playing_durations)
-        assert len(playing_durations)
-        assert all(0 < x for x in playing_durations)
-        self._playing_durations = playing_durations
+        assert isinstance(playing_talea, rhythmmakertools.Talea)
+        assert playing_talea.counts
+        assert all(0 < x for x in playing_talea.counts)
+        self._playing_talea = playing_talea
 
         if not isinstance(playing_groupings, collections.Sequence):
             playing_groupings = (playing_groupings,)
@@ -230,13 +230,11 @@ class TimespanMaker(abctools.AbjadValueObject):
 
         self._repeat = bool(repeat)
 
-        if silence_durations is not None:
-            if not isinstance(silence_durations, collections.Sequence):
-                silence_durations = (silence_durations,)
-            silence_durations = tuple(durationtools.Duration(x)
-                for x in silence_durations)
-            assert len(silence_durations)
-        self._silence_durations = silence_durations
+        if silence_talea is not None:
+            assert isinstance(silence_talea, rhythmmakertools.Talea)
+            assert silence_talea.counts
+            assert all(0 <= x for x in silence_talea.counts)
+        self._silence_talea = silence_talea
 
         assert step_anchor in (Left, Right)
         self._step_anchor = step_anchor
@@ -261,52 +259,32 @@ class TimespanMaker(abctools.AbjadValueObject):
             timespan_inventory = timespantools.TimespanInventory()
         assert isinstance(timespan_inventory, timespantools.TimespanInventory)
 
-        initial_silence_durations = self.initial_silence_durations
-        if not initial_silence_durations:
-            initial_silence_durations = (durationtools.Duration(0),)
-        if len(initial_silence_durations) < 2:
-            initial_silence_durations *= 2
-        initial_silence_durations = datastructuretools.StatalServer(
-            initial_silence_durations)()
-
-        playing_durations = self.playing_durations
-        if len(playing_durations) < 2:
-            playing_durations *= 2
-        playing_durations = datastructuretools.StatalServer(
-            playing_durations)()
-
-        playing_groupings = self.playing_groupings
-        if len(playing_groupings) < 2:
-            playing_groupings *= 2
-        playing_groupings = datastructuretools.StatalServer(
-            playing_groupings)()
-
-        silence_durations = self.silence_durations
-        if silence_durations is None:
-            silence_durations = (durationtools.Duration(0),)
-        if len(silence_durations) < 2:
-            silence_durations *= 2
-        silence_durations = datastructuretools.StatalServer(
-            silence_durations)()
+        initial_silence_talea = self.initial_silence_talea
+        if not initial_silence_talea:
+            initial_silence_talea = rhythmmakertools.Talea((0,), 1)
+        initial_silence_talea = iter(initial_silence_talea)
+        playing_talea = iter(self.playing_talea)
+        playing_groupings = self._make_infinite_iterator(
+            self.playing_groupings,
+            )
+        silence_talea = self.silence_talea
+        if silence_talea is None:
+            silence_talea = rhythmmakertools.Talea((0,), 1)
+        silence_talea = iter(silence_talea)
 
         if self.synchronize_step:
             procedure = self._make_with_synchronized_step
         else:
             procedure = self._make_without_synchronized_step
 
-        #print(format(initial_silence_durations))
-        #print(format(playing_durations))
-        #print(format(playing_groupings))
-        #print(format(silence_durations))
-
         new_timespan_inventory, final_offset = procedure(
             color=color,
-            initial_silence_durations=initial_silence_durations,
+            initial_silence_talea=initial_silence_talea,
             layer=layer,
-            playing_durations=playing_durations,
+            playing_talea=playing_talea,
             playing_groupings=playing_groupings,
             music_specifiers=music_specifiers,
-            silence_durations=silence_durations,
+            silence_talea=silence_talea,
             target_timespan=target_timespan,
             )
 
@@ -316,6 +294,13 @@ class TimespanMaker(abctools.AbjadValueObject):
         return timespan_inventory
 
     ### PRIVATE METHODS ###
+
+    def _make_infinite_iterator(self, sequence):
+        index = 0
+        sequence = datastructuretools.CyclicTuple(sequence)
+        while True:
+            yield sequence[index]
+            index += 1
 
     def _make_performed_timespan(
         self,
@@ -344,30 +329,29 @@ class TimespanMaker(abctools.AbjadValueObject):
     def _make_with_synchronized_step(
         self,
         color=None,
-        initial_silence_durations=None,
+        initial_silence_talea=None,
         layer=None,
-        playing_durations=None,
+        playing_talea=None,
         playing_groupings=None,
         music_specifiers=None,
-        silence_durations=None,
+        silence_talea=None,
         target_timespan=None,
         ):
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
-        if initial_silence_durations:
-            start_offset += initial_silence_durations()[0]
+        start_offset += next(initial_silence_talea)
         can_continue = True
         while start_offset < stop_offset and can_continue:
             if self.synchronize_groupings:
-                grouping = playing_groupings()[0]
-                durations = playing_durations(grouping)
-            silence_duration = silence_durations()[0]
+                grouping = next(playing_groupings)
+                durations = [next(playing_talea) for _ in range(grouping)]
+            silence_duration = next(silence_talea)
             for voice_name, music_specifier in music_specifiers.items():
-                initial_silence_duration = initial_silence_durations()[0]
+                initial_silence_duration = next(initial_silence_talea)
                 if not self.synchronize_groupings:
-                    grouping = playing_groupings()[0]
-                    durations = playing_durations(grouping)
+                    grouping = next(playing_groupings)
+                    durations = [next(playing_talea) for _ in range(grouping)]
                 maximum_offset = (
                     start_offset +
                     sum(durations) +
@@ -412,12 +396,12 @@ class TimespanMaker(abctools.AbjadValueObject):
     def _make_without_synchronized_step(
         self,
         color=None,
-        initial_silence_durations=None,
+        initial_silence_talea=None,
         layer=None,
-        playing_durations=None,
+        playing_talea=None,
         playing_groupings=None,
         music_specifiers=None,
-        silence_durations=None,
+        silence_talea=None,
         target_timespan=None,
         ):
         timespan_inventory = timespantools.TimespanInventory()
@@ -426,13 +410,12 @@ class TimespanMaker(abctools.AbjadValueObject):
         final_offset = durationtools.Offset(0)
         for voice_name, music_specifier in music_specifiers.items():
             start_offset = target_timespan.start_offset
-            if initial_silence_durations:
-                start_offset += initial_silence_durations()[0]
+            start_offset += next(initial_silence_talea)
             can_continue = True
             while start_offset < stop_offset and can_continue:
-                silence_duration = silence_durations()[0]
-                grouping = playing_groupings()[0]
-                durations = playing_durations(grouping)
+                silence_duration = next(silence_talea)
+                grouping = next(playing_groupings)
+                durations = [next(playing_talea) for _ in range(grouping)]
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
                 maximum_offset = min(maximum_offset, stop_offset)
@@ -477,10 +460,10 @@ class TimespanMaker(abctools.AbjadValueObject):
                 editor=idetools.getters.get_boolean,
                 ),
             systemtools.AttributeDetail(
-                name='initial_silence_durations',
-                display_string='initial silence durations',
+                name='initial_silence_talea',
+                display_string='initial silence talea',
                 command='is',
-                editor=idetools.getters.get_durations,
+                editor=rhythmmakertools.Talea,
                 ),
             systemtools.AttributeDetail(
                 name='minimum_duration',
@@ -489,10 +472,10 @@ class TimespanMaker(abctools.AbjadValueObject):
                 editor=idetools.getters.get_duration,
                 ),
             systemtools.AttributeDetail(
-                name='playing_durations',
-                display_string='playing durations',
+                name='playing_talea',
+                display_string='playing talea',
                 command='pd',
-                editor=idetools.getters.get_durations,
+                editor=rhythmmakertools.Talea,
                 ),
             systemtools.AttributeDetail(
                 name='playing_groupings',
@@ -507,10 +490,10 @@ class TimespanMaker(abctools.AbjadValueObject):
                 editor=idetools.getters.get_boolean,
                 ),
             systemtools.AttributeDetail(
-                name='silence_durations',
-                display_string='silence durations',
+                name='silence_talea',
+                display_string='silence talea',
                 command='sd',
-                editor=idetools.getters.get_durations,
+                editor=rhythmmakertools.Talea,
                 ),
             systemtools.AttributeDetail(
                 name='step_anchor',
@@ -539,16 +522,16 @@ class TimespanMaker(abctools.AbjadValueObject):
         return self._can_split
 
     @property
-    def initial_silence_durations(self):
-        return self._initial_silence_durations
+    def initial_silence_talea(self):
+        return self._initial_silence_talea
 
     @property
     def minimum_duration(self):
         return self._minimum_duration
 
     @property
-    def playing_durations(self):
-        return self._playing_durations
+    def playing_talea(self):
+        return self._playing_talea
 
     @property
     def playing_groupings(self):
@@ -559,8 +542,8 @@ class TimespanMaker(abctools.AbjadValueObject):
         return self._repeat
 
     @property
-    def silence_durations(self):
-        return self._silence_durations
+    def silence_talea(self):
+        return self._silence_talea
 
     @property
     def step_anchor(self):

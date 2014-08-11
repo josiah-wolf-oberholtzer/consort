@@ -54,9 +54,9 @@ def test_TimespanMaker_01():
 
 def test_TimespanMaker_02():
     timespan_maker = makers.TimespanMaker(
-        initial_silence_durations=(
-            Duration(1, 8),
-            Duration(1, 4),
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
             ),
         )
     timespan_inventory = timespan_maker(
@@ -143,9 +143,9 @@ def test_TimespanMaker_03():
 
 def test_TimespanMaker_04():
     timespan_maker = makers.TimespanMaker(
-        playing_durations=(
-            Duration(1, 8),
-            Duration(1, 4),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
             ),
         )
     timespan_inventory = timespan_maker(
@@ -195,9 +195,9 @@ def test_TimespanMaker_04():
 
 def test_TimespanMaker_05():
     timespan_maker = makers.TimespanMaker(
-        playing_durations=(
-            Duration(1, 8),
-            Duration(1, 4),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
             ),
         synchronize_step=True,
         )
@@ -242,13 +242,13 @@ def test_TimespanMaker_05():
 
 def test_TimespanMaker_06():
     timespan_maker = makers.TimespanMaker(
-        initial_silence_durations=(
-            Duration(0),
-            Duration(1, 8),
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
             ),
-        playing_durations=(
-            Duration(1, 8),
-            Duration(1, 4),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
             ),
         )
     timespan_inventory = timespan_maker(
@@ -298,13 +298,13 @@ def test_TimespanMaker_06():
 
 def test_TimespanMaker_07():
     timespan_maker = makers.TimespanMaker(
-        initial_silence_durations=(
-            Duration(0),
-            Duration(1, 8),
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
             ),
-        playing_durations=(
-            Duration(1, 8),
-            Duration(1, 4),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
             ),
         )
     timespan_inventory = timespan_maker(

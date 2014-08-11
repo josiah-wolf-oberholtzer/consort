@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import durationtools
+from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
 from consort import makers
@@ -13,8 +13,11 @@ score_template = makers.StringOrchestraScoreTemplate(
     )
 target_timespan = timespantools.Timespan(0, 4)
 timespan_maker = makers.TimespanMaker(
-    playing_durations=durationtools.Duration(1, 1),
-    silence_durations=durationtools.Duration(0),
+    playing_talea=rhythmmakertools.Talea(
+        counts=(1,),
+        denominator=1,
+        ),
+    silence_talea=None,
     )
 
 
