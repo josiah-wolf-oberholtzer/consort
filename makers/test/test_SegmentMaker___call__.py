@@ -16,10 +16,10 @@ def test_SegmentMaker___call___01():
         duration_in_seconds=2,
         score_template=score_template,
         settings=(
-            makers.MusicConstruct(
-                music_specifier=makers.MusicSpecifier(),
+            makers.MusicSetting(
                 timespan_maker=makers.TimespanMaker(),
-                voice_identifier=('Violin \\d+ Bowing Voice',),
+                violin_1_bowing_voice=None,
+                violin_2_bowing_voice=None,
                 ),
             ),
         tempo=Tempo((1, 4), 60),

@@ -1,9 +1,13 @@
 # -*- encoding: utf-8 -*-
 from abjad import *
 from consort import makers
+import collections
 
 
-voice_names = ('One', 'Two')
+music_specifiers = collections.OrderedDict([
+    ('One', None),
+    ('Two', None),
+    ])
 target_timespan = timespantools.Timespan(0, 1)
 
 
@@ -11,7 +15,7 @@ def test_TimespanMaker_01():
     timespan_maker = makers.TimespanMaker()
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
@@ -57,7 +61,7 @@ def test_TimespanMaker_02():
         )
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
@@ -100,7 +104,7 @@ def test_TimespanMaker_03():
         )
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
@@ -146,7 +150,7 @@ def test_TimespanMaker_04():
         )
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
@@ -199,7 +203,7 @@ def test_TimespanMaker_05():
         )
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
@@ -249,7 +253,7 @@ def test_TimespanMaker_06():
         )
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
@@ -305,7 +309,7 @@ def test_TimespanMaker_07():
         )
     timespan_inventory = timespan_maker(
         target_timespan=timespantools.Timespan(2, 3),
-        voice_names=voice_names,
+        music_specifiers=music_specifiers,
         )
     assert systemtools.TestManager.compare(
         format(timespan_inventory),
