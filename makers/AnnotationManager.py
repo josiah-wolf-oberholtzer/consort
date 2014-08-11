@@ -193,19 +193,19 @@ class AnnotationManager(abctools.AbjadValueObject):
             if isinstance(timespan, makers.PerformedTimespan):
                 color = timespan.color
                 music_specifier = timespan.music_specifier
-            return color, music_specifier
+            return color, music_specifier, type(timespan)
         from consort import makers
         inner_annotation_items = []
         outer_annotation_items = []
         for key, timespans in itertools.groupby(
             timespan_inventory, grouper):
-            color, music_specifier = key
+            color, music_specifier, timespan_class = key
             timespans = tuple(timespans)
             inner_durations = [x.duration for x in timespans]
             outer_duration = sum(inner_durations)
             is_left_broken = timespans[0].is_left_broken
             is_right_broken = timespans[-1].is_right_broken
-            if music_specifier is None or music_specifier.is_sentinel:
+            if timespan_class is makers.SilentTimespan:
                 outer_note = scoretools.Note("c'1")
                 outer_multiplier = durationtools.Multiplier(outer_duration)
                 attach(outer_multiplier, outer_note)
@@ -231,6 +231,7 @@ class AnnotationManager(abctools.AbjadValueObject):
             if not hide_inner_bracket:
                 inner_tuplets = []
                 for inner_duration in inner_durations:
+                    print(inner_duration)
                     if inner_duration != 1:
                         note = scoretools.Note(0, 1)
                         inner_tuplet = scoretools.Tuplet(
@@ -268,11 +269,13 @@ class AnnotationManager(abctools.AbjadValueObject):
             name='{} Inner Annotation'.format(voice_name),
             context_name='InnerAnnotation',
             )
+        print(format(inner_annotation))
         outer_annotation = scoretools.Context(
             outer_annotation_items,
             name='{} Outer Annotation'.format(voice_name),
             context_name='OuterAnnotation',
             )
+        print(format(outer_annotation))
         if hide_brackets:
             override(inner_annotation).tuplet_bracket.transparent = True
             override(outer_annotation).tuplet_bracket.transparent = True
