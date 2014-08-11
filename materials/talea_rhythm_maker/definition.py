@@ -15,7 +15,5 @@ talea_rhythm_maker = rhythmmakertools.TaleaRhythmMaker(
         counts=(1, 2, 3),
         denominator=16,
         ),
-    tie_specifier=rhythmmakertools.TieSpecifier(
-        tie_split_notes=True,
-        ),
+    tie_split_notes=True,
     )
