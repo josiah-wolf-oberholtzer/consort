@@ -36,7 +36,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ...     score_template=score_template,
         ...     settings=(
         ...         makers.MusicSetting(
-        ...             timespan_maker=makers.TimespanMaker(),
+        ...             timespan_maker=makers.TaleaTimespanMaker(),
         ...             violin_1_bowing_voice=makers.MusicSpecifier(),
         ...             violin_2_bowing_voice=makers.MusicSpecifier(),
         ...             ),
@@ -61,7 +61,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 ),
             settings=(
                 makers.MusicSetting(
-                    timespan_maker=makers.TimespanMaker(
+                    timespan_maker=makers.TaleaTimespanMaker(
                         minimum_duration=durationtools.Duration(1, 8),
                         playing_talea=rhythmmakertools.Talea(
                             counts=(4,),

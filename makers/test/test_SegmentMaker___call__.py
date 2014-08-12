@@ -17,7 +17,7 @@ def test_SegmentMaker___call___01():
         score_template=score_template,
         settings=(
             makers.MusicSetting(
-                timespan_maker=makers.TimespanMaker(),
+                timespan_maker=makers.TaleaTimespanMaker(),
                 violin_1_bowing_voice=None,
                 violin_2_bowing_voice=None,
                 ),

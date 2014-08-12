@@ -12,7 +12,7 @@ score_template = makers.StringOrchestraScoreTemplate(
     contrabass_count=0,
     )
 target_timespan = timespantools.Timespan(0, 4)
-timespan_maker = makers.TimespanMaker(
+timespan_maker = makers.TaleaTimespanMaker(
     playing_talea=rhythmmakertools.Talea(
         counts=(1,),
         denominator=1,

@@ -9,20 +9,20 @@ import collections
 from scoremanager import idetools
 
 
-class TimespanMaker(abctools.AbjadValueObject):
+class TaleaTimespanMaker(abctools.AbjadValueObject):
     r'''A timespan maker.
 
     ::
 
         >>> from consort import makers
-        >>> timespan_maker = makers.TimespanMaker(
+        >>> timespan_maker = makers.TaleaTimespanMaker(
         ...     initial_silence_talea=rhythmmakertools.Talea(
         ...         counts=(0, 4),
         ...         denominator=16,
         ...         )
         ...     )
         >>> print(format(timespan_maker))
-        makers.TimespanMaker(
+        makers.TaleaTimespanMaker(
             initial_silence_talea=rhythmmakertools.Talea(
                 counts=(0, 4),
                 denominator=16,

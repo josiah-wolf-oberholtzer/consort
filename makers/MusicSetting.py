@@ -14,7 +14,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> from consort import makers
         >>> red_setting = makers.MusicSetting(
         ...     color='red',
-        ...     timespan_maker=makers.TimespanMaker(
+        ...     timespan_maker=makers.TaleaTimespanMaker(
         ...         initial_silence_talea=rhythmmakertools.Talea(
         ...             counts=(0, 4),
         ...             denominator=16,
@@ -31,7 +31,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> print(format(red_setting))
         makers.MusicSetting(
             color='red',
-            timespan_maker=makers.TimespanMaker(
+            timespan_maker=makers.TaleaTimespanMaker(
                 initial_silence_talea=rhythmmakertools.Talea(
                     counts=(0, 4),
                     denominator=16,
@@ -172,7 +172,7 @@ class MusicSetting(abctools.AbjadValueObject):
             assert isinstance(music_specifier, prototype)
         self._music_specifiers = music_specifiers
         if timespan_maker is not None:
-            assert isinstance(timespan_maker, makers.TimespanMaker)
+            assert isinstance(timespan_maker, makers.TaleaTimespanMaker)
         self._timespan_maker = timespan_maker
 
     ### SPECIAL METHODS ###
