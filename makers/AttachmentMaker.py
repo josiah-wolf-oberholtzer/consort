@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import abctools
 from abjad.tools import scoretools
-from abjad.tools.topleveltools import new
 
 
 class AttachmentMaker(abctools.AbjadValueObject):
@@ -26,17 +25,17 @@ class AttachmentMaker(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        attachment_expressions=None,
+        **attachment_expressions
         ):
         from consort import makers
         prototype = makers.AttachmentExpression
-        if attachment_expressions is not None:
-            assert all(isinstance(x, prototype) for x in attachment_expressions)
-            if len(attachment_expressions):
-                attachment_expressions = tuple(attachment_expressions)
-            else:
-                attachment_expressions = None
-        self._attachment_expressions = attachment_expressions
+        all_expressions = {}
+        for name, attachment_expression in attachment_expressions.items():
+            if attachment_expression is None:
+                continue
+            assert isinstance(attachment_expression, prototype)
+            all_expressions[name] = attachment_expression
+        self._attachment_expressions = all_expressions
 
     ### SPECIAL METHODS ###
 
@@ -48,35 +47,39 @@ class AttachmentMaker(abctools.AbjadValueObject):
         assert isinstance(music, scoretools.Container)
         if self.attachment_expressions is None:
             return
-        for attachment_expression in self.attachment_expressions:
+        for attachment_expression in self.attachment_expressions.values():
             attachment_expression(music, seed=seed)
+
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _storage_format_specification(self):
+        from abjad.tools import systemtools
+        manager = systemtools.StorageFormatManager
+        keyword_argument_names = manager.get_keyword_argument_names(self)
+        keyword_argument_names = list(keyword_argument_names)
+        keyword_argument_names.extend(sorted(self.attachment_expressions))
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=keyword_argument_names
+            )
 
     ### PUBLIC METHODS ###
 
     def reverse(self):
-        attachment_expressions = self.attachment_expressions
-        if attachment_expressions is None:
-            return new(self)
-        attachment_expressions = [
-            attachment_expression.reverse()
-            for attachment_expression in attachment_expressions
-            ]
-        return new(self,
-            attachment_expressions=attachment_expressions,
-            )
+        new_attachment_expressions = {}
+        for name, attachment_expression in self.attachment_expressions:
+            new_attachment_expressions[name] = attachment_expression.reverse()
+        return type(self)(**new_attachment_expressions)
 
     def rotate(self, n=0):
-        attachment_expressions = self.attachment_expressions
-        attachment_expressions = [
-            attachment_expression.rotate(n)
-            for attachment_expression in attachment_expressions
-            ]
-        return new(self,
-            attachment_expressions=attachment_expressions,
-            )
+        new_attachment_expressions = {}
+        for name, attachment_expression in self.attachment_expressions:
+            new_attachment_expressions[name] = attachment_expression.rotate(n)
+        return type(self)(**new_attachment_expressions)
 
     ### PUBLIC PROPERTIES ###
 
     @property
     def attachment_expressions(self):
-        return self._attachment_expressions
+        return self._attachment_expressions.copy()
