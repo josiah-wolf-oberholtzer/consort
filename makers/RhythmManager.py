@@ -415,14 +415,11 @@ class RhythmManager(abctools.AbjadValueObject):
     def _rewrite_meters(segment_session):
         score = segment_session.score
         for voice in iterate(score).by_class(scoretools.Voice):
-            print(voice.name)
-            print()
             for music in voice:
                 RhythmManager._rewrite_meter(
                     music=music,
                     meters=segment_session.meters,
                     )
-            print()
 
     @staticmethod
     def _sort_voice_names(
