@@ -150,7 +150,7 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         self.set_annotation_specifier(annotation_specifier)
         self.set_duration_in_seconds(duration_in_seconds)
-        self.set_is_final_segment(is_final_segment) 
+        self.set_is_final_segment(is_final_segment)
         self.set_rehearsal_mark(rehearsal_mark)
         self.set_score_template(score_template)
         self.set_tempo(tempo)
@@ -254,15 +254,17 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def _configure_score(self, score):
         if self.rehearsal_mark is not None:
-            rehearsal_mark_text = 'mark \\markup {{ ' \
-                "\\override #'(box-padding . 0.5) " \
-                '\\box "{}" " " \\fontsize #-3 "{}" }}'
-            rehearsal_mark_text = rehearsal_mark_text.format(
-                str(self.rehearsal_mark),
-                self.name or '',
+            markup = markuptools.Markup(r'''
+                \override #'(box-padding . 0.5)
+                    \box "{}"
+                " "
+                \fontsize #-3
+                    "{}"
+                '''.format(str(self.rehearsal_mark), self.name or ' '),
                 )
-            rehearsal_mark = indicatortools.LilyPondCommand(
-                rehearsal_mark_text)
+            rehearsal_mark = indicatortools.RehearsalMark(
+                markup=markup,
+                )
             attach(
                 rehearsal_mark,
                 score['TimeSignatureContext'].select_leaves()[0],
