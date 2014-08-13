@@ -5,7 +5,7 @@ from consort import makers
 
 def test_SegmentMaker___call___01():
 
-    score_template = makers.StringOrchestraScoreTemplate(
+    score_template = templatetools.StringOrchestraScoreTemplate(
         violin_count=2,
         viola_count=1,
         cello_count=1,

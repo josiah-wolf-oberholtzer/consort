@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
+from abjad.tools import templatetools
 from abjad.tools import timespantools
 from consort import makers
 
 layer = 1
-score_template = makers.StringOrchestraScoreTemplate(
+score_template = templatetools.StringOrchestraScoreTemplate(
     violin_count=2,
     viola_count=1,
     cello_count=1,

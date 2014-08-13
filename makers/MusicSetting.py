@@ -59,7 +59,7 @@ class MusicSetting(abctools.AbjadValueObject):
 
         >>> layer = 1
         >>> target_timespan = timespantools.Timespan(1, 2)
-        >>> score_template = makers.StringOrchestraScoreTemplate(
+        >>> score_template = templatetools.StringOrchestraScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,

@@ -1,8 +1,10 @@
+# -*- encoding: utf-8 -*-
+from abjad.tools import templatetools
 from consort import makers
 
 
 def test_SegmentMaker__find_voice_names_01():
-    score_template = makers.StringOrchestraScoreTemplate(
+    score_template = templatetools.StringOrchestraScoreTemplate(
         violin_count=2,
         viola_count=1,
         cello_count=1,

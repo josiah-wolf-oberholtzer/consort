@@ -23,7 +23,7 @@ class SegmentMaker(makertools.SegmentMaker):
     ::
 
         >>> from consort import makers
-        >>> score_template = makers.StringOrchestraScoreTemplate(
+        >>> score_template = templatetools.StringOrchestraScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -57,7 +57,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     indicatortools.TimeSignature((7, 16)),
                     ]
                 ),
-            score_template=makers.StringOrchestraScoreTemplate(
+            score_template=templatetools.StringOrchestraScoreTemplate(
                 violin_count=2,
                 viola_count=1,
                 cello_count=1,
@@ -290,7 +290,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ::
 
             >>> from consort import makers
-            >>> score_template = makers.StringOrchestraScoreTemplate(
+            >>> score_template = templatetools.StringOrchestraScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
             ...     cello_count=1,
@@ -420,7 +420,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
             >>> from consort import makers
             >>> segment_maker = makers.SegmentMaker()
-            >>> score_template = makers.StringOrchestraScoreTemplate(
+            >>> score_template = templatetools.StringOrchestraScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
             ...     cello_count=1,
@@ -429,7 +429,7 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> segment_maker.set_score_template(score_template)
             >>> print(format(segment_maker))
             makers.SegmentMaker(
-                score_template=makers.StringOrchestraScoreTemplate(
+                score_template=templatetools.StringOrchestraScoreTemplate(
                     violin_count=2,
                     viola_count=1,
                     cello_count=1,
