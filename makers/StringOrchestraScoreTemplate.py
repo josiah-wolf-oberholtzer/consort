@@ -593,7 +593,7 @@ class StringOrchestraScoreTemplate(abctools.AbjadValueObject):
 
     @property
     def split_hands(self):
-        r'''Is true if each hands receives a separate staff.
+        r'''Is true if each performer's hand receives a separate staff.
         '''
         return self._split_hands
 
