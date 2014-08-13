@@ -24,6 +24,21 @@ class RhythmManager(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     @staticmethod
+    def _cleanup_logical_ties(segment_session):
+        score = segment_session.score
+        for voice in iterate(score).by_class(scoretools.Voice):
+            for logical_tie in iterate(voice).by_logical_tie(
+                nontrivial=True, pitched=True, reverse=True):
+                if len(logical_tie) != 2:
+                    continue
+                if not logical_tie.all_leaves_are_in_same_parent:
+                    continue
+                if not logical_tie.written_duration == \
+                    durationtools.Duration(1, 8):
+                    continue
+                mutate(logical_tie).replace([scoretools.Note("c'8")])
+
+    @staticmethod
     def _cleanup_silences(segment_session):
         from consort import makers
         score = segment_session.score
@@ -464,5 +479,9 @@ class RhythmManager(abctools.AbjadValueObject):
         with systemtools.Timer() as timer:
             RhythmManager._cleanup_silences(segment_session)
         print('\tcleaning up silences:', timer.elapsed_time)
+
+        with systemtools.Timer() as timer:
+            RhythmManager._cleanup_logical_ties(segment_session)
+        print('\tcleaning up logical ties:', timer.elapsed_time)
 
         return segment_session
