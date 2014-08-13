@@ -36,7 +36,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     counts=(0, 4),
                     denominator=16,
                     ),
-                minimum_duration=durationtools.Duration(1, 8),
                 playing_talea=rhythmmakertools.Talea(
                     counts=(4, 8, 4),
                     denominator=16,
@@ -80,7 +79,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(5, 4),
@@ -89,7 +87,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(3, 2),
@@ -98,7 +95,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(5, 4),
                     stop_offset=durationtools.Offset(3, 2),
@@ -107,7 +103,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 2),
                     stop_offset=durationtools.Offset(2, 1),
@@ -116,7 +111,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
@@ -125,7 +119,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),

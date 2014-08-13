@@ -51,6 +51,12 @@ class SegmentMaker(makertools.SegmentMaker):
         >>> print(format(segment_maker))
         makers.SegmentMaker(
             duration_in_seconds=durationtools.Duration(2, 1),
+            permitted_time_signatures=indicatortools.TimeSignatureInventory(
+                [
+                    indicatortools.TimeSignature((5, 8)),
+                    indicatortools.TimeSignature((7, 16)),
+                    ]
+                ),
             score_template=makers.StringOrchestraScoreTemplate(
                 violin_count=2,
                 viola_count=1,
@@ -62,7 +68,6 @@ class SegmentMaker(makertools.SegmentMaker):
             settings=(
                 makers.MusicSetting(
                     timespan_maker=makers.TaleaTimespanMaker(
-                        minimum_duration=durationtools.Duration(1, 8),
                         playing_talea=rhythmmakertools.Talea(
                             counts=(4,),
                             denominator=16,
@@ -84,12 +89,6 @@ class SegmentMaker(makertools.SegmentMaker):
             tempo=indicatortools.Tempo(
                 duration=durationtools.Duration(1, 4),
                 units_per_minute=72,
-                ),
-            permitted_time_signatures=indicatortools.TimeSignatureInventory(
-                [
-                    indicatortools.TimeSignature((5, 8)),
-                    indicatortools.TimeSignature((7, 16)),
-                    ]
                 ),
             )
 
@@ -123,11 +122,11 @@ class SegmentMaker(makertools.SegmentMaker):
         '_annotation_specifier',
         '_duration_in_seconds',
         '_is_final_segment',
+        '_permitted_time_signatures',
         '_rehearsal_mark',
         '_score_template',
         '_settings',
         '_tempo',
-        '_permitted_time_signatures',
         )
 
     ### INITIALIZER ###
@@ -138,11 +137,11 @@ class SegmentMaker(makertools.SegmentMaker):
         duration_in_seconds=None,
         is_final_segment=None,
         name=None,
+        permitted_time_signatures=None,
         rehearsal_mark=None,
         score_template=None,
         settings=None,
         tempo=None,
-        permitted_time_signatures=None,
         ):
         from consort import makers
         makertools.SegmentMaker.__init__(

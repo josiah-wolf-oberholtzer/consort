@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
-import collections
+from consort.makers.TimespanMaker import TimespanMaker
 from scoremanager import idetools
+import collections
 
 
-class TaleaTimespanMaker(abctools.AbjadValueObject):
-    r'''A timespan maker.
+class TaleaTimespanMaker(TimespanMaker):
+    r'''A talea timespan maker.
 
     ::
 
@@ -27,7 +27,6 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
                 counts=(0, 4),
                 denominator=16,
                 ),
-            minimum_duration=durationtools.Duration(1, 8),
             playing_talea=rhythmmakertools.Talea(
                 counts=(4,),
                 denominator=16,
@@ -58,25 +57,21 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Viola',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola',
@@ -98,25 +93,21 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Viola',
@@ -140,25 +131,21 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         timespantools.TimespanInventory(
             [
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Violin',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
                     voice_name='Viola',
                     ),
                 makers.PerformedTimespan(
-                    minimum_duration=durationtools.Duration(1, 8),
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Violin',
@@ -171,9 +158,7 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_can_split',
         '_initial_silence_talea',
-        '_minimum_duration',
         '_playing_talea',
         '_playing_groupings',
         '_repeat',
@@ -189,7 +174,7 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         self,
         can_split=None,
         initial_silence_talea=None,
-        minimum_duration=durationtools.Duration(1, 8),
+        minimum_duration=None,
         playing_talea=rhythmmakertools.Talea(
             counts=[4],
             denominator=16,
@@ -204,17 +189,17 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         synchronize_groupings=False,
         synchronize_step=False,
         ):
-        if can_split is not None:
-            can_split = bool(can_split)
-        self._can_split = can_split
+        TimespanMaker.__init__(
+            self,
+            can_split=can_split,
+            minimum_duration=minimum_duration,
+            )
 
         if initial_silence_talea is not None:
             assert isinstance(initial_silence_talea, rhythmmakertools.Talea)
             assert initial_silence_talea.counts
             assert all(0 <= x for x in initial_silence_talea.counts)
         self._initial_silence_talea = initial_silence_talea
-
-        self._minimum_duration = durationtools.Duration(minimum_duration)
 
         assert isinstance(playing_talea, rhythmmakertools.Talea)
         assert playing_talea.counts
@@ -241,9 +226,16 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         self._synchronize_groupings = bool(synchronize_groupings)
         self._synchronize_step = bool(synchronize_step)
 
-    ### SPECIAL METHODS ###
+    ### PRIVATE METHODS ###
 
-    def __call__(
+    def _make_infinite_iterator(self, sequence):
+        index = 0
+        sequence = datastructuretools.CyclicTuple(sequence)
+        while True:
+            yield sequence[index]
+            index += 1
+
+    def _make_timespans(
         self,
         color=None,
         layer=None,
@@ -251,14 +243,6 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         target_timespan=None,
         timespan_inventory=None,
         ):
-
-        if target_timespan is None:
-            raise TypeError
-
-        if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanInventory()
-        assert isinstance(timespan_inventory, timespantools.TimespanInventory)
-
         initial_silence_talea = self.initial_silence_talea
         if not initial_silence_talea:
             initial_silence_talea = rhythmmakertools.Talea((0,), 1)
@@ -271,12 +255,10 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
         if silence_talea is None:
             silence_talea = rhythmmakertools.Talea((0,), 1)
         silence_talea = iter(silence_talea)
-
         if self.synchronize_step:
             procedure = self._make_with_synchronized_step
         else:
             procedure = self._make_without_synchronized_step
-
         new_timespan_inventory, final_offset = procedure(
             color=color,
             initial_silence_talea=initial_silence_talea,
@@ -287,44 +269,8 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
             silence_talea=silence_talea,
             target_timespan=target_timespan,
             )
-
         timespan_inventory.extend(new_timespan_inventory)
-        timespan_inventory.sort()
-
         return timespan_inventory
-
-    ### PRIVATE METHODS ###
-
-    def _make_infinite_iterator(self, sequence):
-        index = 0
-        sequence = datastructuretools.CyclicTuple(sequence)
-        while True:
-            yield sequence[index]
-            index += 1
-
-    def _make_performed_timespan(
-        self,
-        color=None,
-        layer=None,
-        music_specifier=None,
-        start_offset=None,
-        stop_offset=None,
-        voice_name=None,
-        ):
-        from consort import makers
-        timespan = makers.PerformedTimespan(
-            can_split=self.can_split,
-            color=color,
-            layer=layer,
-            minimum_duration=self.minimum_duration,
-            music_specifier=music_specifier,
-            original_start_offset=start_offset,
-            original_stop_offset=stop_offset,
-            start_offset=start_offset,
-            stop_offset=stop_offset,
-            voice_name=voice_name,
-            )
-        return timespan
 
     def _make_with_synchronized_step(
         self,
@@ -518,16 +464,8 @@ class TaleaTimespanMaker(abctools.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def can_split(self):
-        return self._can_split
-
-    @property
     def initial_silence_talea(self):
         return self._initial_silence_talea
-
-    @property
-    def minimum_duration(self):
-        return self._minimum_duration
 
     @property
     def playing_talea(self):

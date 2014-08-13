@@ -13,7 +13,6 @@ class PerformedTimespan(timespantools.Timespan):
         >>> timespan = makers.PerformedTimespan()
         >>> print(format(timespan))
         makers.PerformedTimespan(
-            minimum_duration=durationtools.Duration(0, 1),
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )
@@ -139,8 +138,6 @@ class PerformedTimespan(timespantools.Timespan):
 
     @property
     def minimum_duration(self):
-        if self._minimum_duration is None:
-            return durationtools.Duration(0)
         return self._minimum_duration
 
     @property

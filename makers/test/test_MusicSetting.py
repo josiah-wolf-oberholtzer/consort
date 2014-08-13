@@ -37,7 +37,6 @@ def test_MusicSetting_01():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
@@ -45,7 +44,6 @@ def test_MusicSetting_01():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
@@ -53,7 +51,6 @@ def test_MusicSetting_01():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(2, 1),
                     stop_offset=durationtools.Offset(3, 1),
@@ -61,7 +58,6 @@ def test_MusicSetting_01():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 1),
                     stop_offset=durationtools.Offset(4, 1),
@@ -90,7 +86,6 @@ def test_MusicSetting_02():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
@@ -122,7 +117,6 @@ def test_MusicSetting_03():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
@@ -130,7 +124,6 @@ def test_MusicSetting_03():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(2, 1),
                     stop_offset=durationtools.Offset(3, 1),
@@ -138,7 +131,6 @@ def test_MusicSetting_03():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 1),
                     stop_offset=durationtools.Offset(4, 1),
@@ -170,7 +162,6 @@ def test_MusicSetting_04():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
@@ -178,7 +169,6 @@ def test_MusicSetting_04():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(2, 1),
                     stop_offset=durationtools.Offset(3, 1),
@@ -210,7 +200,6 @@ def test_MusicSetting_05():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
@@ -218,7 +207,6 @@ def test_MusicSetting_05():
                     ),
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 1),
                     stop_offset=durationtools.Offset(4, 1),
@@ -250,7 +238,6 @@ def test_MusicSetting_06():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(4, 3),
                     stop_offset=durationtools.Offset(7, 3),
@@ -282,7 +269,6 @@ def test_MusicSetting_07():
             [
                 makers.PerformedTimespan(
                     layer=1,
-                    minimum_duration=durationtools.Duration(1, 8),
                     music_specifier=makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(12, 5),
                     stop_offset=durationtools.Offset(17, 5),
