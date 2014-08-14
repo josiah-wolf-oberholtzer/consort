@@ -123,6 +123,27 @@ class AttachmentExpression(abctools.AbjadValueObject):
                     for component in selection:
                         attach(attachment, component)
 
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _attribute_manifest(self):
+        from abjad.tools import systemtools
+        from scoremanager import idetools
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='attachments',
+                display_string='attachments',
+                command='at',
+                editor=idetools.getters.get_lists,
+                ),
+            systemtools.AttributeDetail(
+                name='selector',
+                display_string='selector',
+                command='se',
+                editor=selectortools.Selector,
+                ),
+            )
+
     ### PUBLIC METHODS ###
 
     def reverse(self):
