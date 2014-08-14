@@ -33,7 +33,10 @@ class AttachmentExpression(abctools.AbjadValueObject):
                     selectortools.RunSelectorCallback(
                         scoretools.Note
                         ),
-                    selectortools.SliceSelectorCallback(0),
+                    selectortools.SliceSelectorCallback(
+                        argument=0,
+                        apply_to_each=True,
+                        ),
                     ),
                 ),
             )
