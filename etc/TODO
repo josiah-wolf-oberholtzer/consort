@@ -1,7 +1,7 @@
 CONSORT TODO
 ============
 
-1.  TimespanMaker should not consume playing durations which do not appear in
+1.  TaleaTimespanMaker should not consume playing durations which do not appear in
     the output. The talea should always be unbroken as it wraps around unsynced
     voices.
 
