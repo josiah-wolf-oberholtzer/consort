@@ -107,11 +107,16 @@ class DynamicExpression(abctools.AbjadValueObject):
             if graces:
                 assert len(graces) == 1
                 grace_notes = list(graces[0].select_leaves())
+                group = selectiontools.ContiguousSelect(
+                    tuple(grace_notes) + tuple(group),
+                    )
         start_token = self.hairpin_start_token
         stop_token = self.hairpin_stop_token
         if is_short_group or stop_token is None:
             if start_token == 'o':
                 start_token = stop_token
+            if start_token.startswith('fp'):
+                start_token = start_token[1:]
             command = indicatortools.LilyPondCommand(start_token, 'right')
             attach(command, group[0])
             return
