@@ -94,7 +94,9 @@ class DependentTimespanMaker(TimespanMaker):
             can_split=can_split,
             minimum_duration=minimum_duration,
             )
-        self._voice_names = tuple(voice_names)
+        if voice_names is not None:
+            voice_names = tuple(voice_names)
+        self._voice_names = voice_names
 
     ### PRIVATE METHODS ###
 
@@ -106,6 +108,8 @@ class DependentTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        if not self.voice_names:
+            return
         preexisting_timespans = timespantools.TimespanInventory()
         for timespan in timespan_inventory:
             if timespan.voice_name in self.voice_names:
