@@ -14,18 +14,18 @@ class RegisterInflection(abctools.AbjadValueObject):
 
         >>> from consort import makers
         >>> register_inflection = makers.RegisterInflection(
-        ...     pitches=(-6, 0, 9),
+        ...     inflections=(-6, 0, 9),
         ...     ratio=(2, 1),
         ...     )
         >>> print(format(register_inflection))
         makers.RegisterInflection(
-            pitches=pitchtools.PitchSegment(
+            inflections=pitchtools.IntervalSegment(
                 (
-                    pitchtools.NamedPitch('fs'),
-                    pitchtools.NamedPitch("c'"),
-                    pitchtools.NamedPitch("a'"),
+                    pitchtools.NumberedInterval(-6),
+                    pitchtools.NumberedInterval(0),
+                    pitchtools.NumberedInterval(9),
                     ),
-                item_class=pitchtools.NamedPitch,
+                item_class=pitchtools.NumberedInterval,
                 ),
             ratio=mathtools.Ratio(2, 1),
             )
@@ -33,34 +33,34 @@ class RegisterInflection(abctools.AbjadValueObject):
     ::
 
         >>> register_inflection(0)
-        NamedPitch('fs')
+        NumberedInterval(-6)
 
     ::
 
         >>> register_inflection((1, 3))
-        NamedPitch('a')
+        NumberedInterval(-3)
 
     ::
 
         >>> register_inflection((1, 2))
-        NamedPitch('b')
+        NumberedInterval(-1)
 
     ::
 
         >>> register_inflection((2, 3))
-        NamedPitch("c'")
+        NumberedInterval(0)
 
     ::
 
         >>> register_inflection(1)
-        NamedPitch("a'")
+        NumberedInterval(9)
 
     '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_pitches',
+        '_inflections',
         '_ratio',
         )
 
@@ -68,17 +68,17 @@ class RegisterInflection(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        pitches=(0, 0),
+        inflections=(0, 0),
         ratio=(1,),
         ):
         ratio = mathtools.Ratio([abs(x) for x in ratio])
         self._ratio = ratio
-        assert len(pitches) == len(ratio) + 1
-        pitches = pitchtools.PitchSegment(
-            pitches,
-            item_class=pitchtools.NamedPitch,
+        assert len(inflections) == len(ratio) + 1
+        inflections = pitchtools.IntervalSegment(
+            inflections,
+            item_class=pitchtools.NumberedInterval,
             )
-        self._pitches = pitches
+        self._inflections = inflections
 
     ### SPECIAL METHODS ###
 
@@ -89,9 +89,9 @@ class RegisterInflection(abctools.AbjadValueObject):
         if 1 < position:
             position = durationtools.Offset(1)
         if position == 0:
-            return self.pitches[0]
+            return self.inflections[0]
         elif position == 1:
-            return self.pitches[-1]
+            return self.inflections[-1]
         ratio_sum = sum(self.ratio)
         positions = [durationtools.Offset(x) / ratio_sum
             for x in mathtools.cumulative_sums(self.ratio)]
@@ -99,29 +99,51 @@ class RegisterInflection(abctools.AbjadValueObject):
         position = float(position)
         x0 = float(positions[index - 1])
         x1 = float(positions[index])
-        y0 = float(self.pitches[index - 1])
-        y1 = float(self.pitches[index])
+        y0 = float(self.inflections[index - 1])
+        y1 = float(self.inflections[index])
         dx = x1 - x0
         dy = y1 - y0
         m = float(dy) / float(dx)
         b = y0 - (m * x0)
         result = (position * m) + b
-        result = pitchtools.NamedPitch(int(result))
+        result = pitchtools.NumberedInterval(int(result))
         return result
 
-    ### PUBLIC METHODS ###
+    ### PRIVATE PROPERTIES ###
 
-    def transpose(self, expr):
-        return new(
-            self,
-            pitches=self.pitches.transpose(expr),
+    @property
+    def _attribute_manifest(self):
+        r'''Attribute manifest.
+
+        ::
+
+            >>> from consort import makers
+            >>> register_inflection = makers.RegisterInflection()
+            >>> attribute_manifest = register_inflection._attribute_manifest
+
+        '''
+        from abjad.tools import systemtools
+        from scoremanager import idetools
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='inflections',
+                display_string='inflections',
+                command='i',
+                editor=idetools.getters.get_integers,
+                ),
+            systemtools.AttributeDetail(
+                name='ratio',
+                display_string='ratio',
+                command='r',
+                editor=idetools.getters.get_nonnegative_integers,
+                ),
             )
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def pitches(self):
-        return self._pitches
+    def inflections(self):
+        return self._inflections
 
     @property
     def ratio(self):
