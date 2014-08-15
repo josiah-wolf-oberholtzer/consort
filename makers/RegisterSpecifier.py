@@ -26,7 +26,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         ):
         from consort import makers
         self._center_pitch = pitchtools.NumberedPitch(center_pitch)
-        prototype = makers.BreakPointFunction
+        prototype = makers.RegisterInflection
         if division_deviations is not None:
             if isinstance(division_deviations, prototype):
                 division_deviations = [division_deviations]
