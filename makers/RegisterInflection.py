@@ -139,6 +139,48 @@ class RegisterInflection(abctools.AbjadValueObject):
                 ),
             )
 
+    ### PUBLIC METHODS ###
+
+    @staticmethod
+    def ascending():
+        from consort import makers
+        return makers.RegisterInflection(
+            inflections=(-6, 6),
+            ratio=(1,),
+            )
+
+    @staticmethod
+    def descending():
+        from consort import makers
+        return makers.RegisterInflection.ascending().invert()
+
+    def invert(self):
+        return new(self,
+            inflections=(-x for x in self.inflections),
+            )
+
+    def reverse(self):
+        return new(self,
+            inflections=reversed(self.inflections),
+            ratio=reversed(self.ratio),
+            )
+
+    @staticmethod
+    def triangle():
+        from consort import makers
+        return makers.RegisterInflection(
+            inflections=(-6, 6, -6),
+            ratio=(1, 1),
+            )
+
+    @staticmethod
+    def zigzag():
+        from consort import makers
+        return makers.RegisterInflection(
+            inflections=(-12, 6, -6, 12),
+            ratio=(1, 1, 1),
+            )
+
     ### PUBLIC PROPERTIES ###
 
     @property
