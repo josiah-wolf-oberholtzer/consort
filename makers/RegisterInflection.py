@@ -4,6 +4,7 @@ from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
+from abjad.tools import sequencetools
 from abjad.tools.topleveltools import new
 
 
@@ -73,12 +74,12 @@ class RegisterInflection(abctools.AbjadValueObject):
         ):
         ratio = mathtools.Ratio([abs(x) for x in ratio])
         self._ratio = ratio
-        assert len(inflections) == len(ratio) + 1
         inflections = pitchtools.IntervalSegment(
             inflections,
             item_class=pitchtools.NumberedInterval,
             )
         self._inflections = inflections
+        assert len(inflections) == len(ratio) + 1
 
     ### SPECIAL METHODS ###
 
@@ -143,6 +144,26 @@ class RegisterInflection(abctools.AbjadValueObject):
 
     @staticmethod
     def ascending():
+        r'''Creates an ascending register inflection.
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.ascending()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(-6),
+                        pitchtools.NumberedInterval(6),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1),
+                )
+
+        Emits new register inflection.
+        '''
         from consort import makers
         return makers.RegisterInflection(
             inflections=(-6, 6),
@@ -151,22 +172,134 @@ class RegisterInflection(abctools.AbjadValueObject):
 
     @staticmethod
     def descending():
+        r'''Creates a descending register inflection.
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.descending()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(-6),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1),
+                )
+
+        Emits new register inflection.
+        '''
         from consort import makers
         return makers.RegisterInflection.ascending().invert()
 
     def invert(self):
+        r'''Inverts register inflection
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.triangle().invert()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(-6),
+                        pitchtools.NumberedInterval(6),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1, 1),
+                )
+
+        Emits new register inflection.
+        '''
         return new(self,
             inflections=(-x for x in self.inflections),
             )
 
     def reverse(self):
+        r'''Reverses register inflection.
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.zigzag().reverse()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(12),
+                        pitchtools.NumberedInterval(-6),
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(-12),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1, 1, 1),
+                )
+
+        Emits new register inflection.
+        '''
         return new(self,
             inflections=reversed(self.inflections),
             ratio=reversed(self.ratio),
             )
 
+    def rotate(self, n=1):
+        r'''Rotates register inflection by `n`.
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.zigzag().rotate()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(12),
+                        pitchtools.NumberedInterval(-12),
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(-6),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1, 1, 1),
+                )
+
+        Emits new register inflection.
+        '''
+        return new(self,
+            inflections=sequencetools.rotate_sequence(self.inflections, n),
+            ratio=sequencetools.rotate_sequence(self.ratio, n),
+            )
+
     @staticmethod
     def triangle():
+        r'''Creates a triangular register inflection.
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.triangle()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(-6),
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(-6),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1, 1),
+                )
+
+        Emits new register inflection.
+        '''
         from consort import makers
         return makers.RegisterInflection(
             inflections=(-6, 6, -6),
@@ -175,6 +308,28 @@ class RegisterInflection(abctools.AbjadValueObject):
 
     @staticmethod
     def zigzag():
+        r'''Creates a zigzag register inflection.
+
+        ::
+
+            >>> from consort import makers
+            >>> inflection = makers.RegisterInflection.zigzag()
+            >>> print(format(inflection))
+            makers.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(-12),
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(-6),
+                        pitchtools.NumberedInterval(12),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1, 1, 1),
+                )
+
+        Emits new register inflection.
+        '''
         from consort import makers
         return makers.RegisterInflection(
             inflections=(-12, 6, -6, 12),
