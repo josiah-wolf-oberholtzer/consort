@@ -3,7 +3,7 @@ from abjad import *
 import consort
 
 
-crescendi_attachment_expression = consort.makers.AttachmentExpression(
+crescendi_dynamic_attachment_expression = consort.makers.AttachmentExpression(
     attachments=(
         consort.makers.DynamicExpression(
             hairpin_start_token='p',
@@ -24,13 +24,13 @@ crescendi_attachment_expression = consort.makers.AttachmentExpression(
     selector=selectortools.Selector(
         callbacks=(
             selectortools.PrototypeSelectorCallback(
-                scoretools.Leaf
+                prototype=scoretools.Leaf,
                 ),
             selectortools.RunSelectorCallback(
-                (
+                prototype=(
                     scoretools.Note,
                     scoretools.Chord,
-                    )
+                    ),
                 ),
             ),
         ),

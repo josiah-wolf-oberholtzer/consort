@@ -3,7 +3,7 @@ from abjad import *
 from consort import makers
 
 
-crescendi_attachment_expression = makers.AttachmentExpression(
+crescendi_dynamic_attachment_expression = makers.AttachmentExpression(
     attachments=(
         makers.DynamicExpression('p', 'f'),
         makers.DynamicExpression('fp', 'f'),
