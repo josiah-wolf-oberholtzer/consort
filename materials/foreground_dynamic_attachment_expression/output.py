@@ -4,7 +4,7 @@ import consort
 
 
 foreground_dynamic_attachment_expression = consort.makers.AttachmentExpression(
-    attachments=makers.AttachmentInventory(
+    attachments=datastructuretools.TypedList(
         [
             consort.makers.DynamicExpression(
                 hairpin_start_token='fff',
