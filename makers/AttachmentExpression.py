@@ -8,6 +8,7 @@ from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
 import collections
+import copy
 
 
 class AttachmentExpression(abctools.AbjadValueObject):
@@ -118,12 +119,17 @@ class AttachmentExpression(abctools.AbjadValueObject):
             if not isinstance(attachments, tuple):
                 attachments = (attachments,)
             for attachment in attachments:
+                # spanners
                 if isinstance(attachment, spannertools.Spanner):
+                    attachment = copy.copy(attachment)
                     attach(attachment, selection)
+                # expressions
                 elif hasattr(attachment, '__call__'):
                     attachment(selection)
+                # indicators
                 else:
                     for component in selection:
+                        attachment = copy.copy(attachment)
                         attach(attachment, component)
 
     ### PRIVATE PROPERTIES ###
@@ -131,7 +137,6 @@ class AttachmentExpression(abctools.AbjadValueObject):
     @property
     def _attribute_manifest(self):
         from abjad.tools import systemtools
-        from consort import makers
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
                 name='attachments',
