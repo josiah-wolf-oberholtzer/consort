@@ -152,6 +152,32 @@ class DynamicExpression(abctools.AbjadValueObject):
             override(hairpin).hairpin.circled_tip = True
         attach(hairpin, group)
 
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _attribute_manifest(self):
+        from abjad.tools import systemtools
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='hairpin_start_token',
+                display_string='hairpin start token',
+                command='t',
+                editor=idetools.getters.get_hairpin_token,
+                ),
+            systemtools.AttributeDetail(
+                name='hairpin_stop_token',
+                display_string='hairpin stop token',
+                command='p',
+                editor=idetools.getters.get_hairpin_token,
+                ),
+            systemtools.AttributeDetail(
+                name='minimum_duration',
+                display_string='minimum duration',
+                command='m',
+                editor=idetools.getters.get_duration,
+                ),
+            )
+
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -161,10 +187,6 @@ class DynamicExpression(abctools.AbjadValueObject):
     @property
     def hairpin_stop_token(self):
         return self._hairpin_stop_token
-
-    @property
-    def hairpin_shape(self):
-        return None
 
     @property
     def minimum_duration(self):
