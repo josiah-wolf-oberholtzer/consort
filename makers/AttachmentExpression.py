@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-import collections
+from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import sequencetools
 from abjad.tools import spannertools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
-from abjad.tools import abctools
+import collections
 
 
 class AttachmentExpression(abctools.AbjadValueObject):
@@ -22,16 +22,18 @@ class AttachmentExpression(abctools.AbjadValueObject):
         ...     )
         >>> print(format(attachment_expression))
         makers.AttachmentExpression(
-            attachments=(
-                indicatortools.Articulation('>'),
+            attachments=datastructuretools.TypedList(
+                [
+                    indicatortools.Articulation('>'),
+                    ]
                 ),
             selector=selectortools.Selector(
                 callbacks=(
                     selectortools.PrototypeSelectorCallback(
-                        scoretools.Leaf
+                        prototype=scoretools.Leaf,
                         ),
                     selectortools.RunSelectorCallback(
-                        scoretools.Note
+                        prototype=scoretools.Note,
                         ),
                     selectortools.SliceSelectorCallback(
                         argument=0,
@@ -91,7 +93,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
         if attachments is not None:
             if not isinstance(attachments, collections.Sequence):
                 attachments = (attachments,)
-            attachments = makers.AttachmentInventory(attachments)
+            attachments = datastructuretools.TypedList(attachments)
         self._attachments = attachments
         if selector is not None:
             assert isinstance(selector, selectortools.Selector)
@@ -135,7 +137,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
                 name='attachments',
                 display_string='attachments',
                 command='at',
-                editor=makers.AttachmentInventory,
+                editor=datastructuretools.TypedList,
                 ),
             systemtools.AttributeDetail(
                 name='selector',
