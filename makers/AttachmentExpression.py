@@ -87,10 +87,11 @@ class AttachmentExpression(abctools.AbjadValueObject):
         attachments=None,
         selector=None,
         ):
+        from consort import makers
         if attachments is not None:
             if not isinstance(attachments, collections.Sequence):
                 attachments = (attachments,)
-            attachments = tuple(attachments)
+            attachments = makers.AttachmentInventory(attachments)
         self._attachments = attachments
         if selector is not None:
             assert isinstance(selector, selectortools.Selector)
@@ -128,13 +129,13 @@ class AttachmentExpression(abctools.AbjadValueObject):
     @property
     def _attribute_manifest(self):
         from abjad.tools import systemtools
-        from scoremanager import idetools
+        from consort import makers
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
                 name='attachments',
                 display_string='attachments',
                 command='at',
-                editor=idetools.getters.get_lists,
+                editor=makers.AttachmentInventory,
                 ),
             systemtools.AttributeDetail(
                 name='selector',
