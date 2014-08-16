@@ -87,7 +87,14 @@ class RhythmManager(abctools.AbjadValueObject):
                         split_offsets,
                         )
 
-                    rests = scoretools.make_rests([timespan.duration])
+                    div, mod = divmod(
+                        durationtools.Duration(timespan.duration),
+                        durationtools.Duration(1),
+                        )
+                    durations = [durationtools.Duration(1)] * int(div)
+                    if mod:
+                        durations.append(mod)
+                    rests = scoretools.make_rests(durations)
                     inner_rest_container = scoretools.Container(rests)
                     outer_rest_container = scoretools.Container([
                         inner_rest_container])
@@ -393,10 +400,12 @@ class RhythmManager(abctools.AbjadValueObject):
             last_leaf = container.select_leaves()[-1]
             is_tied = RhythmManager._leaf_is_tied(last_leaf)
             if isinstance(container, scoretools.Tuplet):
+                continue
                 RhythmManager._rewrite_tuplet_meter(
                     container=container,
                     )
             elif current_meter_duration < container_stop_offset:
+                continue
                 RhythmManager._rewrite_barline_crossing_container_meter(
                     container=container,
                     meter_one=current_meter,
@@ -413,6 +422,7 @@ class RhythmManager(abctools.AbjadValueObject):
                         container=container,
                         )
                 else:
+                    continue
                     mutate(container[:]).rewrite_meter(
                         current_meter,
                         boundary_depth=1,
@@ -429,12 +439,13 @@ class RhythmManager(abctools.AbjadValueObject):
     @staticmethod
     def _rewrite_meters(segment_session):
         score = segment_session.score
-        for voice in iterate(score).by_class(scoretools.Voice):
-            for music in voice:
-                RhythmManager._rewrite_meter(
-                    music=music,
-                    meters=segment_session.meters,
-                    )
+        with systemtools.ForbidUpdate(score):
+            for voice in iterate(score).by_class(scoretools.Voice):
+                for music in voice:
+                    RhythmManager._rewrite_meter(
+                        music=music,
+                        meters=segment_session.meters,
+                        )
 
     @staticmethod
     def _sort_voice_names(
