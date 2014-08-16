@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import durationtools
 from abjad.tools import timespantools
 from consort.makers.TimespanMaker import TimespanMaker
 
@@ -127,6 +126,33 @@ class DependentTimespanMaker(TimespanMaker):
                     voice_name=voice_name,
                     )
                 timespan_inventory.append(timespan)
+
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _attribute_manifest(self):
+        from abjad.tools import systemtools
+        from scoremanager import idetools
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='can_split',
+                display_string='can split',
+                command='cp',
+                editor=idetools.getters.get_boolean,
+                ),
+            systemtools.AttributeDetail(
+                name='voice_names',
+                display_string='voice names',
+                command='vn',
+                editor=idetools.getters.get_strings,
+                ),
+            systemtools.AttributeDetail(
+                name='minimum_duration',
+                display_string='minimum duration',
+                command='md',
+                editor=idetools.getters.get_duration,
+                ),
+            )
 
     ### PUBLIC PROPERTIES ###
 
