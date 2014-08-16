@@ -165,7 +165,8 @@ class MusicSetting(abctools.AbjadValueObject):
             assert isinstance(music_specifier, prototype)
         self._music_specifiers = music_specifiers
         if timespan_maker is not None:
-            assert isinstance(timespan_maker, makers.TaleaTimespanMaker)
+            assert isinstance(timespan_maker, makers.TimespanMaker), \
+                timespan_maker
         self._timespan_maker = timespan_maker
 
     ### SPECIAL METHODS ###
