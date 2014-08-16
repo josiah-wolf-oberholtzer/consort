@@ -46,6 +46,8 @@ class TimespanMaker(abctools.AbjadValueObject):
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         assert isinstance(timespan_inventory, timespantools.TimespanInventory)
+        if not music_specifiers:
+            return timespan_inventory
         self._make_timespans(
             color=color,
             layer=layer,
