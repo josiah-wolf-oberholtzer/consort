@@ -179,6 +179,10 @@ class MusicSetting(abctools.AbjadValueObject):
         timespan_inventory=None,
         ):
         from consort import makers
+        if timespan_inventory is None:
+            timespan_inventory = timespantools.TimespanInventory()
+        if not self.music_specifiers:
+            return timespan_inventory
         assert score_template is not None
         score = score_template()
         voice_pairs = []
@@ -209,8 +213,6 @@ class MusicSetting(abctools.AbjadValueObject):
             for mask_timespan in mask_timespans:
                 available_timespans = target_timespan & mask_timespan
                 target_timespans.extend(available_timespans)
-        if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanInventory()
         for target_timespan in target_timespans:
             timespan_inventory = self.timespan_maker(
                 color=self.color,
