@@ -10,7 +10,7 @@ class FloodedTimespanMaker(TimespanMaker):
         >>> from consort import makers
         >>> timespan_maker = makers.FloodedTimespanMaker()
         >>> print(format(timespan_maker))
-        makers.FloodedTimespanMaker()
+        consort.makers.FloodedTimespanMaker()
 
     ::
 
@@ -26,12 +26,12 @@ class FloodedTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Cello Voice',

@@ -15,7 +15,7 @@ class DependentTimespanMaker(TimespanMaker):
         ...          ),
         ...     )
         >>> print(format(timespan_maker))
-        makers.DependentTimespanMaker(
+        consort.makers.DependentTimespanMaker(
             voice_names=('Viola Voice',),
             )
 
@@ -49,22 +49,22 @@ class DependentTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Violin Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Cello Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Viola Voice',

@@ -21,7 +21,7 @@ class GraceMaker(abctools.AbjadValueObject):
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
         >>> print(format(grace_maker))
-        makers.GraceMaker(
+        consort.makers.GraceMaker(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),
             )

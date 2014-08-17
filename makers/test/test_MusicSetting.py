@@ -36,30 +36,30 @@ def test_MusicSetting_01():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(2, 1),
                     stop_offset=durationtools.Offset(3, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 1),
                     stop_offset=durationtools.Offset(4, 1),
                     voice_name='Viola Bowing Voice',
@@ -85,9 +85,9 @@ def test_MusicSetting_02():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
@@ -116,23 +116,23 @@ def test_MusicSetting_03():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(2, 1),
                     stop_offset=durationtools.Offset(3, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 1),
                     stop_offset=durationtools.Offset(4, 1),
                     voice_name='Viola Bowing Voice',
@@ -161,16 +161,16 @@ def test_MusicSetting_04():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(2, 1),
                     stop_offset=durationtools.Offset(3, 1),
                     voice_name='Viola Bowing Voice',
@@ -199,16 +199,16 @@ def test_MusicSetting_05():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 1),
                     stop_offset=durationtools.Offset(4, 1),
                     voice_name='Viola Bowing Voice',
@@ -237,9 +237,9 @@ def test_MusicSetting_06():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(4, 3),
                     stop_offset=durationtools.Offset(7, 3),
                     voice_name='Viola Bowing Voice',
@@ -268,9 +268,9 @@ def test_MusicSetting_07():
         '''
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(12, 5),
                     stop_offset=durationtools.Offset(17, 5),
                     voice_name='Viola Bowing Voice',

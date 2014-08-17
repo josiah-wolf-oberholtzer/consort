@@ -11,7 +11,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         >>> from consort import makers
         >>> music_specifier = makers.MusicSpecifier()
         >>> print(format(music_specifier))
-        makers.MusicSpecifier()
+        consort.makers.MusicSpecifier()
 
     '''
 

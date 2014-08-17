@@ -19,7 +19,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         ...     ratio=(2, 1),
         ...     )
         >>> print(format(register_inflection))
-        makers.RegisterInflection(
+        consort.makers.RegisterInflection(
             inflections=pitchtools.IntervalSegment(
                 (
                     pitchtools.NumberedInterval(-6),
@@ -151,7 +151,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.ascending()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-6),
@@ -179,7 +179,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.descending()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(6),
@@ -203,7 +203,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.triangle().invert()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(6),
@@ -229,7 +229,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.zigzag().reverse()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(12),
@@ -257,7 +257,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.zigzag().rotate()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(12),
@@ -286,7 +286,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.triangle()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-6),
@@ -315,7 +315,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> from consort import makers
             >>> inflection = makers.RegisterInflection.zigzag()
             >>> print(format(inflection))
-            makers.RegisterInflection(
+            consort.makers.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-12),

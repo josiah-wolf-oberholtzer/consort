@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import abctools
+from abjad.tools import datastructuretools
 from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import inspect_
@@ -29,9 +30,9 @@ class MusicSetting(abctools.AbjadValueObject):
         ...     violin_2_bowing_voice=makers.MusicSpecifier(),
         ...     )
         >>> print(format(red_setting))
-        makers.MusicSetting(
+        consort.makers.MusicSetting(
             color='red',
-            timespan_maker=makers.TaleaTimespanMaker(
+            timespan_maker=consort.makers.TaleaTimespanMaker(
                 initial_silence_talea=rhythmmakertools.Talea(
                     counts=(0, 4),
                     denominator=16,
@@ -50,9 +51,9 @@ class MusicSetting(abctools.AbjadValueObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            viola_bowing_voice=makers.MusicSpecifier(),
-            violin_1_bowing_voice=makers.MusicSpecifier(),
-            violin_2_bowing_voice=makers.MusicSpecifier(),
+            viola_bowing_voice=consort.makers.MusicSpecifier(),
+            violin_1_bowing_voice=consort.makers.MusicSpecifier(),
+            violin_2_bowing_voice=consort.makers.MusicSpecifier(),
             )
 
     ::
@@ -76,50 +77,50 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(5, 4),
                     voice_name='Violin 1 Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Viola Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(5, 4),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Violin 2 Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin 1 Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin 2 Bowing Voice',
                     ),
-                makers.PerformedTimespan(
+                consort.makers.PerformedTimespan(
                     color='red',
                     layer=1,
-                    music_specifier=makers.MusicSpecifier(),
+                    music_specifier=consort.makers.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
@@ -162,7 +163,14 @@ class MusicSetting(abctools.AbjadValueObject):
         self._timespan_identifier = timespan_identifier
         prototype = (type(None), makers.MusicSpecifier)
         for music_specifier in music_specifiers.values():
-            assert isinstance(music_specifier, prototype)
+            if music_specifier is None:
+                continue
+            elif isinstance(music_specifier, prototype):
+                continue
+            elif isinstance(music_specifier, tuple) and \
+                all(isinstance(x, prototype) for x in music_specifier):
+                continue
+            raise ValueError(music_specifier)
         self._music_specifiers = music_specifiers
         if timespan_maker is not None:
             assert isinstance(timespan_maker, makers.TimespanMaker), \
@@ -187,6 +195,11 @@ class MusicSetting(abctools.AbjadValueObject):
         score = score_template()
         voice_pairs = []
         for name, music_specifier in self.music_specifiers.items():
+            if music_specifier is None:
+                music_specifier = (None,)
+            elif isinstance(music_specifier, makers.MusicSpecifier):
+                music_specifier = (music_specifier,)
+            music_specifier = datastructuretools.CyclicTuple(music_specifier)
             voice_name = score_template.voice_name_abbreviations[name]
             voice = score[voice_name]
             voice_pair = (voice, music_specifier)

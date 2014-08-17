@@ -49,7 +49,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ...         ),
         ...     )
         >>> print(format(segment_maker))
-        makers.SegmentMaker(
+        consort.makers.SegmentMaker(
             duration_in_seconds=durationtools.Duration(2, 1),
             permitted_time_signatures=indicatortools.TimeSignatureInventory(
                 [
@@ -66,8 +66,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 use_percussion_clefs=False,
                 ),
             settings=(
-                makers.MusicSetting(
-                    timespan_maker=makers.TaleaTimespanMaker(
+                consort.makers.MusicSetting(
+                    timespan_maker=consort.makers.TaleaTimespanMaker(
                         playing_talea=rhythmmakertools.Talea(
                             counts=(4,),
                             denominator=16,
@@ -82,8 +82,8 @@ class SegmentMaker(makertools.SegmentMaker):
                         synchronize_groupings=False,
                         synchronize_step=False,
                         ),
-                    violin_1_bowing_voice=makers.MusicSpecifier(),
-                    violin_2_bowing_voice=makers.MusicSpecifier(),
+                    violin_1_bowing_voice=consort.makers.MusicSpecifier(),
+                    violin_2_bowing_voice=consort.makers.MusicSpecifier(),
                     ),
                 ),
             tempo=indicatortools.Tempo(
@@ -404,7 +404,7 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> segment_maker = makers.SegmentMaker()
             >>> segment_maker.set_is_final_segment(True)
             >>> print(format(segment_maker))
-            makers.SegmentMaker(
+            consort.makers.SegmentMaker(
                 is_final_segment=True,
                 )
 
@@ -430,7 +430,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ...     )
             >>> segment_maker.set_score_template(score_template)
             >>> print(format(segment_maker))
-            makers.SegmentMaker(
+            consort.makers.SegmentMaker(
                 score_template=templatetools.StringOrchestraScoreTemplate(
                     violin_count=2,
                     viola_count=1,
@@ -454,7 +454,7 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> tempo = indicatortools.Tempo((1, 4), 52)
             >>> segment_maker.set_tempo(tempo)
             >>> print(format(segment_maker))
-            makers.SegmentMaker(
+            consort.makers.SegmentMaker(
                 tempo=indicatortools.Tempo(
                     duration=durationtools.Duration(1, 4),
                     units_per_minute=52,
@@ -476,7 +476,7 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
             >>> segment_maker.set_permitted_time_signatures(time_signatures)
             >>> print(format(segment_maker))
-            makers.SegmentMaker(
+            consort.makers.SegmentMaker(
                 permitted_time_signatures=indicatortools.TimeSignatureInventory(
                     [
                         indicatortools.TimeSignature((3, 4)),

@@ -32,11 +32,11 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         ...         ),
         ...     )
         >>> print(format(register_specifier))
-        makers.RegisterSpecifier(
+        consort.makers.RegisterSpecifier(
             center_pitch=pitchtools.NumberedPitch(12),
             division_inflections=datastructuretools.CyclicTuple(
                 [
-                    makers.RegisterInflection(
+                    consort.makers.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
                             (
                                 pitchtools.NumberedInterval(-6),
@@ -51,7 +51,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                 ),
             phrase_inflections=datastructuretools.CyclicTuple(
                 [
-                    makers.RegisterInflection(
+                    consort.makers.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
                             (
                                 pitchtools.NumberedInterval(3),
@@ -65,7 +65,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                 ),
             segment_inflections=datastructuretools.CyclicTuple(
                 [
-                    makers.RegisterInflection(
+                    consort.makers.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
                             (
                                 pitchtools.NumberedInterval(-12),

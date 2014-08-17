@@ -11,7 +11,7 @@ class AttachmentMaker(abctools.AbjadValueObject):
         >>> from consort import makers
         >>> attachment_maker = makers.AttachmentMaker()
         >>> print(format(attachment_maker))
-        makers.AttachmentMaker()
+        consort.makers.AttachmentMaker()
 
     '''
 

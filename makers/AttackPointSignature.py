@@ -17,7 +17,7 @@ class AttackPointSignature(abctools.AbjadValueObject):
         ...     segment_position=(4, 5),
         ...     )
         >>> print(format(attack_point_signature))
-        makers.AttackPointSignature(
+        consort.makers.AttackPointSignature(
             division_position=durationtools.Multiplier(0, 1),
             phrase_position=durationtools.Multiplier(1, 2),
             segment_position=durationtools.Multiplier(4, 5),
