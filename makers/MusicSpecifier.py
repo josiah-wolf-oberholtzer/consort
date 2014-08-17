@@ -52,6 +52,49 @@ class MusicSpecifier(abctools.AbjadValueObject):
             assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
 
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _attribute_manifest(self):
+        r'''Attribute manifest.
+
+        ::
+            
+            >>> from consort import makers
+            >>> music_specifier = makers.MusicSpecifier()
+            >>> print(format(music_specifier._attribute_manifest))
+            systemtools.AttributeManifest()
+
+        '''
+        from abjad.tools import systemtools
+        from consort import makers
+        return systemtools.AttributeManifest(
+            systemtools.AttributeDetail(
+                name='attachment_maker',
+                display_string='attachment maker',
+                command='am',
+                editor=makers.AttachmentMaker,
+                ),
+            systemtools.AttributeDetail(
+                name='grace_maker',
+                display_string='grace maker',
+                command='am',
+                editor=makers.GraceMaker,
+                ),
+            systemtools.AttributeDetail(
+                name='pitch_maker',
+                display_string='pitch maker',
+                command='am',
+                editor=makers.PitchMaker,
+                ),
+            systemtools.AttributeDetail(
+                name='rhythm_maker',
+                display_string='rhythm maker',
+                command='am',
+                editor=rhythmmakertools.RhythmMaker,
+                ),
+            )
+
     ### PUBLIC PROPERTIES ###
 
     @property
