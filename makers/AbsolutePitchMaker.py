@@ -9,11 +9,36 @@ from abjad.tools.topleveltools import mutate
 from consort.makers.PitchMaker import PitchMaker
 
 
-class NonsemanticPitchMaker(PitchMaker):
+class AbsolutePitchMaker(PitchMaker):
+    r'''Absolute pitch maker.
+
+    ::
+
+        >>> from consort import makers
+        >>> pitch_maker = makers.AbsolutePitchMaker(
+        ...     groupings=(2, 1, 1, 1),
+        ...     pitches="c' d' e' f'",
+        ...     )
+        >>> print(format(pitch_maker))
+        consort.makers.AbsolutePitchMaker(
+            allow_repetition=False,
+            groupings=(2, 1, 1, 1),
+            pitches=datastructuretools.CyclicTuple(
+                [
+                    pitchtools.NamedPitch("c'"),
+                    pitchtools.NamedPitch("d'"),
+                    pitchtools.NamedPitch("e'"),
+                    pitchtools.NamedPitch("f'"),
+                    ]
+                ),
+            )
+
+    '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_groupings',
         '_pitches',
         )
 
@@ -46,8 +71,7 @@ class NonsemanticPitchMaker(PitchMaker):
         seed=0,
         ):
         grouping = self._groupings[seed]
-        indices = range(grouping, seed)
-        pitches = [self.pitches[x] for x in indices]
+        pitches = self.pitches[seed:seed + grouping]
         pitches = pitchtools.PitchSet(pitches)
         for i, leaf in enumerate(logical_tie):
             chord = scoretools.Chord(leaf)
