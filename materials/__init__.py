@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-from incised_rhythm_maker import incised_rhythm_maker
-from note_rhythm_maker import note_rhythm_maker
-from talea_rhythm_maker import talea_rhythm_maker
-from tuplet_rhythm_maker import tuplet_rhythm_maker
+from abjad.tools import systemtools
+
+systemtools.ImportManager.import_material_packages(
+    __path__[0],
+    globals(),
+    )
