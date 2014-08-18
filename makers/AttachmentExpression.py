@@ -90,7 +90,6 @@ class AttachmentExpression(abctools.AbjadValueObject):
         attachments=None,
         selector=None,
         ):
-        from consort import makers
         if attachments is not None:
             if not isinstance(attachments, collections.Sequence):
                 attachments = (attachments,)
@@ -111,7 +110,8 @@ class AttachmentExpression(abctools.AbjadValueObject):
             return
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
         all_attachments = sequencetools.rotate_sequence(all_attachments, seed)
-        selections = self.selector(music)
+        selector = self.selector or selectortools.Selector()
+        selections = selector(music)
         for i, selection in enumerate(selections):
             attachments = all_attachments[i]
             if attachments is None:
