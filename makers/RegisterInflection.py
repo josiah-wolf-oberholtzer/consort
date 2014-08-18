@@ -72,6 +72,11 @@ class RegisterInflection(abctools.AbjadValueObject):
         inflections=(0, 0),
         ratio=(1,),
         ):
+        if isinstance(inflections, type(self)):
+            expr = inflections
+            self._inflections = expr.inflections
+            self._ratio = expr.ratio
+            return
         ratio = mathtools.Ratio([abs(x) for x in ratio])
         self._ratio = ratio
         inflections = pitchtools.IntervalSegment(
