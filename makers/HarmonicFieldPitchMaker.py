@@ -1,19 +1,16 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
-from abjad.tools import pitchtools
 from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
+from consort.makers.PitchMaker import PitchMaker
 
 
-class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
+class HarmonicFieldPitchMaker(PitchMaker):
     r'''A harmonic field pitch maker.
     '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_allow_repetition',
         '_chord_specifiers',
         '_harmonic_fields',
         '_register_specifier',
@@ -29,7 +26,10 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
         register_specifier=None,
         ):
         from consort import makers
-        self._allow_repetition = bool(allow_repetition)
+        PitchMaker.__init__(
+            self,
+            allow_repetition=allow_repetition,
+            )
         prototype = makers.ChordSpecifier
         if chord_specifiers:
             if isinstance(chord_specifiers, prototype):
@@ -47,24 +47,6 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
         if register_specifier is not None:
             assert isinstance(register_specifier, makers.RegisterSpecifier)
         self._register_specifier = register_specifier
-
-    ### SPECIAL METHODS ###
-
-    def __call__(
-        self,
-        music,
-        seed=0,
-        ):
-        pitch_range = inspect_(music).get_effective(pitchtools.PitchRange)
-        previous_pitch = None
-        iterator = iterate(music).by_logical_tie(pitched=True)
-        for i, logical_tie in enumerate(iterator):
-            previous_pitch = self._process_logical_tie(
-                logical_tie,
-                previous_pitch=previous_pitch,
-                pitch_range=pitch_range,
-                seed=seed + i,
-                )
 
     ### PRIVATE METHODS ###
 
@@ -136,10 +118,6 @@ class HarmonicFieldPitchMaker(abctools.AbjadValueObject):
         return structural_pitch
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def allow_repetition(self):
-        return self._allow_repetition
 
     @property
     def chord_specifiers(self):
