@@ -122,26 +122,16 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         if center_pitch is not None:
             center_pitch = pitchtools.NumberedPitch(center_pitch)
         self._center_pitch = center_pitch
-        prototype = makers.RegisterInflection
         if division_inflections is not None:
-            if isinstance(division_inflections, prototype):
-                division_inflections = [division_inflections]
-            assert all(isinstance(x, prototype) for x in division_inflections)
-            division_inflections = datastructuretools.CyclicTuple(
+            division_inflections = makers.RegisterInflectionInventory(
                 division_inflections)
         self._division_inflections = division_inflections
         if phrase_inflections is not None:
-            if isinstance(phrase_inflections, prototype):
-                phrase_inflections = [phrase_inflections]
-            assert all(isinstance(x, prototype) for x in phrase_inflections)
-            phrase_inflections = datastructuretools.CyclicTuple(
+            phrase_inflections = makers.RegisterInflectionInventory(
                 phrase_inflections)
         self._phrase_inflections = phrase_inflections
         if segment_inflections is not None:
-            if isinstance(segment_inflections, prototype):
-                segment_inflections = [segment_inflections]
-            assert all(isinstance(x, prototype) for x in segment_inflections)
-            segment_inflections = datastructuretools.CyclicTuple(
+            segment_inflections = makers.RegisterInflectionInventory(
                 segment_inflections)
         self._segment_inflections = segment_inflections
 
@@ -203,15 +193,18 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         if register is None:
             register = pitchtools.NumberedPitch(0)
         if self.division_inflections:
-            inflection = self.division_inflections[seed]
+            index = seed % len(self.division_inflections)
+            inflection = self.division_inflections[index]
             deviation = inflection(division_position)
             register = register.transpose(deviation)
         if self.phrase_inflections:
-            inflection = self.phrase_inflections[seed]
+            index = seed % len(self.phrase_inflections)
+            inflection = self.phrase_inflections[index]
             deviation = inflection(phrase_position)
             register = register.transpose(deviation)
         if self.segment_inflections:
-            inflection = self.segment_inflections[seed]
+            index = seed % len(self.segment_inflections)
+            inflection = self.segment_inflections[index]
             deviation = inflection(segment_position)
             register = register.transpose(deviation)
         return register
