@@ -162,19 +162,19 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                 name='division_inflections',
                 display_string='division inflections',
                 command='di',
-                editor=makers.RegisterInflection,
+                editor=makers.RegisterInflectionInventory,
                 ),
             systemtools.AttributeDetail(
                 name='phrase_inflections',
                 display_string='phrase inflections',
                 command='pi',
-                editor=makers.RegisterInflection,
+                editor=makers.RegisterInflectionInventory,
                 ),
             systemtools.AttributeDetail(
                 name='segment_inflections',
                 display_string='segment inflections',
                 command='si',
-                editor=makers.RegisterInflection,
+                editor=makers.RegisterInflectionInventory,
                 ),
             )
 
