@@ -25,17 +25,14 @@ class AttachmentMaker(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        **attachment_expressions
+        attachment_expressions=None,
         ):
         from consort import makers
         prototype = makers.AttachmentExpression
-        all_expressions = {}
-        for name, attachment_expression in attachment_expressions.items():
-            if attachment_expression is None:
-                continue
-            assert isinstance(attachment_expression, prototype)
-            all_expressions[name] = attachment_expression
-        self._attachment_expressions = all_expressions
+        if attachment_expressions is not None:
+            for attachment_expression in attachment_expressions:
+                assert isinstance(attachment_expression, prototype)
+        self._attachment_expressions = attachment_expressions
 
     ### SPECIAL METHODS ###
 
@@ -45,24 +42,10 @@ class AttachmentMaker(abctools.AbjadValueObject):
         seed=0,
         ):
         assert isinstance(music, scoretools.Container)
-        if self.attachment_expressions is None:
+        if not self.attachment_expressions:
             return
-        for attachment_expression in self.attachment_expressions.values():
+        for attachment_expression in self.attachment_expressions:
             attachment_expression(music, seed=seed)
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        from abjad.tools import systemtools
-        manager = systemtools.StorageFormatManager
-        keyword_argument_names = manager.get_keyword_argument_names(self)
-        keyword_argument_names = list(keyword_argument_names)
-        keyword_argument_names.extend(sorted(self.attachment_expressions))
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names
-            )
 
     ### PUBLIC METHODS ###
 
@@ -82,4 +65,4 @@ class AttachmentMaker(abctools.AbjadValueObject):
 
     @property
     def attachment_expressions(self):
-        return self._attachment_expressions.copy()
+        return self._attachment_expressions
