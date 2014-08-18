@@ -36,6 +36,12 @@ class AttachmentMaker(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
+    def __add__(self, expr):
+        assert isinstance(expr, type(self))
+        attachment_expressions = self.attachment_expressions or ()
+        attachment_expressions = expr.attachment_expressions or ()
+        return type(self)(attachment_expressions)
+
     def __call__(
         self,
         music,
@@ -47,19 +53,11 @@ class AttachmentMaker(abctools.AbjadValueObject):
         for attachment_expression in self.attachment_expressions:
             attachment_expression(music, seed=seed)
 
-    ### PUBLIC METHODS ###
+    def __getitem__(self, item):
+        return self.attachment_expressions[item]
 
-    def reverse(self):
-        new_attachment_expressions = {}
-        for name, attachment_expression in self.attachment_expressions:
-            new_attachment_expressions[name] = attachment_expression.reverse()
-        return type(self)(**new_attachment_expressions)
-
-    def rotate(self, n=0):
-        new_attachment_expressions = {}
-        for name, attachment_expression in self.attachment_expressions:
-            new_attachment_expressions[name] = attachment_expression.rotate(n)
-        return type(self)(**new_attachment_expressions)
+    def __len__(self):
+        return len(self.attachment_expressions)
 
     ### PUBLIC PROPERTIES ###
 
