@@ -106,13 +106,22 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        center_pitch=0,
+        center_pitch=None,
         division_inflections=None,
         phrase_inflections=None,
         segment_inflections=None,
         ):
         from consort import makers
-        self._center_pitch = pitchtools.NumberedPitch(center_pitch)
+        if isinstance(center_pitch, type(self)):
+            expr = center_pitch
+            self._center_pitch = expr.center_pitch
+            self._division_inflections = expr.division_inflections
+            self._phrase_inflections = expr.phrase_inflections
+            self._segment_inflections = expr.segment_inflections
+            return
+        if center_pitch is not None:
+            center_pitch = pitchtools.NumberedPitch(center_pitch)
+        self._center_pitch = center_pitch
         prototype = makers.RegisterInflection
         if division_inflections is not None:
             if isinstance(division_inflections, prototype):
@@ -178,7 +187,6 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                 editor=makers.RegisterInflection,
                 ),
             )
-    
 
     ### PUBLIC METHODS ###
 
@@ -192,6 +200,8 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         segment_position = attack_point_signature.segment_position
         seed = int(seed)
         register = self.center_pitch
+        if register is None:
+            register = pitchtools.NumberedPitch(0)
         if self.division_inflections:
             inflection = self.division_inflections[seed]
             deviation = inflection(division_position)
