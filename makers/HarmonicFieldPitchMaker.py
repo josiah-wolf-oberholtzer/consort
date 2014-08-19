@@ -11,7 +11,6 @@ class HarmonicFieldPitchMaker(PitchMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_chord_specifiers',
         '_harmonic_fields',
         '_register_specifier',
         )
@@ -21,7 +20,7 @@ class HarmonicFieldPitchMaker(PitchMaker):
     def __init__(
         self,
         allow_repetition=False,
-        chord_specifiers=None,
+        chord_expressions=None,
         harmonic_fields=None,
         register_specifier=None,
         ):
@@ -29,14 +28,8 @@ class HarmonicFieldPitchMaker(PitchMaker):
         PitchMaker.__init__(
             self,
             allow_repetition=allow_repetition,
+            chord_expressions=chord_expressions,
             )
-        prototype = makers.ChordSpecifier
-        if chord_specifiers:
-            if isinstance(chord_specifiers, prototype):
-                chord_specifiers = (chord_specifiers,)
-            assert all(isinstance(x, prototype) for x in chord_specifiers)
-            chord_specifiers = sequencetools.CyclicTuple(chord_specifiers)
-        self._chord_specifiers = chord_specifiers
         prototype = makers.HarmonicField
         if harmonic_fields:
             if isinstance(harmonic_fields, prototype):
@@ -107,21 +100,12 @@ class HarmonicFieldPitchMaker(PitchMaker):
                     structural_pitch = harmonic_field_entries[1]
             for note in logical_tie:
                 note.written_pitch = structural_pitch
-        if self.chord_specifiers:
-            chord_specifier = self.chord_specifiers[seed]
-            chord_specifier(
-                logical_tie,
-                pitch_range=pitch_range,
-                )
+            self._apply_chord_expression(logical_tie, seed=seed)
         if self.harmonic_fields:
             self._process_grace_notes(logical_tie, harmonic_field_entry)
         return structural_pitch
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def chord_specifiers(self):
-        return self._chord_specifiers
 
     @property
     def harmonic_fields(self):

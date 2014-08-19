@@ -1,11 +1,6 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from abjad.tools import scoretools
-from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import detach
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import mutate
 from consort.makers.PitchMaker import PitchMaker
 
 
@@ -16,13 +11,11 @@ class PitchClassPitchMaker(PitchMaker):
 
         >>> from consort import makers
         >>> pitch_maker = makers.PitchClassPitchMaker(
-        ...     groupings=(2, 1, 1, 1),
         ...     pitch_classes="c' d' e' f'",
         ...     )
         >>> print(format(pitch_maker))
         consort.makers.PitchClassPitchMaker(
             allow_repetition=False,
-            groupings=(2, 1, 1, 1),
             pitch_classes=datastructuretools.CyclicTuple(
                 [
                     pitchtools.NamedPitch("c'"),
@@ -38,7 +31,6 @@ class PitchClassPitchMaker(PitchMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_groupings',
         '_octavations',
         '_pitch_classes',
         '_register_specifier',
@@ -60,7 +52,7 @@ class PitchClassPitchMaker(PitchMaker):
     def __init__(
         self,
         allow_repetition=None,
-        groupings=None,
+        chord_expressions=None,
         octavations=None,
         pitch_classes=None,
         register_specifier=None,
@@ -69,11 +61,8 @@ class PitchClassPitchMaker(PitchMaker):
         PitchMaker.__init__(
             self,
             allow_repetition=allow_repetition,
+            chord_expressions=chord_expressions,
             )
-        groupings = groupings or (1,)
-        groupings = tuple(int(x) for x in groupings)
-        assert all(0 < x for x in groupings)
-        self._groupings = groupings
         pitch_classes = pitchtools.PitchSegment(pitch_classes)
         pitch_classes = datastructuretools.CyclicTuple(pitch_classes)
         if octavations is not None:
@@ -107,60 +96,36 @@ class PitchClassPitchMaker(PitchMaker):
                 ])
         return octave_transposition_mapping
 
-    def _calculate_pitches(self, octave_transposition_mapping, seed=0):
-        grouping = self._groupings[seed]
-        pitch_classes = self.pitch_classes[seed:seed + grouping]
+    def _calculate_pitch(self, octave_transposition_mapping, seed=0):
+        pitch_classes = self.pitch_classes or \
+            datastructuretools.CyclicTuple([0])
+        pitch_class = pitch_classes[seed]
         octavations = self.octavations or self._default_octavations
-        octavations = octavations[seed:seed + grouping]
-        pitches = []
-        for pitch_class, octave in zip(pitch_classes, octavations):
-            pitch_class = pitchtools.NamedPitchClass(pitch_class)
-            pitch = pitchtools.Pitch(pitch_class, octave)
-            pitches.append(pitch)
-        pitches = octave_transposition_mapping([pitches])
-        pitches = pitchtools.PitchSet(pitches)
-        return pitches
+        octave = octavations[seed]
+        pitch_class = pitchtools.NamedPitchClass(pitch_class)
+        pitch = pitchtools.Pitch(pitch_class, octave)
+        pitch = octave_transposition_mapping([pitch])
+        return pitch
 
     def _process_logical_tie(
         self,
         logical_tie,
         seed=0,
         ):
-        if not self.pitch_classes:
-            return
         octave_transposition_mapping = \
             self.__calculate_octave_transposition_mapping(
                 logical_tie,
                 seed=seed,
                 )
-        pitches = self._calculate_pitches(
+        pitch = self._calculate_pitch(
             octave_transposition_mapping,
             seed=seed,
             )
         for i, leaf in enumerate(logical_tie):
-            if 1 < len(pitches):
-                chord = scoretools.Chord(leaf)
-                chord.written_pitches = pitches
-                grace_containers = inspect_(leaf).get_grace_containers('after')
-                if grace_containers:
-                    old_grace_container = grace_containers[0]
-                    grace_notes = old_grace_container.select_leaves()
-                    detach(scoretools.GraceContainer, leaf)
-                mutate(leaf).replace(chord)
-                if grace_containers:
-                    new_grace_container = scoretools.GraceContainer(
-                        grace_notes,
-                        kind='after',
-                        )
-                    attach(new_grace_container, chord)
-            else:
-                leaf.written_pitch = pitches[0]
+            leaf.written_pitch = pitch
+        self._apply_chord_expression(logical_tie, seed)
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def groupings(self):
-        return self._groupings
 
     @property
     def octavations(self):

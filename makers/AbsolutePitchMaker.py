@@ -47,12 +47,14 @@ class AbsolutePitchMaker(PitchMaker):
     def __init__(
         self,
         allow_repetition=None,
+        chord_expressions=None,
         groupings=None,
         pitches=None,
         ):
         PitchMaker.__init__(
             self,
             allow_repetition=allow_repetition,
+            chord_expressions=chord_expressions
             )
         groupings = groupings or (1,)
         groupings = tuple(int(x) for x in groupings)
@@ -89,6 +91,7 @@ class AbsolutePitchMaker(PitchMaker):
                     kind='after',
                     )
                 attach(new_grace_container, chord)
+        self._apply_chord_expression(logical_tie, seed=seed)
 
     ### PUBLIC PROPERTIES ###
 
