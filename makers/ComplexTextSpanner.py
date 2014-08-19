@@ -38,6 +38,7 @@ class ComplexTextSpanner(spannertools.Spanner):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_direction',
         '_markup',
         )
 
@@ -45,6 +46,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
     def __init__(
         self,
+        direction=None,
         markup=None,
         overrides=None,
         ):
@@ -52,6 +54,8 @@ class ComplexTextSpanner(spannertools.Spanner):
             self,
             overrides=overrides,
             )
+        assert direction in (Up, Down, None)
+        self._direction = direction
         self._markup = markuptools.Markup(markup)
 
     ### PRIVATE METHODS ###
@@ -62,7 +66,11 @@ class ComplexTextSpanner(spannertools.Spanner):
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
         if self._is_my_only_leaf(leaf):
-            markup = markuptools.Markup(self.markup.contents, Up)
+            direction = self.direction or Up
+            markup = markuptools.Markup(
+                self.markup.contents,
+                direction,
+                )
             lilypond_format_bundle.right.markup.append(markup)
 
         elif self._is_my_first_leaf(leaf):
@@ -107,13 +115,14 @@ class ComplexTextSpanner(spannertools.Spanner):
                 )
             lilypond_format_bundle.update(override)
 
-            override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='TextSpanner',
-                is_once=True,
-                property_path=('direction',),
-                value=Up,
-                )
-            lilypond_format_bundle.update(override)
+            if self.direction is not None:
+                override = lilypondnametools.LilyPondGrobOverride(
+                    grob_name='TextSpanner',
+                    is_once=True,
+                    property_path=('direction',),
+                    value=self.direction,
+                    )
+                lilypond_format_bundle.update(override)
 
             string = r'\startTextSpan'
             lilypond_format_bundle.right.spanner_starts.append(string)
@@ -123,6 +132,10 @@ class ComplexTextSpanner(spannertools.Spanner):
         return lilypond_format_bundle
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def direction(self):
+        return self._direction
 
     @property
     def markup(self):
