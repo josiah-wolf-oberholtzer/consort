@@ -59,7 +59,6 @@ class AbsolutePitchMaker(PitchMaker):
         assert all(0 < x for x in groupings)
         self._groupings = groupings
         pitches = pitchtools.PitchSegment(pitches)
-        assert pitches
         pitches = datastructuretools.CyclicTuple(pitches)
         self._pitches = pitches
 
@@ -70,6 +69,8 @@ class AbsolutePitchMaker(PitchMaker):
         logical_tie,
         seed=0,
         ):
+        if not self.pitches:
+            return
         grouping = self._groupings[seed]
         pitches = self.pitches[seed:seed + grouping]
         pitches = pitchtools.PitchSet(pitches)

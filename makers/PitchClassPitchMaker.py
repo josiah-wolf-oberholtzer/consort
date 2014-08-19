@@ -75,7 +75,6 @@ class PitchClassPitchMaker(PitchMaker):
         assert all(0 < x for x in groupings)
         self._groupings = groupings
         pitch_classes = pitchtools.PitchSegment(pitch_classes)
-        assert pitch_classes
         pitch_classes = datastructuretools.CyclicTuple(pitch_classes)
         if octavations is not None:
             assert octavations
@@ -127,6 +126,8 @@ class PitchClassPitchMaker(PitchMaker):
         logical_tie,
         seed=0,
         ):
+        if not self.pitch_classes:
+            return
         octave_transposition_mapping = \
             self.__calculate_octave_transposition_mapping(
                 logical_tie,
@@ -136,7 +137,6 @@ class PitchClassPitchMaker(PitchMaker):
             octave_transposition_mapping,
             seed=seed,
             )
-
         for i, leaf in enumerate(logical_tie):
             if 1 < len(pitches):
                 chord = scoretools.Chord(leaf)

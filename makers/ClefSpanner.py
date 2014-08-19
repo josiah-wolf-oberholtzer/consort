@@ -57,7 +57,7 @@ class ClefSpanner(spannertools.Spanner):
 
     def __init__(
         self,
-        clef=None,
+        clef='percussion',
         overrides=None,
         ):
         spannertools.Spanner.__init__(
@@ -66,6 +66,17 @@ class ClefSpanner(spannertools.Spanner):
             )
         clef = indicatortools.Clef(clef)
         self._clef = clef
+
+    ### SPECIAL METHODS ###
+
+    def __getnewargs__(self):
+        r'''Gets new arguments of spanner.
+
+        Returns empty tuple.
+        '''
+        return (
+            self.clef,
+            )
 
     ### PRIVATE METHODS ###
 
@@ -80,8 +91,9 @@ class ClefSpanner(spannertools.Spanner):
         elif self._is_my_last_leaf(leaf):
             first_leaf = self._leaves[0]
             clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
-            string = format(clef, 'lilypond')
-            lilypond_format_bundle.after.indicators.append(string)
+            if clef is not None:
+                string = format(clef, 'lilypond')
+                lilypond_format_bundle.after.indicators.append(string)
         return lilypond_format_bundle
 
     ### PUBLIC PROPERTIES ###
