@@ -65,9 +65,9 @@ class AttackPointSignature(abctools.AbjadValueObject):
     @classmethod
     def from_logical_tie(cls, logical_tie):
         from consort import makers
+        tie_start_offset = logical_tie.get_timespan().start_offset
         head = logical_tie.head
-        tie_start_offset = inspect_(head).get_timespan.start_offset
-        parentage = head.get_parentage(include_self=False)
+        parentage = inspect_(head).get_parentage(include_self=False)
         for i, parent in enumerate(parentage):
             if inspect_(parent).has_indicator(makers.MusicSpecifier):
                 phrase = parent

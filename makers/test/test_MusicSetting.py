@@ -240,8 +240,8 @@ def test_MusicSetting_06():
                 consort.makers.PerformedTimespan(
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
-                    start_offset=durationtools.Offset(4, 3),
-                    stop_offset=durationtools.Offset(7, 3),
+                    start_offset=durationtools.Offset(21, 16),
+                    stop_offset=durationtools.Offset(37, 16),
                     voice_name='Viola Bowing Voice',
                     ),
                 ]
@@ -271,8 +271,8 @@ def test_MusicSetting_07():
                 consort.makers.PerformedTimespan(
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
-                    start_offset=durationtools.Offset(12, 5),
-                    stop_offset=durationtools.Offset(17, 5),
+                    start_offset=durationtools.Offset(19, 8),
+                    stop_offset=durationtools.Offset(27, 8),
                     voice_name='Viola Bowing Voice',
                     ),
                 ]

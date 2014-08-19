@@ -62,9 +62,10 @@ class RatioPartsExpression(abctools.AbjadObject):
     def __call__(self, timespan):
         assert isinstance(timespan, timespantools.Timespan)
         divided_timespan = timespan.divide_by_ratio(self.ratio)
-        timespans = []
+        timespans = timespantools.TimespanInventory()
         for part in self.parts:
             timespans.append(divided_timespan[part])
+        timespans.round_offsets((1, 16))
         return tuple(timespans)
 
     ### PUBLIC PROPERTIES ###

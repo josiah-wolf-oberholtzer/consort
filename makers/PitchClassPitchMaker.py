@@ -103,17 +103,19 @@ class PitchClassPitchMaker(PitchMaker):
         octavations = self.octavations or self._default_octavations
         octave = octavations[seed]
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
-        pitch = pitchtools.Pitch(pitch_class, octave)
+        pitch = pitchtools.NamedPitch(pitch_class, octave)
         pitch = octave_transposition_mapping([pitch])
         return pitch
 
     def _process_logical_tie(
         self,
         logical_tie,
+        pitch_range=None,
+        previous_pitch=None,
         seed=0,
         ):
         octave_transposition_mapping = \
-            self.__calculate_octave_transposition_mapping(
+            self._calculate_octave_transposition_mapping(
                 logical_tie,
                 seed=seed,
                 )
@@ -124,6 +126,7 @@ class PitchClassPitchMaker(PitchMaker):
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
         self._apply_chord_expression(logical_tie, seed)
+        return pitch
 
     ### PUBLIC PROPERTIES ###
 

@@ -71,8 +71,8 @@ class HarmonicFieldPitchMaker(PitchMaker):
     def _process_logical_tie(
         self,
         logical_tie,
-        previous_pitch,
-        pitch_range,
+        pitch_range=None,
+        previous_pitch=None,
         seed=0,
         ):
         from consort import makers
