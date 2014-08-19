@@ -11,8 +11,14 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         >>> from consort import makers
         >>> staff = Staff("c'4 d'4 r4 e'4")
-        >>> spanner_one = makers.ComplexTextSpanner('foo')
-        >>> spanner_two = makers.ComplexTextSpanner('bar')
+        >>> spanner_one = makers.ComplexTextSpanner(
+        ...     direction=Up,
+        ...     markup='foo',
+        ...     )
+        >>> spanner_two = makers.ComplexTextSpanner(
+        ...     direction=Down,
+        ...     markup='bar',
+        ...     )
         >>> attach(spanner_one, staff[:2])
         >>> attach(spanner_two, staff[3:])
         >>> print(format(staff))
@@ -30,7 +36,7 @@ class ComplexTextSpanner(spannertools.Spanner):
             d'4
             <> \stopTextSpan
             r4
-            e'4 ^ \markup { bar }
+            e'4 _ \markup { bar }
         }
 
     '''
