@@ -11,6 +11,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
     ### PUBLIC METHODS ###
 
     @staticmethod
+    def make_staff_name(name):
+        name = ''.join(x for x in name if x.isalpha())
+        name = '{}Staff'.format(name)
+        return name
+
+    @staticmethod
     def make_performer_group(
         context_name=None,
         instrument=None,
@@ -43,12 +49,14 @@ class ScoreTemplateManager(abctools.AbjadObject):
             label=label,
             )
         name = instrument.instrument_name.title()
+        context_name = ScoreTemplateManager.make_staff_name(name)
         staff = scoretools.Staff(
             [
                 scoretools.Voice(
                     name='{} Voice'.format(name),
                     ),
                 ],
+            context_name=context_name,
             name='{} Staff'.format(name),
             )
         performer_group.append(staff)
@@ -67,6 +75,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
                     name='{} Upper Voice'.format(name),
                     ),
                 ],
+            context_name='PianoUpperStaff',
             name='{} Upper Staff'.format(name),
             )
         dynamics = scoretools.Voice(
@@ -79,6 +88,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
                     name='{} Lower Voice'.format(name),
                     ),
                 ],
+            context_name='PianoLowerStaff',
             name='{} Lower Staff'.format(name),
             )
         pedals = scoretools.Voice(
@@ -140,13 +150,15 @@ class ScoreTemplateManager(abctools.AbjadObject):
             instrument=instrument,
             )
         name = instrument.instrument_name.title()
+        context_name = ScoreTemplateManager.make_staff_name(name)
         wind_staff = scoretools.Staff(
             [
                 scoretools.Voice(
                     name='{} Voice'.format(name),
                     ),
                 ],
-            name='{}  Staff'.format(name),
+            context_name=context_name,
+            name='{} Staff'.format(name),
             )
         performer_group.append(wind_staff)
         return performer_group, label
