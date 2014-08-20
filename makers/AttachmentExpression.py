@@ -112,7 +112,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
         all_attachments = sequencetools.rotate_sequence(all_attachments, seed)
         selector = self.selector or selectortools.Selector()
         selections = selector(music)
-        for i, selection in enumerate(selections):
+        for i, selection in enumerate(selections, seed):
             attachments = all_attachments[i]
             if attachments is None:
                 continue
