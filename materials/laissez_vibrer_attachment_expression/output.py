@@ -38,8 +38,8 @@ laissez_vibrer_attachment_expression = consort.makers.AttachmentExpression(
                     scoretools.Chord,
                     ),
                 ),
-            selectortools.SliceSelectorCallback(
-                argument=-1,
+            selectortools.ItemSelectorCallback(
+                item=-1,
                 apply_to_each=True,
                 ),
             ),

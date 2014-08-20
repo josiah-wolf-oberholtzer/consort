@@ -6,16 +6,7 @@ import consort
 tremolo_attachment_expression = consort.makers.AttachmentExpression(
     attachments=datastructuretools.TypedList(
         [
-            consort.makers.ComplexTextSpanner(
-                markup=markuptools.Markup(
-                    contents=(
-                        markuptools.MarkupCommand(
-                            'box',
-                            'airtone'
-                            ),
-                        ),
-                    ),
-                ),
+            spannertools.StemTremoloSpanner(),
             ]
         ),
     selector=selectortools.Selector(
