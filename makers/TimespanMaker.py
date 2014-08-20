@@ -92,5 +92,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         return self._can_split
 
     @property
+    def is_dependent(self):
+        return False
+
+    @property
     def minimum_duration(self):
         return self._minimum_duration

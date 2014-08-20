@@ -51,11 +51,12 @@ class ChordExpression(abctools.AbjadValueObject):
         interval_numbers=None,
         ):
         assert arpeggio_direction in (Up, Down, Center, None)
-        interval_numbers = frozenset(
-            x for x in interval_numbers
-            if x != 0
-            )
-        assert len(interval_numbers)
+        if interval_numbers is not None:
+            interval_numbers = frozenset(
+                x for x in interval_numbers
+                if x != 0
+                )
+            assert len(interval_numbers)
         self._arpeggio_direction = arpeggio_direction
         self._interval_numbers = interval_numbers
 
@@ -63,7 +64,8 @@ class ChordExpression(abctools.AbjadValueObject):
 
     def __call__(self, logical_tie):
         assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
-        interval_numbers = sorted(list(self.interval_numbers))
+        interval_numbers = self.interval_numbers or ()
+        interval_numbers = sorted(list(interval_numbers))
         head = logical_tie.head
         base_pitch = head.written_pitch
         pitch_range = inspect_(head).get_effective(pitchtools.PitchRange)

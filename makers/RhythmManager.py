@@ -441,6 +441,8 @@ class RhythmManager(abctools.AbjadValueObject):
         score = segment_session.score
         with systemtools.ForbidUpdate(score):
             for voice in iterate(score).by_class(scoretools.Voice):
+                if voice.context_name == 'Dynamics':
+                    continue
                 for music in voice:
                     RhythmManager._rewrite_meter(
                         music=music,

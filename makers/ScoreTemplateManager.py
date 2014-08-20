@@ -69,7 +69,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 ],
             name='{} Upper Staff'.format(name),
             )
-        dynamics = scoretools.Context(
+        dynamics = scoretools.Voice(
             context_name='Dynamics',
             name='{} Dynamics'.format(name),
             )
@@ -81,7 +81,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 ],
             name='{} Lower Staff'.format(name),
             )
-        pedals = scoretools.Context(
+        pedals = scoretools.Voice(
             context_name='Dynamics',
             name='{} Pedals'.format(name),
             )

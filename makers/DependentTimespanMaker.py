@@ -1,4 +1,7 @@
 # -*- encoding: utf-8 -*-
+import collections
+from abjad.tools import datastructuretools
+from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.makers.TimespanMaker import TimespanMaker
 
@@ -56,18 +59,38 @@ class DependentTimespanMaker(TimespanMaker):
                     ),
                 consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 2),
+                    stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin Voice',
                     ),
                 consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Cello Voice',
+                    ),
+                consort.makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Violin Voice',
+                    ),
+                consort.makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
                     voice_name='Cello Voice',
                     ),
                 consort.makers.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Viola Voice',
+                    ),
+                consort.makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 2),
+                    voice_name='Violin Voice',
+                    ),
+                consort.makers.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 2),
+                    voice_name='Cello Voice',
                     ),
                 ]
             )
@@ -113,19 +136,38 @@ class DependentTimespanMaker(TimespanMaker):
         for timespan in timespan_inventory:
             if timespan.voice_name in self.voice_names:
                 preexisting_timespans.append(timespan)
-        preexisting_timespans.compute_logical_or()
+        #preexisting_timespans.compute_logical_or()
         preexisting_timespans & target_timespan
+        counter = collections.Counter()
         for voice_name, music_specifier in music_specifiers.items():
-            for preexisting_timespan in preexisting_timespans:
-                timespan = self._make_performed_timespan(
-                    color=color,
-                    layer=layer,
-                    music_specifier=music_specifier,
-                    start_offset=preexisting_timespan.start_offset,
-                    stop_offset=preexisting_timespan.stop_offset,
-                    voice_name=voice_name,
-                    )
-                timespan_inventory.append(timespan)
+            for group in preexisting_timespans.partition(
+                include_tangent_timespans=True):
+                offsets = set()
+                for timespan in group:
+                    offsets.add(timespan.start_offset)
+                    offsets.add(timespan.stop_offset)
+                offsets = tuple(sorted(offsets))
+                for start_offset, stop_offset in \
+                    sequencetools.iterate_sequence_nwise(offsets, 2):
+
+                    if not isinstance(music_specifier, tuple):
+                        music_specifier = datastructuretools.CyclicTuple(
+                            [music_specifier])
+                    if voice_name not in counter:
+                        counter[voice_name] = 0
+                    music_specifier_index = counter[voice_name]
+                    current_music_specifier = \
+                        music_specifier[music_specifier_index]
+
+                    timespan = self._make_performed_timespan(
+                        color=color,
+                        layer=layer,
+                        music_specifier=current_music_specifier,
+                        start_offset=start_offset,
+                        stop_offset=stop_offset,
+                        voice_name=voice_name,
+                        )
+                    timespan_inventory.append(timespan)
 
     ### PRIVATE PROPERTIES ###
 
@@ -155,6 +197,10 @@ class DependentTimespanMaker(TimespanMaker):
             )
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def is_dependent(self):
+        return True
 
     @property
     def voice_names(self):

@@ -51,16 +51,14 @@ class TimespanManager(abctools.AbjadValueObject):
     def _find_meters(
         permitted_time_signatures=None,
         target_duration=None,
-        voicewise_timespans=None,
+        timespan_inventory=None,
         ):
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
-        for timespan_inventory in \
-            voicewise_timespans.values():
-            for timespan in timespan_inventory:
-                offset_counter[timespan.start_offset] += 1
-                offset_counter[timespan.stop_offset] += 1
+        for timespan in timespan_inventory:
+            offset_counter[timespan.start_offset] += 1
+            offset_counter[timespan.stop_offset] += 1
         if not offset_counter:
             offset_counter[target_duration] += 1
         meters = metertools.Meter.fit_meters_to_expr(
@@ -99,13 +97,28 @@ class TimespanManager(abctools.AbjadValueObject):
 
     @staticmethod
     def _make_timespan_inventory(
+        dependent=False,
         score_template=None,
         settings=None,
         target_duration=None,
+        timespan_inventory=None,
         ):
         target_timespan = timespantools.Timespan(0, target_duration)
-        timespan_inventory = timespantools.TimespanInventory()
-        for layer, setting in enumerate(settings):
+        if timespan_inventory is None:
+            timespan_inventory = timespantools.TimespanInventory()
+        independent_settings = [setting for setting in settings
+            if not setting.timespan_maker.is_dependent
+            ]
+        dependent_settings = [setting for setting in settings
+            if setting.timespan_maker.is_dependent
+            ]
+        if dependent:
+            settings = dependent_settings
+            start_index = len(independent_settings)
+        else:
+            settings = independent_settings
+            start_index = 0
+        for layer, setting in enumerate(settings, start_index):
             setting(
                 layer=layer,
                 score_template=score_template,
@@ -123,10 +136,10 @@ class TimespanManager(abctools.AbjadValueObject):
         for timespan in timespan_inventory:
             voice_name, layer = timespan.voice_name, timespan.layer
             if voice_name not in voicewise_timespans:
-                voicewise_timespans[voice_name] = []
-                for _ in range(settings_count):
-                    voicewise_timespans[voice_name].append(
-                        timespantools.TimespanInventory())
+                voicewise_timespans[voice_name] = {}
+            if layer not in voicewise_timespans[voice_name]:
+                voicewise_timespans[voice_name][layer] = \
+                    timespantools.TimespanInventory()
             voicewise_timespans[voice_name][layer].append(
                 timespan)
             voicewise_timespans[voice_name][layer].sort()
@@ -143,6 +156,11 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventories=None,
         ):
         resolved_timespan_inventory = timespantools.TimespanInventory()
+        timespan_inventories = [x[1] for x in
+            sorted(timespan_inventories.items(),
+                key=lambda item: item[0],
+                )
+            ]
         resolved_timespan_inventory.extend(timespan_inventories[0])
         for timespan_inventory in timespan_inventories[1:]:
             for timespan in timespan_inventory:
@@ -163,8 +181,39 @@ class TimespanManager(abctools.AbjadValueObject):
         ):
 
         timespan_inventory = TimespanManager._make_timespan_inventory(
+            dependent=False,
             score_template=score_template,
             settings=settings,
+            target_duration=target_duration,
+            )
+
+        meters = TimespanManager._find_meters(
+            permitted_time_signatures=permitted_time_signatures,
+            target_duration=target_duration,
+            timespan_inventory=timespan_inventory,
+            )
+
+        segment_session.meters = tuple(meters)
+
+        voicewise_timespans = TimespanManager._make_voicewise_timespans(
+            settings_count=len(settings),
+            timespan_inventory=timespan_inventory,
+            )
+
+        TimespanManager._cleanup_performed_timespans(
+            measure_offsets=segment_session.measure_offsets,
+            voicewise_timespans=voicewise_timespans,
+            )
+
+        timespan_inventory = timespantools.TimespanInventory()
+        for voicewise_timespan_inventory in voicewise_timespans.values():
+            timespan_inventory.extend(voicewise_timespan_inventory)
+
+        timespan_inventory = TimespanManager._make_timespan_inventory(
+            dependent=True,
+            score_template=score_template,
+            settings=settings,
+            timespan_inventory=timespan_inventory,
             target_duration=target_duration,
             )
 
@@ -172,24 +221,13 @@ class TimespanManager(abctools.AbjadValueObject):
             settings_count=len(settings),
             timespan_inventory=timespan_inventory,
             )
-        segment_session.voicewise_timespans = voicewise_timespans
-
-        meters = TimespanManager._find_meters(
-            permitted_time_signatures=permitted_time_signatures,
-            target_duration=target_duration,
-            voicewise_timespans=voicewise_timespans,
-            )
-        segment_session.meters = tuple(meters)
-
-        TimespanManager._cleanup_performed_timespans(
-            measure_offsets=segment_session.measure_offsets,
-            voicewise_timespans=voicewise_timespans,
-            )
 
         TimespanManager._make_silent_timespans(
             measure_offsets=segment_session.measure_offsets,
             score_template=score_template,
             voicewise_timespans=voicewise_timespans,
             )
-            
+
+        segment_session.voicewise_timespans = voicewise_timespans
+
         return segment_session
