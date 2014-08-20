@@ -57,10 +57,10 @@ class TimespanManager(abctools.AbjadValueObject):
             item_class=durationtools.Offset,
             )
         for timespan in timespan_inventory:
-            offset_counter[timespan.start_offset] += 1
+            offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
         if not offset_counter:
-            offset_counter[target_duration] += 1
+            offset_counter[target_duration] += 2
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
