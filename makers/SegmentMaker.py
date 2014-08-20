@@ -206,20 +206,22 @@ class SegmentMaker(makertools.SegmentMaker):
                     makers.AnnotationManager._annotate_stage_5(segment_session)
             print('\ttotal:', timer.elapsed_time)
 
-        with timer:
-            print('GraceMaker:')
-            self._process_score(segment_session.score, 'grace_maker')
-            print('\ttotal:', timer.elapsed_time)
+        with systemtools.ForbidUpdate(segment_session.score):
 
-        with timer:
-            print('PitchMaker:')
-            self._process_score(segment_session.score, 'pitch_maker')
-            print('\ttotal:', timer.elapsed_time)
+            with timer:
+                print('GraceMaker:')
+                self._process_score(segment_session.score, 'grace_maker')
+                print('\ttotal:', timer.elapsed_time)
 
-        with timer:
-            print('AttachmentMaker:')
-            self._process_score(segment_session.score, 'attachment_maker')
-            print('\ttotal:', timer.elapsed_time)
+            with timer:
+                print('PitchMaker:')
+                self._process_score(segment_session.score, 'pitch_maker')
+                print('\ttotal:', timer.elapsed_time)
+
+            with timer:
+                print('AttachmentMaker:')
+                self._process_score(segment_session.score, 'attachment_maker')
+                print('\ttotal:', timer.elapsed_time)
 
         with timer:
             print('AnnotationManager (2):')
