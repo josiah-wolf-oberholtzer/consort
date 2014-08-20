@@ -66,17 +66,18 @@ class RhythmManager(abctools.AbjadValueObject):
             x.implied_time_signature.duration
             for x in segment_session.meters))
         with systemtools.ForbidUpdate(score):
+            assert score._is_forbidden_to_update
             for voice in iterate(score).by_class(scoretools.Voice):
+                assert score._is_forbidden_to_update
                 for music in reversed(voice):
+                    assert score._is_forbidden_to_update
                     music_specifier = inspect_(music).get_indicator(
                         makers.MusicSpecifier)
                     if not music_specifier.is_sentinel:
                         continue
-
                     timespan = inspect_(music).get_timespan()
                     start_offset = timespan.start_offset
                     stop_offset = timespan.stop_offset
-
                     split_offsets = [start_offset]
                     split_offsets.extend(
                         offset for offset in meter_offsets
@@ -86,22 +87,20 @@ class RhythmManager(abctools.AbjadValueObject):
                     split_durations = mathtools.difference_series(
                         split_offsets,
                         )
-
-                    div, mod = divmod(
-                        durationtools.Duration(timespan.duration),
-                        durationtools.Duration(1),
-                        )
-                    durations = [durationtools.Duration(1)] * int(div)
-                    if mod:
-                        durations.append(mod)
-                    rests = scoretools.make_rests(durations)
-                    inner_rest_container = scoretools.Container(rests)
-                    outer_rest_container = scoretools.Container([
-                        inner_rest_container])
-
-                    if split_durations:
-                        mutate(outer_rest_container[:]).split(split_durations)
-                    music[:] = outer_rest_container[:]
+                    containers = []
+                    for split_duration in split_durations:
+                        durations = []
+                        div, mod = divmod(
+                            durationtools.Duration(split_duration),
+                            durationtools.Duration(1),
+                            )
+                        durations = [durationtools.Duration(1)] * int(div)
+                        if mod:
+                            durations.append(mod)
+                        rests = scoretools.make_rests(durations)
+                        container = scoretools.Container(rests)
+                        containers.append(container)
+                    music[:] = containers
 
     @staticmethod
     def _iterate_music_and_meters(
