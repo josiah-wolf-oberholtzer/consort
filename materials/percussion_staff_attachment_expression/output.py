@@ -13,8 +13,9 @@ percussion_staff_attachment_expression = consort.makers.AttachmentExpression(
                         ),
                     ),
                 spannertools.StaffLinesSpanner(
-                    lines=1,
+                    lines=(4, -4),
                     overrides={
+                        'note_head__no_ledgers': True,
                         'note_head__style': 'cross',
                         },
                     ),
