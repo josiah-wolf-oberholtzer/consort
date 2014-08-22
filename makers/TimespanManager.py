@@ -60,12 +60,15 @@ class TimespanManager(abctools.AbjadValueObject):
         for timespan in timespan_inventory:
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
-        if not offset_counter:
-            offset_counter[target_duration] += 2
+        offset_counter[target_duration] += 2
+        if discard_final_silence is None:
+            discard_final_silence = False
+        else:
+            discard_final_silence = bool(discard_final_silence)
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
-            discard_final_orphan_downbeat=bool(discard_final_silence),
+            discard_final_orphan_downbeat=discard_final_silence,
             maximum_repetitions=2,
             )
         return meters
