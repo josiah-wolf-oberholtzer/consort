@@ -51,7 +51,7 @@ class FloodedTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        can_split=None,
+        can_split=True,
         minimum_duration=None,
         ):
         TimespanMaker.__init__(

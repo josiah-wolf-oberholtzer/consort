@@ -207,6 +207,7 @@ class TimespanManager(abctools.AbjadValueObject):
 
         timespan_inventory = timespantools.TimespanInventory()
         for voicewise_timespan_inventory in voicewise_timespans.values():
+            print(format(voicewise_timespan_inventory))
             timespan_inventory.extend(voicewise_timespan_inventory)
 
         timespan_inventory = TimespanManager._make_timespan_inventory(
