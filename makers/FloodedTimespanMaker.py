@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+import collections
+from abjad.tools import datastructuretools
 from consort.makers.TimespanMaker import TimespanMaker
 
 
@@ -68,11 +70,20 @@ class FloodedTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        counter = collections.Counter()
         for voice_name, music_specifier in music_specifiers.items():
+            if not isinstance(music_specifier, tuple):
+                music_specifier = datastructuretools.CyclicTuple(
+                    [music_specifier])
+            if voice_name not in counter:
+                counter[voice_name] = 0
+            music_specifier_index = counter[voice_name]
+            current_music_specifier = \
+                music_specifier[music_specifier_index]
             timespan = self._make_performed_timespan(
                 color=color,
                 layer=layer,
-                music_specifier=music_specifier,
+                music_specifier=current_music_specifier,
                 start_offset=target_timespan.start_offset,
                 stop_offset=target_timespan.stop_offset,
                 voice_name=voice_name,
