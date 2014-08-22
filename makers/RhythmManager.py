@@ -204,7 +204,7 @@ class RhythmManager(abctools.AbjadValueObject):
                     tailing_silence.insert(0, tailing_silence_container)
             for division in music:
                 beam = spannertools.GeneralizedBeam(
-                    durations=durations,
+                    durations=[division._get_duration()],
                     include_long_duration_notes=True,
                     include_long_duration_rests=False,
                     isolated_nib_direction=None,
