@@ -107,7 +107,7 @@ class DependentTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        can_split=False,
+        can_split=None,
         minimum_duration=None,
         voice_names=None,
         ):

@@ -33,6 +33,7 @@ class MusicSetting(abctools.AbjadValueObject):
         consort.makers.MusicSetting(
             color='red',
             timespan_maker=consort.makers.TaleaTimespanMaker(
+                can_split=True,
                 initial_silence_talea=rhythmmakertools.Talea(
                     counts=(0, 4),
                     denominator=16,
@@ -78,6 +79,7 @@ class MusicSetting(abctools.AbjadValueObject):
         timespantools.TimespanInventory(
             [
                 consort.makers.PerformedTimespan(
+                    can_split=True,
                     color='red',
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
@@ -86,6 +88,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.makers.PerformedTimespan(
+                    can_split=True,
                     color='red',
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
@@ -94,6 +97,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.makers.PerformedTimespan(
+                    can_split=True,
                     color='red',
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
@@ -102,6 +106,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 2 Bowing Voice',
                     ),
                 consort.makers.PerformedTimespan(
+                    can_split=True,
                     color='red',
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
@@ -110,6 +115,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.makers.PerformedTimespan(
+                    can_split=True,
                     color='red',
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
@@ -118,6 +124,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 2 Bowing Voice',
                     ),
                 consort.makers.PerformedTimespan(
+                    can_split=True,
                     color='red',
                     layer=1,
                     music_specifier=consort.makers.MusicSpecifier(),
@@ -127,7 +134,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     ),
                 ]
             )
-
 
     '''
 

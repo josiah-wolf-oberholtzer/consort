@@ -49,6 +49,7 @@ class TimespanManager(abctools.AbjadValueObject):
 
     @staticmethod
     def _find_meters(
+        discard_final_silence=None,
         permitted_time_signatures=None,
         target_duration=None,
         timespan_inventory=None,
@@ -64,7 +65,7 @@ class TimespanManager(abctools.AbjadValueObject):
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
-            discard_final_orphan_downbeat=False,
+            discard_final_orphan_downbeat=bool(discard_final_silence),
             maximum_repetitions=2,
             )
         return meters
@@ -173,6 +174,7 @@ class TimespanManager(abctools.AbjadValueObject):
 
     @staticmethod
     def execute(
+        discard_final_silence=None,
         permitted_time_signatures=None,
         segment_session=None,
         target_duration=None,
@@ -188,6 +190,7 @@ class TimespanManager(abctools.AbjadValueObject):
             )
 
         meters = TimespanManager._find_meters(
+            discard_final_silence=discard_final_silence,
             permitted_time_signatures=permitted_time_signatures,
             target_duration=target_duration,
             timespan_inventory=timespan_inventory,
@@ -207,7 +210,6 @@ class TimespanManager(abctools.AbjadValueObject):
 
         timespan_inventory = timespantools.TimespanInventory()
         for voicewise_timespan_inventory in voicewise_timespans.values():
-            print(format(voicewise_timespan_inventory))
             timespan_inventory.extend(voicewise_timespan_inventory)
 
         timespan_inventory = TimespanManager._make_timespan_inventory(

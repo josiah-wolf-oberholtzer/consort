@@ -68,6 +68,7 @@ class SegmentMaker(makertools.SegmentMaker):
             settings=(
                 consort.makers.MusicSetting(
                     timespan_maker=consort.makers.TaleaTimespanMaker(
+                        can_split=True,
                         playing_talea=rhythmmakertools.Talea(
                             counts=(4,),
                             denominator=16,
@@ -120,6 +121,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     __slots__ = (
         '_annotation_specifier',
+        '_discard_final_silence',
         '_duration_in_seconds',
         '_is_final_segment',
         '_permitted_time_signatures',
@@ -134,6 +136,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def __init__(
         self,
         annotation_specifier=None,
+        discard_final_silence=None,
         duration_in_seconds=None,
         is_final_segment=None,
         name=None,
@@ -148,6 +151,9 @@ class SegmentMaker(makertools.SegmentMaker):
             self,
             name=name,
             )
+        if discard_final_silence is not None:
+            discard_final_silence = bool(discard_final_silence)
+        self._discard_final_silence = discard_final_silence
         self.set_annotation_specifier(annotation_specifier)
         self.set_duration_in_seconds(duration_in_seconds)
         self.set_is_final_segment(is_final_segment)
@@ -175,11 +181,12 @@ class SegmentMaker(makertools.SegmentMaker):
         with timer:
             print('TimespanManager:')
             segment_session = makers.TimespanManager.execute(
+                discard_final_silence=self.discard_final_silence,
+                permitted_time_signatures=self.permitted_time_signatures,
                 score_template=self.score_template,
                 segment_session=segment_session,
                 settings=self.settings or (),
                 target_duration=self.target_duration,
-                permitted_time_signatures=self.permitted_time_signatures,
                 )
             print('\ttotal:', timer.elapsed_time)
 
@@ -500,6 +507,10 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def annotation_specifier(self):
         return self._annotation_specifier
+
+    @property
+    def discard_final_silence(self):
+        return self._discard_final_silence
 
     @property
     def duration_in_seconds(self):
