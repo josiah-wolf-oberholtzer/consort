@@ -132,6 +132,16 @@ class AttachmentExpression(abctools.AbjadValueObject):
                         attachment = copy.copy(attachment)
                         attach(attachment, component)
 
+    def __eq__(self, expr):
+        if isinstance(expr, type(self)):
+            if format(self) == format(expr):
+                return True
+        return False
+
+    def __hash__(self):
+        hash_values = (type(self), format(self))
+        return hash(hash_values)
+
     ### PRIVATE PROPERTIES ###
 
     @property
