@@ -552,10 +552,9 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def score_package_metadata(self):
-        command = 'from {}.__metadata__ import metadata'
-        namespace = {}
-        exec(command, namespace, namespace)
-        metadata = namespace['metadata']
+        module_name = '{}.__metadata__'.format(self.score_package_name)
+        module = importlib.import_module(module_name)
+        metadata = getattr(module, 'metadata')
         return metadata
 
     @property
