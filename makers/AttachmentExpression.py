@@ -36,8 +36,8 @@ class AttachmentExpression(abctools.AbjadValueObject):
                     selectortools.RunSelectorCallback(
                         prototype=scoretools.Note,
                         ),
-                    selectortools.SliceSelectorCallback(
-                        argument=0,
+                    selectortools.ItemSelectorCallback(
+                        item=0,
                         apply_to_each=True,
                         ),
                     ),
