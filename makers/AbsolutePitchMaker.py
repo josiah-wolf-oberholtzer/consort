@@ -65,9 +65,11 @@ class AbsolutePitchMaker(PitchMaker):
         previous_pitch=None,
         seed=0,
         ):
-        if not self.pitches:
-            return
-        pitch = self.pitches[seed]
+        pitches = self.pitches
+        if not pitches:
+            pitch = pitchtools.NamedPitch("c'")
+        else:
+            pitch = pitches[seed]
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
         self._apply_chord_expression(logical_tie, seed=seed)
