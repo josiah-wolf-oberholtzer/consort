@@ -69,7 +69,8 @@ class ChordExpression(abctools.AbjadValueObject):
         head = logical_tie.head
         base_pitch = head.written_pitch
         pitch_range = inspect_(head).get_effective(pitchtools.PitchRange)
-        assert pitch_range is not None
+        if pitch_range is None:
+            pitch_range = pitchtools.PitchRange.from_pitches(-48, 48)
         assert base_pitch in pitch_range
         maximum = max(interval_numbers)
         minimum = min(interval_numbers)
