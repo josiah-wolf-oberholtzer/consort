@@ -85,14 +85,21 @@ class ClefSpanner(spannertools.Spanner):
 
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
-        if self._is_my_first_leaf(leaf):
-            string = format(self.clef, 'lilypond')
-            lilypond_format_bundle.before.indicators.append(string)
+        first_leaf = self._leaves[0]
+        current_clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
+        if self._is_my_only_leaf(leaf):
+            if self.clef != current_clef:
+                string = format(self.clef, 'lilypond')
+                lilypond_format_bundle.before.indicators.append(string)
+                string = format(current_clef, 'lilypond')
+                lilypond_format_bundle.after.indicators.append(string)
+        elif self._is_my_first_leaf(leaf):
+            if self.clef != current_clef:
+                string = format(self.clef, 'lilypond')
+                lilypond_format_bundle.before.indicators.append(string)
         elif self._is_my_last_leaf(leaf):
-            first_leaf = self._leaves[0]
-            clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
-            if clef is not None:
-                string = format(clef, 'lilypond')
+            if self.clef != current_clef and current_clef is not None:
+                string = format(current_clef, 'lilypond')
                 lilypond_format_bundle.after.indicators.append(string)
         return lilypond_format_bundle
 
