@@ -193,6 +193,7 @@ class TaleaTimespanMaker(TimespanMaker):
             denominator=16,
             ),
         playing_groupings=(1,),
+        reflect=None,
         repeat=True,
         seed=None,
         silence_talea=rhythmmakertools.Talea(
@@ -207,6 +208,7 @@ class TaleaTimespanMaker(TimespanMaker):
             self,
             can_split=can_split,
             minimum_duration=minimum_duration,
+            reflect=reflect,
             seed=seed,
             )
 
@@ -292,6 +294,12 @@ class TaleaTimespanMaker(TimespanMaker):
             silence_talea=silence_talea,
             target_timespan=target_timespan,
             )
+        
+        if self.reflect:
+            new_timespan_inventory = new_timespan_inventory.reflect(
+                axis=target_timespan.axis,
+                )
+
         timespan_inventory.extend(new_timespan_inventory)
         return timespan_inventory
 

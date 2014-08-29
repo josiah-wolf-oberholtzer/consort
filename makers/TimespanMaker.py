@@ -14,6 +14,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     __slots__ = (
         '_can_split',
         '_minimum_duration',
+        '_reflect',
         '_seed',
         )
 
@@ -24,6 +25,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         self,
         can_split=None,
         minimum_duration=None,
+        reflect=None,
         seed=None,
         ):
         if can_split is not None:
@@ -32,6 +34,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         if minimum_duration is not None:
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
+        if reflect is not None:
+            reflect = bool(reflect)
+        self._reflect = reflect
         if seed is not None:
             seed = int(seed)
         self._seed = seed
@@ -103,6 +108,10 @@ class TimespanMaker(abctools.AbjadValueObject):
     @property
     def minimum_duration(self):
         return self._minimum_duration
+
+    @property
+    def reflect(self):
+        return self._reflect
 
     @property
     def seed(self):
