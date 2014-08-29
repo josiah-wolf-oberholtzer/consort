@@ -45,13 +45,13 @@ class AttachmentMaker(abctools.AbjadValueObject):
     def __call__(
         self,
         music,
-        seed=0,
+        music_index=0,
         ):
         assert isinstance(music, scoretools.Container)
         if not self.attachment_expressions:
             return
         for attachment_expression in self.attachment_expressions:
-            attachment_expression(music, seed=seed)
+            attachment_expression(music, seed=music_index)
 
     def __getitem__(self, item):
         return self.attachment_expressions[item]

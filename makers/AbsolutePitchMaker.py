@@ -1,11 +1,7 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from abjad.tools import scoretools
-from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import detach
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import mutate
 from consort.makers.PitchMaker import PitchMaker
 
 
@@ -52,8 +48,11 @@ class AbsolutePitchMaker(PitchMaker):
             allow_repetition=allow_repetition,
             chord_expressions=chord_expressions
             )
-        pitches = pitchtools.PitchSegment(pitches)
-        pitches = datastructuretools.CyclicTuple(pitches)
+        if pitches is not None:
+            if not isinstance(pitches, collections.Sequence):
+                pitches = (pitches,)
+            pitches = pitchtools.PitchSegment(pitches)
+            pitches = datastructuretools.CyclicTuple(pitches)
         self._pitches = pitches
 
     ### PRIVATE METHODS ###
@@ -63,8 +62,10 @@ class AbsolutePitchMaker(PitchMaker):
         logical_tie,
         pitch_range=None,
         previous_pitch=None,
-        seed=0,
+        music_index=0,
+        logical_tie_index=0,
         ):
+        seed = music_index + logical_tie_index
         pitches = self.pitches
         if not pitches:
             pitch = pitchtools.NamedPitch("c'")
@@ -72,7 +73,10 @@ class AbsolutePitchMaker(PitchMaker):
             pitch = pitches[seed]
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
-        self._apply_chord_expression(logical_tie, seed=seed)
+        self._apply_chord_expression(
+            logical_tie,
+            seed=seed,
+            )
         return pitch
 
     ### PUBLIC PROPERTIES ###

@@ -41,17 +41,18 @@ class PitchMaker(abctools.AbjadValueObject):
     def __call__(
         self,
         music,
-        seed=0,
+        music_index=0,
         ):
         pitch_range = inspect_(music).get_effective(pitchtools.PitchRange)
         previous_pitch = None
         iterator = iterate(music).by_logical_tie(pitched=True)
-        for i, logical_tie in enumerate(iterator):
+        for logical_tie_index, logical_tie in enumerate(iterator):
             previous_pitch = self._process_logical_tie(
                 logical_tie,
                 previous_pitch=previous_pitch,
                 pitch_range=pitch_range,
-                seed=seed + i,
+                music_index=music_index,
+                logical_tie_index=logical_tie_index,
                 )
 
     ### PRIVATE METHODS ###

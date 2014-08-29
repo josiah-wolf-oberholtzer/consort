@@ -354,7 +354,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 if maker is None:
                     continue
                 seed = counter[maker]
-                maker(container, seed=seed)
+                maker(container, music_index=seed)
                 counter[maker] += 1
 
     ### PRIVATE PROPERTIES ###

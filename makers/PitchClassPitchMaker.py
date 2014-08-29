@@ -112,20 +112,24 @@ class PitchClassPitchMaker(PitchMaker):
         logical_tie,
         pitch_range=None,
         previous_pitch=None,
-        seed=0,
+        music_index=0,
+        logical_tie_index=0,
         ):
         octave_transposition_mapping = \
             self._calculate_octave_transposition_mapping(
                 logical_tie,
-                seed=seed,
+                seed=music_index,
                 )
         pitch = self._calculate_pitch(
             octave_transposition_mapping,
-            seed=seed,
+            seed=music_index + logical_tie_index,
             )
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
-        self._apply_chord_expression(logical_tie, seed)
+        self._apply_chord_expression(
+            logical_tie,
+            seed=music_index + logical_tie_index,
+            )
         return pitch
 
     ### PUBLIC PROPERTIES ###
