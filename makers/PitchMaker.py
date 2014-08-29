@@ -55,6 +55,16 @@ class PitchMaker(abctools.AbjadValueObject):
                 logical_tie_index=logical_tie_index,
                 )
 
+    def __eq__(self, expr):
+        if isinstance(expr, type(self)):
+            if format(self) == format(expr):
+                return True
+        return False
+
+    def __hash__(self):
+        hash_values = (type(self), format(self))
+        return hash(hash_values)
+
     ### PRIVATE METHODS ###
 
     def _apply_chord_expression(self, logical_tie, seed=0):
