@@ -194,6 +194,7 @@ class TaleaTimespanMaker(TimespanMaker):
             ),
         playing_groupings=(1,),
         repeat=True,
+        seed=None,
         silence_talea=rhythmmakertools.Talea(
             counts=[4],
             denominator=16,
@@ -206,6 +207,7 @@ class TaleaTimespanMaker(TimespanMaker):
             self,
             can_split=can_split,
             minimum_duration=minimum_duration,
+            seed=seed,
             )
 
         if initial_silence_talea is not None:
@@ -268,6 +270,14 @@ class TaleaTimespanMaker(TimespanMaker):
         if silence_talea is None:
             silence_talea = rhythmmakertools.Talea((0,), 1)
         silence_talea = iter(silence_talea)
+
+        if self.seed is not None and 0 < self.seed:
+            for _ in range(self.seed):
+                next(initial_silence_talea)
+                next(playing_talea)
+                next(playing_groupings)
+                next(silence_talea)
+
         if self.synchronize_step:
             procedure = self._make_with_synchronized_step
         else:
