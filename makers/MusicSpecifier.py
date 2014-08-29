@@ -52,6 +52,18 @@ class MusicSpecifier(abctools.AbjadValueObject):
             assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
 
+    ### SPECIAL METHODS ###
+
+    def __eq__(self, expr):
+        if isinstance(expr, type(self)):
+            if format(self) == format(expr):
+                return True
+        return False
+
+    def __hash__(self):
+        hash_values = (type(self), format(self))
+        return hash(hash_values)
+
     ### PRIVATE PROPERTIES ###
 
     @property
