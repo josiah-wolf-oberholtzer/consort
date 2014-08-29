@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import metertools
 from abjad.tools import scoretools
+from abjad.tools import systemtools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import iterate
 
@@ -185,54 +187,68 @@ class TimespanManager(abctools.AbjadValueObject):
         settings=None,
         ):
 
-        timespan_inventory = TimespanManager._make_timespan_inventory(
-            dependent=False,
-            score_template=score_template,
-            settings=settings,
-            target_duration=target_duration,
-            )
+        with systemtools.Timer() as timer:
+            timespan_inventory = TimespanManager._make_timespan_inventory(
+                dependent=False,
+                score_template=score_template,
+                settings=settings,
+                target_duration=target_duration,
+                )
+        print('\tmade independent timespans:', timer.elapsed_time)
 
-        meters = TimespanManager._find_meters(
-            discard_final_silence=discard_final_silence,
-            permitted_time_signatures=permitted_time_signatures,
-            target_duration=target_duration,
-            timespan_inventory=timespan_inventory,
-            )
+        with systemtools.Timer() as timer:
+            meters = TimespanManager._find_meters(
+                discard_final_silence=discard_final_silence,
+                permitted_time_signatures=permitted_time_signatures,
+                target_duration=target_duration,
+                timespan_inventory=timespan_inventory,
+                )
+        print('\tfound meters:', timer.elapsed_time)
 
         segment_session.meters = tuple(meters)
 
-        voicewise_timespans = TimespanManager._make_voicewise_timespans(
-            settings_count=len(settings),
-            timespan_inventory=timespan_inventory,
-            )
+        with systemtools.Timer() as timer:
+            voicewise_timespans = TimespanManager._make_voicewise_timespans(
+                settings_count=len(settings),
+                timespan_inventory=timespan_inventory,
+                )
+        print('\tmade voicewise timespans (1/2):', timer.elapsed_time)
 
-        TimespanManager._cleanup_performed_timespans(
-            measure_offsets=segment_session.measure_offsets,
-            voicewise_timespans=voicewise_timespans,
-            )
+        with systemtools.Timer() as timer:
+            TimespanManager._cleanup_performed_timespans(
+                measure_offsets=segment_session.measure_offsets,
+                voicewise_timespans=voicewise_timespans,
+                )
+        print('\tcleaned-up performed timespans:', timer.elapsed_time)
 
         timespan_inventory = timespantools.TimespanInventory()
         for voicewise_timespan_inventory in voicewise_timespans.values():
             timespan_inventory.extend(voicewise_timespan_inventory)
 
-        timespan_inventory = TimespanManager._make_timespan_inventory(
-            dependent=True,
-            score_template=score_template,
-            settings=settings,
-            timespan_inventory=timespan_inventory,
-            target_duration=target_duration,
-            )
+        with systemtools.Timer() as timer:
+            timespan_inventory = TimespanManager._make_timespan_inventory(
+                dependent=True,
+                score_template=score_template,
+                settings=settings,
+                timespan_inventory=timespan_inventory,
+                target_duration=target_duration,
+                )
+        print('\tmade dependent timespans:', timer.elapsed_time)
 
-        voicewise_timespans = TimespanManager._make_voicewise_timespans(
-            settings_count=len(settings),
-            timespan_inventory=timespan_inventory,
-            )
+        with systemtools.Timer() as timer:
+            voicewise_timespans = TimespanManager._make_voicewise_timespans(
+                settings_count=len(settings),
+                timespan_inventory=timespan_inventory,
+                )
+        print('\tmade voicewise timespans (2/2):', timer.elapsed_time)
 
-        TimespanManager._make_silent_timespans(
-            measure_offsets=segment_session.measure_offsets,
-            score_template=score_template,
-            voicewise_timespans=voicewise_timespans,
-            )
+        with systemtools.Timer() as timer:
+            TimespanManager._make_silent_timespans(
+                measure_offsets=segment_session.measure_offsets,
+                score_template=score_template,
+                voicewise_timespans=voicewise_timespans,
+                )
+        print('\tmade silent timespans:', timer.elapsed_time)
 
         segment_session.voicewise_timespans = voicewise_timespans
 
