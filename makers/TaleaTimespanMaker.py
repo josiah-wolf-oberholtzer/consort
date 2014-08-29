@@ -209,7 +209,6 @@ class TaleaTimespanMaker(TimespanMaker):
             self,
             can_split=can_split,
             minimum_duration=minimum_duration,
-            reflect=reflect,
             seed=seed,
             )
 
