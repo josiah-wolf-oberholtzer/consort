@@ -171,6 +171,7 @@ class TaleaTimespanMaker(TimespanMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_fuse_groups',
         '_initial_silence_talea',
         '_playing_talea',
         '_playing_groupings',
@@ -187,6 +188,7 @@ class TaleaTimespanMaker(TimespanMaker):
     def __init__(
         self,
         can_split=True,
+        fuse_groups=None,
         initial_silence_talea=None,
         minimum_duration=None,
         playing_talea=rhythmmakertools.Talea(
@@ -211,6 +213,10 @@ class TaleaTimespanMaker(TimespanMaker):
             minimum_duration=minimum_duration,
             seed=seed,
             )
+
+        if fuse_groups is not None:
+            fuse_groups = bool(fuse_groups)
+        self._fuse_groups = fuse_groups
 
         if initial_silence_talea is not None:
             assert isinstance(initial_silence_talea, rhythmmakertools.Talea)
@@ -517,6 +523,10 @@ class TaleaTimespanMaker(TimespanMaker):
             )
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def fuse_groups(self):
+        return self._fuse_groups
 
     @property
     def initial_silence_talea(self):
