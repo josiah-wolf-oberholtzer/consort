@@ -23,6 +23,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         '_is_sentinel',
         '_pitch_maker',
         '_rhythm_maker',
+        '_seed',
         )
 
     ### INITIALIZER ###
@@ -34,6 +35,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         is_sentinel=None,
         pitch_maker=None,
         rhythm_maker=None,
+        seed=None,
         ):
         from consort import makers
         if attachment_maker is not None:
@@ -51,6 +53,9 @@ class MusicSpecifier(abctools.AbjadValueObject):
         if rhythm_maker is not None:
             assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
+        if seed is not None:
+            seed = int(seed)
+        self._seed = seed
 
     ### SPECIAL METHODS ###
 
@@ -80,6 +85,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         '''
         from abjad.tools import systemtools
         from consort import makers
+        from scoremanager import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
                 name='attachment_maker',
@@ -90,20 +96,26 @@ class MusicSpecifier(abctools.AbjadValueObject):
             systemtools.AttributeDetail(
                 name='grace_maker',
                 display_string='grace maker',
-                command='am',
+                command='gm',
                 editor=makers.GraceMaker,
                 ),
             systemtools.AttributeDetail(
                 name='pitch_maker',
                 display_string='pitch maker',
-                command='am',
+                command='pm',
                 editor=makers.PitchMaker,
                 ),
             systemtools.AttributeDetail(
                 name='rhythm_maker',
                 display_string='rhythm maker',
-                command='am',
+                command='rm',
                 editor=rhythmmakertools.RhythmMaker,
+                ),
+            systemtools.AttributeDetail(
+                name='seed',
+                display_string='seed',
+                command='se',
+                editor=idetools.getters.get_integer,
                 ),
             )
 
@@ -128,3 +140,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
     @property
     def rhythm_maker(self):
         return self._rhythm_maker
+
+    @property
+    def seed(self):
+        return self._seed
