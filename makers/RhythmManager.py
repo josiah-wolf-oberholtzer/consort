@@ -232,7 +232,7 @@ class RhythmManager(abctools.AbjadValueObject):
             is_sentinel=True,
             )
         voicewise_timespans = segment_session.voicewise_timespans
-        seeds = collections.Counter()
+        counter = collections.Counter()
         voice_names = voicewise_timespans.keys()
         voice_names = RhythmManager._sort_voice_names(
             score_template=segment_session.segment_maker.score_template,
@@ -258,6 +258,13 @@ class RhythmManager(abctools.AbjadValueObject):
                         )
                 else:
                     rhythm_maker = music_specifier.rhythm_maker
+                if music_specifier not in counter:
+                    if music_specifier is None:
+                        seed = 0
+                    else:
+                        seed = music_specifier.seed or 0
+                    counter[music_specifier] = seed
+                seed = counter[music_specifier]
                 timespans = tuple(timespans)
                 durations = [x.duration for x in timespans]
                 start_offset = timespans[0].start_offset
@@ -267,7 +274,7 @@ class RhythmManager(abctools.AbjadValueObject):
                         initial_offset=start_offset,
                         meters=segment_session.meters,
                         rhythm_maker=rhythm_maker,
-                        seed=seeds[music_specifier],
+                        seed=seed,
                         )
                 previous_silence.extend(leading_silence)
                 if not len(music.select_leaves()):
@@ -287,7 +294,7 @@ class RhythmManager(abctools.AbjadValueObject):
                         )
                     voice.append(music)
                     previous_silence = tailing_silence
-                seeds[music_specifier] += 1
+                counter[music_specifier] += 1
             if len(previous_silence.select_leaves()):
                 attach(
                     silent_music_specifier,
