@@ -174,6 +174,7 @@ class TaleaTimespanMaker(TimespanMaker):
         '_initial_silence_talea',
         '_playing_talea',
         '_playing_groupings',
+        '_reflect',
         '_repeat',
         '_silence_talea',
         '_step_anchor',
@@ -229,6 +230,10 @@ class TaleaTimespanMaker(TimespanMaker):
         assert len(playing_groupings)
         assert all(0 < x for x in playing_groupings)
         self._playing_groupings = playing_groupings
+
+        if reflect is not None:
+            reflect = bool(reflect)
+        self._reflect = reflect
 
         self._repeat = bool(repeat)
 
@@ -525,6 +530,10 @@ class TaleaTimespanMaker(TimespanMaker):
     @property
     def playing_groupings(self):
         return self._playing_groupings
+
+    @property
+    def reflect(self):
+        return self._reflect
 
     @property
     def repeat(self):
