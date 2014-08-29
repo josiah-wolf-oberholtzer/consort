@@ -53,11 +53,12 @@ class AttackPointSignature(abctools.AbjadValueObject):
         bounding_start_offset,
         bounding_stop_offset,
         ):
+        duration = bounding_stop_offset - bounding_start_offset
         start_offset = tie_start_offset - bounding_start_offset
-        duration = bounding_start_offset - bounding_stop_offset
         if duration == 0:
             return durationtools.Multiplier(0)
         position = start_offset / duration
+        assert 0 <= position <= 1
         return position
 
     ### PUBLIC METHODS ###
