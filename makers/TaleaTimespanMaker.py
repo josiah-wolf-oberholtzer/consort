@@ -4,6 +4,7 @@ from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
+from abjad.tools.topleveltools import new
 from consort.makers.TimespanMaker import TimespanMaker
 from scoremanager import idetools
 import collections
@@ -365,6 +366,7 @@ class TaleaTimespanMaker(TimespanMaker):
                             ),
                         )
                 current_offset = start_offset + initial_silence_duration
+                new_timespans = []
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
@@ -377,8 +379,15 @@ class TaleaTimespanMaker(TimespanMaker):
                         stop_offset=current_offset + duration,
                         voice_name=voice_name,
                         )
-                    timespan_inventory.append(timespan)
+                    new_timespans.append(timespan)
                     current_offset += duration
+                if new_timespans and self.fuse_groups:
+                    fused_timespan = new(
+                        new_timespans[0],
+                        stop_offset=new_timespans[-1].stop_offset,
+                        )
+                    new_timespans[:] = [fused_timespan]
+                timespan_inventory.extend(new_timespans)
                 counter[voice_name] += 1
             timespan_inventory.sort()
             if self.step_anchor is Left:
@@ -429,6 +438,7 @@ class TaleaTimespanMaker(TimespanMaker):
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
                 current_offset = start_offset
+                new_timespans = []
                 for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
@@ -441,8 +451,15 @@ class TaleaTimespanMaker(TimespanMaker):
                         stop_offset=current_offset + duration,
                         voice_name=voice_name,
                         )
-                    timespan_inventory.append(timespan)
+                    new_timespans.append(timespan)
                     current_offset += duration
+                if new_timespans and self.fuse_groups:
+                    fused_timespan = new(
+                        new_timespans[0],
+                        stop_offset=new_timespans[-1].stop_offset,
+                        )
+                    new_timespans[:] = [fused_timespan]
+                timespan_inventory.extend(new_timespans)
                 if self.step_anchor is Left:
                     start_offset += silence_duration
                 else:
