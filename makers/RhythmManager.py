@@ -202,15 +202,23 @@ class RhythmManager(abctools.AbjadValueObject):
                     tailing_silence_container.append(music[-1].pop())
                 if tailing_silence_container:
                     tailing_silence.insert(0, tailing_silence_container)
-            for division in music:
-                beam = spannertools.GeneralizedBeam(
-                    durations=[division._get_duration()],
-                    include_long_duration_notes=True,
-                    include_long_duration_rests=False,
-                    isolated_nib_direction=None,
-                    use_stemlets=True,
-                    )
-                attach(beam, division)
+            beam = spannertools.GeneralizedBeam(
+                durations=[division._get_duration() for division in music],
+                include_long_duration_notes=True,
+                include_long_duration_rests=False,
+                isolated_nib_direction=None,
+                use_stemlets=True,
+                )
+            attach(beam, music)
+#            for division in music:
+#                beam = spannertools.GeneralizedBeam(
+#                    durations=[division._get_duration()],
+#                    include_long_duration_notes=True,
+#                    include_long_duration_rests=False,
+#                    isolated_nib_direction=None,
+#                    use_stemlets=True,
+#                    )
+#                attach(beam, division)
         assert sum([
             inspect_(music).get_duration(),
             inspect_(leading_silence).get_duration(),
@@ -338,7 +346,7 @@ class RhythmManager(abctools.AbjadValueObject):
                 meter_one,
                 boundary_depth=1,
                 initial_offset=container_start_offset,
-                maximum_dot_count=2,
+                maximum_dot_count=1,
                 )
             RhythmManager._rewrite_tuplet_meter(split_component)
             right_start = inspect_(right_group[0]).get_timespan().start_offset
@@ -347,7 +355,7 @@ class RhythmManager(abctools.AbjadValueObject):
                 meter_two,
                 boundary_depth=1,
                 initial_offset=initial_offset,
-                maximum_dot_count=2,
+                maximum_dot_count=1,
                 )
         else:
             left, right = mutate(container[:]).split([split_duration])
@@ -355,12 +363,12 @@ class RhythmManager(abctools.AbjadValueObject):
                 meter_one,
                 boundary_depth=1,
                 initial_offset=container_start_offset,
-                maximum_dot_count=2,
+                maximum_dot_count=1,
                 )
             mutate(right).rewrite_meter(
                 meter_two,
                 boundary_depth=1,
-                maximum_dot_count=2,
+                maximum_dot_count=1,
                 )
 
     @staticmethod
@@ -382,7 +390,7 @@ class RhythmManager(abctools.AbjadValueObject):
         mutate(container[:]).rewrite_meter(
             meter,
             boundary_depth=1,
-            maximum_dot_count=2,
+            maximum_dot_count=1,
             )
 
     @staticmethod
@@ -428,12 +436,12 @@ class RhythmManager(abctools.AbjadValueObject):
                         container=container,
                         )
                 else:
-                    continue
+                    #continue
                     mutate(container[:]).rewrite_meter(
                         current_meter,
                         boundary_depth=1,
                         initial_offset=container_start_offset,
-                        maximum_dot_count=2,
+                        maximum_dot_count=1,
                         )
             if is_tied:
                 last_leaf = container.select_leaves()[-1]
