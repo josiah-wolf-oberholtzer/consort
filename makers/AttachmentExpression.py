@@ -109,7 +109,9 @@ class AttachmentExpression(abctools.AbjadValueObject):
         if not self.attachments or not self.selector:
             return
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
-        selector = self.selector or selectortools.Selector()
+        selector = self.selector
+        if selector is None:
+            selector = selectortools.Selector()
         selections = selector(music)
         for i, selection in enumerate(selections, seed):
             attachments = all_attachments[i]
