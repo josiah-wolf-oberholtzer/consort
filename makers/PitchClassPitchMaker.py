@@ -90,7 +90,7 @@ class PitchClassPitchMaker(PitchMaker):
             seed=seed
             )
         octave_transposition_mapping = \
-            pitchtools.OctaveTranspositionMapping([
+            pitchtools.Registration([
                 ('[C0, C4)', register),
                 ('[C4, C8)', register + 6),
                 ])
