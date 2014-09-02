@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad.tools import durationtools
 from abjad.tools import lilypondnametools
 from abjad.tools import spannertools
 from abjad.tools import markuptools
@@ -71,15 +72,18 @@ class ComplexTextSpanner(spannertools.Spanner):
 
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
-        if self._is_my_only_leaf(leaf):
+
+        if self._is_my_only_leaf(leaf) and \
+            leaf.written_duration < durationtools.Duration(1, 8):
             direction = self.direction or Up
             markup = markuptools.Markup(
                 self.markup.contents,
                 direction,
                 )
             lilypond_format_bundle.right.markup.append(markup)
+            return lilypond_format_bundle
 
-        elif self._is_my_first_leaf(leaf):
+        if self._is_my_first_leaf(leaf):
 
             override = lilypondnametools.LilyPondGrobOverride(
                 grob_name='TextSpanner',
@@ -132,9 +136,11 @@ class ComplexTextSpanner(spannertools.Spanner):
 
             string = r'\startTextSpan'
             lilypond_format_bundle.right.spanner_starts.append(string)
-        elif self._is_my_last_leaf(leaf):
+
+        if self._is_my_last_leaf(leaf):
             string = r'<> \stopTextSpan'
             lilypond_format_bundle.after.indicators.append(string)
+
         return lilypond_format_bundle
 
     ### PUBLIC PROPERTIES ###
