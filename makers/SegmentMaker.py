@@ -617,10 +617,11 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         target_duration = durationtools.Duration((
             self.duration_in_seconds / tempo_duration_in_seconds
-            ).limit_denominator(16))
+            ).limit_denominator(8))
         target_duration *= tempo.duration
-        count = target_duration // durationtools.Duration(1, 16)
-        target_duration = durationtools.Duration(count, 16)
+        count = target_duration // durationtools.Duration(1, 8)
+        target_duration = durationtools.Duration(count, 8)
+        assert 0 < target_duration
         return target_duration
 
     @property
