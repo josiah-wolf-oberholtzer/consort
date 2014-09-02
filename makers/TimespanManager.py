@@ -62,7 +62,7 @@ class TimespanManager(abctools.AbjadValueObject):
         for timespan in timespan_inventory:
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
-        offset_counter[target_duration] += 2
+        offset_counter[target_duration] += 100
         if discard_final_silence is None:
             discard_final_silence = False
         else:
