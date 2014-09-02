@@ -77,7 +77,7 @@ class PitchClassPitchMaker(PitchMaker):
 
     ### PRIVATE METHODS ###
 
-    def _calculate_octave_transposition_mapping(self, logical_tie, seed=0):
+    def _calculate_registration(self, logical_tie, seed=0):
         from consort import makers
         attack_point_signature = makers.AttackPointSignature.from_logical_tie(
             logical_tie,
@@ -89,14 +89,14 @@ class PitchClassPitchMaker(PitchMaker):
             attack_point_signature,
             seed=seed
             )
-        octave_transposition_mapping = \
+        registration = \
             pitchtools.Registration([
                 ('[C0, C4)', register),
                 ('[C4, C8)', register + 6),
                 ])
-        return octave_transposition_mapping
+        return registration
 
-    def _calculate_pitch(self, octave_transposition_mapping, seed=0):
+    def _calculate_pitch(self, registration, seed=0):
         pitch_classes = self.pitch_classes or \
             datastructuretools.CyclicTuple([0])
         pitch_class = pitch_classes[seed]
@@ -104,7 +104,7 @@ class PitchClassPitchMaker(PitchMaker):
         octave = octavations[seed]
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
         pitch = pitchtools.NamedPitch(pitch_class, octave)
-        pitch = octave_transposition_mapping([pitch])
+        pitch = registration([pitch])
         return pitch
 
     def _process_logical_tie(
@@ -115,13 +115,13 @@ class PitchClassPitchMaker(PitchMaker):
         music_index=0,
         logical_tie_index=0,
         ):
-        octave_transposition_mapping = \
-            self._calculate_octave_transposition_mapping(
+        registration = \
+            self._calculate_registration(
                 logical_tie,
                 seed=music_index,
                 )
         pitch = self._calculate_pitch(
-            octave_transposition_mapping,
+            registration,
             seed=music_index + logical_tie_index,
             )
         for i, leaf in enumerate(logical_tie):
