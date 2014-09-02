@@ -73,75 +73,122 @@ class ComplexTextSpanner(spannertools.Spanner):
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
 
-        if self._is_my_only_leaf(leaf) and \
-            leaf.written_duration < durationtools.Duration(1, 8):
-            direction = self.direction or Up
-            markup = markuptools.Markup(
-                self.markup.contents,
-                direction,
-                )
-            lilypond_format_bundle.right.markup.append(markup)
-            return lilypond_format_bundle
+        if self._is_my_only_leaf(leaf):
+            previous_is_similar = self._previous_spanner_is_similar(leaf)
+            next_is_similar = self._next_spanner_is_similar(leaf)
 
-        if self._is_my_first_leaf(leaf):
+            if previous_is_similar and next_is_similar:
+                pass
 
-            override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='TextSpanner',
-                is_once=True,
-                property_path=('bound-details', 'left', 'text'),
-                value=self.markup,
-                )
-            lilypond_format_bundle.update(override)
+            elif previous_is_similar:
+                self._make_spanner_stop(lilypond_format_bundle)
 
-            override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='TextSpanner',
-                is_once=True,
-                property_path=('bound-details', 'left-broken', 'text'),
-                value=False,
-                )
-            lilypond_format_bundle.update(override)
+            elif next_is_similar:
+                self._make_spanner_start(lilypond_format_bundle)
 
-            override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='TextSpanner',
-                is_once=True,
-                property_path=('bound-details', 'right', 'text'),
-                value=markuptools.Markup(r"\draw-line #'(0 . -1)")
-                )
-            lilypond_format_bundle.update(override)
+            elif leaf.written_duration < durationtools.Duration(1, 8):
+                self._make_markup(lilypond_format_bundle)
 
-            override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='TextSpanner',
-                is_once=True,
-                property_path=('bound-details', 'right-broken', 'text'),
-                value=False,
-                )
-            lilypond_format_bundle.update(override)
+            else:
+                self._make_spanner_start(lilypond_format_bundle)
+                self._make_spanner_stop(lilypond_format_bundle)
 
-            override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='TextSpanner',
-                is_once=True,
-                property_path=('dash-fraction',),
-                value=1,
-                )
-            lilypond_format_bundle.update(override)
+        elif self._is_my_first_leaf(leaf):
+            if not self._previous_spanner_is_similar(leaf):
+                self._make_spanner_start(lilypond_format_bundle)
 
-            if self.direction is not None:
-                override = lilypondnametools.LilyPondGrobOverride(
-                    grob_name='TextSpanner',
-                    is_once=True,
-                    property_path=('direction',),
-                    value=self.direction,
-                    )
-                lilypond_format_bundle.update(override)
-
-            string = r'\startTextSpan'
-            lilypond_format_bundle.right.spanner_starts.append(string)
-
-        if self._is_my_last_leaf(leaf):
-            string = r'<> \stopTextSpan'
-            lilypond_format_bundle.after.indicators.append(string)
+        elif self._is_my_last_leaf(leaf):
+            if not self._next_spanner_is_similar(leaf):
+                self._make_spanner_stop(lilypond_format_bundle)
 
         return lilypond_format_bundle
+
+    def _previous_spanner_is_similar(self, leaf):
+        previous_leaf = leaf._get_leaf(-1)
+        previous_spanner = None
+        previous_spanner_is_similar = False
+        if previous_leaf is not None:
+            spanners = previous_leaf._get_spanners(type(self))
+            if spanners:
+                assert len(spanners) == 1
+                previous_spanner = tuple(spanners)[0]
+                if previous_spanner.direction == self.direction:
+                    if previous_spanner.markup == self.markup:
+                        previous_spanner_is_similar = True
+        return previous_spanner_is_similar
+
+    def _next_spanner_is_similar(self, leaf):
+        next_leaf = leaf._get_leaf(1)
+        next_spanner = None
+        next_spanner_is_similar = False
+        if next_leaf is not None:
+            spanners = next_leaf._get_spanners(type(self))
+            if spanners:
+                assert len(spanners) == 1
+                next_spanner = tuple(spanners)[0]
+                if next_spanner.direction == self.direction:
+                    if next_spanner.markup == self.markup:
+                        next_spanner_is_similar = True
+        return next_spanner_is_similar
+
+    def _make_spanner_start(self, lilypond_format_bundle):
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextSpanner',
+            is_once=True,
+            property_path=('bound-details', 'left', 'text'),
+            value=self.markup,
+            )
+        lilypond_format_bundle.update(override)
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextSpanner',
+            is_once=True,
+            property_path=('bound-details', 'left-broken', 'text'),
+            value=False,
+            )
+        lilypond_format_bundle.update(override)
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextSpanner',
+            is_once=True,
+            property_path=('bound-details', 'right', 'text'),
+            value=markuptools.Markup(r"\draw-line #'(0 . -1)")
+            )
+        lilypond_format_bundle.update(override)
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextSpanner',
+            is_once=True,
+            property_path=('bound-details', 'right-broken', 'text'),
+            value=False,
+            )
+        lilypond_format_bundle.update(override)
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextSpanner',
+            is_once=True,
+            property_path=('dash-fraction',),
+            value=1,
+            )
+        lilypond_format_bundle.update(override)
+        if self.direction is not None:
+            override = lilypondnametools.LilyPondGrobOverride(
+                grob_name='TextSpanner',
+                is_once=True,
+                property_path=('direction',),
+                value=self.direction,
+                )
+            lilypond_format_bundle.update(override)
+        string = r'\startTextSpan'
+        lilypond_format_bundle.right.spanner_starts.append(string)
+
+    def _make_spanner_stop(self, lilypond_format_bundle):
+        string = r'<> \stopTextSpan'
+        lilypond_format_bundle.after.indicators.append(string)
+
+    def _make_markup(self, lilypond_format_bundle):
+        direction = self.direction or Up
+        markup = markuptools.Markup(
+            self.markup.contents,
+            direction,
+            )
+        lilypond_format_bundle.right.markup.append(markup)
 
     ### PUBLIC PROPERTIES ###
 
