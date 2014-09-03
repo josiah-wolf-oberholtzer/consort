@@ -190,6 +190,7 @@ class TimespanManager(abctools.AbjadValueObject):
     def _resolve_timespan_inventories(
         timespan_inventories=None,
         ):
+        from consort import makers
         resolved_timespan_inventory = timespantools.TimespanInventory()
         timespan_inventories = [x[1] for x in
             sorted(timespan_inventories.items(),
@@ -198,9 +199,12 @@ class TimespanManager(abctools.AbjadValueObject):
             ]
         resolved_timespan_inventory.extend(timespan_inventories[0])
         for timespan_inventory in timespan_inventories[1:]:
+            to_extend = []
             for timespan in timespan_inventory:
                 resolved_timespan_inventory -= timespan
-            resolved_timespan_inventory.extend(timespan_inventory)
+                if isinstance(timespan, makers.PerformedTimespan):
+                    to_extend.append(timespan)
+            resolved_timespan_inventory.extend(to_extend)
         resolved_timespan_inventory.sort()
         return resolved_timespan_inventory
 
