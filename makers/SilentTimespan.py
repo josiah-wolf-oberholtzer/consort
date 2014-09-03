@@ -30,8 +30,6 @@ class SilentTimespan(timespantools.Timespan):
         if layer is not None:
             layer = int(layer)
         self._layer = layer
-        if voice_name is not None:
-            voice_name = int(voice_name)
         self._voice_name = voice_name
 
     ### PUBLIC PROPERTIES ###
