@@ -34,6 +34,7 @@ class PitchClassPitchMaker(PitchMaker):
         '_octavations',
         '_pitch_classes',
         '_register_specifier',
+        '_register_spread',
         )
 
     _default_octavations = datastructuretools.CyclicTuple([
@@ -56,6 +57,7 @@ class PitchClassPitchMaker(PitchMaker):
         octavations=None,
         pitch_classes=None,
         register_specifier=None,
+        register_spread=None,
         ):
         from consort import makers
         PitchMaker.__init__(
@@ -74,6 +76,10 @@ class PitchClassPitchMaker(PitchMaker):
         if register_specifier is not None:
             assert isinstance(register_specifier, makers.RegisterSpecifier)
         self._register_specifier = register_specifier
+        if register_spread is not None:
+            register_spread = int(register_spread)
+            assert 0 <= register_spread < 12
+        self._register_spread = register_spread
 
     ### PRIVATE METHODS ###
 
@@ -89,10 +95,13 @@ class PitchClassPitchMaker(PitchMaker):
             attack_point_signature,
             seed=seed
             )
+        register_spread = self.register_spread
+        if register_spread is None:
+            register_spread = 6
         registration = \
             pitchtools.Registration([
                 ('[C0, C4)', register),
-                ('[C4, C8)', register + 6),
+                ('[C4, C8)', register + register_spread),
                 ])
         return registration
 
@@ -145,3 +154,7 @@ class PitchClassPitchMaker(PitchMaker):
     @property
     def register_specifier(self):
         return self._register_specifier
+
+    @property
+    def register_spread(self):
+        return self._register_spread
