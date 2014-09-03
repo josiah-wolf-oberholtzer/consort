@@ -35,6 +35,7 @@ class PitchClassPitchMaker(PitchMaker):
         '_pitch_classes',
         '_register_specifier',
         '_register_spread',
+        '_transform_stack',
         )
 
     _default_octavations = datastructuretools.CyclicTuple([
@@ -58,6 +59,7 @@ class PitchClassPitchMaker(PitchMaker):
         pitch_classes=None,
         register_specifier=None,
         register_spread=None,
+        transform_stack=None,
         ):
         from consort import makers
         PitchMaker.__init__(
@@ -80,6 +82,15 @@ class PitchClassPitchMaker(PitchMaker):
             register_spread = int(register_spread)
             assert 0 <= register_spread < 12
         self._register_spread = register_spread
+        if transform_stack is not None:
+            prototype = (
+                pitchtools.Inversion,
+                pitchtools.Multiplication,
+                pitchtools.Transposition,
+                )
+            assert all(isinstance(_, prototype) for _ in transform_stack)
+            transform_stack = tuple(transform_stack)
+        self._transform_stack = transform_stack
 
     ### PRIVATE METHODS ###
 
@@ -112,6 +123,9 @@ class PitchClassPitchMaker(PitchMaker):
         octavations = self.octavations or self._default_octavations
         octave = octavations[seed]
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
+        if self.transform_stack:
+            for transform in self.transform_stack:
+                pitch_class = transform(pitch_class)
         pitch = pitchtools.NamedPitch(pitch_class, octave)
         pitch = registration([pitch])
         return pitch
@@ -158,3 +172,7 @@ class PitchClassPitchMaker(PitchMaker):
     @property
     def register_spread(self):
         return self._register_spread
+
+    @property
+    def transform_stack(self):
+        return self._transform_stack
