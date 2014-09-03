@@ -22,6 +22,9 @@ class ComplexTextSpanner(spannertools.Spanner):
         ...     )
         >>> attach(spanner_one, staff[:2])
         >>> attach(spanner_two, staff[3:])
+
+    ::
+
         >>> print(format(staff))
         \new Staff {
             \once \override TextSpanner.bound-details.left-broken.text = ##f
@@ -37,7 +40,17 @@ class ComplexTextSpanner(spannertools.Spanner):
             d'4
             <> \stopTextSpan
             r4
-            e'4 _ \markup { bar }
+            \once \override TextSpanner.bound-details.left-broken.text = ##f
+            \once \override TextSpanner.bound-details.left.text = \markup { bar }
+            \once \override TextSpanner.bound-details.right-broken.text = ##f
+            \once \override TextSpanner.bound-details.right.text = \markup {
+                \draw-line
+                    #'(0 . -1)
+                }
+            \once \override TextSpanner.dash-fraction = 1
+            \once \override TextSpanner.direction = #down
+            e'4 \startTextSpan
+            <> \stopTextSpan
         }
 
     '''
