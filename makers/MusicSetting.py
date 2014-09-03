@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 import collections
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import rhythmmakertools
+from abjad.tools import systemtools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import inspect_
 
@@ -187,19 +189,41 @@ class MusicSetting(abctools.AbjadValueObject):
 
     def __call__(
         self,
-        layer,
-        score_template,
-        target_timespan,
+        layer=None,
+        score=None,
+        score_template=None,
+        target_timespan=None,
         timespan_inventory=None,
         ):
-        from consort import makers
+        if score is None:
+            score = score_template()
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         if not self.music_specifiers:
             return timespan_inventory
+        music_specifiers = self._get_music_specifiers(score, score_template)
+        target_timespans = self._get_target_timespans(target_timespan)
+        for target_timespan in target_timespans:
+            timespan_inventory = self.timespan_maker(
+                color=self.color,
+                layer=layer,
+                music_specifiers=music_specifiers,
+                target_timespan=target_timespan,
+                timespan_inventory=timespan_inventory,
+                )
+        return timespan_inventory
+
+    def __getattr__(self, item):
+        if item in self.music_specifiers:
+            return self.music_specifiers[item]
+        return object.__getattribute__(self, item)
+
+    ### PRIVATE METHODS ###
+
+    def _get_music_specifiers(self, score, score_template):
+        from consort import makers
         assert score_template is not None
-        score = score_template()
-        voice_pairs = []
+        voice_triples = []
         for name, music_specifier in self.music_specifiers.items():
             if music_specifier is None:
                 music_specifier = (None,)
@@ -208,14 +232,22 @@ class MusicSetting(abctools.AbjadValueObject):
             music_specifier = datastructuretools.CyclicTuple(music_specifier)
             voice_name = score_template.voice_name_abbreviations[name]
             voice = score[voice_name]
-            voice_pair = (voice, music_specifier)
-            voice_pairs.append(voice_pair)
-        voice_pairs.sort(
-            key=lambda x: inspect_(x[0]).get_parentage().score_index,
-            )
+            voice_index = inspect_(voice).get_parentage().score_index
+            voice_name = voice.name
+            voice_triple = (
+                voice_index,
+                voice_name,
+                music_specifier,
+                )
+            voice_triples.append(voice_triple)
+        voice_triples.sort(key=lambda x: x[0])
         music_specifiers = collections.OrderedDict()
-        for voice, music_specifier in voice_pairs:
-            music_specifiers[voice.name] = music_specifier
+        for voice_index, voice_name, music_specifier in voice_triples:
+            music_specifiers[voice_name] = music_specifier
+        return music_specifiers
+
+    def _get_target_timespans(self, target_timespan):
+        from consort import makers
         assert isinstance(target_timespan, timespantools.Timespan)
         if self.timespan_identifier is None:
             target_timespans = timespantools.TimespanInventory([
@@ -232,26 +264,12 @@ class MusicSetting(abctools.AbjadValueObject):
             for mask_timespan in mask_timespans:
                 available_timespans = target_timespan & mask_timespan
                 target_timespans.extend(available_timespans)
-        for target_timespan in target_timespans:
-            timespan_inventory = self.timespan_maker(
-                color=self.color,
-                layer=layer,
-                music_specifiers=music_specifiers,
-                target_timespan=target_timespan,
-                timespan_inventory=timespan_inventory,
-                )
-        return timespan_inventory
-
-    def __getattr__(self, item):
-        if item in self.music_specifiers:
-            return self.music_specifiers[item]
-        return object.__getattribute__(self, item)
+        return target_timespans
 
     ### PRIVATE PROPERTIES ###
 
     @property
     def _storage_format_specification(self):
-        from abjad.tools import systemtools
         manager = systemtools.StorageFormatManager
         keyword_argument_names = manager.get_keyword_argument_names(self)
         keyword_argument_names = list(keyword_argument_names)

@@ -24,12 +24,16 @@ timespan_maker = makers.TaleaTimespanMaker(
 
 def test_MusicSetting_01():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,
@@ -76,13 +80,17 @@ def test_MusicSetting_01():
 
 def test_MusicSetting_02():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         timespan_identifier=timespantools.Timespan(1, 2),
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,
@@ -105,7 +113,7 @@ def test_MusicSetting_02():
 
 def test_MusicSetting_03():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         timespan_identifier=timespantools.TimespanInventory([
             timespantools.Timespan(0, 1),
@@ -114,7 +122,11 @@ def test_MusicSetting_03():
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,
@@ -153,7 +165,7 @@ def test_MusicSetting_03():
 
 def test_MusicSetting_04():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         timespan_identifier=makers.RatioPartsExpression(
             ratio=(1, 2, 1),
@@ -162,7 +174,11 @@ def test_MusicSetting_04():
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,
@@ -193,7 +209,7 @@ def test_MusicSetting_04():
 
 def test_MusicSetting_05():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         timespan_identifier=makers.RatioPartsExpression(
             ratio=(1, 2, 1),
@@ -202,7 +218,11 @@ def test_MusicSetting_05():
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,
@@ -233,7 +253,7 @@ def test_MusicSetting_05():
 
 def test_MusicSetting_06():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         timespan_identifier=makers.RatioPartsExpression(
             ratio=(1, 1, 1),
@@ -242,7 +262,11 @@ def test_MusicSetting_06():
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,
@@ -265,7 +289,7 @@ def test_MusicSetting_06():
 
 def test_MusicSetting_07():
 
-    music_construct = makers.MusicSetting(
+    music_setting = makers.MusicSetting(
         timespan_maker=timespan_maker,
         timespan_identifier=makers.RatioPartsExpression(
             ratio=(1, 1, 1, 2),
@@ -274,7 +298,11 @@ def test_MusicSetting_07():
         viola_bowing_voice=makers.MusicSpecifier(),
         )
 
-    result = music_construct(layer, score_template, target_timespan)
+    result = music_setting(
+        layer=layer,
+        score_template=score_template,
+        target_timespan=target_timespan,
+        )
 
     assert systemtools.TestManager.compare(
         result,

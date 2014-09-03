@@ -79,11 +79,10 @@ class TimespanManager(abctools.AbjadValueObject):
     @staticmethod
     def _make_silent_timespans(
         measure_offsets=None,
-        score_template=None,
+        score=None,
         voicewise_timespans=None,
         ):
         from consort import makers
-        score = score_template()
         for voice in iterate(score).by_class(scoretools.Voice):
             voice_name = voice.name
             if voice_name not in voicewise_timespans:
@@ -126,6 +125,7 @@ class TimespanManager(abctools.AbjadValueObject):
     @staticmethod
     def _make_timespan_inventory(
         dependent=False,
+        score=None,
         score_template=None,
         settings=None,
         target_duration=None,
@@ -146,9 +146,10 @@ class TimespanManager(abctools.AbjadValueObject):
         else:
             settings = independent_settings
             start_index = 0
-        for layer, setting in enumerate(settings, start_index):
-            setting(
+        for layer, music_setting in enumerate(settings, start_index):
+            music_setting(
                 layer=layer,
+                score=score,
                 score_template=score_template,
                 target_timespan=target_timespan,
                 timespan_inventory=timespan_inventory,
@@ -215,9 +216,12 @@ class TimespanManager(abctools.AbjadValueObject):
         settings=None,
         ):
 
+        score = score_template()
+
         with systemtools.Timer() as timer:
             timespan_inventory = TimespanManager._make_timespan_inventory(
                 dependent=False,
+                score=score,
                 score_template=score_template,
                 settings=settings,
                 target_duration=target_duration,
@@ -256,6 +260,7 @@ class TimespanManager(abctools.AbjadValueObject):
         with systemtools.Timer() as timer:
             timespan_inventory = TimespanManager._make_timespan_inventory(
                 dependent=True,
+                score=score,
                 score_template=score_template,
                 settings=settings,
                 timespan_inventory=timespan_inventory,
@@ -273,7 +278,7 @@ class TimespanManager(abctools.AbjadValueObject):
         with systemtools.Timer() as timer:
             TimespanManager._make_silent_timespans(
                 measure_offsets=segment_session.measure_offsets,
-                score_template=score_template,
+                score=score,
                 voicewise_timespans=voicewise_timespans,
                 )
         print('\tmade silent timespans:', timer.elapsed_time)
