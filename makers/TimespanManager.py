@@ -5,6 +5,7 @@ from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import metertools
 from abjad.tools import scoretools
+from abjad.tools import sequencetools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import iterate
@@ -90,16 +91,37 @@ class TimespanManager(abctools.AbjadValueObject):
                     timespantools.TimespanInventory()
             timespan_inventory = voicewise_timespans[voice_name]
             silence_inventory = timespantools.TimespanInventory()
-            silence = makers.SilentTimespan(
-                start_offset=0,
-                stop_offset=measure_offsets[-1],
-                )
-            silence_inventory.append(silence)
-            for timespan in timespan_inventory:
-                silence_inventory - timespan
+            shards = tuple(timespan_inventory.partition(
+                include_tangent_timespans=True,
+                ))
+            if shards:
+                if shards[0].start_offset != 0:
+                    silence = makers.SilentTimespan(
+                        start_offset=0,
+                        stop_offset=shards[0].start_offset,
+                        )
+                    silence_inventory.append(silence)
+                for one, two in sequencetools.iterate_sequence_nwise(shards):
+                    silence = makers.SilentTimespan(
+                        start_offset=one.stop_offset,
+                        stop_offset=two.start_offset,
+                        )
+                    silence_inventory.append(silence)
+                if shards[-1].stop_offset != measure_offsets[-1]:
+                    silence = makers.SilentTimespan(
+                        start_offset=shards[-1].stop_offset,
+                        stop_offset=measure_offsets[-1],
+                        )
+                    silence_inventory.append(silence)
+            else:
+                silence = makers.SilentTimespan(
+                    start_offset=0,
+                    stop_offset=measure_offsets[-1],
+                    )
+                silence_inventory.append(silence)
             for shard in silence_inventory.split_at_offsets(measure_offsets):
                 timespan_inventory.extend(shard)
-                timespan_inventory.sort()
+            timespan_inventory.sort()
 
     @staticmethod
     def _make_timespan_inventory(
@@ -139,24 +161,28 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventory=None,
         ):
         voicewise_timespans = {}
-        for timespan in timespan_inventory:
-            voice_name, layer = timespan.voice_name, timespan.layer
-            if voice_name not in voicewise_timespans:
-                voicewise_timespans[voice_name] = {}
-            if layer not in voicewise_timespans[voice_name]:
-                voicewise_timespans[voice_name][layer] = \
-                    timespantools.TimespanInventory()
-            voicewise_timespans[voice_name][layer].append(
-                timespan)
-            voicewise_timespans[voice_name][layer]
-        for voice_name in voicewise_timespans:
-            timespan_inventories = voicewise_timespans[voice_name]
-            for timespan_inventory in timespan_inventories.values():
-                timespan_inventory.sort()
-            timespan_inventory = \
-                TimespanManager._resolve_timespan_inventories(
-                    timespan_inventories)
-            voicewise_timespans[voice_name] = timespan_inventory
+        with systemtools.Timer() as timer:
+            for timespan in timespan_inventory:
+                voice_name, layer = timespan.voice_name, timespan.layer
+                if voice_name not in voicewise_timespans:
+                    voicewise_timespans[voice_name] = {}
+                if layer not in voicewise_timespans[voice_name]:
+                    voicewise_timespans[voice_name][layer] = \
+                        timespantools.TimespanInventory()
+                voicewise_timespans[voice_name][layer].append(
+                    timespan)
+                voicewise_timespans[voice_name][layer]
+        print('\t\tCollecting:', timer.elapsed_time)
+        with systemtools.Timer() as timer:
+            for voice_name in voicewise_timespans:
+                timespan_inventories = voicewise_timespans[voice_name]
+                for timespan_inventory in timespan_inventories.values():
+                    timespan_inventory.sort()
+                timespan_inventory = \
+                    TimespanManager._resolve_timespan_inventories(
+                        timespan_inventories)
+                voicewise_timespans[voice_name] = timespan_inventory
+        print('\t\tResolving:', timer.elapsed_time)
         return voicewise_timespans
 
     @staticmethod
@@ -174,7 +200,7 @@ class TimespanManager(abctools.AbjadValueObject):
             for timespan in timespan_inventory:
                 resolved_timespan_inventory -= timespan
             resolved_timespan_inventory.extend(timespan_inventory)
-            resolved_timespan_inventory.sort()
+        resolved_timespan_inventory.sort()
         return resolved_timespan_inventory
 
     ### PUBLIC METHODS ###
