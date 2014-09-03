@@ -398,6 +398,14 @@ class RhythmManager(abctools.AbjadValueObject):
         music=None,
         meters=None,
         ):
+        from consort import makers
+        music_specifier = inspect_(music).get_indicator(makers.MusicSpecifier)
+        rhythm_maker = music_specifier.rhythm_maker
+        if rhythm_maker is not None:
+            if rhythm_maker.duration_spelling_specifier is not None:
+                specifier = rhythm_maker.duration_spelling_specifier
+                if specifier.permit_meter_rewriting is False:
+                    return
         iterator = RhythmManager._iterate_music_and_meters(
             meters=meters,
             music=music,
@@ -413,8 +421,8 @@ class RhythmManager(abctools.AbjadValueObject):
                 container_start_offset
             last_leaf = container.select_leaves()[-1]
             is_tied = RhythmManager._leaf_is_tied(last_leaf)
+
             if isinstance(container, scoretools.Tuplet):
-                continue
                 RhythmManager._rewrite_tuplet_meter(
                     container=container,
                     )
@@ -436,7 +444,6 @@ class RhythmManager(abctools.AbjadValueObject):
                         container=container,
                         )
                 else:
-                    #continue
                     mutate(container[:]).rewrite_meter(
                         current_meter,
                         boundary_depth=1,
