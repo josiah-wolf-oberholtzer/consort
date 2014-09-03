@@ -148,9 +148,11 @@ class TimespanManager(abctools.AbjadValueObject):
                     timespantools.TimespanInventory()
             voicewise_timespans[voice_name][layer].append(
                 timespan)
-            voicewise_timespans[voice_name][layer].sort()
+            voicewise_timespans[voice_name][layer]
         for voice_name in voicewise_timespans:
             timespan_inventories = voicewise_timespans[voice_name]
+            for timespan_inventory in timespan_inventories.values():
+                timespan_inventory.sort()
             timespan_inventory = \
                 TimespanManager._resolve_timespan_inventories(
                     timespan_inventories)
