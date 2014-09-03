@@ -287,6 +287,11 @@ class TimespanManager(abctools.AbjadValueObject):
                 )
         print('\tmade silent timespans:', timer.elapsed_time)
 
+        durations = set()
+        for voicewise_timespan_inventory in voicewise_timespans.values():
+            duration = voicewise_timespan_inventory.duration
+            durations.add(duration)
+        assert len(durations) == 1
         segment_session.voicewise_timespans = voicewise_timespans
 
         return segment_session
