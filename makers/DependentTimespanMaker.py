@@ -119,6 +119,8 @@ class DependentTimespanMaker(TimespanMaker):
             minimum_duration=minimum_duration,
             )
         if labels is not None:
+            if isinstance(labels, str):
+                labels = (labels,)
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
         if voice_names is not None:
@@ -192,16 +194,22 @@ class DependentTimespanMaker(TimespanMaker):
                 editor=idetools.getters.get_boolean,
                 ),
             systemtools.AttributeDetail(
-                name='voice_names',
-                display_string='voice names',
-                command='vn',
-                editor=idetools.getters.get_strings,
-                ),
-            systemtools.AttributeDetail(
                 name='minimum_duration',
                 display_string='minimum duration',
                 command='md',
                 editor=idetools.getters.get_duration,
+                ),
+            systemtools.AttributeDetail(
+                name='labels',
+                display_string='labels',
+                command='l',
+                editor=idetools.getters.get_strings,
+                ),
+            systemtools.AttributeDetail(
+                name='voice_names',
+                display_string='voice names',
+                command='vn',
+                editor=idetools.getters.get_strings,
                 ),
             )
 

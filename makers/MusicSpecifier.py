@@ -50,6 +50,8 @@ class MusicSpecifier(abctools.AbjadValueObject):
             is_sentinel = bool(is_sentinel)
         self._is_sentinel = is_sentinel
         if labels is not None:
+            if isinstance(labels, str):
+                labels = (labels,)
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
         if pitch_maker is not None:
