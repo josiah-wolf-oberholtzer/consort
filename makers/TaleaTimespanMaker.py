@@ -174,6 +174,7 @@ class TaleaTimespanMaker(TimespanMaker):
     __slots__ = (
         '_fuse_groups',
         '_initial_silence_talea',
+        '_padding',
         '_playing_talea',
         '_playing_groupings',
         '_reflect',
@@ -192,6 +193,7 @@ class TaleaTimespanMaker(TimespanMaker):
         fuse_groups=None,
         initial_silence_talea=None,
         minimum_duration=None,
+        padding=None,
         playing_talea=rhythmmakertools.Talea(
             counts=[4],
             denominator=16,
@@ -225,6 +227,10 @@ class TaleaTimespanMaker(TimespanMaker):
             assert all(0 <= x for x in initial_silence_talea.counts)
         self._initial_silence_talea = initial_silence_talea
 
+        if padding is not None:
+            padding = durationtools.Duration(padding)
+        self._padding = padding
+
         assert isinstance(playing_talea, rhythmmakertools.Talea)
         assert playing_talea.counts
         assert all(0 < x for x in playing_talea.counts)
@@ -255,6 +261,35 @@ class TaleaTimespanMaker(TimespanMaker):
         self._synchronize_step = bool(synchronize_step)
 
     ### PRIVATE METHODS ###
+
+    def _fuse_timespans(self, timespans):
+        from consort import makers
+        if not timespans:
+            return timespans
+        if not self.padding:
+            fused_timespan = new(
+                timespans[0],
+                stop_offset=timespans[-1].stop_offset,
+                )
+            timespans[:] = [fused_timespan]
+            return timespans
+        if len(timespans) == 1:
+            pass
+        elif len(timespans) == 2:
+            pass
+        elif isinstance(timespans[-1], makers.PerformedTimespan):
+            fused_timespan = new(
+                timespans[1],
+                stop_offset=timespans[-1].stop_offset,
+                )
+            timespans[1:] = [fused_timespan]
+        else:
+            fused_timespan = new(
+                timespans[1],
+                stop_offset=timespans[-2].stop_offset,
+                )
+            timespans[1:-1] = [fused_timespan]
+        return timespans
 
     def _make_infinite_iterator(self, sequence):
         index = 0
@@ -410,6 +445,7 @@ class TaleaTimespanMaker(TimespanMaker):
         silence_talea=None,
         target_timespan=None,
         ):
+        from consort import makers
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
@@ -431,6 +467,9 @@ class TaleaTimespanMaker(TimespanMaker):
                 silence_duration = next(silence_talea)
                 grouping = next(playing_groupings)
                 durations = [next(playing_talea) for _ in range(grouping)]
+                if self.padding:
+                    durations.insert(0, self.padding)
+                    durations.append(self.padding)
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
                 maximum_offset = min(maximum_offset, stop_offset)
@@ -439,26 +478,47 @@ class TaleaTimespanMaker(TimespanMaker):
                         start_offset + silence_duration)
                 current_offset = start_offset
                 new_timespans = []
-                for duration in durations:
+                for i, duration in enumerate(durations):
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
                         break
-                    timespan = self._make_performed_timespan(
-                        color=color,
-                        layer=layer,
-                        music_specifier=current_music_specifier,
-                        start_offset=current_offset,
-                        stop_offset=current_offset + duration,
-                        voice_name=voice_name,
-                        )
+                    if self.padding:
+                        if i == 0:
+                            timespan = makers.SilentTimespan(
+                                layer=layer,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + duration,
+                                voice_name=voice_name,
+                                )
+                        elif i == len(durations) - 1:
+                            timespan = makers.SilentTimespan(
+                                layer=layer,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + duration,
+                                voice_name=voice_name,
+                                )
+                        else:
+                            timespan = self._make_performed_timespan(
+                                color=color,
+                                layer=layer,
+                                music_specifier=current_music_specifier,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + duration,
+                                voice_name=voice_name,
+                                )
+                    else:
+                        timespan = self._make_performed_timespan(
+                            color=color,
+                            layer=layer,
+                            music_specifier=current_music_specifier,
+                            start_offset=current_offset,
+                            stop_offset=current_offset + duration,
+                            voice_name=voice_name,
+                            )
                     new_timespans.append(timespan)
                     current_offset += duration
                 if new_timespans and self.fuse_groups:
-                    fused_timespan = new(
-                        new_timespans[0],
-                        stop_offset=new_timespans[-1].stop_offset,
-                        )
-                    new_timespans[:] = [fused_timespan]
+                    new_timespans = self._fuse_timespans(new_timespans)
                 timespan_inventory.extend(new_timespans)
                 if self.step_anchor is Left:
                     start_offset += silence_duration
@@ -548,6 +608,10 @@ class TaleaTimespanMaker(TimespanMaker):
     @property
     def initial_silence_talea(self):
         return self._initial_silence_talea
+
+    @property
+    def padding(self):
+        return self._padding
 
     @property
     def playing_talea(self):

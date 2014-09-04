@@ -250,6 +250,20 @@ class TimespanManager(abctools.AbjadValueObject):
                 )
         print('\tmade voicewise timespans (1/2):', timer.elapsed_time)
 
+        for voice_name, voicewise_timespan_inventory in \
+            voicewise_timespans.items():
+            if not voicewise_timespan_inventory.all_are_nonoverlapping:
+                print(voice_name)
+                for timespan in voicewise_timespan_inventory:
+                    print(
+                        '\t',
+                        timespan.layer,
+                        ':',
+                        timespan.start_offset,
+                        timespan.stop_offset,
+                        type(timespan)
+                        )
+
         with systemtools.Timer() as timer:
             TimespanManager._cleanup_performed_timespans(
                 measure_offsets=segment_session.measure_offsets,
@@ -260,6 +274,9 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventory = timespantools.TimespanInventory()
         for voicewise_timespan_inventory in voicewise_timespans.values():
             timespan_inventory.extend(voicewise_timespan_inventory)
+
+        for voicewise_timespan_inventory in voicewise_timespans.values():
+            assert voicewise_timespan_inventory.all_are_nonoverlapping
 
         with systemtools.Timer() as timer:
             timespan_inventory = TimespanManager._make_timespan_inventory(
@@ -272,12 +289,18 @@ class TimespanManager(abctools.AbjadValueObject):
                 )
         print('\tmade dependent timespans:', timer.elapsed_time)
 
+        for voicewise_timespan_inventory in voicewise_timespans.values():
+            assert voicewise_timespan_inventory.all_are_nonoverlapping
+
         with systemtools.Timer() as timer:
             voicewise_timespans = TimespanManager._make_voicewise_timespans(
                 settings_count=len(settings),
                 timespan_inventory=timespan_inventory,
                 )
         print('\tmade voicewise timespans (2/2):', timer.elapsed_time)
+
+        for voicewise_timespan_inventory in voicewise_timespans.values():
+            assert voicewise_timespan_inventory.all_are_nonoverlapping
 
         with systemtools.Timer() as timer:
             TimespanManager._make_silent_timespans(
@@ -291,6 +314,7 @@ class TimespanManager(abctools.AbjadValueObject):
         for voicewise_timespan_inventory in voicewise_timespans.values():
             duration = voicewise_timespan_inventory.duration
             durations.add(duration)
+            assert voicewise_timespan_inventory.all_are_nonoverlapping
         assert len(durations) == 1
         segment_session.voicewise_timespans = voicewise_timespans
 
