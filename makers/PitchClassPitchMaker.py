@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
 from consort.makers.PitchMaker import PitchMaker
@@ -132,7 +133,21 @@ class PitchClassPitchMaker(PitchMaker):
             for transform in self.transform_stack:
                 pitch_class = transform(pitch_class)
         pitch = pitchtools.NamedPitch(pitch_class, octave)
-        pitch = registration([pitch])
+        pitch_range = pitchtools.PitchRange('[C0, C8)')
+        pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
+        pitch = registration([pitch])[0]
+        pitch = pitchtools.NamedPitch(pitch)
+        return pitch
+
+    def _fit_pitch_to_pitch_range(self, pitch, pitch_range):
+        while pitch <= pitch_range.start_pitch and \
+            pitch not in pitch_range:
+            pitch = pitch.transpose(12)
+        while pitch_range.stop_pitch <= pitch and \
+            pitch not in pitch_range:
+            pitch = pitch.transpose(-12)
+        assert pitch in pitch_range, \
+            (pitch, pitch.octave_number, pitch_range)
         return pitch
 
     def _process_logical_tie(
@@ -153,7 +168,7 @@ class PitchClassPitchMaker(PitchMaker):
             seed=music_index + logical_tie_index,
             )
         if self.pitch_range is not None:
-            assert pitch in self.pitch_range, (pitch, self.pitch_range)
+            pitch = self._fit_pitch_to_pitch_range(pitch, self.pitch_range)
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
         self._apply_chord_expression(
