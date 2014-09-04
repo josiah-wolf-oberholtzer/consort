@@ -33,6 +33,7 @@ class PitchClassPitchMaker(PitchMaker):
     __slots__ = (
         '_octavations',
         '_pitch_classes',
+        '_pitch_range',
         '_register_specifier',
         '_register_spread',
         '_transform_stack',
@@ -57,6 +58,7 @@ class PitchClassPitchMaker(PitchMaker):
         chord_expressions=None,
         octavations=None,
         pitch_classes=None,
+        pitch_range=None,
         register_specifier=None,
         register_spread=None,
         transform_stack=None,
@@ -74,6 +76,9 @@ class PitchClassPitchMaker(PitchMaker):
             assert all(isinstance(x, int) for x in octavations)
             octavations = datastructuretools.CyclicTuple(octavations)
         self._octavations = octavations
+        if pitch_range is not None:
+            assert isinstance(pitch_range, pitchtools.PitchRange)
+        self._pitch_range = pitch_range
         self._pitch_classes = pitch_classes
         if register_specifier is not None:
             assert isinstance(register_specifier, makers.RegisterSpecifier)
@@ -147,6 +152,8 @@ class PitchClassPitchMaker(PitchMaker):
             registration,
             seed=music_index + logical_tie_index,
             )
+        if self.pitch_range is not None:
+            assert pitch in self.pitch_range, (pitch, self.pitch_range)
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
         self._apply_chord_expression(
@@ -164,6 +171,10 @@ class PitchClassPitchMaker(PitchMaker):
     @property
     def pitch_classes(self):
         return self._pitch_classes
+
+    @property
+    def pitch_range(self):
+        return self._pitch_range
 
     @property
     def register_specifier(self):

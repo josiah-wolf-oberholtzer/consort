@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 from abjad import *
 
 
@@ -80,24 +81,31 @@ class KeyClusterExpression(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, logical_tie):
+    def __call__(
+        self,
+        logical_tie,
+        pitch_range=None,
+        ):
         assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
         center_pitch = logical_tie[0].written_pitch
-        starting_diatonic_number = \
-            center_pitch.diatonic_pitch_number - (self.staff_space_width / 2)
-        diatonic_numbers = [starting_diatonic_number]
-        for i in range(1, (self.staff_space_width / 2) + 1):
-            step = 2 * i
-            diatonic_number = starting_diatonic_number + step
-            diatonic_numbers.append(diatonic_number)
-        chromatic_numbers = [
-            (12 * (x // 7)) +
-            pitchtools.PitchClass._diatonic_pitch_class_number_to_pitch_class_number[
-                x % 7]
-            for x in diatonic_numbers
-            ]
-        chord_pitches = [pitchtools.NamedPitch(x)
-            for x in chromatic_numbers]
+        chord_pitches = self._get_chord_pitches(center_pitch)
+        head = logical_tie.head
+        if pitch_range is None:
+            pitch_range = inspect_(head).get_effective(pitchtools.PitchRange)
+            if pitch_range is None:
+                pitch_range = pitchtools.PitchRange.from_pitches(-48, 48)
+        maximum_pitch = max(chord_pitches)
+        minimum_pitch = min(chord_pitches)
+        if maximum_pitch not in pitch_range:
+            interval = maximum_pitch - pitch_range.stop_pitch
+            center_pitch = center_pitch.transpose(interval)
+            chord_pitches = self._get_chord_pitches(center_pitch)
+            print('\t\t{}: ABOVE RANGE: {}'.format(type(self), interval))
+        elif minimum_pitch not in pitch_range:
+            interval = minimum_pitch - pitch_range.start_pitch
+            center_pitch = center_pitch.transpose(interval)
+            chord_pitches = self._get_chord_pitches(center_pitch)
+            print('\t\t{}: BELOW RANGE: {}'.format(type(self), interval))
         for i, leaf in enumerate(logical_tie):
             chord = Chord(leaf)
             chord.written_pitches = chord_pitches
@@ -132,6 +140,26 @@ class KeyClusterExpression(abctools.AbjadValueObject):
                     kind='after',
                     )
                 attach(new_grace_container, chord)
+
+    ### PRIVATE PROPERTIES ###
+
+    def _get_chord_pitches(self, center_pitch):
+        starting_diatonic_number = \
+            center_pitch.diatonic_pitch_number - (self.staff_space_width / 2)
+        diatonic_numbers = [starting_diatonic_number]
+        for i in range(1, (self.staff_space_width / 2) + 1):
+            step = 2 * i
+            diatonic_number = starting_diatonic_number + step
+            diatonic_numbers.append(diatonic_number)
+        chromatic_numbers = [
+            (12 * (x // 7)) +
+            pitchtools.PitchClass._diatonic_pitch_class_number_to_pitch_class_number[
+                x % 7]
+            for x in diatonic_numbers
+            ]
+        chord_pitches = [pitchtools.NamedPitch(x)
+            for x in chromatic_numbers]
+        return chord_pitches
 
     ### PUBLIC PROPERTIES ###
 
