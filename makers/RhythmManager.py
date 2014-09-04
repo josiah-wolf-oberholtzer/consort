@@ -33,10 +33,12 @@ class RhythmManager(abctools.AbjadValueObject):
                     continue
                 if not logical_tie.all_leaves_are_in_same_parent:
                     continue
-                if not logical_tie.written_duration == \
+                if logical_tie.written_duration == \
                     durationtools.Duration(1, 8):
-                    continue
-                mutate(logical_tie).replace([scoretools.Note("c'8")])
+                    mutate(logical_tie).replace([scoretools.Note("c'8")])
+                elif logical_tie.written_duration == \
+                    durationtools.Duration(1, 16):
+                    mutate(logical_tie).replace([scoretools.Note("c'8")])
 
     @staticmethod
     def _cleanup_silences(segment_session):
