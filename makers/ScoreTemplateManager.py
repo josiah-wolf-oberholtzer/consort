@@ -65,7 +65,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
     @staticmethod
     def make_single_piano_performer(instrument):
         performer_group, label = ScoreTemplateManager.make_performer_group(
-            context_name='PianoPerformerGroup',
+            context_name='PianoStaff',
             instrument=instrument,
             )
         name = instrument.instrument_name.title()

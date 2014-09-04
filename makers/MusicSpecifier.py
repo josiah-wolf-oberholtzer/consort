@@ -21,6 +21,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         '_attachment_maker',
         '_grace_maker',
         '_is_sentinel',
+        '_labels',
         '_pitch_maker',
         '_rhythm_maker',
         '_seed',
@@ -33,6 +34,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         attachment_maker=None,
         grace_maker=None,
         is_sentinel=None,
+        labels=None,
         pitch_maker=None,
         rhythm_maker=None,
         seed=None,
@@ -47,6 +49,9 @@ class MusicSpecifier(abctools.AbjadValueObject):
         if is_sentinel is not None:
             is_sentinel = bool(is_sentinel)
         self._is_sentinel = is_sentinel
+        if labels is not None:
+            labels = tuple(str(_) for _ in labels)
+        self._labels = labels
         if pitch_maker is not None:
             assert isinstance(pitch_maker, makers.PitchMaker)
         self._pitch_maker = pitch_maker
@@ -100,6 +105,12 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 editor=makers.GraceMaker,
                 ),
             systemtools.AttributeDetail(
+                name='labels',
+                display_string='labels',
+                command='l',
+                editor=idetools.getters.get_strings,
+                ),
+            systemtools.AttributeDetail(
                 name='pitch_maker',
                 display_string='pitch maker',
                 command='pm',
@@ -132,6 +143,10 @@ class MusicSpecifier(abctools.AbjadValueObject):
     @property
     def is_sentinel(self):
         return self._is_sentinel
+
+    @property
+    def labels(self):
+        return self._labels
 
     @property
     def pitch_maker(self):

@@ -100,6 +100,7 @@ class DependentTimespanMaker(TimespanMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_labels',
         '_voice_names',
         )
 
@@ -108,6 +109,7 @@ class DependentTimespanMaker(TimespanMaker):
     def __init__(
         self,
         can_split=None,
+        labels=None,
         minimum_duration=None,
         voice_names=None,
         ):
@@ -116,6 +118,9 @@ class DependentTimespanMaker(TimespanMaker):
             can_split=can_split,
             minimum_duration=minimum_duration,
             )
+        if labels is not None:
+            labels = tuple(str(_) for _ in labels)
+        self._labels = labels
         if voice_names is not None:
             voice_names = tuple(voice_names)
         self._voice_names = voice_names
@@ -135,8 +140,12 @@ class DependentTimespanMaker(TimespanMaker):
         preexisting_timespans = timespantools.TimespanInventory()
         for timespan in timespan_inventory:
             if timespan.voice_name in self.voice_names:
-                preexisting_timespans.append(timespan)
-        #preexisting_timespans.compute_logical_or()
+                if not self.labels:
+                    preexisting_timespans.append(timespan)
+                elif timespan.music_specifier.labels and \
+                    any(label in timespan.music_specifier.labels
+                        for label in self.labels):
+                    preexisting_timespans.append(timespan)
         preexisting_timespans & target_timespan
         counter = collections.Counter()
         for voice_name, music_specifier in music_specifiers.items():
@@ -201,6 +210,10 @@ class DependentTimespanMaker(TimespanMaker):
     @property
     def is_dependent(self):
         return True
+
+    @property
+    def labels(self):
+        return self._labels
 
     @property
     def voice_names(self):
