@@ -63,7 +63,6 @@ class TimespanMaker(abctools.AbjadValueObject):
         timespan_inventory.sort()
         return timespan_inventory
 
-
     ### PRIVATE METHODS ###
 
     def _make_performed_timespan(
