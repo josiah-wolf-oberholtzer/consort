@@ -360,6 +360,7 @@ class TaleaTimespanMaker(TimespanMaker):
         silence_talea=None,
         target_timespan=None,
         ):
+        from consort import makers
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
