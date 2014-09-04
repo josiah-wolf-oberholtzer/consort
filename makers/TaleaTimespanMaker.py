@@ -384,6 +384,9 @@ class TaleaTimespanMaker(TimespanMaker):
                 if not self.synchronize_groupings:
                     grouping = next(playing_groupings)
                     durations = [next(playing_talea) for _ in range(grouping)]
+                if self.padding:
+                    durations.insert(0, self.padding)
+                    durations.append(self.padding)
                 maximum_offset = (
                     start_offset +
                     sum(durations) +
@@ -402,26 +405,47 @@ class TaleaTimespanMaker(TimespanMaker):
                         )
                 current_offset = start_offset + initial_silence_duration
                 new_timespans = []
-                for duration in durations:
+                for i, duration in enumerate(durations):
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
                         break
-                    timespan = self._make_performed_timespan(
-                        color=color,
-                        layer=layer,
-                        music_specifier=current_music_specifier,
-                        start_offset=current_offset,
-                        stop_offset=current_offset + duration,
-                        voice_name=voice_name,
-                        )
+                    if self.padding:
+                        if i == 0:
+                            timespan = makers.SilentTimespan(
+                                layer=layer,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + duration,
+                                voice_name=voice_name,
+                                )
+                        elif i == len(durations) - 1:
+                            timespan = makers.SilentTimespan(
+                                layer=layer,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + duration,
+                                voice_name=voice_name,
+                                )
+                        else:
+                            timespan = self._make_performed_timespan(
+                                color=color,
+                                layer=layer,
+                                music_specifier=current_music_specifier,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + duration,
+                                voice_name=voice_name,
+                                )
+                    else:
+                        timespan = self._make_performed_timespan(
+                            color=color,
+                            layer=layer,
+                            music_specifier=current_music_specifier,
+                            start_offset=current_offset,
+                            stop_offset=current_offset + duration,
+                            voice_name=voice_name,
+                            )
                     new_timespans.append(timespan)
                     current_offset += duration
                 if new_timespans and self.fuse_groups:
-                    fused_timespan = new(
-                        new_timespans[0],
-                        stop_offset=new_timespans[-1].stop_offset,
-                        )
-                    new_timespans[:] = [fused_timespan]
+                    new_timespans = self._fuse_timespans(new_timespans)
                 timespan_inventory.extend(new_timespans)
                 counter[voice_name] += 1
             timespan_inventory.sort()
