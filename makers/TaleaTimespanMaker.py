@@ -371,6 +371,9 @@ class TaleaTimespanMaker(TimespanMaker):
             if self.synchronize_groupings:
                 grouping = next(playing_groupings)
                 durations = [next(playing_talea) for _ in range(grouping)]
+                if self.padding:
+                    durations.insert(0, self.padding)
+                    durations.append(self.padding)
             silence_duration = next(silence_talea)
             for voice_name, music_specifier in music_specifiers.items():
                 if not isinstance(music_specifier, tuple):
@@ -385,9 +388,9 @@ class TaleaTimespanMaker(TimespanMaker):
                 if not self.synchronize_groupings:
                     grouping = next(playing_groupings)
                     durations = [next(playing_talea) for _ in range(grouping)]
-                if self.padding:
-                    durations.insert(0, self.padding)
-                    durations.append(self.padding)
+                    if self.padding:
+                        durations.insert(0, self.padding)
+                        durations.append(self.padding)
                 maximum_offset = (
                     start_offset +
                     sum(durations) +
