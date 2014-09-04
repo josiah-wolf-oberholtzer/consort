@@ -38,7 +38,7 @@ class RhythmManager(abctools.AbjadValueObject):
                     mutate(logical_tie).replace([scoretools.Note("c'8")])
                 elif logical_tie.written_duration == \
                     durationtools.Duration(1, 16):
-                    mutate(logical_tie).replace([scoretools.Note("c'8")])
+                    mutate(logical_tie).replace([scoretools.Note("c'16")])
 
     @staticmethod
     def _cleanup_silences(segment_session):
