@@ -177,7 +177,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
     @staticmethod
     def attach_tag(label, context):
         tag = indicatortools.LilyPondCommand(
-            name="keepWithTag #'{}".format(label),
+            name="tag {}".format(label),
             format_slot='before',
             )
         attach(tag, context) 
