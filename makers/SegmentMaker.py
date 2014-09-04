@@ -292,9 +292,14 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
         if self.is_final_segment:
             score.add_final_markup(self.final_markup)
-            score.add_final_bar_line()
+            score.add_final_bar_line(
+                to_each_voice=True,
+                )
         else:
-            score.add_final_bar_line('||')
+            score.add_final_bar_line(
+                abbreviation='||',
+                to_each_voice=True,
+                )
         assert inspect_(score).is_well_formed()
         return score
 
