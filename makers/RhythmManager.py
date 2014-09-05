@@ -209,7 +209,7 @@ class RhythmManager(abctools.AbjadValueObject):
                 include_long_duration_notes=True,
                 include_long_duration_rests=False,
                 isolated_nib_direction=None,
-                use_stemlets=True,
+                use_stemlets=False,
                 )
             attach(beam, music)
 #            for division in music:

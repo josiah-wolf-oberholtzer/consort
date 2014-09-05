@@ -53,10 +53,7 @@ class ChordExpression(abctools.AbjadValueObject):
         ):
         assert arpeggio_direction in (Up, Down, Center, None)
         if interval_numbers is not None:
-            interval_numbers = frozenset(
-                x for x in interval_numbers
-                if x != 0
-                )
+            interval_numbers = frozenset(interval_numbers)
             assert len(interval_numbers)
         self._arpeggio_direction = arpeggio_direction
         self._interval_numbers = interval_numbers

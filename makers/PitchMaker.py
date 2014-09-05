@@ -14,6 +14,8 @@ class PitchMaker(abctools.AbjadValueObject):
     __slots__ = (
         '_allow_repetition',
         '_chord_expressions',
+        '_pitch_application_rate',
+        '_transform_stack',
         )
 
     ### INITIALIZER ###
@@ -22,6 +24,8 @@ class PitchMaker(abctools.AbjadValueObject):
         self,
         allow_repetition=False,
         chord_expressions=None,
+        pitch_application_rate=None,
+        transform_stack=None,
         ):
         from consort import makers
         self._allow_repetition = bool(allow_repetition)
@@ -36,6 +40,19 @@ class PitchMaker(abctools.AbjadValueObject):
                 chord_expressions,
                 )
         self._chord_expressions = chord_expressions
+        assert pitch_application_rate in (
+            None, 'logical_tie', 'division', 'phrase',
+            )
+        self._pitch_application_rate = pitch_application_rate
+        if transform_stack is not None:
+            prototype = (
+                pitchtools.Inversion,
+                pitchtools.Multiplication,
+                pitchtools.Transposition,
+                )
+            assert all(isinstance(_, prototype) for _ in transform_stack)
+            transform_stack = tuple(transform_stack)
+        self._transform_stack = transform_stack
 
     ### SPECIAL METHODS ###
 
@@ -50,9 +67,20 @@ class PitchMaker(abctools.AbjadValueObject):
                 instrumenttools.Instrument)
             if instrument is not None:
                 pitch_range = instrument.pitch_range
+        divisions = [_ for _ in music]
+        division_index = 0
         previous_pitch = None
         iterator = iterate(music).by_logical_tie(pitched=True)
         for logical_tie_index, logical_tie in enumerate(iterator):
+            parentage = inspect_(logical_tie.head).get_parentage()
+            for x in parentage:
+                if x in divisions:
+                    division_index = divisions.index(x)
+                    break
+            if self.pitch_application_rate == 'division':
+                logical_tie_index = division_index
+            elif self.pitch_application_rate == 'phrase':
+                logical_tie_index = 0
             previous_pitch = self._process_logical_tie(
                 logical_tie,
                 previous_pitch=previous_pitch,
@@ -95,3 +123,11 @@ class PitchMaker(abctools.AbjadValueObject):
     @property
     def chord_expressions(self):
         return self._chord_expressions
+
+    @property
+    def pitch_application_rate(self):
+        return self._pitch_application_rate
+
+    @property
+    def transform_stack(self):
+        return self._transform_stack

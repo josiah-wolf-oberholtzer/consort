@@ -534,21 +534,24 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def final_markup(self):
         metadata = self.score_package_metadata
-        right_column = markuptools.MarkupCommand(
-            'right-column', [
-                ' ',
-                ' ',
-                ' ',
-                metadata['locale'],
-                '{} - {}'.format(
-                    metadata['time_period'][0],
-                    metadata['time_period'][1],
-                    ),
-                ],
+        contents = [' ', ' ', ' ']
+        locale = metadata['locale']
+        if isinstance(locale, str):
+            contents.append(locale)
+        else:
+            contents.extend(locale)
+        time_period = '{} - {}'.format(
+            metadata['time_period'][0],
+            metadata['time_period'][1],
+            )
+        contents.append(time_period)
+        
+        column = markuptools.MarkupCommand(
+            'center-column', contents
             )
         italic = markuptools.MarkupCommand(
             'italic',
-            right_column,
+            column,
             )
         final_markup = markuptools.Markup(italic, 'down')
         return final_markup

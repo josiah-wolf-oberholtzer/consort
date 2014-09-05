@@ -41,12 +41,16 @@ class AbsolutePitchMaker(PitchMaker):
         self,
         allow_repetition=None,
         chord_expressions=None,
+        pitch_application_rate=None,
         pitches=None,
+        transform_stack=None,
         ):
         PitchMaker.__init__(
             self,
             allow_repetition=allow_repetition,
-            chord_expressions=chord_expressions
+            chord_expressions=chord_expressions,
+            pitch_application_rate=pitch_application_rate,
+            transform_stack=transform_stack,
             )
         if pitches is not None:
             if not isinstance(pitches, collections.Sequence):
@@ -71,6 +75,9 @@ class AbsolutePitchMaker(PitchMaker):
             pitch = pitchtools.NamedPitch("c'")
         else:
             pitch = pitches[seed]
+        if self.transform_stack:
+            for transform in self.transform_stack:
+                pitch = transform(pitch)
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
         self._apply_chord_expression(
