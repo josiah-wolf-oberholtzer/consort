@@ -191,22 +191,29 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventories=None,
         ):
         from consort import makers
-        resolved_timespan_inventory = timespantools.TimespanInventory()
+        from supriya import timetools
+        # resolved_timespan_inventory = timespantools.TimespanInventory()
+        resolved_inventory = timetools.TimespanCollection()
         timespan_inventories = [x[1] for x in
             sorted(timespan_inventories.items(),
                 key=lambda item: item[0],
                 )
             ]
-        resolved_timespan_inventory.extend(timespan_inventories[0])
+        #resolved_inventory.extend(timespan_inventories[0])
+        resolved_inventory.insert(timespan_inventories[0][:])
         for timespan_inventory in timespan_inventories[1:]:
             to_extend = []
             for timespan in timespan_inventory:
-                resolved_timespan_inventory -= timespan
+                resolved_inventory - timespan
                 if isinstance(timespan, makers.PerformedTimespan):
                     to_extend.append(timespan)
-            resolved_timespan_inventory.extend(to_extend)
-        resolved_timespan_inventory.sort()
-        return resolved_timespan_inventory
+            #resolved_inventory.extend(to_extend)
+            resolved_inventory.insert(to_extend)
+        #resolved_inventory.sort()
+        resolved_inventory = timespantools.TimespanInventory(
+            resolved_inventory[:],
+            )
+        return resolved_inventory
 
     ### PUBLIC METHODS ###
 
