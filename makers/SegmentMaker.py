@@ -365,12 +365,12 @@ class SegmentMaker(makertools.SegmentMaker):
                 maker = getattr(music_specifier, keyword_name)
                 if maker is None:
                     continue
-                if maker not in counter:
+                if music_specifier not in counter:
                     seed = music_specifier.seed or 0
-                    counter[maker] = seed
-                seed = counter[maker]
+                    counter[music_specifier] = seed
+                seed = counter[music_specifier]
                 maker(container, music_index=seed)
-                counter[maker] += 1
+                counter[music_specifier] += 1
 
     ### PRIVATE PROPERTIES ###
 

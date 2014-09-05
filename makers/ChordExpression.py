@@ -81,10 +81,8 @@ class ChordExpression(abctools.AbjadValueObject):
             maximum_pitch = base_pitch.transpose(maximum)
             minimum_pitch = base_pitch.transpose(minimum)
             if maximum_pitch not in pitch_range:
-                print('\t\t{}: ABOVE RANGE'.format(type(self)))
                 new_interval_numbers = [x - maximum for x in interval_numbers]
             elif minimum_pitch not in pitch_range:
-                print('\t\t{}: BELOW RANGE'.format(type(self)))
                 new_interval_numbers = [x - minimum for x in interval_numbers]
         pitches = [base_pitch.transpose(x) for x in new_interval_numbers]
         pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]

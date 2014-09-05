@@ -89,18 +89,17 @@ class KeyClusterExpression(abctools.AbjadValueObject):
         assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
         center_pitch = logical_tie[0].written_pitch
         chord_pitches = self._get_chord_pitches(center_pitch)
-        maximum_pitch = max(chord_pitches)
-        minimum_pitch = min(chord_pitches)
-        if maximum_pitch not in pitch_range:
-            interval = maximum_pitch - pitch_range.stop_pitch
-            center_pitch = center_pitch.transpose(interval)
-            chord_pitches = self._get_chord_pitches(center_pitch)
-            print('\t\t{}: ABOVE RANGE: {}'.format(type(self), interval))
-        elif minimum_pitch not in pitch_range:
-            interval = minimum_pitch - pitch_range.start_pitch
-            center_pitch = center_pitch.transpose(interval)
-            chord_pitches = self._get_chord_pitches(center_pitch)
-            print('\t\t{}: BELOW RANGE: {}'.format(type(self), interval))
+        if pitch_range is not None:
+            maximum_pitch = max(chord_pitches)
+            minimum_pitch = min(chord_pitches)
+            if maximum_pitch not in pitch_range:
+                interval = maximum_pitch - pitch_range.stop_pitch
+                center_pitch = center_pitch.transpose(interval)
+                chord_pitches = self._get_chord_pitches(center_pitch)
+            elif minimum_pitch not in pitch_range:
+                interval = minimum_pitch - pitch_range.start_pitch
+                center_pitch = center_pitch.transpose(interval)
+                chord_pitches = self._get_chord_pitches(center_pitch)
         for i, leaf in enumerate(logical_tie):
             chord = Chord(leaf)
             chord.written_pitches = chord_pitches

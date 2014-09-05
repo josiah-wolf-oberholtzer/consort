@@ -48,7 +48,6 @@ class PitchMaker(abctools.AbjadValueObject):
         if pitch_range is None:
             instrument = inspect_(music).get_effective(
                 instrumenttools.Instrument)
-            print(instrument)
             if instrument is not None:
                 pitch_range = instrument.pitch_range
         previous_pitch = None
