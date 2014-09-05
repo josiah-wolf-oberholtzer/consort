@@ -95,10 +95,18 @@ class DynamicExpression(abctools.AbjadValueObject):
         if not isinstance(group, selectiontools.SliceSelection):
             group = selectiontools.SliceSelection(group)
         is_short_group = False
-        if len(group) < 3:
+        if len(group) < 2:
             is_short_group = True
         elif self.minimum_duration is not None:
             if group.get_duration() < self.minimum_duration:
+                is_short_group = True
+        instrument = inspect_(group[0]).get_effective(
+            instrumenttools.Instrument,
+            )
+        logical_ties = tuple(iterate(group).by_logical_tie(pitched=True))
+        if len(logical_ties) < 3:
+            if instrument == instrumenttools.Piano() or \
+                instrument == instrumenttools.UntunedPercussion():
                 is_short_group = True
         grace_notes = None
         previous_leaf = inspect_(group[0]).get_leaf(-1)
