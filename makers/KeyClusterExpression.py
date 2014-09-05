@@ -89,11 +89,6 @@ class KeyClusterExpression(abctools.AbjadValueObject):
         assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
         center_pitch = logical_tie[0].written_pitch
         chord_pitches = self._get_chord_pitches(center_pitch)
-        head = logical_tie.head
-        if pitch_range is None:
-            pitch_range = inspect_(head).get_effective(pitchtools.PitchRange)
-            if pitch_range is None:
-                pitch_range = pitchtools.PitchRange.from_pitches(-48, 48)
         maximum_pitch = max(chord_pitches)
         minimum_pitch = min(chord_pitches)
         if maximum_pitch not in pitch_range:

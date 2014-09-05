@@ -167,13 +167,16 @@ class PitchClassPitchMaker(PitchMaker):
             registration,
             seed=music_index + logical_tie_index,
             )
-        if self.pitch_range is not None:
-            pitch = self._fit_pitch_to_pitch_range(pitch, self.pitch_range)
+        pitch_range = self.pitch_range or pitch_range
+        if pitch_range is not None:
+            pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
+        print(type(self), pitch, pitch_range)
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
         self._apply_chord_expression(
             logical_tie,
             seed=music_index + logical_tie_index,
+            pitch_range=pitch_range,
             )
         return pitch
 

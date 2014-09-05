@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
+from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
@@ -44,6 +45,12 @@ class PitchMaker(abctools.AbjadValueObject):
         music_index=0,
         ):
         pitch_range = inspect_(music).get_effective(pitchtools.PitchRange)
+        if pitch_range is None:
+            instrument = inspect_(music).get_effective(
+                instrumenttools.Instrument)
+            print(instrument)
+            if instrument is not None:
+                pitch_range = instrument.pitch_range
         previous_pitch = None
         iterator = iterate(music).by_logical_tie(pitched=True)
         for logical_tie_index, logical_tie in enumerate(iterator):
@@ -67,10 +74,18 @@ class PitchMaker(abctools.AbjadValueObject):
 
     ### PRIVATE METHODS ###
 
-    def _apply_chord_expression(self, logical_tie, seed=0):
+    def _apply_chord_expression(
+        self,
+        logical_tie,
+        pitch_range=None,
+        seed=0,
+        ):
         if self.chord_expressions:
             chord_expression = self.chord_expressions[seed]
-            chord_expression(logical_tie)
+            chord_expression(
+                logical_tie,
+                pitch_range=pitch_range,
+                )
 
     ### PUBLIC PROPERTIES ###
 

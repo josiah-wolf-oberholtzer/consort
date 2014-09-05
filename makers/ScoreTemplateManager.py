@@ -32,6 +32,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
         label = label or instrument.instrument_name.replace(' ', '-').lower()
         total_label = 'score.{}'.format(label)
         ScoreTemplateManager.attach_tag(total_label, performer_group)
+        attach(
+            instrument,
+            performer_group,
+            scope=context_name,
+            is_annotation=True,
+            )
         manager = set_(performer_group)
         manager.instrument_name = instrument.instrument_name_markup
         manager.short_instrument_name = instrument.short_instrument_name_markup
@@ -180,4 +186,4 @@ class ScoreTemplateManager(abctools.AbjadObject):
             name="tag {}".format(label),
             format_slot='before',
             )
-        attach(tag, context) 
+        attach(tag, context)

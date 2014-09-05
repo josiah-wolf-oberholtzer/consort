@@ -76,6 +76,7 @@ class AbsolutePitchMaker(PitchMaker):
         self._apply_chord_expression(
             logical_tie,
             seed=seed,
+            pitch_range=pitch_range,
             )
         return pitch
 

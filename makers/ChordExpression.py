@@ -73,27 +73,24 @@ class ChordExpression(abctools.AbjadValueObject):
         interval_numbers = sorted(list(interval_numbers))
         head = logical_tie.head
         base_pitch = head.written_pitch
-        if pitch_range is None:
-            pitch_range = inspect_(head).get_effective(pitchtools.PitchRange)
-            if pitch_range is None:
-                pitch_range = pitchtools.PitchRange.from_pitches(-48, 48)
-        assert base_pitch in pitch_range
-        maximum = max(interval_numbers)
-        minimum = min(interval_numbers)
-        maximum_pitch = base_pitch.transpose(maximum)
-        minimum_pitch = base_pitch.transpose(minimum)
-        if maximum_pitch not in pitch_range:
-            print('\t\t{}: ABOVE RANGE'.format(type(self)))
-            new_interval_numbers = [x - maximum for x in interval_numbers]
-        elif minimum_pitch not in pitch_range:
-            print('\t\t{}: BELOW RANGE'.format(type(self)))
-            new_interval_numbers = [x - minimum for x in interval_numbers]
-        else:
-            new_interval_numbers = interval_numbers
+        new_interval_numbers = interval_numbers
+        if pitch_range is not None:
+            assert base_pitch in pitch_range
+            maximum = max(interval_numbers)
+            minimum = min(interval_numbers)
+            maximum_pitch = base_pitch.transpose(maximum)
+            minimum_pitch = base_pitch.transpose(minimum)
+            if maximum_pitch not in pitch_range:
+                print('\t\t{}: ABOVE RANGE'.format(type(self)))
+                new_interval_numbers = [x - maximum for x in interval_numbers]
+            elif minimum_pitch not in pitch_range:
+                print('\t\t{}: BELOW RANGE'.format(type(self)))
+                new_interval_numbers = [x - minimum for x in interval_numbers]
         pitches = [base_pitch.transpose(x) for x in new_interval_numbers]
         pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]
-        assert all(pitch in pitch_range for pitch in pitches), \
-            (pitch_range, base_pitch, interval_numbers, pitches)
+        if pitch_range is not None:
+            assert all(pitch in pitch_range for pitch in pitches), \
+                (pitch_range, base_pitch, interval_numbers, pitches)
         for i, leaf in enumerate(logical_tie):
             chord = scoretools.Chord(leaf)
             chord.written_pitches = pitches
