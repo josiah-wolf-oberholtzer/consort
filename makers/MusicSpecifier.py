@@ -23,6 +23,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         '_is_sentinel',
         '_labels',
         '_pitch_maker',
+        '_pitches_are_nonsemantic',
         '_rhythm_maker',
         '_seed',
         )
@@ -36,6 +37,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         is_sentinel=None,
         labels=None,
         pitch_maker=None,
+        pitches_are_nonsemantic=None,
         rhythm_maker=None,
         seed=None,
         ):
@@ -57,6 +59,9 @@ class MusicSpecifier(abctools.AbjadValueObject):
         if pitch_maker is not None:
             assert isinstance(pitch_maker, makers.PitchMaker)
         self._pitch_maker = pitch_maker
+        if pitches_are_nonsemantic is not None:
+            pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
+        self._pitches_are_nonsemantic = pitches_are_nonsemantic
         if rhythm_maker is not None:
             assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
         self._rhythm_maker = rhythm_maker
@@ -153,6 +158,10 @@ class MusicSpecifier(abctools.AbjadValueObject):
     @property
     def pitch_maker(self):
         return self._pitch_maker
+
+    @property
+    def pitches_are_nonsemantic(self):
+        return self._pitches_are_nonsemantic
 
     @property
     def rhythm_maker(self):

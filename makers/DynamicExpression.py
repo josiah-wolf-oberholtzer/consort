@@ -150,6 +150,7 @@ class DynamicExpression(abctools.AbjadValueObject):
             if stop_token != 'o':
                 items.append(stop_token)
             else:
+                items.append('!')
                 is_circled = True
         hairpin_descriptor = ' '.join(items)
         hairpin = Hairpin(

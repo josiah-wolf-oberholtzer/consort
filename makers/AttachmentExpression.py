@@ -64,8 +64,10 @@ class AttachmentExpression(abctools.AbjadValueObject):
         \new Staff {
             c'8 \sfz
             r8
-            d'8 \sfz
-            e'8
+            \override Hairpin #'circled-tip = ##t
+            d'8 \> \sfz
+            e'8 \!
+            \revert Hairpin #'circled-tip
             r8
             \override Hairpin #'circled-tip = ##t
             f'8 \> \sfz

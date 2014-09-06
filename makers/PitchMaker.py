@@ -1,8 +1,11 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
+from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
+from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 
@@ -61,12 +64,20 @@ class PitchMaker(abctools.AbjadValueObject):
         music,
         music_index=0,
         ):
+        from consort import makers
+        music_specifier = inspect_(music).get_indicator(makers.MusicSpecifier)
+        instrument = inspect_(music).get_effective(instrumenttools.Instrument)
+        if not music_specifier.pitches_are_nonsemantic:
+            pitch = instrument.sounding_pitch_of_written_middle_c
+            if pitch != pitchtools.NamedPitch("c'"):
+                command = indicatortools.LilyPondCommand(
+                    r"transpose {} c'".format(pitch),
+                    'before',
+                    )
+                attach(command, music)
         pitch_range = inspect_(music).get_effective(pitchtools.PitchRange)
         if pitch_range is None:
-            instrument = inspect_(music).get_effective(
-                instrumenttools.Instrument)
-            if instrument is not None:
-                pitch_range = instrument.pitch_range
+            pitch_range = instrument.pitch_range
         divisions = [_ for _ in music]
         division_index = 0
         previous_pitch = None
