@@ -34,10 +34,14 @@ class AttachmentMaker(abctools.AbjadValueObject):
         ):
         from consort import makers
         prototype = makers.AttachmentExpression
+        validated_attachment_expressions = {}
         for name, attachment_expression in attachment_expressions.items():
+            if attachment_expression is None:
+                continue
             assert isinstance(attachment_expression, prototype), \
                 (name, attachment_expression)
-        self._attachment_expressions = attachment_expressions
+            validated_attachment_expressions[name] = attachment_expression
+        self._attachment_expressions = validated_attachment_expressions
 
     ### SPECIAL METHODS ###
 
