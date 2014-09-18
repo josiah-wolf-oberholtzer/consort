@@ -1,7 +1,9 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 import collections
 from abjad.tools import abctools
 from abjad.tools import scoretools
+from abjad.tools import systemtools
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 
@@ -28,22 +30,16 @@ class AttachmentMaker(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        attachment_expressions=None,
+        **attachment_expressions
         ):
         from consort import makers
         prototype = makers.AttachmentExpression
-        if attachment_expressions is not None:
-            for attachment_expression in attachment_expressions:
-                assert isinstance(attachment_expression, prototype)
+        for name, attachment_expression in attachment_expressions.items():
+            assert isinstance(attachment_expression, prototype), \
+                (name, attachment_expression)
         self._attachment_expressions = attachment_expressions
 
     ### SPECIAL METHODS ###
-
-    def __add__(self, expr):
-        assert isinstance(expr, type(self))
-        attachment_expressions = self.attachment_expressions or ()
-        attachment_expressions = expr.attachment_expressions or ()
-        return type(self)(attachment_expressions)
 
     def __call__(
         self,
@@ -53,14 +49,15 @@ class AttachmentMaker(abctools.AbjadValueObject):
         assert isinstance(music, scoretools.Container)
         if not self.attachment_expressions:
             return
-        for attachment_expression in self.attachment_expressions:
+        for name, attachment_expression in self.attachment_expressions.items():
             attachment_expression(music, seed=music_index)
 
-    def __getitem__(self, item):
-        return self.attachment_expressions[item]
+    def __getattr__(self, item):
+        if item in self.attachment_expressions:
+            return self.attachment_expressions[item]
+        return object.__getattribute__(self, item)
 
-    def __len__(self):
-        return len(self.attachment_expressions)
+    ### PRIVATE METHODS ###
 
     @staticmethod
     def _process_score(score):
@@ -80,8 +77,17 @@ class AttachmentMaker(abctools.AbjadValueObject):
                 maker(container, music_index=seed)
                 counter[music_specifier] += 1
 
+    ### PRIVATE PROPERTIES ###
+
+    @property
+    def _storage_format_specification(self):
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=sorted(self.attachment_expressions.keys()),
+            )
+
     ### PUBLIC PROPERTIES ###
 
     @property
     def attachment_expressions(self):
-        return self._attachment_expressions
+        return self._attachment_expressions.copy()
