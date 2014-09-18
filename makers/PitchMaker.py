@@ -1,10 +1,12 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+import collections
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
+from abjad.tools import scoretools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
@@ -124,6 +126,24 @@ class PitchMaker(abctools.AbjadValueObject):
                 logical_tie,
                 pitch_range=pitch_range,
                 )
+
+    @staticmethod
+    def _process_score(score):
+        from consort import makers
+        counter = collections.Counter()
+        for voice in iterate(score).by_class(scoretools.Voice):
+            for container in voice:
+                prototype = makers.MusicSpecifier
+                music_specifier = inspect_(container).get_effective(prototype)
+                maker = music_specifier.pitch_maker
+                if maker is None:
+                    continue
+                if music_specifier not in counter:
+                    seed = music_specifier.seed or 0
+                    counter[music_specifier] = seed
+                seed = counter[music_specifier]
+                maker(container, music_index=seed)
+                counter[music_specifier] += 1
 
     ### PUBLIC PROPERTIES ###
 

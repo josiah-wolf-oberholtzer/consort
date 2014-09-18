@@ -10,6 +10,7 @@ from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
 from abjad.tools import scoretools
 from abjad.tools import systemtools
+from abjad.tools import templatetools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
@@ -224,17 +225,17 @@ class SegmentMaker(makertools.SegmentMaker):
 
             with timer:
                 print('GraceMaker:')
-                self._process_score(segment_session.score, 'grace_maker')
+                makers.GraceMaker._process_score(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
                 print('PitchMaker:')
-                self._process_score(segment_session.score, 'pitch_maker')
+                makers.PitchMaker._process_score(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
                 print('AttachmentMaker:')
-                self._process_score(segment_session.score, 'attachment_maker')
+                makers.AttachmentMaker._process_score(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
         with timer:
@@ -354,23 +355,6 @@ class SegmentMaker(makertools.SegmentMaker):
             lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
-
-    def _process_score(self, score, keyword_name):
-        from consort import makers
-        counter = collections.Counter()
-        for voice in iterate(score).by_class(scoretools.Voice):
-            for container in voice:
-                prototype = makers.MusicSpecifier
-                music_specifier = inspect_(container).get_effective(prototype)
-                maker = getattr(music_specifier, keyword_name)
-                if maker is None:
-                    continue
-                if music_specifier not in counter:
-                    seed = music_specifier.seed or 0
-                    counter[music_specifier] = seed
-                seed = counter[music_specifier]
-                maker(container, music_index=seed)
-                counter[music_specifier] += 1
 
     ### PRIVATE PROPERTIES ###
 
