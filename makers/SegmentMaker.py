@@ -116,7 +116,7 @@ class SegmentMaker(makertools.SegmentMaker):
             total: ...
         GraceHandler:
             total: ...
-        PitchMaker:
+        PitchHandler:
             total: ...
         AttachmentHandler:
             total: ...
@@ -229,8 +229,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
-                print('PitchMaker:')
-                makers.PitchMaker._iterate_score(segment_session.score)
+                print('PitchHandler:')
+                makers.PitchHandler._iterate_score(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:

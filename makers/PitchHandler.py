@@ -12,7 +12,7 @@ from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 
 
-class PitchMaker(abctools.AbjadValueObject):
+class PitchHandler(abctools.AbjadValueObject):
 
     ### CLASS VARIABLES ###
 

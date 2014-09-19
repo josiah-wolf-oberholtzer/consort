@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
-from consort.makers.PitchMaker import PitchMaker
+from consort.makers.PitchHandler import PitchHandler
 
 
-class HarmonicFieldPitchMaker(PitchMaker):
+class HarmonicFieldPitchHandler(PitchHandler):
     r'''A harmonic field pitch maker.
     '''
 
@@ -25,7 +25,7 @@ class HarmonicFieldPitchMaker(PitchMaker):
         register_specifier=None,
         ):
         from consort import makers
-        PitchMaker.__init__(
+        PitchHandler.__init__(
             self,
             allow_repetition=allow_repetition,
             chord_expressions=chord_expressions,

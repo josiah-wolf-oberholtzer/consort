@@ -57,7 +57,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
         if pitch_handler is not None:
-            assert isinstance(pitch_handler, makers.PitchMaker)
+            assert isinstance(pitch_handler, makers.PitchHandler)
         self._pitch_handler = pitch_handler
         if pitches_are_nonsemantic is not None:
             pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
@@ -121,7 +121,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='pitch_handler',
                 display_string='pitch maker',
                 command='pm',
-                editor=makers.PitchMaker,
+                editor=makers.PitchHandler,
                 ),
             systemtools.AttributeDetail(
                 name='rhythm_maker',

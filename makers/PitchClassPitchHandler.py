@@ -2,10 +2,10 @@
 from __future__ import print_function
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from consort.makers.PitchMaker import PitchMaker
+from consort.makers.PitchHandler import PitchHandler
 
 
-class PitchClassPitchHandler(PitchMaker):
+class PitchClassPitchHandler(PitchHandler):
     r'''PitchClass pitch maker.
 
     ::
@@ -65,7 +65,7 @@ class PitchClassPitchHandler(PitchMaker):
         transform_stack=None,
         ):
         from consort import makers
-        PitchMaker.__init__(
+        PitchHandler.__init__(
             self,
             allow_repetition=allow_repetition,
             chord_expressions=chord_expressions,

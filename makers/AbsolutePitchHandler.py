@@ -2,10 +2,10 @@
 import collections
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from consort.makers.PitchMaker import PitchMaker
+from consort.makers.PitchHandler import PitchHandler
 
 
-class AbsolutePitchHandler(PitchMaker):
+class AbsolutePitchHandler(PitchHandler):
     r'''Absolute pitch maker.
 
     ::
@@ -45,7 +45,7 @@ class AbsolutePitchHandler(PitchMaker):
         pitches=None,
         transform_stack=None,
         ):
-        PitchMaker.__init__(
+        PitchHandler.__init__(
             self,
             allow_repetition=allow_repetition,
             chord_expressions=chord_expressions,
