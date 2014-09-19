@@ -128,7 +128,7 @@ class PitchMaker(abctools.AbjadValueObject):
                 )
 
     @staticmethod
-    def _process_score(score):
+    def _iterate_score(score):
         from consort import makers
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):

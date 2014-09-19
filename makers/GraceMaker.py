@@ -88,7 +88,7 @@ class GraceMaker(abctools.AbjadValueObject):
         attach(grace_container, leaf_to_attach_to)
 
     @staticmethod
-    def _process_score(score):
+    def _iterate_score(score):
         from consort import makers
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
