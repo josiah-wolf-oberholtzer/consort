@@ -114,11 +114,11 @@ class SegmentMaker(makertools.SegmentMaker):
             total: ...
         AnnotationManager (1):
             total: ...
-        GraceMaker:
+        GraceHandler:
             total: ...
         PitchMaker:
             total: ...
-        AttachmentMaker:
+        AttachmentHandler:
             total: ...
         AnnotationManager (2):
             total: ...
@@ -224,8 +224,8 @@ class SegmentMaker(makertools.SegmentMaker):
         with systemtools.ForbidUpdate(segment_session.score):
 
             with timer:
-                print('GraceMaker:')
-                makers.GraceMaker._iterate_score(segment_session.score)
+                print('GraceHandler:')
+                makers.GraceHandler._iterate_score(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
@@ -234,8 +234,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
-                print('AttachmentMaker:')
-                makers.AttachmentMaker._iterate_score(segment_session.score)
+                print('AttachmentHandler:')
+                makers.AttachmentHandler._iterate_score(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
         with timer:

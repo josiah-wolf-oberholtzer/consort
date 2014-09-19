@@ -8,15 +8,15 @@ from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 
 
-class AttachmentMaker(abctools.AbjadValueObject):
+class AttachmentHandler(abctools.AbjadValueObject):
     r'''An attachment maker.
 
     ::
 
         >>> from consort import makers
-        >>> attachment_maker = makers.AttachmentMaker()
-        >>> print(format(attachment_maker))
-        consort.makers.AttachmentMaker()
+        >>> attachment_handler = makers.AttachmentHandler()
+        >>> print(format(attachment_handler))
+        consort.makers.AttachmentHandler()
 
     '''
 
@@ -71,7 +71,7 @@ class AttachmentMaker(abctools.AbjadValueObject):
             for container in voice:
                 prototype = makers.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
-                maker = music_specifier.attachment_maker
+                maker = music_specifier.attachment_handler
                 if maker is None:
                     continue
                 if music_specifier not in counter:

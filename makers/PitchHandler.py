@@ -135,7 +135,7 @@ class PitchMaker(abctools.AbjadValueObject):
             for container in voice:
                 prototype = makers.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
-                maker = music_specifier.pitch_maker
+                maker = music_specifier.pitch_handler
                 if maker is None:
                     continue
                 if music_specifier not in counter:

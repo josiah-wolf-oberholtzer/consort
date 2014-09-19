@@ -18,11 +18,11 @@ class MusicSpecifier(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_attachment_maker',
-        '_grace_maker',
+        '_attachment_handler',
+        '_grace_handler',
         '_is_sentinel',
         '_labels',
-        '_pitch_maker',
+        '_pitch_handler',
         '_pitches_are_nonsemantic',
         '_rhythm_maker',
         '_seed',
@@ -32,22 +32,22 @@ class MusicSpecifier(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        attachment_maker=None,
-        grace_maker=None,
+        attachment_handler=None,
+        grace_handler=None,
         is_sentinel=None,
         labels=None,
-        pitch_maker=None,
+        pitch_handler=None,
         pitches_are_nonsemantic=None,
         rhythm_maker=None,
         seed=None,
         ):
         from consort import makers
-        if attachment_maker is not None:
-            assert isinstance(attachment_maker, makers.AttachmentMaker)
-        self._attachment_maker = attachment_maker
-        if grace_maker is not None:
-            assert isinstance(grace_maker, makers.GraceMaker)
-        self._grace_maker = grace_maker
+        if attachment_handler is not None:
+            assert isinstance(attachment_handler, makers.AttachmentHandler)
+        self._attachment_handler = attachment_handler
+        if grace_handler is not None:
+            assert isinstance(grace_handler, makers.GraceHandler)
+        self._grace_handler = grace_handler
         if is_sentinel is not None:
             is_sentinel = bool(is_sentinel)
         self._is_sentinel = is_sentinel
@@ -56,9 +56,9 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 labels = (labels,)
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
-        if pitch_maker is not None:
-            assert isinstance(pitch_maker, makers.PitchMaker)
-        self._pitch_maker = pitch_maker
+        if pitch_handler is not None:
+            assert isinstance(pitch_handler, makers.PitchMaker)
+        self._pitch_handler = pitch_handler
         if pitches_are_nonsemantic is not None:
             pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
         self._pitches_are_nonsemantic = pitches_are_nonsemantic
@@ -100,16 +100,16 @@ class MusicSpecifier(abctools.AbjadValueObject):
         from scoremanager import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
-                name='attachment_maker',
+                name='attachment_handler',
                 display_string='attachment maker',
                 command='am',
-                editor=makers.AttachmentMaker,
+                editor=makers.AttachmentHandler,
                 ),
             systemtools.AttributeDetail(
-                name='grace_maker',
+                name='grace_handler',
                 display_string='grace maker',
                 command='gm',
-                editor=makers.GraceMaker,
+                editor=makers.GraceHandler,
                 ),
             systemtools.AttributeDetail(
                 name='labels',
@@ -118,7 +118,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 editor=idetools.getters.get_strings,
                 ),
             systemtools.AttributeDetail(
-                name='pitch_maker',
+                name='pitch_handler',
                 display_string='pitch maker',
                 command='pm',
                 editor=makers.PitchMaker,
@@ -140,12 +140,12 @@ class MusicSpecifier(abctools.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def attachment_maker(self):
-        return self._attachment_maker
+    def attachment_handler(self):
+        return self._attachment_handler
 
     @property
-    def grace_maker(self):
-        return self._grace_maker
+    def grace_handler(self):
+        return self._grace_handler
 
     @property
     def is_sentinel(self):
@@ -156,8 +156,8 @@ class MusicSpecifier(abctools.AbjadValueObject):
         return self._labels
 
     @property
-    def pitch_maker(self):
-        return self._pitch_maker
+    def pitch_handler(self):
+        return self._pitch_handler
 
     @property
     def pitches_are_nonsemantic(self):

@@ -5,17 +5,17 @@ from abjad.tools import pitchtools
 from consort.makers.PitchMaker import PitchMaker
 
 
-class PitchClassPitchMaker(PitchMaker):
+class PitchClassPitchHandler(PitchMaker):
     r'''PitchClass pitch maker.
 
     ::
 
         >>> from consort import makers
-        >>> pitch_maker = makers.PitchClassPitchMaker(
+        >>> pitch_handler = makers.PitchClassPitchHandler(
         ...     pitch_classes="c' d' e' f'",
         ...     )
-        >>> print(format(pitch_maker))
-        consort.makers.PitchClassPitchMaker(
+        >>> print(format(pitch_handler))
+        consort.makers.PitchClassPitchHandler(
             allow_repetition=False,
             pitch_classes=datastructuretools.CyclicTuple(
                 [

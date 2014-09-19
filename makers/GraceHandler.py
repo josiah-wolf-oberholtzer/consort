@@ -15,17 +15,17 @@ from abjad.tools.topleveltools import new
 from abjad.tools.topleveltools import override
 
 
-class GraceMaker(abctools.AbjadValueObject):
+class GraceHandler(abctools.AbjadValueObject):
     r'''A grace maker.
 
     ::
 
         >>> from consort import makers
-        >>> grace_maker = makers.GraceMaker(
+        >>> grace_handler = makers.GraceHandler(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
-        >>> print(format(grace_maker))
-        consort.makers.GraceMaker(
+        >>> print(format(grace_handler))
+        consort.makers.GraceHandler(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),
             )
@@ -95,7 +95,7 @@ class GraceMaker(abctools.AbjadValueObject):
             for container in voice:
                 prototype = makers.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
-                maker = music_specifier.grace_maker
+                maker = music_specifier.grace_handler
                 if maker is None:
                     continue
                 if music_specifier not in counter:
