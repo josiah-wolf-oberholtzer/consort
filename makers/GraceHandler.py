@@ -61,7 +61,7 @@ class GraceHandler(abctools.AbjadValueObject):
     def __call__(
         self,
         logical_tie,
-        seed=0,
+        music_index=0,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
         if self.counts is None:
@@ -88,8 +88,9 @@ class GraceHandler(abctools.AbjadValueObject):
         attach(grace_container, leaf_to_attach_to)
 
     @staticmethod
-    def _process_session(score):
+    def _process_session(segment_session):
         from consort import makers
+        score = segment_session.score
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:

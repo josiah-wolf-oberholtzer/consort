@@ -128,8 +128,9 @@ class PitchHandler(abctools.AbjadValueObject):
                 )
 
     @staticmethod
-    def _process_session(score):
+    def _process_session(segment_session):
         from consort import makers
+        score = segment_session.score
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
