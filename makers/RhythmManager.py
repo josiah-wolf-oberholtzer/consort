@@ -270,7 +270,14 @@ class RhythmManager(abctools.AbjadValueObject):
             for music_specifier, timespans in itertools.groupby(
                 timespan_inventory, grouper):
                 if music_specifier is None:
-                    rhythm_maker = rhythmmakertools.RestRhythmMaker()
+                    rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                        output_masks=[
+                            rhythmmakertools.BooleanPattern(
+                                indices=[0],
+                                period=1,
+                                )
+                            ],
+                        )
                 elif music_specifier.rhythm_maker is None:
                     rhythm_maker = rhythmmakertools.NoteRhythmMaker(
                         beam_specifier=rhythmmakertools.BeamSpecifier(
