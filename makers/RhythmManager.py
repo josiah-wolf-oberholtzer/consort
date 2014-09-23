@@ -61,6 +61,21 @@ class RhythmManager(abctools.AbjadValueObject):
                     attach(spanner, group)
 
     @staticmethod
+    def _collect_attack_points(segment_session):
+        from consort import makers
+        score = segment_session.score
+        attack_point_map = collections.OrderedDict()
+        iterator = iterate(score).by_timeline(component_class=scoretools.Note)
+        for note in iterator:
+            logical_tie = inspect_(note).get_logical_tie()
+            if note is not logical_tie.head:
+                continue
+            attack_point_signature = \
+                makers.AttackPointSignature.from_logical_tie(logical_tie)
+            attack_point_map[logical_tie] = attack_point_signature
+        segment_session.attack_point_map = attack_point_map
+
+    @staticmethod
     def _consolidate_silences(segment_session):
         from consort import makers
         score = segment_session.score
@@ -493,31 +508,27 @@ class RhythmManager(abctools.AbjadValueObject):
         ):
         with systemtools.Timer() as timer:
             RhythmManager._populate_time_signature_context(segment_session)
-        print('\tpopulating time signature context:', timer.elapsed_time)
-
+        print('\tpopulated time signature context:', timer.elapsed_time)
         with systemtools.Timer() as timer:
             RhythmManager._populate_rhythms(segment_session)
-        print('\tpopulating rhythms:', timer.elapsed_time)
-
+        print('\tpopulated rhythms:', timer.elapsed_time)
         if annotation_specifier is not None and \
             annotation_specifier.show_stage_4:
             segment_session.unrewritten_score = \
                 mutate(segment_session.score).copy()
-
         with systemtools.Timer() as timer:
             RhythmManager._consolidate_silences(segment_session)
-        print('\tconsolidating silences:', timer.elapsed_time)
-
+        print('\tconsolidated silences:', timer.elapsed_time)
         with systemtools.Timer() as timer:
             RhythmManager._rewrite_meters(segment_session)
-        print('\trewriting meters:', timer.elapsed_time)
-
+        print('\trewrote meters:', timer.elapsed_time)
         with systemtools.Timer() as timer:
             RhythmManager._cleanup_silences(segment_session)
-        print('\tcleaning up silences:', timer.elapsed_time)
-
+        print('\tcleaned up silences:', timer.elapsed_time)
         with systemtools.Timer() as timer:
             RhythmManager._cleanup_logical_ties(segment_session)
-        print('\tcleaning up logical ties:', timer.elapsed_time)
-
+        print('\tcleaned up logical ties:', timer.elapsed_time)
+        with systemtools.Timer() as timer:
+            RhythmManager._collect_attack_points(segment_session)
+        print('\tcollected attack points:', timer.elapsed_time)
         return segment_session
