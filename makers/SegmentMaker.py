@@ -225,17 +225,17 @@ class SegmentMaker(makertools.SegmentMaker):
 
             with timer:
                 print('GraceHandler:')
-                makers.GraceHandler._iterate_score(segment_session.score)
+                makers.GraceHandler._process_session(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
                 print('PitchHandler:')
-                makers.PitchHandler._iterate_score(segment_session.score)
+                makers.PitchHandler._process_session(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
                 print('AttachmentHandler:')
-                makers.AttachmentHandler._iterate_score(segment_session.score)
+                makers.AttachmentHandler._process_session(segment_session.score)
                 print('\ttotal:', timer.elapsed_time)
 
         with timer:
