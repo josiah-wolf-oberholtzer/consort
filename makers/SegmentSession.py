@@ -10,6 +10,7 @@ class SegmentSession(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        'attack_point_map',
         'meters',
         'score',
         'scores',
@@ -24,6 +25,7 @@ class SegmentSession(abctools.AbjadValueObject):
         self,
         segment_maker=None,
         ):
+        self.attack_point_map = None
         self.meters = None
         self.score = None
         self.scores = []

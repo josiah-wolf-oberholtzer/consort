@@ -269,6 +269,20 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### PRIVATE METHODS ###
 
+    def _collect_attack_points(self, segment_session):
+        from consort import makers
+        score = segment_session.score
+        attack_point_map = collections.OrderedDict()
+        iterator = iterate(score).by_timeline(component_class=scoretools.Note)
+        for note in iterator:
+            logical_tie = inspect_(note).get_logical_tie()
+            if note is not logical_tie.head:
+                continue
+            attack_point_signature = \
+                makers.AttackPointSignature.from_logical_tie(logical_tie)
+            attack_point_map[logical_tie] = attack_point_signature
+        segment_session.attack_point_map = attack_point_map
+
     def _configure_score(self, score):
         if self.rehearsal_mark is not None:
             markup = markuptools.Markup(r'''
