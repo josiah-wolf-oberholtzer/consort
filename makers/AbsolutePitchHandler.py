@@ -16,7 +16,6 @@ class AbsolutePitchHandler(PitchHandler):
         ...     )
         >>> print(format(pitch_handler))
         consort.makers.AbsolutePitchHandler(
-            allow_repetition=False,
             pitches=datastructuretools.CyclicTuple(
                 [
                     pitchtools.NamedPitch("c'"),
@@ -39,7 +38,7 @@ class AbsolutePitchHandler(PitchHandler):
 
     def __init__(
         self,
-        allow_repetition=None,
+        forbid_repetitions=None,
         chord_expressions=None,
         pitch_application_rate=None,
         pitches=None,
@@ -47,7 +46,7 @@ class AbsolutePitchHandler(PitchHandler):
         ):
         PitchHandler.__init__(
             self,
-            allow_repetition=allow_repetition,
+            forbid_repetitions=forbid_repetitions,
             chord_expressions=chord_expressions,
             pitch_application_rate=pitch_application_rate,
             transform_stack=transform_stack,
@@ -59,17 +58,38 @@ class AbsolutePitchHandler(PitchHandler):
             pitches = datastructuretools.CyclicTuple(pitches)
         self._pitches = pitches
 
+    ### SPECIAL METHODS ###
+
+    def __call__(
+        self,
+        attack_point_signature,
+        logical_tie,
+        phrase_seed,
+        pitch_range,
+        previous_pitch,
+        seed,
+        transposition,
+        ):
+        pitch = self._get_pitch(
+            previous_pitch,
+            seed,
+            )
+        for i, leaf in enumerate(logical_tie):
+            leaf.written_pitch = pitch
+        self._apply_chord_expression(
+            logical_tie,
+            seed=seed,
+            pitch_range=pitch_range,
+            )
+        return pitch
+
     ### PRIVATE METHODS ###
 
-    def _process_logical_tie(
+    def _get_pitch(
         self,
-        logical_tie,
-        pitch_range=None,
-        previous_pitch=None,
-        music_index=0,
-        logical_tie_index=0,
+        previous_pitch,
+        seed,
         ):
-        seed = music_index + logical_tie_index
         pitches = self.pitches
         if not pitches:
             pitch = pitchtools.NamedPitch("c'")
@@ -78,13 +98,13 @@ class AbsolutePitchHandler(PitchHandler):
         if self.transform_stack:
             for transform in self.transform_stack:
                 pitch = transform(pitch)
-        for i, leaf in enumerate(logical_tie):
-            leaf.written_pitch = pitch
-        self._apply_chord_expression(
-            logical_tie,
-            seed=seed,
-            pitch_range=pitch_range,
-            )
+        if 1 < len(set(pitches)) and self.forbid_repetitions:
+            while pitch == previous_pitch:
+                seed += 1
+                pitch = pitches[seed]
+                if self.transform_stack:
+                    for transform in self.transform_stack:
+                        pitch = transform(pitch)
         return pitch
 
     ### PUBLIC PROPERTIES ###

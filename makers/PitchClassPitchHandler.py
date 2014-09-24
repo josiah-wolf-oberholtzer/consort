@@ -16,16 +16,15 @@ class PitchClassPitchHandler(PitchHandler):
         ...     )
         >>> print(format(pitch_handler))
         consort.makers.PitchClassPitchHandler(
-            allow_repetition=False,
             pitch_classes=datastructuretools.CyclicTuple(
                 [
-                    pitchtools.NamedPitch("c'"),
-                    pitchtools.NamedPitch("d'"),
-                    pitchtools.NamedPitch("e'"),
-                    pitchtools.NamedPitch("f'"),
+                    pitchtools.NumberedPitchClass(0),
+                    pitchtools.NumberedPitchClass(2),
+                    pitchtools.NumberedPitchClass(4),
+                    pitchtools.NumberedPitchClass(5),
                     ]
                 ),
-            )
+            ) 
 
     '''
 
@@ -54,8 +53,8 @@ class PitchClassPitchHandler(PitchHandler):
 
     def __init__(
         self,
-        allow_repetition=None,
         chord_expressions=None,
+        forbid_repetitions=None,
         octavations=None,
         pitch_application_rate=None,
         pitch_classes=None,
@@ -67,12 +66,15 @@ class PitchClassPitchHandler(PitchHandler):
         from consort import makers
         PitchHandler.__init__(
             self,
-            allow_repetition=allow_repetition,
             chord_expressions=chord_expressions,
+            forbid_repetitions=forbid_repetitions,
             pitch_application_rate=pitch_application_rate,
             transform_stack=transform_stack,
             )
-        pitch_classes = pitchtools.PitchSegment(pitch_classes)
+        pitch_classes = pitchtools.PitchClassSegment(
+            items=pitch_classes,
+            item_class=pitchtools.NumberedPitchClass,
+            )
         pitch_classes = datastructuretools.CyclicTuple(pitch_classes)
         if octavations is not None:
             assert octavations
@@ -91,46 +93,45 @@ class PitchClassPitchHandler(PitchHandler):
             assert 0 <= register_spread < 12
         self._register_spread = register_spread
 
-    ### PRIVATE METHODS ###
+    ### SPECIAL METHODS ###
 
-    def _calculate_registration(self, logical_tie, seed=0):
-        from consort import makers
-        attack_point_signature = makers.AttackPointSignature.from_logical_tie(
-            logical_tie,
-            )
-        register_specifier = self.register_specifier
-        if register_specifier is None:
-            register_specifier = makers.RegisterSpecifier()
-        register = register_specifier.find_register(
+    def __call__(
+        self,
+        attack_point_signature,
+        logical_tie,
+        phrase_seed,
+        pitch_range,
+        previous_pitch,
+        seed,
+        transposition,
+        ):
+        registration = self._get_registration(
             attack_point_signature,
-            seed=seed
+            logical_tie,
+            phrase_seed,
             )
-        register_spread = self.register_spread
-        if register_spread is None:
-            register_spread = 6
-        registration = \
-            pitchtools.Registration([
-                ('[C0, C4)', register),
-                ('[C4, C8)', register + register_spread),
-                ])
-        return registration
-
-    def _calculate_pitch(self, registration, seed=0):
-        pitch_classes = self.pitch_classes or \
-            datastructuretools.CyclicTuple([0])
-        pitch_class = pitch_classes[seed]
-        octavations = self.octavations or self._default_octavations
-        octave = octavations[seed]
-        pitch_class = pitchtools.NamedPitchClass(pitch_class)
-        if self.transform_stack:
-            for transform in self.transform_stack:
-                pitch_class = transform(pitch_class)
-        pitch = pitchtools.NamedPitch(pitch_class, octave)
-        pitch_range = pitchtools.PitchRange('[C0, C8)')
-        pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
-        pitch = registration([pitch])[0]
-        pitch = pitchtools.NamedPitch(pitch)
+        pitch_class = self._get_pitch_class(
+            previous_pitch,
+            seed,
+            )
+        pitch = self._get_pitch(
+            pitch_class,
+            registration,
+            seed,
+            )
+        pitch_range = self.pitch_range or pitch_range
+        if pitch_range is not None:
+            pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
+        for i, leaf in enumerate(logical_tie):
+            leaf.written_pitch = pitch
+        self._apply_chord_expression(
+            logical_tie,
+            seed=seed,
+            pitch_range=pitch_range,
+            )
         return pitch
+
+    ### PRIVATE METHODS ###
 
     def _fit_pitch_to_pitch_range(self, pitch, pitch_range):
         while pitch <= pitch_range.start_pitch and \
@@ -143,34 +144,66 @@ class PitchClassPitchHandler(PitchHandler):
             (pitch, pitch.octave_number, pitch_range)
         return pitch
 
-    def _process_logical_tie(
+    def _get_pitch_class(
         self,
-        logical_tie,
-        pitch_range=None,
-        previous_pitch=None,
-        music_index=0,
-        logical_tie_index=0,
+        previous_pitch,
+        seed,
         ):
-        registration = \
-            self._calculate_registration(
-                logical_tie,
-                seed=music_index,
-                )
-        pitch = self._calculate_pitch(
-            registration,
-            seed=music_index + logical_tie_index,
-            )
-        pitch_range = self.pitch_range or pitch_range
-        if pitch_range is not None:
-            pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
-        for i, leaf in enumerate(logical_tie):
-            leaf.written_pitch = pitch
-        self._apply_chord_expression(
-            logical_tie,
-            seed=music_index + logical_tie_index,
-            pitch_range=pitch_range,
-            )
+        pitch_classes = self.pitch_classes or \
+            datastructuretools.CyclicTuple([pitchtools.NumberedPitchClass(0)])
+        previous_pitch_class = pitchtools.NumberedPitchClass(previous_pitch)
+        pitch_class = pitch_classes[seed]
+        if self.transform_stack:
+            for transform in self.transform_stack:
+                pitch_class = transform(pitch_class)
+        if 1 < len(set(pitch_classes)) and self.forbid_repetitions:
+            while pitch_class == previous_pitch_class:
+                seed += 1
+                pitch_class = pitch_classes[seed]
+                if self.transform_stack:
+                    for transform in self.transform_stack:
+                        pitch_class = transform(pitch_class)
+        pitch_class = pitchtools.NamedPitchClass(pitch_class)
+        return pitch_class
+
+    def _get_pitch(
+        self,
+        pitch_class,
+        registration,
+        seed,
+        ):
+        octavations = self.octavations or self._default_octavations
+        octave = octavations[seed]
+        pitch = pitchtools.NamedPitch(pitch_class, octave)
+        pitch_range = pitchtools.PitchRange('[C0, C8)')
+        pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
+        pitch = registration([pitch])[0]
+        pitch = pitchtools.NamedPitch(pitch)
         return pitch
+
+    def _get_registration(
+        self,
+        attack_point_signature,
+        logical_tie,
+        phrase_seed,
+        ):
+        from consort import makers
+        register_specifier = self.register_specifier
+        if register_specifier is None:
+            register_specifier = makers.RegisterSpecifier()
+        register = register_specifier.find_register(
+            attack_point_signature,
+            seed=phrase_seed,
+            )
+        register_spread = self.register_spread
+        if register_spread is None:
+            register_spread = 6
+        registration = \
+            pitchtools.Registration([
+                ('[C0, C4)', register),
+                ('[C4, C8)', register + register_spread),
+                ])
+        return registration
 
     ### PUBLIC PROPERTIES ###
 

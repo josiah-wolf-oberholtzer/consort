@@ -1,15 +1,11 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-import collections
+import abc
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
-from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
-from abjad.tools import scoretools
-from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 
 
 class PitchHandler(abctools.AbjadValueObject):
@@ -17,8 +13,8 @@ class PitchHandler(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_allow_repetition',
         '_chord_expressions',
+        '_forbid_repetitions',
         '_pitch_application_rate',
         '_transform_stack',
         )
@@ -27,13 +23,15 @@ class PitchHandler(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        allow_repetition=False,
+        forbid_repetitions=None,
         chord_expressions=None,
         pitch_application_rate=None,
         transform_stack=None,
         ):
         from consort import makers
-        self._allow_repetition = bool(allow_repetition)
+        if forbid_repetitions is not None:
+            forbid_repetitions = bool(forbid_repetitions)
+        self._forbid_repetitions = forbid_repetitions
         if chord_expressions is not None:
             prototype = (
                 makers.ChordExpression,
@@ -61,46 +59,18 @@ class PitchHandler(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
+    @abc.abstractmethod
     def __call__(
         self,
-        music,
-        music_index=0,
+        logical_tie,
+        attack_point_signature,
+        phrase_seed,
+        pitch_range,
+        previous_pitch,
+        seed,
+        transposition,
         ):
-        from consort import makers
-        music_specifier = inspect_(music).get_indicator(makers.MusicSpecifier)
-        instrument = inspect_(music).get_effective(instrumenttools.Instrument)
-        if not music_specifier.pitches_are_nonsemantic:
-            pitch = instrument.sounding_pitch_of_written_middle_c
-            if pitch != pitchtools.NamedPitch("c'"):
-                command = indicatortools.LilyPondCommand(
-                    r"transpose {} c'".format(pitch),
-                    'before',
-                    )
-                attach(command, music)
-        pitch_range = inspect_(music).get_effective(pitchtools.PitchRange)
-        if pitch_range is None:
-            pitch_range = instrument.pitch_range
-        divisions = [_ for _ in music]
-        division_index = 0
-        previous_pitch = None
-        iterator = iterate(music).by_logical_tie(pitched=True)
-        for logical_tie_index, logical_tie in enumerate(iterator):
-            parentage = inspect_(logical_tie.head).get_parentage()
-            for x in parentage:
-                if x in divisions:
-                    division_index = divisions.index(x)
-                    break
-            if self.pitch_application_rate == 'division':
-                logical_tie_index = division_index
-            elif self.pitch_application_rate == 'phrase':
-                logical_tie_index = 0
-            previous_pitch = self._process_logical_tie(
-                logical_tie,
-                previous_pitch=previous_pitch,
-                pitch_range=pitch_range,
-                music_index=music_index,
-                logical_tie_index=logical_tie_index,
-                )
+        raise NotImplementedError
 
     def __eq__(self, expr):
         if isinstance(expr, type(self)):
@@ -128,33 +98,147 @@ class PitchHandler(abctools.AbjadValueObject):
                 )
 
     @staticmethod
+    def _get_seed(
+        attack_point_signature,
+        music_specifier,
+        pitch_application_rate,
+        seeds_by_music_specifier,
+        seeds_by_voice,
+        voice,
+        ):
+        if music_specifier not in seeds_by_music_specifier:
+            seed = (music_specifier.seed or 0) - 1
+            seeds_by_music_specifier[music_specifier] = seed
+            seeds_by_voice[voice] = seed
+        if pitch_application_rate == 'phrase':
+            if attack_point_signature.is_first_of_phrase:
+                seeds_by_music_specifier[music_specifier] += 1
+                seed = seeds_by_music_specifier[music_specifier]
+                seeds_by_voice[voice] = seed
+            else:
+                seed = seeds_by_voice[voice]
+        elif pitch_application_rate == 'division':
+            if attack_point_signature.is_first_of_division:
+                seeds_by_music_specifier[music_specifier] += 1
+                seed = seeds_by_music_specifier[music_specifier]
+                seeds_by_voice[voice] = seed
+            else:
+                seed = seeds_by_voice[voice]
+        else:
+            seeds_by_music_specifier[music_specifier] += 1
+            seed = seeds_by_music_specifier[music_specifier]
+        return seed
+
+    @staticmethod
+    def _get_instrument(logical_tie):
+        component = logical_tie.head
+        prototype = instrumenttools.Instrument
+        instrument = inspect_(component).get_effective(prototype)
+        return instrument
+
+    @staticmethod
+    def _get_phrase_seed(
+        attack_point_signature,
+        music_specifier,
+        phrase_seeds,
+        voice,
+        ):
+        if attack_point_signature.is_first_of_phrase:
+            if (voice, music_specifier) not in phrase_seeds:
+                phrase_seed = (music_specifier.seed or 0) - 1
+                phrase_seeds[(voice, music_specifier)] = phrase_seed
+            phrase_seeds[(voice, music_specifier)] += 1
+        phrase_seed = phrase_seeds[(voice, music_specifier)]
+        return phrase_seed
+
+    @staticmethod
+    def _get_pitch_range(
+        instrument,
+        logical_tie,
+        ):
+        prototype = pitchtools.PitchRange
+        component = logical_tie.head
+        pitch_range = inspect_(component).get_effective(prototype)
+        if pitch_range is None:
+            pitch_range = instrument.pitch_range
+        return pitch_range
+
+    @staticmethod
+    def _get_transposition(
+        instrument,
+        music_specifier,
+        ):
+        transposition = pitchtools.NumberedInterval(0)
+        if not music_specifier.pitches_are_nonsemantic:
+            sounding_pitch = instrument.sounding_pitch_of_written_middle_c
+            transposition = sounding_pitch - pitchtools.NamedPitch("c'")
+            transposition = pitchtools.NumberedInterval(transposition)
+        return transposition
+
+    @staticmethod
     def _process_session(segment_session):
         from consort import makers
-        score = segment_session.score
-        counter = collections.Counter()
-        for voice in iterate(score).by_class(scoretools.Voice):
-            for container in voice:
-                prototype = makers.MusicSpecifier
-                music_specifier = inspect_(container).get_effective(prototype)
-                maker = music_specifier.pitch_handler
-                if maker is None:
-                    continue
-                if music_specifier not in counter:
-                    seed = music_specifier.seed or 0
-                    counter[music_specifier] = seed
-                seed = counter[music_specifier]
-                maker(container, music_index=seed)
-                counter[music_specifier] += 1
+        attack_point_map = segment_session.attack_point_map
+        previous_pitch_by_music_specifier = {}
+        seeds_by_music_specifier = {}
+        seeds_by_voice = {}
+        phrase_seeds = {}
+        for logical_tie in attack_point_map:
+            attack_point_signature = attack_point_map[logical_tie]
+            music_specifier = \
+                makers.SegmentMaker._logical_tie_to_music_specifier(
+                    logical_tie)
+            if not music_specifier:
+                continue
+            pitch_handler = music_specifier.pitch_handler
+            if not pitch_handler:
+                continue
+            voice = makers.SegmentMaker._logical_tie_to_voice(logical_tie)
+            phrase_seed = PitchHandler._get_phrase_seed(
+                attack_point_signature,
+                music_specifier,
+                phrase_seeds,
+                voice,
+                )
+            seed = PitchHandler._get_seed(
+                attack_point_signature,
+                music_specifier,
+                pitch_handler.pitch_application_rate,
+                seeds_by_music_specifier,
+                seeds_by_voice,
+                voice,
+                )
+            instrument = PitchHandler._get_instrument(logical_tie)
+            transposition = PitchHandler._get_transposition(
+                instrument,
+                music_specifier,
+                )
+            pitch_range = PitchHandler._get_pitch_range(
+                instrument,
+                logical_tie,
+                )
+            if music_specifier not in previous_pitch_by_music_specifier:
+                previous_pitch_by_music_specifier[music_specifier] = None
+            previous_pitch = previous_pitch_by_music_specifier[music_specifier]
+            previous_pitch_by_music_specifier[music_specifier] = pitch_handler(
+                attack_point_signature,
+                logical_tie,
+                phrase_seed,
+                pitch_range,
+                previous_pitch,
+                seed,
+                transposition,
+                )
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def allow_repetition(self):
-        return self._allow_repetition
-
-    @property
     def chord_expressions(self):
         return self._chord_expressions
+
+    @property
+    def forbid_repetitions(self):
+        return self._forbid_repetitions
 
     @property
     def pitch_application_rate(self):
