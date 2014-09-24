@@ -162,26 +162,22 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventory=None,
         ):
         voicewise_timespans = {}
-        with systemtools.Timer() as timer:
-            for timespan in timespan_inventory:
-                voice_name, layer = timespan.voice_name, timespan.layer
-                if voice_name not in voicewise_timespans:
-                    voicewise_timespans[voice_name] = {}
-                if layer not in voicewise_timespans[voice_name]:
-                    voicewise_timespans[voice_name][layer] = \
-                        timespantools.TimespanInventory()
-                voicewise_timespans[voice_name][layer].append(
-                    timespan)
-                voicewise_timespans[voice_name][layer]
-        print('\t\tCollecting:', timer.elapsed_time)
-        with systemtools.Timer() as timer:
-            for voice_name in voicewise_timespans:
-                timespan_inventories = voicewise_timespans[voice_name]
-                timespan_inventory = \
-                    TimespanManager._resolve_timespan_inventories(
-                        timespan_inventories)
-                voicewise_timespans[voice_name] = timespan_inventory
-        print('\t\tResolving:', timer.elapsed_time)
+        for timespan in timespan_inventory:
+            voice_name, layer = timespan.voice_name, timespan.layer
+            if voice_name not in voicewise_timespans:
+                voicewise_timespans[voice_name] = {}
+            if layer not in voicewise_timespans[voice_name]:
+                voicewise_timespans[voice_name][layer] = \
+                    timespantools.TimespanInventory()
+            voicewise_timespans[voice_name][layer].append(
+                timespan)
+            voicewise_timespans[voice_name][layer]
+        for voice_name in voicewise_timespans:
+            timespan_inventories = voicewise_timespans[voice_name]
+            timespan_inventory = \
+                TimespanManager._resolve_timespan_inventories(
+                    timespan_inventories)
+            voicewise_timespans[voice_name] = timespan_inventory
         return voicewise_timespans
 
     @staticmethod
@@ -190,33 +186,23 @@ class TimespanManager(abctools.AbjadValueObject):
         ):
         from consort import makers
         from supriya import timetools
-        with systemtools.Timer() as timer_one:
-            # resolved_timespan_inventory = timespantools.TimespanInventory()
-            timespan_inventories = [x[1] for x in
-                sorted(timespan_inventories.items(),
-                    key=lambda item: item[0],
-                    )
-                ]
-            #resolved_inventory.extend(timespan_inventories[0])
-            resolved_inventory = timetools.TimespanCollection()
-            resolved_inventory.insert(timespan_inventories[0][:])
-            for timespan_inventory in timespan_inventories[1:]:
-                with systemtools.Timer() as timer_two:
-                    to_extend = []
-                    for timespan in timespan_inventory:
-                        with systemtools.Timer() as timer_three:
-                            resolved_inventory - timespan
-                            if isinstance(timespan, makers.PerformedTimespan):
-                                to_extend.append(timespan)
-                        print('\t\t\t\tZZZ:', timer_three.elapsed_time)
-                    #resolved_inventory.extend(to_extend)
-                    resolved_inventory.insert(to_extend)
-                print('\t\t\tXXX:', timer_two.elapsed_time)
-            #resolved_inventory.sort()
-            resolved_inventory = timespantools.TimespanInventory(
-                resolved_inventory[:],
+        timespan_inventories = [x[1] for x in
+            sorted(timespan_inventories.items(),
+                key=lambda item: item[0],
                 )
-        print('\t\tYYY:', timer_one.elapsed_time)
+            ]
+        resolved_inventory = timetools.TimespanCollection()
+        resolved_inventory.insert(timespan_inventories[0][:])
+        for timespan_inventory in timespan_inventories[1:]:
+            to_extend = []
+            for timespan in timespan_inventory:
+                resolved_inventory - timespan
+                if isinstance(timespan, makers.PerformedTimespan):
+                    to_extend.append(timespan)
+            resolved_inventory.insert(to_extend)
+        resolved_inventory = timespantools.TimespanInventory(
+            resolved_inventory[:],
+            )
         return resolved_inventory
 
     ### PUBLIC METHODS ###
