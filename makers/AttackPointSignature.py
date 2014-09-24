@@ -160,8 +160,24 @@ class AttackPointSignature(abctools.AbjadValueObject):
         return self._division_position
 
     @property
+    def is_first_of_division(self):
+        if not self.logical_tie_index:
+            return True
+        return False
+
+    @property
+    def is_first_of_phrase(self):
+        if not self.logical_tie_index and not self.division_index:
+            return True
+        return False
+
+    @property
     def logical_tie_index(self):
         return self._logical_tie_index
+
+    @property
+    def phrase_index(self):
+        return self._phrase_index
 
     @property
     def phrase_position(self):
