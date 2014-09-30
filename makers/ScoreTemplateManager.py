@@ -19,15 +19,18 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_ensemble_group(
-        name,
-        performer_groups,
+        label=None,
+        name=None,
+        performer_groups=None,
         ):
-        staff_group = scoretools.StaffGroup(
+        ensemble_group = scoretools.StaffGroup(
             performer_groups,
             name=name,
             context_name='EnsembleGroup',
             )
-        return staff_group
+        if label is not None:
+            ScoreTemplateManager.attach_tag(label, ensemble_group)
+        return ensemble_group
 
     @staticmethod
     def make_performer_group(
@@ -42,8 +45,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
             name=name,
             )
         performer_group.is_simultaneous = True
-        label = label or instrument.instrument_name.replace(' ', '-').lower()
-        ScoreTemplateManager.attach_tag(label, performer_group)
+        if label is not None:
+            ScoreTemplateManager.attach_tag(label, performer_group)
         attach(
             instrument,
             performer_group,
@@ -57,9 +60,11 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_single_basic_performer(
+        clef=None,
         context_name=None,
         instrument=None,
         label=None,
+        score_template=None,
         ):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name=context_name,
@@ -68,16 +73,18 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         name = instrument.instrument_name.title()
         context_name = ScoreTemplateManager.make_staff_name(name)
+        voice = scoretools.Voice(
+            name='{} Voice'.format(name),
+            )
         staff = scoretools.Staff(
-            [
-                scoretools.Voice(
-                    name='{} Voice'.format(name),
-                    ),
-                ],
+            [voice],
             context_name=context_name,
             name='{} Staff'.format(name),
             )
         performer_group.append(staff)
+        attach(clef, voice)
+        abbreviation = stringtools.to_accent_free_snake_case(name)
+        score_template._voice_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
@@ -88,6 +95,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='PianoStaff',
             instrument=instrument,
+            label=stringtools.to_dash_case(instrument.instrument_name),
             )
         name = instrument.instrument_name.title()
         upper_voice = scoretools.Voice(
@@ -142,6 +150,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
+            label=stringtools.to_dash_case(instrument.instrument_name),
             )
         name = instrument.instrument_name.title()
         abbreviation = stringtools.to_accent_free_snake_case(name)
@@ -193,6 +202,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         ):
         performer_group = ScoreTemplateManager.make_performer_group(
             instrument=instrument,
+            label=stringtools.to_dash_case(instrument.instrument_name),
             )
         name = instrument.instrument_name.title()
         context_name = ScoreTemplateManager.make_staff_name(name)
