@@ -30,8 +30,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         performer_group.is_simultaneous = True
         label = label or instrument.instrument_name.replace(' ', '-').lower()
-        total_label = 'score.{}'.format(label)
-        ScoreTemplateManager.attach_tag(total_label, performer_group)
+        ScoreTemplateManager.attach_tag(label, performer_group)
         attach(
             instrument,
             performer_group,
@@ -41,7 +40,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         manager = set_(performer_group)
         manager.instrument_name = instrument.instrument_name_markup
         manager.short_instrument_name = instrument.short_instrument_name_markup
-        return performer_group, label
+        return performer_group
 
     @staticmethod
     def make_single_basic_performer(
@@ -49,7 +48,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         instrument=None,
         label=None,
         ):
-        performer_group, label = ScoreTemplateManager.make_performer_group(
+        performer_group = ScoreTemplateManager.make_performer_group(
             context_name=context_name,
             instrument=instrument,
             label=label,
@@ -66,11 +65,11 @@ class ScoreTemplateManager(abctools.AbjadObject):
             name='{} Staff'.format(name),
             )
         performer_group.append(staff)
-        return performer_group, label
+        return performer_group
 
     @staticmethod
     def make_single_piano_performer(instrument):
-        performer_group, label = ScoreTemplateManager.make_performer_group(
+        performer_group = ScoreTemplateManager.make_performer_group(
             context_name='PianoStaff',
             instrument=instrument,
             )
@@ -107,11 +106,11 @@ class ScoreTemplateManager(abctools.AbjadObject):
             lower_staff,
             pedals,
             ))
-        return performer_group, label
+        return performer_group
 
     @staticmethod
     def make_single_string_performer(instrument, split=True):
-        performer_group, label = ScoreTemplateManager.make_performer_group(
+        performer_group = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
             )
@@ -148,11 +147,11 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 name='{} Staff'.format(name),
                 )
             performer_group.append(staff)
-        return performer_group, label
+        return performer_group
 
     @staticmethod
     def make_single_wind_performer(instrument):
-        performer_group, label = ScoreTemplateManager.make_performer_group(
+        performer_group = ScoreTemplateManager.make_performer_group(
             instrument=instrument,
             )
         name = instrument.instrument_name.title()
@@ -167,16 +166,15 @@ class ScoreTemplateManager(abctools.AbjadObject):
             name='{} Staff'.format(name),
             )
         performer_group.append(wind_staff)
-        return performer_group, label
+        return performer_group
 
     @staticmethod
-    def make_time_signature_context(labels):
+    def make_time_signature_context():
         time_signature_context = scoretools.Context(
             context_name='TimeSignatureContext',
             name='TimeSignatureContext',
             )
-        labels = '.'.join(sorted(labels))
-        label = 'score.{}'.format(labels)
+        label = 'time'
         ScoreTemplateManager.attach_tag(label, time_signature_context)
         return time_signature_context
 
