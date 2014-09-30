@@ -2,6 +2,7 @@
 from abjad.tools import abctools
 from abjad.tools import indicatortools
 from abjad.tools import scoretools
+from abjad.tools import stringtools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import set_
 
@@ -150,22 +151,28 @@ class ScoreTemplateManager(abctools.AbjadObject):
         return performer_group
 
     @staticmethod
-    def make_single_wind_performer(instrument):
+    def make_single_wind_performer(
+        clef,
+        instrument,
+        score_template,
+        ):
         performer_group = ScoreTemplateManager.make_performer_group(
             instrument=instrument,
             )
         name = instrument.instrument_name.title()
         context_name = ScoreTemplateManager.make_staff_name(name)
-        wind_staff = scoretools.Staff(
-            [
-                scoretools.Voice(
-                    name='{} Voice'.format(name),
-                    ),
-                ],
+        voice = scoretools.Voice(
+            name='{} Voice'.format(name),
+            )
+        staff = scoretools.Staff(
+            [voice],
             context_name=context_name,
             name='{} Staff'.format(name),
             )
-        performer_group.append(wind_staff)
+        performer_group.append(staff)
+        attach(clef, voice)
+        abbreviation = stringtools.to_accent_free_snake_case(name)
+        score_template._voice_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
