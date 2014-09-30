@@ -122,51 +122,63 @@ class ScoreTemplateManager(abctools.AbjadObject):
         return performer_group
 
     @staticmethod
-    def make_single_string_performer(instrument, split=True):
+    def make_single_string_performer(
+        clef=None,
+        instrument=None,
+        score_template=None,
+        split=True,
+        ):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
             )
         name = instrument.instrument_name.title()
+        abbreviation = stringtools.to_accent_free_snake_case(name)
         if split:
-            bowing_staff = scoretools.Staff(
-                [
-                    scoretools.Voice(
-                        name='{} Bowing Voice'.format(name),
-                        ),
-                    ],
+            right_hand_voice = scoretools.Voice(
+                name='{} Bowing Voice'.format(name),
+                )
+            right_hand_staff = scoretools.Staff(
+                [right_hand_voice],
                 context_name='BowingStaff',
                 name='{} Bowing Staff'.format(name),
                 )
-            fingering_staff = scoretools.Staff(
-                [
-                    scoretools.Voice(
-                        name='{} Fingering Voice'.format(name),
-                        ),
-                    ],
+            left_hand_voice = scoretools.Voice(
+                name='{} Fingering Voice'.format(name),
+                )
+            left_hand_staff = scoretools.Staff(
+                [left_hand_voice],
                 context_name='FingeringStaff',
                 name='{} Fingering Staff'.format(name),
                 )
-            performer_group.append(bowing_staff)
-            performer_group.append(fingering_staff)
+            performer_group.append(right_hand_staff)
+            performer_group.append(left_hand_staff)
+            attach(clef, left_hand_voice)
+            right_hand_abbreviation = '{}_rh'.format(abbreviation)
+            left_hand_abbreviation = '{}_lh'.format(abbreviation)
+            score_template._voice_name_abbreviations[
+                right_hand_abbreviation] = right_hand_voice.name
+            score_template._voice_name_abbreviations[
+                left_hand_abbreviation] = left_hand_voice.name
         else:
+            voice = scoretools.Voice(
+                name='{} Voice'.format(name),
+                )
             staff = scoretools.Staff(
-                [
-                    scoretools.Voice(
-                        name='{} Voice'.format(name),
-                        ),
-                    ],
+                [voice],
                 context_name='StringStaff',
                 name='{} Staff'.format(name),
                 )
             performer_group.append(staff)
+            attach(clef, voice)
+            score_template._voice_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
     def make_single_wind_performer(
-        clef,
-        instrument,
-        score_template,
+        clef=None,
+        instrument=None,
+        score_template=None,
         ):
         performer_group = ScoreTemplateManager.make_performer_group(
             instrument=instrument,
