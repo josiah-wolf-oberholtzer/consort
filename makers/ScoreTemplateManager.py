@@ -18,6 +18,18 @@ class ScoreTemplateManager(abctools.AbjadObject):
         return name
 
     @staticmethod
+    def make_ensemble_group(
+        name,
+        performer_groups,
+        ):
+        staff_group = scoretools.StaffGroup(
+            performer_groups,
+            name=name,
+            context_name='EnsembleGroup',
+            )
+        return staff_group
+
+    @staticmethod
     def make_performer_group(
         context_name=None,
         instrument=None,
