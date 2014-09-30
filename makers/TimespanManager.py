@@ -9,6 +9,7 @@ from abjad.tools import sequencetools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import iterate
+from supriya.tools import timetools
 
 
 class TimespanManager(abctools.AbjadValueObject):
@@ -185,7 +186,7 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventories=None,
         ):
         from consort import makers
-        from supriya import timetools
+        manager = makers.TimespanManager
         timespan_inventories = [x[1] for x in
             sorted(timespan_inventories.items(),
                 key=lambda item: item[0],
@@ -194,21 +195,144 @@ class TimespanManager(abctools.AbjadValueObject):
         resolved_inventory = timetools.TimespanCollection()
         resolved_inventory.insert(timespan_inventories[0][:])
         for timespan_inventory in timespan_inventories[1:]:
-            resolved_inventory = makers.subtract_timespan_inventories(
+            resolved_inventory = manager._subtract_timespan_inventories(
                 resolved_inventory,
                 timespan_inventory,
                 )
-#        for timespan_inventory in timespan_inventories[1:]:
-#            to_extend = []
-#            for timespan in timespan_inventory:
-#                resolved_inventory - timespan
-#                if isinstance(timespan, makers.PerformedTimespan):
-#                    to_extend.append(timespan)
-#            resolved_inventory.insert(to_extend)
+            resolved_inventory.extend(timespan_inventory)
+            for timespan in timespan_inventory:
+                if isinstance(timespan, makers.SilentTimespan):
+                    continue
+                resolved_inventory.append(timespan)
+            resolved_inventory.sort()
         resolved_inventory = timespantools.TimespanInventory(
             resolved_inventory[:],
             )
         return resolved_inventory
+
+    @staticmethod
+    def _subtract_timespan_inventories(inventory_one, inventory_two):
+        r'''Subtracts `inventory_two` from `inventory_one`.
+
+        ::
+
+            >>> inventory_one = timespantools.TimespanInventory([
+            ...     timespantools.Timespan(0, 10),
+            ...     timespantools.Timespan(10, 20),
+            ...     timespantools.Timespan(40, 80),
+            ...     ])
+
+        ::
+
+            >>> inventory_two = timespantools.TimespanInventory([
+            ...     timespantools.Timespan(5, 15),
+            ...     timespantools.Timespan(25, 35),
+            ...     timespantools.Timespan(35, 45),
+            ...     timespantools.Timespan(55, 65),
+            ...     timespantools.Timespan(85, 95),
+            ...     ])
+
+        ::
+
+            >>> from consort import makers
+            >>> manager = makers.TimespanManager
+            >>> result = manager._subtract_timespan_inventories(
+            ...      inventory_one,
+            ...      inventory_two,
+            ...      )
+            >>> print(format(result))
+            timespantools.TimespanInventory(
+                [
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(5, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(15, 1),
+                        stop_offset=durationtools.Offset(20, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(45, 1),
+                        stop_offset=durationtools.Offset(55, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(65, 1),
+                        stop_offset=durationtools.Offset(80, 1),
+                        ),
+                    ]
+                )
+
+        ::
+
+            >>> result = manager._subtract_timespan_inventories(
+            ...      inventory_two,
+            ...      inventory_one,
+            ...      )
+            >>> print(format(result))
+            timespantools.TimespanInventory(
+                [
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(25, 1),
+                        stop_offset=durationtools.Offset(35, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(35, 1),
+                        stop_offset=durationtools.Offset(40, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(85, 1),
+                        stop_offset=durationtools.Offset(95, 1),
+                        ),
+                    ]
+                )
+
+        '''
+        from consort import makers
+        resulting_timespans = timetools.TimespanCollection()
+        if not inventory_one or not inventory_two:
+            return resulting_timespans
+        subtractee_index = 0
+        subtractor_index = 0
+        subtractee = None
+        subtractor = None
+        subtractee_is_modified = False
+        while subtractee_index < len(inventory_one) and \
+            subtractor_index < len(inventory_two):
+            if subtractee is None:
+                subtractee = inventory_one[subtractee_index]
+                subtractee_is_modified = False
+            if subtractor is None:
+                subtractor = inventory_two[subtractor_index]
+            if subtractee.intersects_timespan(subtractor):
+                subtraction = subtractee - subtractor
+                if len(subtraction) == 1:
+                    subtractee = subtraction[0]
+                    subtractee_is_modified = True
+                elif len(subtraction) == 2:
+                    resulting_timespans.insert(subtraction[0])
+                    subtractee = subtraction[1]
+                    subtractee_is_modified = True
+                else:
+                    subtractee = None
+                    subtractee_index += 1
+            else:
+                if subtractee.stops_before_or_at_offset(
+                    subtractor.start_offset):
+                    resulting_timespans.insert(subtractee)
+                    subtractee = None
+                    subtractee_index += 1
+                else:
+                    subtractor = None
+                    subtractor_index += 1
+        if subtractee_is_modified:
+            if subtractee:
+                resulting_timespans.insert(subtractee)
+            resulting_timespans.insert(inventory_one[subtractee_index + 1:])
+        else:
+            resulting_timespans.insert(inventory_one[subtractee_index:])
+        resulting_timespans = timespantools.TimespanInventory(
+            resulting_timespans)
+        return resulting_timespans
 
     ### PUBLIC METHODS ###
 
