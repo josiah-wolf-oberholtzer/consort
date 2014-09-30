@@ -98,7 +98,7 @@ class AbsolutePitchHandler(PitchHandler):
         if self.transform_stack:
             for transform in self.transform_stack:
                 pitch = transform(pitch)
-        if 1 < len(set(pitches)) and self.forbid_repetitions:
+        if self.pitches and 1 < len(set(pitches)) and self.forbid_repetitions:
             while pitch == previous_pitch:
                 seed += 1
                 pitch = pitches[seed]
