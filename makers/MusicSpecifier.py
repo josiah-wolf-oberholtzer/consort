@@ -20,6 +20,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
     __slots__ = (
         '_attachment_handler',
         '_grace_handler',
+        '_hash',
         '_is_sentinel',
         '_labels',
         '_pitch_handler',
@@ -48,6 +49,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         if grace_handler is not None:
             assert isinstance(grace_handler, makers.GraceHandler)
         self._grace_handler = grace_handler
+        self._hash = None
         if is_sentinel is not None:
             is_sentinel = bool(is_sentinel)
         self._is_sentinel = is_sentinel
@@ -78,8 +80,10 @@ class MusicSpecifier(abctools.AbjadValueObject):
         return False
 
     def __hash__(self):
-        hash_values = (type(self), format(self))
-        return hash(hash_values)
+        if self._hash is None:
+            hash_values = (type(self), format(self))
+            self._hash = hash(hash_values)
+        return self._hash
 
     ### PRIVATE PROPERTIES ###
 

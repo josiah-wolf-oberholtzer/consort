@@ -5,6 +5,7 @@ from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
+from abjad.tools import systemtools
 from abjad.tools.topleveltools import inspect_
 
 
@@ -15,6 +16,7 @@ class PitchHandler(abctools.AbjadValueObject):
     __slots__ = (
         '_chord_expressions',
         '_forbid_repetitions',
+        '_hash',
         '_pitch_application_rate',
         '_transform_stack',
         )
@@ -43,6 +45,7 @@ class PitchHandler(abctools.AbjadValueObject):
                 chord_expressions,
                 )
         self._chord_expressions = chord_expressions
+        self._hash = None
         assert pitch_application_rate in (
             None, 'logical_tie', 'division', 'phrase',
             )
@@ -79,8 +82,10 @@ class PitchHandler(abctools.AbjadValueObject):
         return False
 
     def __hash__(self):
-        hash_values = (type(self), format(self))
-        return hash(hash_values)
+        if self._hash is None:
+            hash_values = (type(self), format(self))
+            self._hash = hash(hash_values)
+        return self._hash
 
     ### PRIVATE METHODS ###
 

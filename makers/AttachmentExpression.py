@@ -82,6 +82,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
 
     __slots__ = (
         '_attachments',
+        '_hash',
         '_selector',
         )
 
@@ -97,6 +98,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
                 attachments = (attachments,)
             attachments = datastructuretools.TypedList(attachments)
         self._attachments = attachments
+        self._hash = None
         if selector is not None:
             assert isinstance(selector, selectortools.Selector)
         self._selector = selector
@@ -142,8 +144,10 @@ class AttachmentExpression(abctools.AbjadValueObject):
         return False
 
     def __hash__(self):
-        hash_values = (type(self), format(self))
-        return hash(hash_values)
+        if self._hash is None:
+            hash_values = (type(self), format(self))
+            self._hash = hash(hash_values)
+        return self._hash
 
     ### PRIVATE PROPERTIES ###
 
