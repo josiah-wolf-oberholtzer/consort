@@ -81,18 +81,20 @@ class ScoreTemplateManager(abctools.AbjadObject):
         return performer_group
 
     @staticmethod
-    def make_single_piano_performer(instrument):
+    def make_single_piano_performer(
+        instrument=None,
+        score_template=None,
+        ):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='PianoStaff',
             instrument=instrument,
             )
         name = instrument.instrument_name.title()
+        upper_voice = scoretools.Voice(
+            name='{} Upper Voice'.format(name),
+            )
         upper_staff = scoretools.Staff(
-            [
-                scoretools.Voice(
-                    name='{} Upper Voice'.format(name),
-                    ),
-                ],
+            [upper_voice],
             context_name='PianoUpperStaff',
             name='{} Upper Staff'.format(name),
             )
@@ -100,12 +102,11 @@ class ScoreTemplateManager(abctools.AbjadObject):
             context_name='Dynamics',
             name='{} Dynamics'.format(name),
             )
+        lower_voice = scoretools.Voice(
+            name='{} Lower Voice'.format(name),
+            )
         lower_staff = scoretools.Staff(
-            [
-                scoretools.Voice(
-                    name='{} Lower Voice'.format(name),
-                    ),
-                ],
+            [lower_voice],
             context_name='PianoLowerStaff',
             name='{} Lower Staff'.format(name),
             )
@@ -119,6 +120,16 @@ class ScoreTemplateManager(abctools.AbjadObject):
             lower_staff,
             pedals,
             ))
+        attach(indicatortools.Clef('treble'), upper_voice)
+        attach(indicatortools.Clef('bass'), lower_voice)
+        score_template._voice_name_abbreviations[
+            'piano_rh'] = upper_voice.name
+        score_template._voice_name_abbreviations[
+            'piano_dynamics'] = dynamics.name
+        score_template._voice_name_abbreviations[
+            'piano_lh'] = lower_voice.name
+        score_template._voice_name_abbreviations[
+            'piano_pedals'] = pedals.name
         return performer_group
 
     @staticmethod
