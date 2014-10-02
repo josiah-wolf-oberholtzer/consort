@@ -193,13 +193,15 @@ class TimespanManager(abctools.AbjadValueObject):
                 )
             ]
         resolved_inventory = timetools.TimespanCollection()
-        resolved_inventory.insert(timespan_inventories[0][:])
+        for timespan in timespan_inventories[0]:
+            if isinstance(timespan, makers.SilentTimespan):
+                continue
+            resolved_inventory.insert(timespan)
         for timespan_inventory in timespan_inventories[1:]:
             resolved_inventory = manager._subtract_timespan_inventories(
                 resolved_inventory,
                 timespan_inventory,
                 )
-            resolved_inventory.extend(timespan_inventory)
             for timespan in timespan_inventory:
                 if isinstance(timespan, makers.SilentTimespan):
                     continue
@@ -287,7 +289,6 @@ class TimespanManager(abctools.AbjadValueObject):
                 )
 
         '''
-        from consort import makers
         resulting_timespans = timetools.TimespanCollection()
         if not inventory_one or not inventory_two:
             return resulting_timespans
