@@ -142,6 +142,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_single_string_performer(
+        abbreviation=None,
         clef=None,
         instrument=None,
         score_template=None,
@@ -153,7 +154,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
             label=stringtools.to_dash_case(instrument.instrument_name),
             )
         name = instrument.instrument_name.title()
-        abbreviation = stringtools.to_accent_free_snake_case(name)
+        abbreviation = abbreviation or \
+            stringtools.to_accent_free_snake_case(name)
         if split:
             right_hand_voice = scoretools.Voice(
                 name='{} Bowing Voice'.format(name),
@@ -196,6 +198,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_single_wind_performer(
+        abbreviation=None,
         clef=None,
         instrument=None,
         score_template=None,
@@ -216,7 +219,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         performer_group.append(staff)
         attach(clef, voice)
-        abbreviation = stringtools.to_accent_free_snake_case(name)
+        abbreviation = abbreviation or \
+            stringtools.to_accent_free_snake_case(name)
         score_template._voice_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
