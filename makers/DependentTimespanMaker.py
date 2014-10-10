@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import datastructuretools
+from abjad.tools import mathtools
 from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.makers.TimespanMaker import TimespanMaker
@@ -13,12 +14,16 @@ class DependentTimespanMaker(TimespanMaker):
 
         >>> from consort import makers
         >>> timespan_maker = makers.DependentTimespanMaker(
+        ...     include_inner_starts=True,
+        ...     include_inner_stops=True,
         ...     voice_names=(
         ...         'Viola Voice',
         ...          ),
         ...     )
         >>> print(format(timespan_maker))
         consort.makers.DependentTimespanMaker(
+            include_inner_starts=True,
+            include_inner_stops=True,
             voice_names=('Viola Voice',),
             )
 
@@ -100,7 +105,10 @@ class DependentTimespanMaker(TimespanMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_include_inner_starts',
+        '_include_inner_stops',
         '_labels',
+        '_rotation_indices',
         '_voice_names',
         )
 
@@ -109,8 +117,11 @@ class DependentTimespanMaker(TimespanMaker):
     def __init__(
         self,
         can_split=None,
+        include_inner_starts=None,
+        include_inner_stops=None,
         labels=None,
         minimum_duration=None,
+        rotation_indices=None,
         voice_names=None,
         ):
         TimespanMaker.__init__(
@@ -118,6 +129,18 @@ class DependentTimespanMaker(TimespanMaker):
             can_split=can_split,
             minimum_duration=minimum_duration,
             )
+        if include_inner_starts is not None:
+            include_inner_starts = bool(include_inner_starts)
+        self._include_inner_starts = include_inner_starts
+        if include_inner_stops is not None:
+            include_inner_stops = bool(include_inner_stops)
+        self._include_inner_stops = include_inner_stops
+        if rotation_indices is not None:
+            if not isinstance(rotation_indices, collections.Sequence):
+                rotation_indices = int(rotation_indices)
+                rotation_indices = (rotation_indices,)
+            rotation_indices = tuple(rotation_indices)
+        self._rotation_indices = rotation_indices
         if labels is not None:
             if isinstance(labels, str):
                 labels = (labels,)
@@ -149,27 +172,39 @@ class DependentTimespanMaker(TimespanMaker):
                         for label in self.labels):
                     preexisting_timespans.append(timespan)
         preexisting_timespans & target_timespan
-        counter = collections.Counter()
-        for voice_name, music_specifier in music_specifiers.items():
-            for group in preexisting_timespans.partition(
-                include_tangent_timespans=True):
-                offsets = set()
-                for timespan in group:
+        rotation_indices = self.rotation_indices or (0,)
+        rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
+        voice_counter = collections.Counter()
+        groups = preexisting_timespans.partition(
+            include_tangent_timespans=True,
+            )
+        for group_index, group in enumerate(groups):
+            rotation_index = rotation_indices[group_index]
+            offsets = set()
+            offsets.add(group.start_offset)
+            offsets.add(group.stop_offset)
+            for timespan in group:
+                if self.include_inner_starts:
                     offsets.add(timespan.start_offset)
+                if self.include_inner_stops:
                     offsets.add(timespan.stop_offset)
-                offsets = tuple(sorted(offsets))
-                for start_offset, stop_offset in \
-                    sequencetools.iterate_sequence_nwise(offsets, 2):
-
+            offsets = tuple(sorted(offsets))
+            durations = mathtools.difference_series(offsets)
+            durations = sequencetools.rotate_sequence(
+                durations, rotation_index)
+            offsets = [_ + offsets[0]
+                for _ in mathtools.cumulative_sums(durations)]
+            for start_offset, stop_offset in \
+                sequencetools.iterate_sequence_nwise(offsets, 2):
+                for voice_name, music_specifier in music_specifiers.items():
                     if not isinstance(music_specifier, tuple):
                         music_specifier = datastructuretools.CyclicTuple(
                             [music_specifier])
-                    if voice_name not in counter:
-                        counter[voice_name] = 0
-                    music_specifier_index = counter[voice_name]
+                    if voice_name not in voice_counter:
+                        voice_counter[voice_name] = 0
+                    music_specifier_index = voice_counter[voice_name]
                     current_music_specifier = \
                         music_specifier[music_specifier_index]
-
                     timespan = self._make_performed_timespan(
                         color=color,
                         layer=layer,
@@ -179,6 +214,7 @@ class DependentTimespanMaker(TimespanMaker):
                         voice_name=voice_name,
                         )
                     timespan_inventory.append(timespan)
+                    voice_counter[voice_name] += 1
 
     ### PRIVATE PROPERTIES ###
 
@@ -214,6 +250,18 @@ class DependentTimespanMaker(TimespanMaker):
             )
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def include_inner_starts(self):
+        return self._include_inner_starts
+
+    @property
+    def include_inner_stops(self):
+        return self._include_inner_stops
+
+    @property
+    def rotation_indices(self):
+        return self._rotation_indices
 
     @property
     def is_dependent(self):
