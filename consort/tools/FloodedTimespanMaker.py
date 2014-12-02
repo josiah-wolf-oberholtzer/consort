@@ -34,13 +34,13 @@ class FloodedTimespanMaker(TimespanMaker):
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
-                    voice_name='Violin Voice',
+                    voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
-                    voice_name='Cello Voice',
+                    voice_name='Violin Voice',
                     ),
                 ]
             )

@@ -102,18 +102,12 @@ class TaleaTimespanMaker(TimespanMaker):
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
-                    voice_name='Violin',
+                    voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
-                    voice_name='Viola',
-                    ),
-                consort.tools.PerformedTimespan(
-                    can_split=True,
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
@@ -121,6 +115,12 @@ class TaleaTimespanMaker(TimespanMaker):
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Viola',
+                    ),
+                consort.tools.PerformedTimespan(
+                    can_split=True,
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Violin',
                     ),
                 ]
             )

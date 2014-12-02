@@ -123,7 +123,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
-                    voice_name='Violin 2 Bowing Voice',
+                    voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
@@ -132,7 +132,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
-                    voice_name='Viola Bowing Voice',
+                    voice_name='Violin 2 Bowing Voice',
                     ),
                 ]
             )

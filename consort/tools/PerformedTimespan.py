@@ -97,6 +97,16 @@ class PerformedTimespan(timespantools.Timespan):
             keyword_argument_names=keyword_argument_names,
             )
 
+    ### SPECIAL METHODS ###
+
+    def __lt__(self, expr):
+        if timespantools.Timespan.__lt__(self, expr):
+            return True
+        if not timespantools.Timespan.__gt__(self, expr):
+            if hasattr(expr, 'voice_name'):
+                return self.voice_name < expr.voice_name
+        return False
+
     ### PUBLIC PROPERTIES ###
 
     @property
