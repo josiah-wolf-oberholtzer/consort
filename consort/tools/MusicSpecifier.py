@@ -102,7 +102,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         from abjad.tools import systemtools
         from consort import tools
         from consort import attachmenttools
-        from consort.tools import pitchtools
+        from consort import pitchtools
         from scoremanager import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(

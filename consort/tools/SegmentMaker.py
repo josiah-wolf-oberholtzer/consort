@@ -185,7 +185,7 @@ class SegmentMaker(makertools.SegmentMaker):
         from consort import tools
         from consort import annotationtools
         from consort import attachmenttools
-        from consort.tools import pitchtools
+        from consort import pitchtools
 
         segment_session = tools.SegmentSession(segment_maker=self)
         segment_session.score = self.score_template()

@@ -19,7 +19,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         ...     ratio=(2, 1),
         ...     )
         >>> print(format(register_inflection))
-        consort.tools.pitchtools.RegisterInflection(
+        consort.pitchtools.RegisterInflection(
             inflections=pitchtools.IntervalSegment(
                 (
                     pitchtools.NumberedInterval(-6),
@@ -156,7 +156,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.ascending()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-6),
@@ -184,7 +184,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.descending()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(6),
@@ -208,7 +208,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.triangle().invert()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(6),
@@ -234,7 +234,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.zigzag().reverse()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(12),
@@ -262,7 +262,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.zigzag().rotate()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(12),
@@ -291,7 +291,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.triangle()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-6),
@@ -320,7 +320,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.pitchtools.RegisterInflection.zigzag()
             >>> print(format(inflection))
-            consort.tools.pitchtools.RegisterInflection(
+            consort.pitchtools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-12),
