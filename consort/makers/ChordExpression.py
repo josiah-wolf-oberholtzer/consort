@@ -16,7 +16,7 @@ class ChordExpression(abctools.AbjadValueObject):
         >>> print(format(chord_expression))
         consort.makers.ChordExpression(
             arpeggio_direction=Down,
-            interval_numbers=frozenset([3, -1, 7]),
+            interval_numbers=(-1, 3, 7),
             )
 
     ::
@@ -53,7 +53,7 @@ class ChordExpression(abctools.AbjadValueObject):
         ):
         assert arpeggio_direction in (Up, Down, Center, None)
         if interval_numbers is not None:
-            interval_numbers = frozenset(interval_numbers)
+            interval_numbers = tuple(sorted(set(interval_numbers)))
             assert len(interval_numbers)
         self._arpeggio_direction = arpeggio_direction
         self._interval_numbers = interval_numbers
