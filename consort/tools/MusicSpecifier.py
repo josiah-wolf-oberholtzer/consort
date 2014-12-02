@@ -101,6 +101,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         '''
         from abjad.tools import systemtools
         from consort import tools
+        from consort.tools import attachmenttools
         from consort.tools import pitchtools
         from scoremanager import idetools
         return systemtools.AttributeManifest(
@@ -108,7 +109,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='attachment_handler',
                 display_string='attachment maker',
                 command='am',
-                editor=tools.AttachmentHandler,
+                editor=attachmenttools.AttachmentHandler,
                 ),
             systemtools.AttributeDetail(
                 name='grace_handler',

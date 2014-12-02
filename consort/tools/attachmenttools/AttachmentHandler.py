@@ -13,10 +13,10 @@ class AttachmentHandler(abctools.AbjadValueObject):
 
     ::
 
-        >>> from consort import tools
-        >>> attachment_handler = tools.AttachmentHandler()
+        >>> import consort
+        >>> attachment_handler = consort.attachmenttools.AttachmentHandler()
         >>> print(format(attachment_handler))
-        consort.tools.AttachmentHandler()
+        consort.tools.attachmenttools.AttachmentHandler()
 
     '''
 
@@ -32,8 +32,8 @@ class AttachmentHandler(abctools.AbjadValueObject):
         self,
         **attachment_expressions
         ):
-        from consort import tools
-        prototype = tools.AttachmentExpression
+        from consort.tools import attachmenttools
+        prototype = attachmenttools.AttachmentExpression
         validated_attachment_expressions = {}
         for name, attachment_expression in attachment_expressions.items():
             if attachment_expression is None:

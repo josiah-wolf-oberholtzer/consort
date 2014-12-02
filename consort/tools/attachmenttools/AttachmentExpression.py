@@ -16,13 +16,13 @@ class AttachmentExpression(abctools.AbjadValueObject):
 
     ::
 
-        >>> from consort import tools
-        >>> attachment_expression = tools.AttachmentExpression(
+        >>> import consort
+        >>> attachment_expression = consort.attachmenttools.AttachmentExpression(
         ...     attachments=(indicatortools.Articulation('>'),),
         ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
         ...     )
         >>> print(format(attachment_expression))
-        consort.tools.AttachmentExpression(
+        consort.tools.attachmenttools.AttachmentExpression(
             attachments=datastructuretools.TypedList(
                 [
                     indicatortools.Articulation('>'),
@@ -46,9 +46,9 @@ class AttachmentExpression(abctools.AbjadValueObject):
 
     ::
 
-        >>> attachment_expression = tools.AttachmentExpression(
+        >>> attachment_expression = consort.attachmenttools.AttachmentExpression(
         ...     attachments=(
-        ...         tools.DynamicExpression(
+        ...         consort.attachmenttools.DynamicExpression(
         ...             hairpin_start_token='sfz',
         ...             hairpin_stop_token='o',
         ...             ),

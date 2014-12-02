@@ -184,6 +184,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def __call__(self):
         from consort import tools
         from consort.tools import annotationtools
+        from consort.tools import attachmenttools
         from consort.tools import pitchtools
 
         segment_session = tools.SegmentSession(segment_maker=self)
@@ -230,17 +231,23 @@ class SegmentMaker(makertools.SegmentMaker):
 
             with timer:
                 print('GraceHandler:')
-                tools.GraceHandler._process_session(segment_session)
+                tools.GraceHandler._process_session(
+                    segment_session,
+                    )
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
                 print('PitchHandler:')
-                pitchtools.PitchHandler._process_session(segment_session)
+                pitchtools.PitchHandler._process_session(
+                    segment_session,
+                    )
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
                 print('AttachmentHandler:')
-                tools.AttachmentHandler._process_session(segment_session)
+                attachmenttools.AttachmentHandler._process_session(
+                    segment_session,
+                    )
                 print('\ttotal:', timer.elapsed_time)
 
         with timer:
