@@ -9,36 +9,36 @@ class HarmonicField(datastructuretools.TypedTuple):
     ::
 
         >>> import consort
-        >>> harmonic_field = consort.tools.HarmonicField([
-        ...     consort.tools.HarmonicFieldEntry(
+        >>> harmonic_field = consort.pitchtools.HarmonicField([
+        ...     consort.pitchtools.HarmonicFieldEntry(
         ...         leading_pitches="ef' d'",
         ...         structural_pitch="c'",
         ...         tailing_pitches="d'",
         ...         ),
-        ...     consort.tools.HarmonicFieldEntry(
+        ...     consort.pitchtools.HarmonicFieldEntry(
         ...         leading_pitches="g'",
         ...         structural_pitch="ef'",
         ...         tailing_pitches="f' a'",
         ...         ),
-        ...     consort.tools.HarmonicFieldEntry(
+        ...     consort.pitchtools.HarmonicFieldEntry(
         ...         leading_pitches="f'' ef'' b'",
         ...         structural_pitch="c''",
         ...         ),
         ...     ])
         >>> print(format(harmonic_field))
-        consort.tools.HarmonicField(
+        consort.tools.pitchtools.HarmonicField(
             (
-                consort.tools.HarmonicFieldEntry(
+                consort.tools.pitchtools.HarmonicFieldEntry(
                     leading_pitches=("ef'", "d'"),
                     structural_pitch=pitchtools.NamedPitch("c'"),
                     tailing_pitches=("d'",),
                     ),
-                consort.tools.HarmonicFieldEntry(
+                consort.tools.pitchtools.HarmonicFieldEntry(
                     leading_pitches=("g'",),
                     structural_pitch=pitchtools.NamedPitch("ef'"),
                     tailing_pitches=("f'", "a'"),
                     ),
-                consort.tools.HarmonicFieldEntry(
+                consort.tools.pitchtools.HarmonicFieldEntry(
                     leading_pitches=("f''", "ef''", "b'"),
                     structural_pitch=pitchtools.NamedPitch("c''"),
                     ),
@@ -72,7 +72,7 @@ class HarmonicField(datastructuretools.TypedTuple):
         datastructuretools.TypedTuple.__init__(
             self,
             items=items,
-            item_class=consort.tools.HarmonicFieldEntry,
+            item_class=consort.tools.pitchtools.HarmonicFieldEntry,
             )
         self._structural_pitches = pitchtools.PitchSegment(
             [x.structural_pitch for x in self],
@@ -133,7 +133,7 @@ class HarmonicField(datastructuretools.TypedTuple):
     @property
     def _item_callable(self):
         import consort
-        return consort.tools.HarmonicFieldEntry
+        return consort.tools.pitchtools.HarmonicFieldEntry
 
     ### PUBLIC METHODS ###
 
@@ -149,18 +149,18 @@ class HarmonicField(datastructuretools.TypedTuple):
 
             >>> inverted_field = harmonic_field.invert("d'")
             >>> print(format(inverted_field))
-            consort.tools.HarmonicField(
+            consort.tools.pitchtools.HarmonicField(
                 (
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=('b,', 'cs', 'f'),
                         structural_pitch=pitchtools.NamedPitch('e'),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=('a',),
                         structural_pitch=pitchtools.NamedPitch("cs'"),
                         tailing_pitches=('b', 'g'),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("cs'", "d'"),
                         structural_pitch=pitchtools.NamedPitch("e'"),
                         tailing_pitches=("d'",),
@@ -195,19 +195,19 @@ class HarmonicField(datastructuretools.TypedTuple):
 
             >>> inverted_field = harmonic_field.invert_ornamental_pitches()
             >>> print(format(inverted_field))
-            consort.tools.HarmonicField(
+            consort.tools.pitchtools.HarmonicField(
                 (
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=('a', 'bf'),
                         structural_pitch=pitchtools.NamedPitch("c'"),
                         tailing_pitches=('bf',),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("cf'",),
                         structural_pitch=pitchtools.NamedPitch("ef'"),
                         tailing_pitches=("df'", 'bff'),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("g'", "a'", "df''"),
                         structural_pitch=pitchtools.NamedPitch("c''"),
                         ),
@@ -239,19 +239,19 @@ class HarmonicField(datastructuretools.TypedTuple):
 
             >>> retrograded_field = harmonic_field.retrograde()
             >>> print(format(retrograded_field))
-            consort.tools.HarmonicField(
+            consort.tools.pitchtools.HarmonicField(
                 (
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("d'",),
                         structural_pitch=pitchtools.NamedPitch("c'"),
                         tailing_pitches=("d'", "ef'"),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("a'", "f'"),
                         structural_pitch=pitchtools.NamedPitch("ef'"),
                         tailing_pitches=("g'",),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         structural_pitch=pitchtools.NamedPitch("c''"),
                         tailing_pitches=("b'", "ef''", "f''"),
                         ),
@@ -283,19 +283,19 @@ class HarmonicField(datastructuretools.TypedTuple):
 
             >>> rotated_field = harmonic_field.rotate(1)
             >>> print(format(rotated_field))
-            consort.tools.HarmonicField(
+            consort.tools.pitchtools.HarmonicField(
                 (
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=('bf',),
                         structural_pitch=pitchtools.NamedPitch("c'"),
                         tailing_pitches=("ef'", "d'"),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=('bff', "cf'"),
                         structural_pitch=pitchtools.NamedPitch("ef'"),
                         tailing_pitches=("g'",),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         structural_pitch=pitchtools.NamedPitch("c''"),
                         tailing_pitches=("f''", "ef''", "b'"),
                         ),
@@ -327,19 +327,19 @@ class HarmonicField(datastructuretools.TypedTuple):
 
             >>> transposed_field = harmonic_field.transpose('M2')
             >>> print(format(transposed_field))
-            consort.tools.HarmonicField(
+            consort.tools.pitchtools.HarmonicField(
                 (
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("f'", "e'"),
                         structural_pitch=pitchtools.NamedPitch("d'"),
                         tailing_pitches=("e'",),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("a'",),
                         structural_pitch=pitchtools.NamedPitch("f'"),
                         tailing_pitches=("g'", "b'"),
                         ),
-                    consort.tools.HarmonicFieldEntry(
+                    consort.tools.pitchtools.HarmonicFieldEntry(
                         leading_pitches=("g''", "f''", "cs''"),
                         structural_pitch=pitchtools.NamedPitch("d''"),
                         ),

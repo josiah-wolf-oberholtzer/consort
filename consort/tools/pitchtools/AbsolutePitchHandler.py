@@ -2,7 +2,7 @@
 import collections
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from consort.tools.PitchHandler import PitchHandler
+from consort.tools.pitchtools.PitchHandler import PitchHandler
 
 
 class AbsolutePitchHandler(PitchHandler):
@@ -10,12 +10,12 @@ class AbsolutePitchHandler(PitchHandler):
 
     ::
 
-        >>> from consort import tools
-        >>> pitch_handler = tools.AbsolutePitchHandler(
+        >>> from consort.tools import pitchtools
+        >>> pitch_handler = pitchtools.AbsolutePitchHandler(
         ...     pitches="c' d' e' f'",
         ...     )
         >>> print(format(pitch_handler))
-        consort.tools.AbsolutePitchHandler(
+        consort.tools.pitchtools.AbsolutePitchHandler(
             pitches=datastructuretools.CyclicTuple(
                 [
                     pitchtools.NamedPitch("c'"),

@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import abctools
 from abjad.tools import pitchtools
-from abjad.tools import datastructuretools
 
 
 class RegisterSpecifier(abctools.AbjadValueObject):
@@ -9,34 +8,34 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> from consort import tools
-        >>> register_specifier = tools.RegisterSpecifier(
+        >>> import consort
+        >>> register_specifier = consort.pitchtools.RegisterSpecifier(
         ...     center_pitch=12,
         ...     division_inflections=(
-        ...         tools.RegisterInflection(
+        ...         consort.pitchtools.RegisterInflection(
         ...             inflections=(-6, 3, 6),
         ...             ratio=(1, 1),
         ...             ),
         ...         ),
         ...     phrase_inflections=(
-        ...         tools.RegisterInflection(
+        ...         consort.pitchtools.RegisterInflection(
         ...             inflections=(3, -3),
         ...             ratio=(1,),
         ...             ),
         ...         ),
         ...     segment_inflections=(
-        ...         tools.RegisterInflection(
+        ...         consort.pitchtools.RegisterInflection(
         ...             inflections=(-12, -9, 0, 12),
         ...             ratio=(3, 2, 1),
         ...             ),
         ...         ),
         ...     )
         >>> print(format(register_specifier))
-        consort.tools.RegisterSpecifier(
+        consort.tools.pitchtools.RegisterSpecifier(
             center_pitch=pitchtools.NumberedPitch(12),
-            division_inflections=consort.tools.RegisterInflectionInventory(
+            division_inflections=consort.tools.pitchtools.RegisterInflectionInventory(
                 [
-                    consort.tools.RegisterInflection(
+                    consort.tools.pitchtools.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
                             (
                                 pitchtools.NumberedInterval(-6),
@@ -49,9 +48,9 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                         ),
                     ]
                 ),
-            phrase_inflections=consort.tools.RegisterInflectionInventory(
+            phrase_inflections=consort.tools.pitchtools.RegisterInflectionInventory(
                 [
-                    consort.tools.RegisterInflection(
+                    consort.tools.pitchtools.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
                             (
                                 pitchtools.NumberedInterval(3),
@@ -63,9 +62,9 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                         ),
                     ]
                 ),
-            segment_inflections=consort.tools.RegisterInflectionInventory(
+            segment_inflections=consort.tools.pitchtools.RegisterInflectionInventory(
                 [
-                    consort.tools.RegisterInflection(
+                    consort.tools.pitchtools.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
                             (
                                 pitchtools.NumberedInterval(-12),
@@ -83,7 +82,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> attack_point_signature = tools.AttackPointSignature(
+        >>> attack_point_signature = consort.tools.AttackPointSignature(
         ...     division_position=0,
         ...     phrase_position=(1, 2),
         ...     segment_position=(4, 5),
@@ -111,7 +110,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         phrase_inflections=None,
         segment_inflections=None,
         ):
-        from consort import tools
+        from consort.tools.pitchtools import RegisterInflectionInventory
         if isinstance(center_pitch, type(self)):
             expr = center_pitch
             self._center_pitch = expr.center_pitch
@@ -123,15 +122,15 @@ class RegisterSpecifier(abctools.AbjadValueObject):
             center_pitch = pitchtools.NumberedPitch(center_pitch)
         self._center_pitch = center_pitch
         if division_inflections is not None:
-            division_inflections = tools.RegisterInflectionInventory(
+            division_inflections = RegisterInflectionInventory(
                 division_inflections)
         self._division_inflections = division_inflections
         if phrase_inflections is not None:
-            phrase_inflections = tools.RegisterInflectionInventory(
+            phrase_inflections = RegisterInflectionInventory(
                 phrase_inflections)
         self._phrase_inflections = phrase_inflections
         if segment_inflections is not None:
-            segment_inflections = tools.RegisterInflectionInventory(
+            segment_inflections = RegisterInflectionInventory(
                 segment_inflections)
         self._segment_inflections = segment_inflections
 
@@ -143,13 +142,13 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
         ::
 
-            >>> from consort import tools
-            >>> register_specifier = tools.RegisterSpecifier()
+            >>> import consort
+            >>> register_specifier = consort.pitchtools.RegisterSpecifier()
             >>> attribute_manifest = register_specifier._attribute_manifest
 
         '''
         from abjad.tools import systemtools
-        from consort import tools
+        import consort
         from scoremanager import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
@@ -162,19 +161,19 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                 name='division_inflections',
                 display_string='division inflections',
                 command='di',
-                editor=tools.RegisterInflectionInventory,
+                editor=consort.pitchtools.RegisterInflectionInventory,
                 ),
             systemtools.AttributeDetail(
                 name='phrase_inflections',
                 display_string='phrase inflections',
                 command='pi',
-                editor=tools.RegisterInflectionInventory,
+                editor=consort.pitchtools.RegisterInflectionInventory,
                 ),
             systemtools.AttributeDetail(
                 name='segment_inflections',
                 display_string='segment inflections',
                 command='si',
-                editor=tools.RegisterInflectionInventory,
+                editor=consort.pitchtools.RegisterInflectionInventory,
                 ),
             )
 

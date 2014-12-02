@@ -101,6 +101,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         '''
         from abjad.tools import systemtools
         from consort import tools
+        from consort.tools import pitchtools
         from scoremanager import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
@@ -125,7 +126,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='pitch_handler',
                 display_string='pitch maker',
                 command='pm',
-                editor=tools.PitchHandler,
+                editor=pitchtools.PitchHandler,
                 ),
             systemtools.AttributeDetail(
                 name='rhythm_maker',

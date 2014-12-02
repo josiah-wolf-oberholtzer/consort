@@ -8,13 +8,13 @@ class ChordExpression(abctools.AbjadValueObject):
 
     ::
 
-        >>> from consort import tools
-        >>> chord_expression = tools.ChordExpression(
+        >>> import consort
+        >>> chord_expression = consort.pitchtools.ChordExpression(
         ...     arpeggio_direction=Down,
         ...     interval_numbers=(-1, 3, 7),
         ...     )
         >>> print(format(chord_expression))
-        consort.tools.ChordExpression(
+        consort.tools.pitchtools.ChordExpression(
             arpeggio_direction=Down,
             interval_numbers=(-1, 3, 7),
             )

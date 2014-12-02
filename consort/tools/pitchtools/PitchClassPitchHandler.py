@@ -2,7 +2,7 @@
 from __future__ import print_function
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from consort.tools.PitchHandler import PitchHandler
+from consort.tools.pitchtools.PitchHandler import PitchHandler
 
 
 class PitchClassPitchHandler(PitchHandler):
@@ -10,12 +10,12 @@ class PitchClassPitchHandler(PitchHandler):
 
     ::
 
-        >>> from consort import tools
-        >>> pitch_handler = tools.PitchClassPitchHandler(
+        >>> import consort
+        >>> pitch_handler = consort.pitchtools.PitchClassPitchHandler(
         ...     pitch_classes="c' d' e' f'",
         ...     )
         >>> print(format(pitch_handler))
-        consort.tools.PitchClassPitchHandler(
+        consort.tools.pitchtools.PitchClassPitchHandler(
             pitch_classes=datastructuretools.CyclicTuple(
                 [
                     pitchtools.NumberedPitchClass(0),

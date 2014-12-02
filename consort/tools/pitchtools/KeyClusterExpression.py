@@ -6,13 +6,13 @@ from abjad import *
 class KeyClusterExpression(abctools.AbjadValueObject):
     r'''A key cluster expression.
 
-        >>> from consort import tools
-        >>> key_cluster_expression = tools.KeyClusterExpression(
+        >>> import consort
+        >>> key_cluster_expression = consort.pitchtools.KeyClusterExpression(
         ...     arpeggio_direction=Up,
         ...     include_black_keys=False,
         ...     )
         >>> print(format(key_cluster_expression))
-        consort.tools.KeyClusterExpression(
+        consort.tools.pitchtools.KeyClusterExpression(
             arpeggio_direction=Up,
             include_black_keys=False,
             include_white_keys=True,

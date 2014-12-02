@@ -183,6 +183,8 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __call__(self):
         from consort import tools
+        from consort.tools import annotationtools
+        from consort.tools import pitchtools
 
         segment_session = tools.SegmentSession(segment_maker=self)
         segment_session.score = self.score_template()
@@ -233,7 +235,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
             with timer:
                 print('PitchHandler:')
-                tools.PitchHandler._process_session(segment_session)
+                pitchtools.PitchHandler._process_session(segment_session)
                 print('\ttotal:', timer.elapsed_time)
 
             with timer:
