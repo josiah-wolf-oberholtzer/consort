@@ -191,14 +191,14 @@ class PitchHandler(abctools.AbjadValueObject):
         for logical_tie in attack_point_map:
             attack_point_signature = attack_point_map[logical_tie]
             music_specifier = \
-                consort.coretools.SegmentMaker._logical_tie_to_music_specifier(
+                consort.consorttools.SegmentMaker._logical_tie_to_music_specifier(
                     logical_tie)
             if not music_specifier:
                 continue
             pitch_handler = music_specifier.pitch_handler
             if not pitch_handler:
                 continue
-            voice = consort.coretools.SegmentMaker._logical_tie_to_voice(logical_tie)
+            voice = consort.consorttools.SegmentMaker._logical_tie_to_voice(logical_tie)
             phrase_seed = PitchHandler._get_phrase_seed(
                 attack_point_signature,
                 music_specifier,

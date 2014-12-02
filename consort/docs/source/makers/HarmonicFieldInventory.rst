@@ -1,9 +1,9 @@
 tools.HarmonicFieldInventory
 =============================
 
-.. abjad-lineage:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory
+.. abjad-lineage:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory
 
-.. autoclass:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory
+.. autoclass:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory
 
 .. only:: html
 
@@ -12,31 +12,31 @@ tools.HarmonicFieldInventory
 
    .. autosummary::
 
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.append
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.count
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.extend
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.index
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.insert
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.item_class
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.items
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.keep_sorted
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.pop
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.remove
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.reverse
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.sort
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__contains__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__delitem__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__eq__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__format__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__getitem__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__hash__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__iadd__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__iter__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__len__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__ne__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__repr__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__reversed__
-      ~consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__setitem__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.append
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.count
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.extend
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.index
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.insert
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.item_class
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.items
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.keep_sorted
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.pop
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.remove
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.reverse
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.sort
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__contains__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__delitem__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__eq__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__format__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__getitem__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__hash__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__iadd__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__iter__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__len__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__ne__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__repr__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__reversed__
+      ~consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__setitem__
 
 Bases
 -----
@@ -54,86 +54,86 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.item_class
+.. autoattribute:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.item_class
    :noindex:
 
-.. autoattribute:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.items
+.. autoattribute:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.items
    :noindex:
 
 Read/write properties
 ---------------------
 
-.. autoattribute:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.keep_sorted
+.. autoattribute:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.keep_sorted
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.append
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.append
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.count
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.count
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.extend
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.extend
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.index
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.index
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.insert
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.insert
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.pop
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.pop
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.remove
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.remove
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.reverse
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.reverse
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.sort
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.sort
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__contains__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__contains__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__delitem__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__delitem__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__eq__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__format__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__format__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__getitem__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__getitem__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__hash__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__iadd__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__iadd__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__iter__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__iter__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__len__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__len__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__ne__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__repr__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__repr__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__reversed__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__reversed__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldInventory.HarmonicFieldInventory.__setitem__
+.. automethod:: consort.consorttools.HarmonicFieldInventory.HarmonicFieldInventory.__setitem__
    :noindex:

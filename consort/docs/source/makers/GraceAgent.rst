@@ -1,9 +1,9 @@
 tools.GraceMaker
 =================
 
-.. abjad-lineage:: consort.coretools.GraceMaker.GraceMaker
+.. abjad-lineage:: consort.consorttools.GraceMaker.GraceMaker
 
-.. autoclass:: consort.coretools.GraceMaker.GraceMaker
+.. autoclass:: consort.consorttools.GraceMaker.GraceMaker
 
 .. only:: html
 
@@ -12,22 +12,22 @@ tools.GraceMaker
 
    .. autosummary::
 
-      ~consort.coretools.GraceMaker.GraceMaker.counts
-      ~consort.coretools.GraceMaker.GraceMaker.iterate_score
-      ~consort.coretools.GraceMaker.GraceMaker.minimum_preceding_duration
-      ~consort.coretools.GraceMaker.GraceMaker.reverse
-      ~consort.coretools.GraceMaker.GraceMaker.rotate
-      ~consort.coretools.GraceMaker.GraceMaker.__call__
-      ~consort.coretools.GraceMaker.GraceMaker.__eq__
-      ~consort.coretools.GraceMaker.GraceMaker.__format__
-      ~consort.coretools.GraceMaker.GraceMaker.__hash__
-      ~consort.coretools.GraceMaker.GraceMaker.__ne__
-      ~consort.coretools.GraceMaker.GraceMaker.__repr__
+      ~consort.consorttools.GraceMaker.GraceMaker.counts
+      ~consort.consorttools.GraceMaker.GraceMaker.iterate_score
+      ~consort.consorttools.GraceMaker.GraceMaker.minimum_preceding_duration
+      ~consort.consorttools.GraceMaker.GraceMaker.reverse
+      ~consort.consorttools.GraceMaker.GraceMaker.rotate
+      ~consort.consorttools.GraceMaker.GraceMaker.__call__
+      ~consort.consorttools.GraceMaker.GraceMaker.__eq__
+      ~consort.consorttools.GraceMaker.GraceMaker.__format__
+      ~consort.consorttools.GraceMaker.GraceMaker.__hash__
+      ~consort.consorttools.GraceMaker.GraceMaker.__ne__
+      ~consort.consorttools.GraceMaker.GraceMaker.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -38,44 +38,44 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.GraceMaker.GraceMaker.counts
+.. autoattribute:: consort.consorttools.GraceMaker.GraceMaker.counts
    :noindex:
 
-.. autoattribute:: consort.coretools.GraceMaker.GraceMaker.minimum_preceding_duration
+.. autoattribute:: consort.consorttools.GraceMaker.GraceMaker.minimum_preceding_duration
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.reverse
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.reverse
    :noindex:
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.rotate
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.rotate
    :noindex:
 
 Static methods
 --------------
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.iterate_score
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.iterate_score
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.__call__
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.__call__
    :noindex:
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.__eq__
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.__format__
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.__format__
    :noindex:
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.__hash__
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.__ne__
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.GraceMaker.GraceMaker.__repr__
+.. automethod:: consort.consorttools.GraceMaker.GraceMaker.__repr__
    :noindex:

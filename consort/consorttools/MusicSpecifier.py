@@ -9,9 +9,9 @@ class MusicSpecifier(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> music_specifier = consort.coretools.MusicSpecifier()
+        >>> music_specifier = consort.consorttools.MusicSpecifier()
         >>> print(format(music_specifier))
-        consort.coretools.MusicSpecifier()
+        consort.consorttools.MusicSpecifier()
 
     '''
 
@@ -94,7 +94,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         ::
             
             >>> import consort
-            >>> music_specifier = consort.coretools.MusicSpecifier()
+            >>> music_specifier = consort.consorttools.MusicSpecifier()
             >>> print(format(music_specifier._attribute_manifest))
             systemtools.AttributeManifest()
 

@@ -48,7 +48,7 @@ class RhythmManager(abctools.AbjadValueObject):
         for voice in iterate(score).by_class(scoretools.Voice):
             for music in voice:
                 music_specifier = inspect_(music).get_indicator(
-                    consort.coretools.MusicSpecifier)
+                    consort.consorttools.MusicSpecifier)
                 if not music_specifier.is_sentinel:
                     continue
                 leaves = music.select_leaves()
@@ -89,7 +89,7 @@ class RhythmManager(abctools.AbjadValueObject):
                 for music in reversed(voice):
                     assert score._is_forbidden_to_update
                     music_specifier = inspect_(music).get_indicator(
-                        consort.coretools.MusicSpecifier)
+                        consort.consorttools.MusicSpecifier)
                     if not music_specifier.is_sentinel:
                         continue
                     timespan = inspect_(music).get_timespan()
@@ -250,10 +250,10 @@ class RhythmManager(abctools.AbjadValueObject):
             if isinstance(timespan, consort.timespantools.PerformedTimespan):
                 music_specifier = timespan.music_specifier
                 if music_specifier is None:
-                    music_specifier = consort.coretools.MusicSpecifier()
+                    music_specifier = consort.consorttools.MusicSpecifier()
             return music_specifier
         import consort
-        silent_music_specifier = consort.coretools.MusicSpecifier(
+        silent_music_specifier = consort.consorttools.MusicSpecifier(
             is_sentinel=True,
             )
         voicewise_timespans = segment_session.voicewise_timespans
@@ -423,7 +423,7 @@ class RhythmManager(abctools.AbjadValueObject):
         meters=None,
         ):
         import consort
-        music_specifier = inspect_(music).get_indicator(consort.coretools.MusicSpecifier)
+        music_specifier = inspect_(music).get_indicator(consort.consorttools.MusicSpecifier)
         rhythm_maker = music_specifier.rhythm_maker
         if rhythm_maker is not None:
             if rhythm_maker.duration_spelling_specifier is not None:

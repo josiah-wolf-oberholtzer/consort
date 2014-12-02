@@ -14,7 +14,7 @@ def test_SegmentMaker__find_voice_names_01():
         'Violin \\d+ Bowing Voice',
         'Viola Bowing Voice',
         )
-    found_voice_names = consort.coretools.SegmentMaker._find_voice_names(
+    found_voice_names = consort.consorttools.SegmentMaker._find_voice_names(
         score_template=score_template,
         voice_identifier=voice_identifier,
         )

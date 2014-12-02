@@ -1,9 +1,9 @@
 tools.PitchCurve
 =================
 
-.. abjad-lineage:: consort.coretools.PitchCurve.PitchCurve
+.. abjad-lineage:: consort.consorttools.PitchCurve.PitchCurve
 
-.. autoclass:: consort.coretools.PitchCurve.PitchCurve
+.. autoclass:: consort.consorttools.PitchCurve.PitchCurve
 
 .. only:: html
 
@@ -12,20 +12,20 @@ tools.PitchCurve
 
    .. autosummary::
 
-      ~consort.coretools.PitchCurve.PitchCurve.pitches
-      ~consort.coretools.PitchCurve.PitchCurve.ratio
-      ~consort.coretools.PitchCurve.PitchCurve.transpose
-      ~consort.coretools.PitchCurve.PitchCurve.__call__
-      ~consort.coretools.PitchCurve.PitchCurve.__eq__
-      ~consort.coretools.PitchCurve.PitchCurve.__format__
-      ~consort.coretools.PitchCurve.PitchCurve.__hash__
-      ~consort.coretools.PitchCurve.PitchCurve.__ne__
-      ~consort.coretools.PitchCurve.PitchCurve.__repr__
+      ~consort.consorttools.PitchCurve.PitchCurve.pitches
+      ~consort.consorttools.PitchCurve.PitchCurve.ratio
+      ~consort.consorttools.PitchCurve.PitchCurve.transpose
+      ~consort.consorttools.PitchCurve.PitchCurve.__call__
+      ~consort.consorttools.PitchCurve.PitchCurve.__eq__
+      ~consort.consorttools.PitchCurve.PitchCurve.__format__
+      ~consort.consorttools.PitchCurve.PitchCurve.__hash__
+      ~consort.consorttools.PitchCurve.PitchCurve.__ne__
+      ~consort.consorttools.PitchCurve.PitchCurve.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -36,35 +36,35 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.PitchCurve.PitchCurve.pitches
+.. autoattribute:: consort.consorttools.PitchCurve.PitchCurve.pitches
    :noindex:
 
-.. autoattribute:: consort.coretools.PitchCurve.PitchCurve.ratio
+.. autoattribute:: consort.consorttools.PitchCurve.PitchCurve.ratio
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.transpose
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.transpose
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.__call__
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.__call__
    :noindex:
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.__eq__
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.__format__
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.__format__
    :noindex:
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.__hash__
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.__ne__
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.PitchCurve.PitchCurve.__repr__
+.. automethod:: consort.consorttools.PitchCurve.PitchCurve.__repr__
    :noindex:

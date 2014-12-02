@@ -1,9 +1,9 @@
 tools.ConsortSegmentMaker
 ==========================
 
-.. abjad-lineage:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker
+.. abjad-lineage:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker
 
-.. autoclass:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker
+.. autoclass:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker
 
 .. only:: html
 
@@ -12,29 +12,29 @@ tools.ConsortSegmentMaker
 
    .. autosummary::
 
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.annotation_specifier
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.build_and_persist
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.final_markup
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.find_voice_names
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.get_segment_target_duration
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.is_final_segment
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.name
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.permitted_time_signatures
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.rehearsal_mark
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.score
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.stylesheet_file_paths
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.target_duration
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.template
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.tempo
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.voice_settings
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.voice_specifiers
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__call__
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__eq__
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__format__
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__hash__
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__illustrate__
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__ne__
-      ~consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__repr__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.annotation_specifier
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.build_and_persist
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.final_markup
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.find_voice_names
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.get_segment_target_duration
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.is_final_segment
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.name
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.permitted_time_signatures
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.rehearsal_mark
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.score
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.stylesheet_file_paths
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.target_duration
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.template
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.tempo
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.voice_settings
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.voice_specifiers
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__call__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__eq__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__format__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__hash__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__illustrate__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__ne__
+      ~consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__repr__
 
 Bases
 -----
@@ -50,80 +50,80 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.annotation_specifier
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.annotation_specifier
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.final_markup
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.final_markup
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.is_final_segment
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.is_final_segment
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.name
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.name
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.permitted_time_signatures
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.permitted_time_signatures
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.rehearsal_mark
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.rehearsal_mark
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.score
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.score
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.stylesheet_file_paths
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.stylesheet_file_paths
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.target_duration
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.target_duration
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.template
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.template
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.tempo
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.tempo
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.voice_settings
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.voice_settings
    :noindex:
 
-.. autoattribute:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.voice_specifiers
+.. autoattribute:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.voice_specifiers
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.build_and_persist
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.build_and_persist
    :noindex:
 
 Static methods
 --------------
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.find_voice_names
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.find_voice_names
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.get_segment_target_duration
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.get_segment_target_duration
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__call__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__call__
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__eq__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__format__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__format__
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__hash__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__illustrate__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__illustrate__
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__ne__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.ConsortSegmentMaker.ConsortSegmentMaker.__repr__
+.. automethod:: consort.consorttools.ConsortSegmentMaker.ConsortSegmentMaker.__repr__
    :noindex:

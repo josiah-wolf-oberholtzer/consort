@@ -94,7 +94,7 @@ class GraceHandler(abctools.AbjadValueObject):
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
-                prototype = consort.coretools.MusicSpecifier
+                prototype = consort.consorttools.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
                 maker = music_specifier.grace_handler
                 if maker is None:

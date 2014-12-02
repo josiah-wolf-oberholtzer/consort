@@ -1,9 +1,9 @@
 tools.TaleaTimespanMaker
 ====================
 
-.. abjad-lineage:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker
+.. abjad-lineage:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker
 
-.. autoclass:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker
+.. autoclass:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker
 
 .. only:: html
 
@@ -12,27 +12,27 @@ tools.TaleaTimespanMaker
 
    .. autosummary::
 
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.can_split
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.initial_silence_durations
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.minimum_duration
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.playing_durations
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.playing_groupings
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.repeat
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.silence_durations
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.step_anchor
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_groupings
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_step
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__call__
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__eq__
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__format__
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__hash__
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__ne__
-      ~consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__repr__
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.can_split
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.initial_silence_durations
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.minimum_duration
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.playing_durations
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.playing_groupings
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.repeat
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.silence_durations
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.step_anchor
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_groupings
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_step
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__call__
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__eq__
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__format__
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__hash__
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__ne__
+      ~consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -43,53 +43,53 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.can_split
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.can_split
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.initial_silence_durations
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.initial_silence_durations
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.minimum_duration
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.minimum_duration
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.playing_durations
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.playing_durations
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.playing_groupings
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.playing_groupings
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.repeat
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.repeat
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.silence_durations
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.silence_durations
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.step_anchor
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.step_anchor
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_groupings
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_groupings
    :noindex:
 
-.. autoattribute:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_step
+.. autoattribute:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.synchronize_step
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__call__
+.. automethod:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__call__
    :noindex:
 
-.. automethod:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__eq__
+.. automethod:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__format__
+.. automethod:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__format__
    :noindex:
 
-.. automethod:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__hash__
+.. automethod:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__ne__
+.. automethod:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.TaleaTimespanMaker.TaleaTimespanMaker.__repr__
+.. automethod:: consort.consorttools.TaleaTimespanMaker.TaleaTimespanMaker.__repr__
    :noindex:

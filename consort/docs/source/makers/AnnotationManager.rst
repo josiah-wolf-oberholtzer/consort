@@ -1,9 +1,9 @@
 tools.AnnotationManager
 ========================
 
-.. abjad-lineage:: consort.coretools.AnnotationManager.AnnotationManager
+.. abjad-lineage:: consort.consorttools.AnnotationManager.AnnotationManager
 
-.. autoclass:: consort.coretools.AnnotationManager.AnnotationManager
+.. autoclass:: consort.consorttools.AnnotationManager.AnnotationManager
 
 .. only:: html
 
@@ -12,17 +12,17 @@ tools.AnnotationManager
 
    .. autosummary::
 
-      ~consort.coretools.AnnotationManager.AnnotationManager.annotate
-      ~consort.coretools.AnnotationManager.AnnotationManager.__eq__
-      ~consort.coretools.AnnotationManager.AnnotationManager.__format__
-      ~consort.coretools.AnnotationManager.AnnotationManager.__hash__
-      ~consort.coretools.AnnotationManager.AnnotationManager.__ne__
-      ~consort.coretools.AnnotationManager.AnnotationManager.__repr__
+      ~consort.consorttools.AnnotationManager.AnnotationManager.annotate
+      ~consort.consorttools.AnnotationManager.AnnotationManager.__eq__
+      ~consort.consorttools.AnnotationManager.AnnotationManager.__format__
+      ~consort.consorttools.AnnotationManager.AnnotationManager.__hash__
+      ~consort.consorttools.AnnotationManager.AnnotationManager.__ne__
+      ~consort.consorttools.AnnotationManager.AnnotationManager.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -33,23 +33,23 @@ Bases
 Static methods
 --------------
 
-.. automethod:: consort.coretools.AnnotationManager.AnnotationManager.annotate
+.. automethod:: consort.consorttools.AnnotationManager.AnnotationManager.annotate
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.AnnotationManager.AnnotationManager.__eq__
+.. automethod:: consort.consorttools.AnnotationManager.AnnotationManager.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationManager.AnnotationManager.__format__
+.. automethod:: consort.consorttools.AnnotationManager.AnnotationManager.__format__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationManager.AnnotationManager.__hash__
+.. automethod:: consort.consorttools.AnnotationManager.AnnotationManager.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationManager.AnnotationManager.__ne__
+.. automethod:: consort.consorttools.AnnotationManager.AnnotationManager.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationManager.AnnotationManager.__repr__
+.. automethod:: consort.consorttools.AnnotationManager.AnnotationManager.__repr__
    :noindex:

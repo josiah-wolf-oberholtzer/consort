@@ -1,9 +1,9 @@
 tools.AnnotationSpecifier
 ==========================
 
-.. abjad-lineage:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier
+.. abjad-lineage:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier
 
-.. autoclass:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier
+.. autoclass:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier
 
 .. only:: html
 
@@ -12,24 +12,24 @@ tools.AnnotationSpecifier
 
    .. autosummary::
 
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.hide_inner_bracket
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_annotated_result
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_1
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_2
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_3
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_4
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_5
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_unannotated_result
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__eq__
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__format__
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__hash__
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__ne__
-      ~consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__repr__
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.hide_inner_bracket
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_annotated_result
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_1
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_2
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_3
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_4
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_5
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_unannotated_result
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__eq__
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__format__
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__hash__
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__ne__
+      ~consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -40,44 +40,44 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.hide_inner_bracket
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.hide_inner_bracket
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_annotated_result
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_annotated_result
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_1
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_1
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_2
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_2
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_3
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_3
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_4
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_4
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_stage_5
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_stage_5
    :noindex:
 
-.. autoattribute:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.show_unannotated_result
+.. autoattribute:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.show_unannotated_result
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__eq__
+.. automethod:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__format__
+.. automethod:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__format__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__hash__
+.. automethod:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__ne__
+.. automethod:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.AnnotationSpecifier.AnnotationSpecifier.__repr__
+.. automethod:: consort.consorttools.AnnotationSpecifier.AnnotationSpecifier.__repr__
    :noindex:

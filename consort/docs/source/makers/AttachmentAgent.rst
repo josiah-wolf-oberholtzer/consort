@@ -1,9 +1,9 @@
 tools.AttachmentAgent
 ======================
 
-.. abjad-lineage:: consort.coretools.AttachmentAgent.AttachmentAgent
+.. abjad-lineage:: consort.consorttools.AttachmentAgent.AttachmentAgent
 
-.. autoclass:: consort.coretools.AttachmentAgent.AttachmentAgent
+.. autoclass:: consort.consorttools.AttachmentAgent.AttachmentAgent
 
 .. only:: html
 
@@ -12,21 +12,21 @@ tools.AttachmentAgent
 
    .. autosummary::
 
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.attachment_specifiers
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.iterate_score
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.reverse
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.rotate
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.__call__
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.__eq__
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.__format__
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.__hash__
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.__ne__
-      ~consort.coretools.AttachmentAgent.AttachmentAgent.__repr__
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.attachment_specifiers
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.iterate_score
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.reverse
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.rotate
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.__call__
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.__eq__
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.__format__
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.__hash__
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.__ne__
+      ~consort.consorttools.AttachmentAgent.AttachmentAgent.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -37,41 +37,41 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.AttachmentAgent.AttachmentAgent.attachment_specifiers
+.. autoattribute:: consort.consorttools.AttachmentAgent.AttachmentAgent.attachment_specifiers
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.reverse
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.reverse
    :noindex:
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.rotate
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.rotate
    :noindex:
 
 Static methods
 --------------
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.iterate_score
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.iterate_score
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.__call__
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.__call__
    :noindex:
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.__eq__
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.__format__
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.__format__
    :noindex:
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.__hash__
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.__ne__
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.AttachmentAgent.AttachmentAgent.__repr__
+.. automethod:: consort.consorttools.AttachmentAgent.AttachmentAgent.__repr__
    :noindex:

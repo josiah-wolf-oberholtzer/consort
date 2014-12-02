@@ -1,9 +1,9 @@
 tools.TimespanManager
 ======================
 
-.. abjad-lineage:: consort.coretools.TimespanManager.TimespanManager
+.. abjad-lineage:: consort.consorttools.TimespanManager.TimespanManager
 
-.. autoclass:: consort.coretools.TimespanManager.TimespanManager
+.. autoclass:: consort.consorttools.TimespanManager.TimespanManager
 
 .. only:: html
 
@@ -12,17 +12,17 @@ tools.TimespanManager
 
    .. autosummary::
 
-      ~consort.coretools.TimespanManager.TimespanManager.execute
-      ~consort.coretools.TimespanManager.TimespanManager.__eq__
-      ~consort.coretools.TimespanManager.TimespanManager.__format__
-      ~consort.coretools.TimespanManager.TimespanManager.__hash__
-      ~consort.coretools.TimespanManager.TimespanManager.__ne__
-      ~consort.coretools.TimespanManager.TimespanManager.__repr__
+      ~consort.consorttools.TimespanManager.TimespanManager.execute
+      ~consort.consorttools.TimespanManager.TimespanManager.__eq__
+      ~consort.consorttools.TimespanManager.TimespanManager.__format__
+      ~consort.consorttools.TimespanManager.TimespanManager.__hash__
+      ~consort.consorttools.TimespanManager.TimespanManager.__ne__
+      ~consort.consorttools.TimespanManager.TimespanManager.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.consorttools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -33,23 +33,23 @@ Bases
 Static methods
 --------------
 
-.. automethod:: consort.coretools.TimespanManager.TimespanManager.execute
+.. automethod:: consort.consorttools.TimespanManager.TimespanManager.execute
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.TimespanManager.TimespanManager.__eq__
+.. automethod:: consort.consorttools.TimespanManager.TimespanManager.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.TimespanManager.TimespanManager.__format__
+.. automethod:: consort.consorttools.TimespanManager.TimespanManager.__format__
    :noindex:
 
-.. automethod:: consort.coretools.TimespanManager.TimespanManager.__hash__
+.. automethod:: consort.consorttools.TimespanManager.TimespanManager.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.TimespanManager.TimespanManager.__ne__
+.. automethod:: consort.consorttools.TimespanManager.TimespanManager.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.TimespanManager.TimespanManager.__repr__
+.. automethod:: consort.consorttools.TimespanManager.TimespanManager.__repr__
    :noindex:

@@ -1,9 +1,9 @@
 tools.HarmonicFieldEntry
 =========================
 
-.. abjad-lineage:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry
+.. abjad-lineage:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry
 
-.. autoclass:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry
+.. autoclass:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry
 
 .. only:: html
 
@@ -12,14 +12,14 @@ tools.HarmonicFieldEntry
 
    .. autosummary::
 
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.leading_grace_pitches
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.structural_pitch
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.tailing_grace_pitches
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__eq__
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__format__
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__hash__
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__ne__
-      ~consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__repr__
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.leading_grace_pitches
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.structural_pitch
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.tailing_grace_pitches
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__eq__
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__format__
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__hash__
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__ne__
+      ~consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__repr__
 
 Bases
 -----
@@ -33,29 +33,29 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.leading_grace_pitches
+.. autoattribute:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.leading_grace_pitches
    :noindex:
 
-.. autoattribute:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.structural_pitch
+.. autoattribute:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.structural_pitch
    :noindex:
 
-.. autoattribute:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.tailing_grace_pitches
+.. autoattribute:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.tailing_grace_pitches
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__eq__
+.. automethod:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__eq__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__format__
+.. automethod:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__format__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__hash__
+.. automethod:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__hash__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__ne__
+.. automethod:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__ne__
    :noindex:
 
-.. automethod:: consort.coretools.HarmonicFieldEntry.HarmonicFieldEntry.__repr__
+.. automethod:: consort.consorttools.HarmonicFieldEntry.HarmonicFieldEntry.__repr__
    :noindex:
