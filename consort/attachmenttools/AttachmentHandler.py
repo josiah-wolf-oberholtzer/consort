@@ -16,7 +16,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         >>> import consort
         >>> attachment_handler = consort.attachmenttools.AttachmentHandler()
         >>> print(format(attachment_handler))
-        consort.tools.attachmenttools.AttachmentHandler()
+        consort.attachmenttools.AttachmentHandler()
 
     '''
 
@@ -32,7 +32,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         self,
         **attachment_expressions
         ):
-        from consort.tools import attachmenttools
+        from consort import attachmenttools
         prototype = attachmenttools.AttachmentExpression
         validated_attachment_expressions = {}
         for name, attachment_expression in attachment_expressions.items():

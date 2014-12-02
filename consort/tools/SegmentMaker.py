@@ -184,7 +184,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def __call__(self):
         from consort import tools
         from consort.tools import annotationtools
-        from consort.tools import attachmenttools
+        from consort import attachmenttools
         from consort.tools import pitchtools
 
         segment_session = tools.SegmentSession(segment_maker=self)
