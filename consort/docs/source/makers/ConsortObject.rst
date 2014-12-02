@@ -1,9 +1,9 @@
 tools.ConsortObject
 ====================
 
-.. abjad-lineage:: consort.tools.ConsortObject.ConsortObject
+.. abjad-lineage:: consort.coretools.ConsortObject.ConsortObject
 
-.. autoclass:: consort.tools.ConsortObject.ConsortObject
+.. autoclass:: consort.coretools.ConsortObject.ConsortObject
 
 .. only:: html
 
@@ -12,11 +12,11 @@ tools.ConsortObject
 
    .. autosummary::
 
-      ~consort.tools.ConsortObject.ConsortObject.__eq__
-      ~consort.tools.ConsortObject.ConsortObject.__format__
-      ~consort.tools.ConsortObject.ConsortObject.__hash__
-      ~consort.tools.ConsortObject.ConsortObject.__ne__
-      ~consort.tools.ConsortObject.ConsortObject.__repr__
+      ~consort.coretools.ConsortObject.ConsortObject.__eq__
+      ~consort.coretools.ConsortObject.ConsortObject.__format__
+      ~consort.coretools.ConsortObject.ConsortObject.__hash__
+      ~consort.coretools.ConsortObject.ConsortObject.__ne__
+      ~consort.coretools.ConsortObject.ConsortObject.__repr__
 
 Bases
 -----
@@ -30,17 +30,17 @@ Bases
 Special methods
 ---------------
 
-.. automethod:: consort.tools.ConsortObject.ConsortObject.__eq__
+.. automethod:: consort.coretools.ConsortObject.ConsortObject.__eq__
    :noindex:
 
-.. automethod:: consort.tools.ConsortObject.ConsortObject.__format__
+.. automethod:: consort.coretools.ConsortObject.ConsortObject.__format__
    :noindex:
 
-.. automethod:: consort.tools.ConsortObject.ConsortObject.__hash__
+.. automethod:: consort.coretools.ConsortObject.ConsortObject.__hash__
    :noindex:
 
-.. automethod:: consort.tools.ConsortObject.ConsortObject.__ne__
+.. automethod:: consort.coretools.ConsortObject.ConsortObject.__ne__
    :noindex:
 
-.. automethod:: consort.tools.ConsortObject.ConsortObject.__repr__
+.. automethod:: consort.coretools.ConsortObject.ConsortObject.__repr__
    :noindex:

@@ -1,9 +1,9 @@
 tools.HarmonicField
 ====================
 
-.. abjad-lineage:: consort.tools.HarmonicField.HarmonicField
+.. abjad-lineage:: consort.coretools.HarmonicField.HarmonicField
 
-.. autoclass:: consort.tools.HarmonicField.HarmonicField
+.. autoclass:: consort.coretools.HarmonicField.HarmonicField
 
 .. only:: html
 
@@ -12,32 +12,32 @@ tools.HarmonicField
 
    .. autosummary::
 
-      ~consort.tools.HarmonicField.HarmonicField.copy
-      ~consort.tools.HarmonicField.HarmonicField.difference
-      ~consort.tools.HarmonicField.HarmonicField.intersection
-      ~consort.tools.HarmonicField.HarmonicField.isdisjoint
-      ~consort.tools.HarmonicField.HarmonicField.issubset
-      ~consort.tools.HarmonicField.HarmonicField.issuperset
-      ~consort.tools.HarmonicField.HarmonicField.item_class
-      ~consort.tools.HarmonicField.HarmonicField.items
-      ~consort.tools.HarmonicField.HarmonicField.symmetric_difference
-      ~consort.tools.HarmonicField.HarmonicField.union
-      ~consort.tools.HarmonicField.HarmonicField.__and__
-      ~consort.tools.HarmonicField.HarmonicField.__contains__
-      ~consort.tools.HarmonicField.HarmonicField.__eq__
-      ~consort.tools.HarmonicField.HarmonicField.__format__
-      ~consort.tools.HarmonicField.HarmonicField.__ge__
-      ~consort.tools.HarmonicField.HarmonicField.__gt__
-      ~consort.tools.HarmonicField.HarmonicField.__hash__
-      ~consort.tools.HarmonicField.HarmonicField.__iter__
-      ~consort.tools.HarmonicField.HarmonicField.__le__
-      ~consort.tools.HarmonicField.HarmonicField.__len__
-      ~consort.tools.HarmonicField.HarmonicField.__lt__
-      ~consort.tools.HarmonicField.HarmonicField.__ne__
-      ~consort.tools.HarmonicField.HarmonicField.__or__
-      ~consort.tools.HarmonicField.HarmonicField.__repr__
-      ~consort.tools.HarmonicField.HarmonicField.__sub__
-      ~consort.tools.HarmonicField.HarmonicField.__xor__
+      ~consort.coretools.HarmonicField.HarmonicField.copy
+      ~consort.coretools.HarmonicField.HarmonicField.difference
+      ~consort.coretools.HarmonicField.HarmonicField.intersection
+      ~consort.coretools.HarmonicField.HarmonicField.isdisjoint
+      ~consort.coretools.HarmonicField.HarmonicField.issubset
+      ~consort.coretools.HarmonicField.HarmonicField.issuperset
+      ~consort.coretools.HarmonicField.HarmonicField.item_class
+      ~consort.coretools.HarmonicField.HarmonicField.items
+      ~consort.coretools.HarmonicField.HarmonicField.symmetric_difference
+      ~consort.coretools.HarmonicField.HarmonicField.union
+      ~consort.coretools.HarmonicField.HarmonicField.__and__
+      ~consort.coretools.HarmonicField.HarmonicField.__contains__
+      ~consort.coretools.HarmonicField.HarmonicField.__eq__
+      ~consort.coretools.HarmonicField.HarmonicField.__format__
+      ~consort.coretools.HarmonicField.HarmonicField.__ge__
+      ~consort.coretools.HarmonicField.HarmonicField.__gt__
+      ~consort.coretools.HarmonicField.HarmonicField.__hash__
+      ~consort.coretools.HarmonicField.HarmonicField.__iter__
+      ~consort.coretools.HarmonicField.HarmonicField.__le__
+      ~consort.coretools.HarmonicField.HarmonicField.__len__
+      ~consort.coretools.HarmonicField.HarmonicField.__lt__
+      ~consort.coretools.HarmonicField.HarmonicField.__ne__
+      ~consort.coretools.HarmonicField.HarmonicField.__or__
+      ~consort.coretools.HarmonicField.HarmonicField.__repr__
+      ~consort.coretools.HarmonicField.HarmonicField.__sub__
+      ~consort.coretools.HarmonicField.HarmonicField.__xor__
 
 Bases
 -----
@@ -55,86 +55,86 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.HarmonicField.HarmonicField.item_class
+.. autoattribute:: consort.coretools.HarmonicField.HarmonicField.item_class
    :noindex:
 
-.. autoattribute:: consort.tools.HarmonicField.HarmonicField.items
+.. autoattribute:: consort.coretools.HarmonicField.HarmonicField.items
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.copy
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.copy
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.difference
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.difference
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.intersection
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.intersection
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.isdisjoint
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.isdisjoint
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.issubset
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.issubset
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.issuperset
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.issuperset
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.symmetric_difference
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.symmetric_difference
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.union
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.union
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__and__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__and__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__contains__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__contains__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__eq__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__eq__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__format__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__format__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__ge__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__ge__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__gt__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__gt__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__hash__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__hash__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__iter__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__iter__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__le__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__le__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__len__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__len__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__lt__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__lt__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__ne__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__ne__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__or__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__or__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__repr__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__repr__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__sub__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__sub__
    :noindex:
 
-.. automethod:: consort.tools.HarmonicField.HarmonicField.__xor__
+.. automethod:: consort.coretools.HarmonicField.HarmonicField.__xor__
    :noindex:

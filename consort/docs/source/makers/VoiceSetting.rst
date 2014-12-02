@@ -1,9 +1,9 @@
 tools.VoiceSetting
 ===================
 
-.. abjad-lineage:: consort.tools.VoiceSetting.VoiceSetting
+.. abjad-lineage:: consort.coretools.VoiceSetting.VoiceSetting
 
-.. autoclass:: consort.tools.VoiceSetting.VoiceSetting
+.. autoclass:: consort.coretools.VoiceSetting.VoiceSetting
 
 .. only:: html
 
@@ -12,21 +12,21 @@ tools.VoiceSetting
 
    .. autosummary::
 
-      ~consort.tools.VoiceSetting.VoiceSetting.color
-      ~consort.tools.VoiceSetting.VoiceSetting.key
-      ~consort.tools.VoiceSetting.VoiceSetting.value
-      ~consort.tools.VoiceSetting.VoiceSetting.voice_identifiers
-      ~consort.tools.VoiceSetting.VoiceSetting.__call__
-      ~consort.tools.VoiceSetting.VoiceSetting.__eq__
-      ~consort.tools.VoiceSetting.VoiceSetting.__format__
-      ~consort.tools.VoiceSetting.VoiceSetting.__hash__
-      ~consort.tools.VoiceSetting.VoiceSetting.__ne__
-      ~consort.tools.VoiceSetting.VoiceSetting.__repr__
+      ~consort.coretools.VoiceSetting.VoiceSetting.color
+      ~consort.coretools.VoiceSetting.VoiceSetting.key
+      ~consort.coretools.VoiceSetting.VoiceSetting.value
+      ~consort.coretools.VoiceSetting.VoiceSetting.voice_identifiers
+      ~consort.coretools.VoiceSetting.VoiceSetting.__call__
+      ~consort.coretools.VoiceSetting.VoiceSetting.__eq__
+      ~consort.coretools.VoiceSetting.VoiceSetting.__format__
+      ~consort.coretools.VoiceSetting.VoiceSetting.__hash__
+      ~consort.coretools.VoiceSetting.VoiceSetting.__ne__
+      ~consort.coretools.VoiceSetting.VoiceSetting.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -37,35 +37,35 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.VoiceSetting.VoiceSetting.color
+.. autoattribute:: consort.coretools.VoiceSetting.VoiceSetting.color
    :noindex:
 
-.. autoattribute:: consort.tools.VoiceSetting.VoiceSetting.key
+.. autoattribute:: consort.coretools.VoiceSetting.VoiceSetting.key
    :noindex:
 
-.. autoattribute:: consort.tools.VoiceSetting.VoiceSetting.value
+.. autoattribute:: consort.coretools.VoiceSetting.VoiceSetting.value
    :noindex:
 
-.. autoattribute:: consort.tools.VoiceSetting.VoiceSetting.voice_identifiers
+.. autoattribute:: consort.coretools.VoiceSetting.VoiceSetting.voice_identifiers
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.VoiceSetting.VoiceSetting.__call__
+.. automethod:: consort.coretools.VoiceSetting.VoiceSetting.__call__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSetting.VoiceSetting.__eq__
+.. automethod:: consort.coretools.VoiceSetting.VoiceSetting.__eq__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSetting.VoiceSetting.__format__
+.. automethod:: consort.coretools.VoiceSetting.VoiceSetting.__format__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSetting.VoiceSetting.__hash__
+.. automethod:: consort.coretools.VoiceSetting.VoiceSetting.__hash__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSetting.VoiceSetting.__ne__
+.. automethod:: consort.coretools.VoiceSetting.VoiceSetting.__ne__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSetting.VoiceSetting.__repr__
+.. automethod:: consort.coretools.VoiceSetting.VoiceSetting.__repr__
    :noindex:

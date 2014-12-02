@@ -1,9 +1,9 @@
 tools.SegmentSession
 =====================
 
-.. abjad-lineage:: consort.tools.SegmentSession.SegmentSession
+.. abjad-lineage:: consort.coretools.SegmentSession.SegmentSession
 
-.. autoclass:: consort.tools.SegmentSession.SegmentSession
+.. autoclass:: consort.coretools.SegmentSession.SegmentSession
 
 .. only:: html
 
@@ -12,18 +12,18 @@ tools.SegmentSession
 
    .. autosummary::
 
-      ~consort.tools.SegmentSession.SegmentSession.measure_offsets
-      ~consort.tools.SegmentSession.SegmentSession.time_signatures
-      ~consort.tools.SegmentSession.SegmentSession.__eq__
-      ~consort.tools.SegmentSession.SegmentSession.__format__
-      ~consort.tools.SegmentSession.SegmentSession.__hash__
-      ~consort.tools.SegmentSession.SegmentSession.__ne__
-      ~consort.tools.SegmentSession.SegmentSession.__repr__
+      ~consort.coretools.SegmentSession.SegmentSession.measure_offsets
+      ~consort.coretools.SegmentSession.SegmentSession.time_signatures
+      ~consort.coretools.SegmentSession.SegmentSession.__eq__
+      ~consort.coretools.SegmentSession.SegmentSession.__format__
+      ~consort.coretools.SegmentSession.SegmentSession.__hash__
+      ~consort.coretools.SegmentSession.SegmentSession.__ne__
+      ~consort.coretools.SegmentSession.SegmentSession.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -34,26 +34,26 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.SegmentSession.SegmentSession.measure_offsets
+.. autoattribute:: consort.coretools.SegmentSession.SegmentSession.measure_offsets
    :noindex:
 
-.. autoattribute:: consort.tools.SegmentSession.SegmentSession.time_signatures
+.. autoattribute:: consort.coretools.SegmentSession.SegmentSession.time_signatures
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.SegmentSession.SegmentSession.__eq__
+.. automethod:: consort.coretools.SegmentSession.SegmentSession.__eq__
    :noindex:
 
-.. automethod:: consort.tools.SegmentSession.SegmentSession.__format__
+.. automethod:: consort.coretools.SegmentSession.SegmentSession.__format__
    :noindex:
 
-.. automethod:: consort.tools.SegmentSession.SegmentSession.__hash__
+.. automethod:: consort.coretools.SegmentSession.SegmentSession.__hash__
    :noindex:
 
-.. automethod:: consort.tools.SegmentSession.SegmentSession.__ne__
+.. automethod:: consort.coretools.SegmentSession.SegmentSession.__ne__
    :noindex:
 
-.. automethod:: consort.tools.SegmentSession.SegmentSession.__repr__
+.. automethod:: consort.coretools.SegmentSession.SegmentSession.__repr__
    :noindex:

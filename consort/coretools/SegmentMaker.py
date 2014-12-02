@@ -33,13 +33,13 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ::
 
-        >>> segment_maker = consort.tools.SegmentMaker(
+        >>> segment_maker = consort.coretools.SegmentMaker(
         ...     score_template=score_template,
         ...     settings=(
-        ...         consort.tools.MusicSetting(
+        ...         consort.coretools.MusicSetting(
         ...             timespan_maker=consort.timespantools.TaleaTimespanMaker(),
-        ...             violin_1_bowing_voice=consort.tools.MusicSpecifier(),
-        ...             violin_2_bowing_voice=consort.tools.MusicSpecifier(),
+        ...             violin_1_bowing_voice=consort.coretools.MusicSpecifier(),
+        ...             violin_2_bowing_voice=consort.coretools.MusicSpecifier(),
         ...             ),
         ...         ),
         ...     duration_in_seconds=2,
@@ -50,7 +50,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ...         ),
         ...     )
         >>> print(format(segment_maker))
-        consort.tools.SegmentMaker(
+        consort.coretools.SegmentMaker(
             duration_in_seconds=durationtools.Duration(2, 1),
             permitted_time_signatures=indicatortools.TimeSignatureInventory(
                 [
@@ -67,7 +67,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 use_percussion_clefs=False,
                 ),
             settings=(
-                consort.tools.MusicSetting(
+                consort.coretools.MusicSetting(
                     timespan_maker=consort.timespantools.TaleaTimespanMaker(
                         can_split=True,
                         playing_talea=rhythmmakertools.Talea(
@@ -84,8 +84,8 @@ class SegmentMaker(makertools.SegmentMaker):
                         synchronize_groupings=False,
                         synchronize_step=False,
                         ),
-                    violin_1_bowing_voice=consort.tools.MusicSpecifier(),
-                    violin_2_bowing_voice=consort.tools.MusicSpecifier(),
+                    violin_1_bowing_voice=consort.coretools.MusicSpecifier(),
+                    violin_2_bowing_voice=consort.coretools.MusicSpecifier(),
                     ),
                 ),
             tempo=indicatortools.Tempo(
@@ -174,7 +174,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self.set_permitted_time_signatures(permitted_time_signatures)
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
-            prototype = consort.tools.MusicSetting
+            prototype = consort.coretools.MusicSetting
             assert all(isinstance(x, prototype) for x in settings)
             settings = list(settings)
         self._settings = settings or []
@@ -184,7 +184,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def __call__(self):
         import consort
 
-        segment_session = consort.tools.SegmentSession(segment_maker=self)
+        segment_session = consort.coretools.SegmentSession(segment_maker=self)
         segment_session.score = self.score_template()
         assert isinstance(segment_session.score, scoretools.Score)
         timer = systemtools.Timer()
@@ -292,7 +292,7 @@ class SegmentMaker(makertools.SegmentMaker):
         import consort
         parentage = inspect_(logical_tie.head).get_parentage()
         music_specifier = None
-        prototype = consort.tools.MusicSpecifier
+        prototype = consort.coretools.MusicSpecifier
         for parent in parentage:
             if not inspect_(parent).has_indicator(prototype):
                 continue
@@ -354,7 +354,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ...     'Violin \\d+ Bowing Voice',
             ...     'Viola Bowing Voice',
             ...     )
-            >>> consort.tools.SegmentMaker._find_voice_names(
+            >>> consort.coretools.SegmentMaker._find_voice_names(
             ...     score_template=score_template,
             ...     voice_identifier=voice_identifier,
             ...     )
@@ -439,10 +439,10 @@ class SegmentMaker(makertools.SegmentMaker):
         ::
 
             >>> import consort
-            >>> segment_maker = consort.tools.SegmentMaker()
+            >>> segment_maker = consort.coretools.SegmentMaker()
             >>> segment_maker.set_is_final_segment(True)
             >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
+            consort.coretools.SegmentMaker(
                 is_final_segment=True,
                 )
 
@@ -459,7 +459,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ::
 
             >>> import consort
-            >>> segment_maker = consort.tools.SegmentMaker()
+            >>> segment_maker = consort.coretools.SegmentMaker()
             >>> score_template = templatetools.StringOrchestraScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
@@ -468,7 +468,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ...     )
             >>> segment_maker.set_score_template(score_template)
             >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
+            consort.coretools.SegmentMaker(
                 score_template=templatetools.StringOrchestraScoreTemplate(
                     violin_count=2,
                     viola_count=1,
@@ -488,11 +488,11 @@ class SegmentMaker(makertools.SegmentMaker):
         ::
 
             >>> import consort
-            >>> segment_maker = consort.tools.SegmentMaker()
+            >>> segment_maker = consort.coretools.SegmentMaker()
             >>> tempo = indicatortools.Tempo((1, 4), 52)
             >>> segment_maker.set_tempo(tempo)
             >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
+            consort.coretools.SegmentMaker(
                 tempo=indicatortools.Tempo(
                     duration=durationtools.Duration(1, 4),
                     units_per_minute=52,
@@ -510,11 +510,11 @@ class SegmentMaker(makertools.SegmentMaker):
         ::
 
             >>> import consort
-            >>> segment_maker = consort.tools.SegmentMaker()
+            >>> segment_maker = consort.coretools.SegmentMaker()
             >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
             >>> segment_maker.set_permitted_time_signatures(time_signatures)
             >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
+            consort.coretools.SegmentMaker(
                 permitted_time_signatures=indicatortools.TimeSignatureInventory(
                     [
                         indicatortools.TimeSignature((3, 4)),

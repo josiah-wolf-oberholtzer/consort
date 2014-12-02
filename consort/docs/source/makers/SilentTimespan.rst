@@ -1,9 +1,9 @@
 tools.SilentTimespan
 =====================
 
-.. abjad-lineage:: consort.tools.SilentTimespan.SilentTimespan
+.. abjad-lineage:: consort.coretools.SilentTimespan.SilentTimespan
 
-.. autoclass:: consort.tools.SilentTimespan.SilentTimespan
+.. autoclass:: consort.coretools.SilentTimespan.SilentTimespan
 
 .. only:: html
 
@@ -12,86 +12,86 @@ tools.SilentTimespan
 
    .. autosummary::
 
-      ~consort.tools.SilentTimespan.SilentTimespan.axis
-      ~consort.tools.SilentTimespan.SilentTimespan.color
-      ~consort.tools.SilentTimespan.SilentTimespan.contains_timespan_improperly
-      ~consort.tools.SilentTimespan.SilentTimespan.curtails_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.delays_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.divide_by_ratio
-      ~consort.tools.SilentTimespan.SilentTimespan.duration
-      ~consort.tools.SilentTimespan.SilentTimespan.get_overlap_with_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.happens_during_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.intersects_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.is_closed
-      ~consort.tools.SilentTimespan.SilentTimespan.is_congruent_to_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.is_half_closed
-      ~consort.tools.SilentTimespan.SilentTimespan.is_half_open
-      ~consort.tools.SilentTimespan.SilentTimespan.is_left_broken
-      ~consort.tools.SilentTimespan.SilentTimespan.is_left_closed
-      ~consort.tools.SilentTimespan.SilentTimespan.is_left_open
-      ~consort.tools.SilentTimespan.SilentTimespan.is_open
-      ~consort.tools.SilentTimespan.SilentTimespan.is_right_broken
-      ~consort.tools.SilentTimespan.SilentTimespan.is_right_closed
-      ~consort.tools.SilentTimespan.SilentTimespan.is_right_open
-      ~consort.tools.SilentTimespan.SilentTimespan.is_tangent_to_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.is_well_formed
-      ~consort.tools.SilentTimespan.SilentTimespan.offsets
-      ~consort.tools.SilentTimespan.SilentTimespan.overlaps_all_of_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.overlaps_only_start_of_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.overlaps_only_stop_of_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.overlaps_start_of_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.overlaps_stop_of_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.reflect
-      ~consort.tools.SilentTimespan.SilentTimespan.round_offsets
-      ~consort.tools.SilentTimespan.SilentTimespan.scale
-      ~consort.tools.SilentTimespan.SilentTimespan.set_duration
-      ~consort.tools.SilentTimespan.SilentTimespan.set_offsets
-      ~consort.tools.SilentTimespan.SilentTimespan.split_at_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.split_at_offsets
-      ~consort.tools.SilentTimespan.SilentTimespan.start_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_after_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_after_timespan_starts
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_after_timespan_stops
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_at_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_at_or_after_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_before_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_before_or_at_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_before_timespan_starts
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_before_timespan_stops
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_during_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_when_timespan_starts
-      ~consort.tools.SilentTimespan.SilentTimespan.starts_when_timespan_stops
-      ~consort.tools.SilentTimespan.SilentTimespan.stop_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_after_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_after_timespan_starts
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_after_timespan_stops
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_at_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_at_or_after_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_before_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_before_or_at_offset
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_before_timespan_starts
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_before_timespan_stops
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_during_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_when_timespan_starts
-      ~consort.tools.SilentTimespan.SilentTimespan.stops_when_timespan_stops
-      ~consort.tools.SilentTimespan.SilentTimespan.stretch
-      ~consort.tools.SilentTimespan.SilentTimespan.translate
-      ~consort.tools.SilentTimespan.SilentTimespan.translate_offsets
-      ~consort.tools.SilentTimespan.SilentTimespan.trisects_timespan
-      ~consort.tools.SilentTimespan.SilentTimespan.__and__
-      ~consort.tools.SilentTimespan.SilentTimespan.__eq__
-      ~consort.tools.SilentTimespan.SilentTimespan.__format__
-      ~consort.tools.SilentTimespan.SilentTimespan.__ge__
-      ~consort.tools.SilentTimespan.SilentTimespan.__gt__
-      ~consort.tools.SilentTimespan.SilentTimespan.__hash__
-      ~consort.tools.SilentTimespan.SilentTimespan.__le__
-      ~consort.tools.SilentTimespan.SilentTimespan.__len__
-      ~consort.tools.SilentTimespan.SilentTimespan.__lt__
-      ~consort.tools.SilentTimespan.SilentTimespan.__ne__
-      ~consort.tools.SilentTimespan.SilentTimespan.__or__
-      ~consort.tools.SilentTimespan.SilentTimespan.__repr__
-      ~consort.tools.SilentTimespan.SilentTimespan.__sub__
-      ~consort.tools.SilentTimespan.SilentTimespan.__xor__
+      ~consort.coretools.SilentTimespan.SilentTimespan.axis
+      ~consort.coretools.SilentTimespan.SilentTimespan.color
+      ~consort.coretools.SilentTimespan.SilentTimespan.contains_timespan_improperly
+      ~consort.coretools.SilentTimespan.SilentTimespan.curtails_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.delays_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.divide_by_ratio
+      ~consort.coretools.SilentTimespan.SilentTimespan.duration
+      ~consort.coretools.SilentTimespan.SilentTimespan.get_overlap_with_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.happens_during_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.intersects_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_closed
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_congruent_to_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_half_closed
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_half_open
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_left_broken
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_left_closed
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_left_open
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_open
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_right_broken
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_right_closed
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_right_open
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_tangent_to_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.is_well_formed
+      ~consort.coretools.SilentTimespan.SilentTimespan.offsets
+      ~consort.coretools.SilentTimespan.SilentTimespan.overlaps_all_of_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.overlaps_only_start_of_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.overlaps_only_stop_of_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.overlaps_start_of_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.overlaps_stop_of_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.reflect
+      ~consort.coretools.SilentTimespan.SilentTimespan.round_offsets
+      ~consort.coretools.SilentTimespan.SilentTimespan.scale
+      ~consort.coretools.SilentTimespan.SilentTimespan.set_duration
+      ~consort.coretools.SilentTimespan.SilentTimespan.set_offsets
+      ~consort.coretools.SilentTimespan.SilentTimespan.split_at_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.split_at_offsets
+      ~consort.coretools.SilentTimespan.SilentTimespan.start_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_after_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_after_timespan_starts
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_after_timespan_stops
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_at_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_at_or_after_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_before_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_before_or_at_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_before_timespan_starts
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_before_timespan_stops
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_during_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_when_timespan_starts
+      ~consort.coretools.SilentTimespan.SilentTimespan.starts_when_timespan_stops
+      ~consort.coretools.SilentTimespan.SilentTimespan.stop_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_after_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_after_timespan_starts
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_after_timespan_stops
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_at_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_at_or_after_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_before_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_before_or_at_offset
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_before_timespan_starts
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_before_timespan_stops
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_during_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_when_timespan_starts
+      ~consort.coretools.SilentTimespan.SilentTimespan.stops_when_timespan_stops
+      ~consort.coretools.SilentTimespan.SilentTimespan.stretch
+      ~consort.coretools.SilentTimespan.SilentTimespan.translate
+      ~consort.coretools.SilentTimespan.SilentTimespan.translate_offsets
+      ~consort.coretools.SilentTimespan.SilentTimespan.trisects_timespan
+      ~consort.coretools.SilentTimespan.SilentTimespan.__and__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__eq__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__format__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__ge__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__gt__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__hash__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__le__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__len__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__lt__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__ne__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__or__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__repr__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__sub__
+      ~consort.coretools.SilentTimespan.SilentTimespan.__xor__
 
 Bases
 -----
@@ -109,248 +109,248 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.axis
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.axis
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.color
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.color
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.duration
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.duration
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_closed
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_closed
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_half_closed
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_half_closed
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_half_open
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_half_open
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_left_broken
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_left_broken
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_left_closed
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_left_closed
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_left_open
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_left_open
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_open
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_open
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_right_broken
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_right_broken
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_right_closed
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_right_closed
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_right_open
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_right_open
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.is_well_formed
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.is_well_formed
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.offsets
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.offsets
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.start_offset
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.start_offset
    :noindex:
 
-.. autoattribute:: consort.tools.SilentTimespan.SilentTimespan.stop_offset
+.. autoattribute:: consort.coretools.SilentTimespan.SilentTimespan.stop_offset
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.contains_timespan_improperly
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.contains_timespan_improperly
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.curtails_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.curtails_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.delays_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.delays_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.divide_by_ratio
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.divide_by_ratio
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.get_overlap_with_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.get_overlap_with_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.happens_during_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.happens_during_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.intersects_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.intersects_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.is_congruent_to_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.is_congruent_to_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.is_tangent_to_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.is_tangent_to_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.overlaps_all_of_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.overlaps_all_of_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.overlaps_only_start_of_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.overlaps_only_start_of_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.overlaps_only_stop_of_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.overlaps_only_stop_of_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.overlaps_start_of_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.overlaps_start_of_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.overlaps_stop_of_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.overlaps_stop_of_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.reflect
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.reflect
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.round_offsets
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.round_offsets
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.scale
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.scale
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.set_duration
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.set_duration
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.set_offsets
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.set_offsets
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.split_at_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.split_at_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.split_at_offsets
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.split_at_offsets
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_after_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_after_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_after_timespan_starts
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_after_timespan_starts
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_after_timespan_stops
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_after_timespan_stops
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_at_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_at_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_at_or_after_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_at_or_after_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_before_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_before_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_before_or_at_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_before_or_at_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_before_timespan_starts
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_before_timespan_starts
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_before_timespan_stops
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_before_timespan_stops
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_during_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_during_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_when_timespan_starts
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_when_timespan_starts
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.starts_when_timespan_stops
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.starts_when_timespan_stops
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_after_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_after_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_after_timespan_starts
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_after_timespan_starts
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_after_timespan_stops
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_after_timespan_stops
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_at_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_at_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_at_or_after_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_at_or_after_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_before_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_before_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_before_or_at_offset
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_before_or_at_offset
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_before_timespan_starts
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_before_timespan_starts
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_before_timespan_stops
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_before_timespan_stops
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_during_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_during_timespan
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_when_timespan_starts
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_when_timespan_starts
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stops_when_timespan_stops
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stops_when_timespan_stops
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.stretch
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.stretch
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.translate
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.translate
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.translate_offsets
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.translate_offsets
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.trisects_timespan
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.trisects_timespan
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__and__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__and__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__eq__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__eq__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__format__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__format__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__ge__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__ge__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__gt__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__gt__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__hash__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__hash__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__le__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__le__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__len__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__len__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__lt__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__lt__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__ne__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__ne__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__or__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__or__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__repr__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__repr__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__sub__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__sub__
    :noindex:
 
-.. automethod:: consort.tools.SilentTimespan.SilentTimespan.__xor__
+.. automethod:: consort.coretools.SilentTimespan.SilentTimespan.__xor__
    :noindex:

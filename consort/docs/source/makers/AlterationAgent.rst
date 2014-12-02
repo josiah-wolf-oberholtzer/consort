@@ -1,9 +1,9 @@
 tools.AlterationAgent
 ======================
 
-.. abjad-lineage:: consort.tools.AlterationAgent.AlterationAgent
+.. abjad-lineage:: consort.coretools.AlterationAgent.AlterationAgent
 
-.. autoclass:: consort.tools.AlterationAgent.AlterationAgent
+.. autoclass:: consort.coretools.AlterationAgent.AlterationAgent
 
 .. only:: html
 
@@ -12,21 +12,21 @@ tools.AlterationAgent
 
    .. autosummary::
 
-      ~consort.tools.AlterationAgent.AlterationAgent.alterations
-      ~consort.tools.AlterationAgent.AlterationAgent.iterate_score
-      ~consort.tools.AlterationAgent.AlterationAgent.reverse
-      ~consort.tools.AlterationAgent.AlterationAgent.rotate
-      ~consort.tools.AlterationAgent.AlterationAgent.__call__
-      ~consort.tools.AlterationAgent.AlterationAgent.__eq__
-      ~consort.tools.AlterationAgent.AlterationAgent.__format__
-      ~consort.tools.AlterationAgent.AlterationAgent.__hash__
-      ~consort.tools.AlterationAgent.AlterationAgent.__ne__
-      ~consort.tools.AlterationAgent.AlterationAgent.__repr__
+      ~consort.coretools.AlterationAgent.AlterationAgent.alterations
+      ~consort.coretools.AlterationAgent.AlterationAgent.iterate_score
+      ~consort.coretools.AlterationAgent.AlterationAgent.reverse
+      ~consort.coretools.AlterationAgent.AlterationAgent.rotate
+      ~consort.coretools.AlterationAgent.AlterationAgent.__call__
+      ~consort.coretools.AlterationAgent.AlterationAgent.__eq__
+      ~consort.coretools.AlterationAgent.AlterationAgent.__format__
+      ~consort.coretools.AlterationAgent.AlterationAgent.__hash__
+      ~consort.coretools.AlterationAgent.AlterationAgent.__ne__
+      ~consort.coretools.AlterationAgent.AlterationAgent.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -37,41 +37,41 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.AlterationAgent.AlterationAgent.alterations
+.. autoattribute:: consort.coretools.AlterationAgent.AlterationAgent.alterations
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.reverse
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.reverse
    :noindex:
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.rotate
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.rotate
    :noindex:
 
 Static methods
 --------------
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.iterate_score
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.iterate_score
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.__call__
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.__call__
    :noindex:
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.__eq__
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.__eq__
    :noindex:
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.__format__
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.__format__
    :noindex:
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.__hash__
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.__hash__
    :noindex:
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.__ne__
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.__ne__
    :noindex:
 
-.. automethod:: consort.tools.AlterationAgent.AlterationAgent.__repr__
+.. automethod:: consort.coretools.AlterationAgent.AlterationAgent.__repr__
    :noindex:

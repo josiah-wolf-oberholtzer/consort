@@ -1,9 +1,9 @@
 tools.PitchAgent
 =================
 
-.. abjad-lineage:: consort.tools.PitchAgent.PitchAgent
+.. abjad-lineage:: consort.coretools.PitchAgent.PitchAgent
 
-.. autoclass:: consort.tools.PitchAgent.PitchAgent
+.. autoclass:: consort.coretools.PitchAgent.PitchAgent
 
 .. only:: html
 
@@ -12,24 +12,24 @@ tools.PitchAgent
 
    .. autosummary::
 
-      ~consort.tools.PitchAgent.PitchAgent.iterate_score
-      ~consort.tools.PitchAgent.PitchAgent.pitch_segment_ratio
-      ~consort.tools.PitchAgent.PitchAgent.pitch_segments
-      ~consort.tools.PitchAgent.PitchAgent.reverse
-      ~consort.tools.PitchAgent.PitchAgent.rotate
-      ~consort.tools.PitchAgent.PitchAgent.transform_ratio
-      ~consort.tools.PitchAgent.PitchAgent.transforms
-      ~consort.tools.PitchAgent.PitchAgent.__call__
-      ~consort.tools.PitchAgent.PitchAgent.__eq__
-      ~consort.tools.PitchAgent.PitchAgent.__format__
-      ~consort.tools.PitchAgent.PitchAgent.__hash__
-      ~consort.tools.PitchAgent.PitchAgent.__ne__
-      ~consort.tools.PitchAgent.PitchAgent.__repr__
+      ~consort.coretools.PitchAgent.PitchAgent.iterate_score
+      ~consort.coretools.PitchAgent.PitchAgent.pitch_segment_ratio
+      ~consort.coretools.PitchAgent.PitchAgent.pitch_segments
+      ~consort.coretools.PitchAgent.PitchAgent.reverse
+      ~consort.coretools.PitchAgent.PitchAgent.rotate
+      ~consort.coretools.PitchAgent.PitchAgent.transform_ratio
+      ~consort.coretools.PitchAgent.PitchAgent.transforms
+      ~consort.coretools.PitchAgent.PitchAgent.__call__
+      ~consort.coretools.PitchAgent.PitchAgent.__eq__
+      ~consort.coretools.PitchAgent.PitchAgent.__format__
+      ~consort.coretools.PitchAgent.PitchAgent.__hash__
+      ~consort.coretools.PitchAgent.PitchAgent.__ne__
+      ~consort.coretools.PitchAgent.PitchAgent.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -40,50 +40,50 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.PitchAgent.PitchAgent.pitch_segment_ratio
+.. autoattribute:: consort.coretools.PitchAgent.PitchAgent.pitch_segment_ratio
    :noindex:
 
-.. autoattribute:: consort.tools.PitchAgent.PitchAgent.pitch_segments
+.. autoattribute:: consort.coretools.PitchAgent.PitchAgent.pitch_segments
    :noindex:
 
-.. autoattribute:: consort.tools.PitchAgent.PitchAgent.transform_ratio
+.. autoattribute:: consort.coretools.PitchAgent.PitchAgent.transform_ratio
    :noindex:
 
-.. autoattribute:: consort.tools.PitchAgent.PitchAgent.transforms
+.. autoattribute:: consort.coretools.PitchAgent.PitchAgent.transforms
    :noindex:
 
 Methods
 -------
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.reverse
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.reverse
    :noindex:
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.rotate
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.rotate
    :noindex:
 
 Static methods
 --------------
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.iterate_score
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.iterate_score
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.__call__
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.__call__
    :noindex:
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.__eq__
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.__eq__
    :noindex:
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.__format__
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.__format__
    :noindex:
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.__hash__
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.__hash__
    :noindex:
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.__ne__
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.__ne__
    :noindex:
 
-.. automethod:: consort.tools.PitchAgent.PitchAgent.__repr__
+.. automethod:: consort.coretools.PitchAgent.PitchAgent.__repr__
    :noindex:

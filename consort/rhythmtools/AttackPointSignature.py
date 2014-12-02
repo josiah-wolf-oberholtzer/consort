@@ -100,7 +100,7 @@ class AttackPointSignature(abctools.AbjadValueObject):
         head = logical_tie.head
         parentage = inspect_(head).get_parentage(include_self=False)
         for i, parent in enumerate(parentage):
-            if inspect_(parent).has_indicator(consort.tools.MusicSpecifier):
+            if inspect_(parent).has_indicator(consort.coretools.MusicSpecifier):
 
                 phrase = parent
                 phrase_timespan = inspect_(phrase).get_timespan()

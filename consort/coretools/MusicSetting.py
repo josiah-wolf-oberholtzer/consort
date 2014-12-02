@@ -15,7 +15,7 @@ class MusicSetting(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> red_setting = consort.tools.MusicSetting(
+        >>> red_setting = consort.coretools.MusicSetting(
         ...     color='red',
         ...     timespan_maker=consort.timespantools.TaleaTimespanMaker(
         ...         initial_silence_talea=rhythmmakertools.Talea(
@@ -27,12 +27,12 @@ class MusicSetting(abctools.AbjadValueObject):
         ...             denominator=16,
         ...             ),
         ...         ),
-        ...     viola_bowing_voice=consort.tools.MusicSpecifier(),
-        ...     violin_1_bowing_voice=consort.tools.MusicSpecifier(),
-        ...     violin_2_bowing_voice=consort.tools.MusicSpecifier(),
+        ...     viola_bowing_voice=consort.coretools.MusicSpecifier(),
+        ...     violin_1_bowing_voice=consort.coretools.MusicSpecifier(),
+        ...     violin_2_bowing_voice=consort.coretools.MusicSpecifier(),
         ...     )
         >>> print(format(red_setting))
-        consort.tools.MusicSetting(
+        consort.coretools.MusicSetting(
             color='red',
             timespan_maker=consort.timespantools.TaleaTimespanMaker(
                 can_split=True,
@@ -54,9 +54,9 @@ class MusicSetting(abctools.AbjadValueObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            viola_bowing_voice=consort.tools.MusicSpecifier(),
-            violin_1_bowing_voice=consort.tools.MusicSpecifier(),
-            violin_2_bowing_voice=consort.tools.MusicSpecifier(),
+            viola_bowing_voice=consort.coretools.MusicSpecifier(),
+            violin_1_bowing_voice=consort.coretools.MusicSpecifier(),
+            violin_2_bowing_voice=consort.coretools.MusicSpecifier(),
             )
 
     ::
@@ -85,7 +85,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     can_split=True,
                     color='red',
                     layer=1,
-                    music_specifier=consort.tools.MusicSpecifier(),
+                    music_specifier=consort.coretools.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(5, 4),
                     voice_name='Violin 1 Bowing Voice',
@@ -94,7 +94,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     can_split=True,
                     color='red',
                     layer=1,
-                    music_specifier=consort.tools.MusicSpecifier(),
+                    music_specifier=consort.coretools.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Viola Bowing Voice',
@@ -103,7 +103,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     can_split=True,
                     color='red',
                     layer=1,
-                    music_specifier=consort.tools.MusicSpecifier(),
+                    music_specifier=consort.coretools.MusicSpecifier(),
                     start_offset=durationtools.Offset(5, 4),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Violin 2 Bowing Voice',
@@ -112,7 +112,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     can_split=True,
                     color='red',
                     layer=1,
-                    music_specifier=consort.tools.MusicSpecifier(),
+                    music_specifier=consort.coretools.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin 1 Bowing Voice',
@@ -121,7 +121,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     can_split=True,
                     color='red',
                     layer=1,
-                    music_specifier=consort.tools.MusicSpecifier(),
+                    music_specifier=consort.coretools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
@@ -130,7 +130,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     can_split=True,
                     color='red',
                     layer=1,
-                    music_specifier=consort.tools.MusicSpecifier(),
+                    music_specifier=consort.coretools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin 2 Bowing Voice',
@@ -170,7 +170,7 @@ class MusicSetting(abctools.AbjadValueObject):
                 )
             assert isinstance(timespan_identifier, prototype)
         self._timespan_identifier = timespan_identifier
-        prototype = (type(None), consort.tools.MusicSpecifier)
+        prototype = (type(None), consort.coretools.MusicSpecifier)
         for music_specifier in music_specifiers.values():
             if music_specifier is None:
                 continue
@@ -229,7 +229,7 @@ class MusicSetting(abctools.AbjadValueObject):
         for name, music_specifier in self.music_specifiers.items():
             if music_specifier is None:
                 music_specifier = (None,)
-            elif isinstance(music_specifier, consort.tools.MusicSpecifier):
+            elif isinstance(music_specifier, consort.coretools.MusicSpecifier):
                 music_specifier = (music_specifier,)
             music_specifier = datastructuretools.CyclicTuple(music_specifier)
             voice_name = score_template.voice_name_abbreviations[name]

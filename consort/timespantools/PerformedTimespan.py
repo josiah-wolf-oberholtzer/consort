@@ -66,7 +66,7 @@ class PerformedTimespan(timespantools.Timespan):
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
         if music_specifier is not None:
-            assert isinstance(music_specifier, consort.tools.MusicSpecifier), \
+            assert isinstance(music_specifier, consort.coretools.MusicSpecifier), \
                 music_specifier
         self._music_specifier = music_specifier
         if original_start_offset is not None:

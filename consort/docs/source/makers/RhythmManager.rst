@@ -1,9 +1,9 @@
 tools.RhythmManager
 ====================
 
-.. abjad-lineage:: consort.tools.RhythmManager.RhythmManager
+.. abjad-lineage:: consort.coretools.RhythmManager.RhythmManager
 
-.. autoclass:: consort.tools.RhythmManager.RhythmManager
+.. autoclass:: consort.coretools.RhythmManager.RhythmManager
 
 .. only:: html
 
@@ -12,17 +12,17 @@ tools.RhythmManager
 
    .. autosummary::
 
-      ~consort.tools.RhythmManager.RhythmManager.execute
-      ~consort.tools.RhythmManager.RhythmManager.__eq__
-      ~consort.tools.RhythmManager.RhythmManager.__format__
-      ~consort.tools.RhythmManager.RhythmManager.__hash__
-      ~consort.tools.RhythmManager.RhythmManager.__ne__
-      ~consort.tools.RhythmManager.RhythmManager.__repr__
+      ~consort.coretools.RhythmManager.RhythmManager.execute
+      ~consort.coretools.RhythmManager.RhythmManager.__eq__
+      ~consort.coretools.RhythmManager.RhythmManager.__format__
+      ~consort.coretools.RhythmManager.RhythmManager.__hash__
+      ~consort.coretools.RhythmManager.RhythmManager.__ne__
+      ~consort.coretools.RhythmManager.RhythmManager.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -33,23 +33,23 @@ Bases
 Static methods
 --------------
 
-.. automethod:: consort.tools.RhythmManager.RhythmManager.execute
+.. automethod:: consort.coretools.RhythmManager.RhythmManager.execute
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.RhythmManager.RhythmManager.__eq__
+.. automethod:: consort.coretools.RhythmManager.RhythmManager.__eq__
    :noindex:
 
-.. automethod:: consort.tools.RhythmManager.RhythmManager.__format__
+.. automethod:: consort.coretools.RhythmManager.RhythmManager.__format__
    :noindex:
 
-.. automethod:: consort.tools.RhythmManager.RhythmManager.__hash__
+.. automethod:: consort.coretools.RhythmManager.RhythmManager.__hash__
    :noindex:
 
-.. automethod:: consort.tools.RhythmManager.RhythmManager.__ne__
+.. automethod:: consort.coretools.RhythmManager.RhythmManager.__ne__
    :noindex:
 
-.. automethod:: consort.tools.RhythmManager.RhythmManager.__repr__
+.. automethod:: consort.coretools.RhythmManager.RhythmManager.__repr__
    :noindex:

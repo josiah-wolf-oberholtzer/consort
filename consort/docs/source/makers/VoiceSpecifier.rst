@@ -1,9 +1,9 @@
 tools.VoiceSpecifier
 =====================
 
-.. abjad-lineage:: consort.tools.VoiceSpecifier.VoiceSpecifier
+.. abjad-lineage:: consort.coretools.VoiceSpecifier.VoiceSpecifier
 
-.. autoclass:: consort.tools.VoiceSpecifier.VoiceSpecifier
+.. autoclass:: consort.coretools.VoiceSpecifier.VoiceSpecifier
 
 .. only:: html
 
@@ -12,21 +12,21 @@ tools.VoiceSpecifier
 
    .. autosummary::
 
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.color
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.music_specifier
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.timespan_maker
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.voice_identifiers
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.__call__
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.__eq__
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.__format__
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.__hash__
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.__ne__
-      ~consort.tools.VoiceSpecifier.VoiceSpecifier.__repr__
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.color
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.music_specifier
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.timespan_maker
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.voice_identifiers
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.__call__
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.__eq__
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.__format__
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.__hash__
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.__ne__
+      ~consort.coretools.VoiceSpecifier.VoiceSpecifier.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -37,35 +37,35 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.VoiceSpecifier.VoiceSpecifier.color
+.. autoattribute:: consort.coretools.VoiceSpecifier.VoiceSpecifier.color
    :noindex:
 
-.. autoattribute:: consort.tools.VoiceSpecifier.VoiceSpecifier.music_specifier
+.. autoattribute:: consort.coretools.VoiceSpecifier.VoiceSpecifier.music_specifier
    :noindex:
 
-.. autoattribute:: consort.tools.VoiceSpecifier.VoiceSpecifier.timespan_maker
+.. autoattribute:: consort.coretools.VoiceSpecifier.VoiceSpecifier.timespan_maker
    :noindex:
 
-.. autoattribute:: consort.tools.VoiceSpecifier.VoiceSpecifier.voice_identifiers
+.. autoattribute:: consort.coretools.VoiceSpecifier.VoiceSpecifier.voice_identifiers
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.VoiceSpecifier.VoiceSpecifier.__call__
+.. automethod:: consort.coretools.VoiceSpecifier.VoiceSpecifier.__call__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSpecifier.VoiceSpecifier.__eq__
+.. automethod:: consort.coretools.VoiceSpecifier.VoiceSpecifier.__eq__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSpecifier.VoiceSpecifier.__format__
+.. automethod:: consort.coretools.VoiceSpecifier.VoiceSpecifier.__format__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSpecifier.VoiceSpecifier.__hash__
+.. automethod:: consort.coretools.VoiceSpecifier.VoiceSpecifier.__hash__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSpecifier.VoiceSpecifier.__ne__
+.. automethod:: consort.coretools.VoiceSpecifier.VoiceSpecifier.__ne__
    :noindex:
 
-.. automethod:: consort.tools.VoiceSpecifier.VoiceSpecifier.__repr__
+.. automethod:: consort.coretools.VoiceSpecifier.VoiceSpecifier.__repr__
    :noindex:

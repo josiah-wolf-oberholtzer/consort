@@ -1,9 +1,9 @@
 tools.PitchClassSegmentTransform
 =================================
 
-.. abjad-lineage:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform
+.. abjad-lineage:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform
 
-.. autoclass:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform
+.. autoclass:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform
 
 .. only:: html
 
@@ -12,21 +12,21 @@ tools.PitchClassSegmentTransform
 
    .. autosummary::
 
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.inversion
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.retrogression
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.rotation
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.transposition
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__call__
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__eq__
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__format__
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__hash__
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__ne__
-      ~consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__repr__
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.inversion
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.retrogression
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.rotation
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.transposition
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__call__
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__eq__
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__format__
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__hash__
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__ne__
+      ~consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__repr__
 
 Bases
 -----
 
-- :py:class:`tools.ConsortObject <consort.tools.ConsortObject.ConsortObject>`
+- :py:class:`tools.ConsortObject <consort.coretools.ConsortObject.ConsortObject>`
 
 - :py:class:`abjad.tools.abctools.AbjadObject <abjad.tools.abctools.AbjadObject.AbjadObject>`
 
@@ -37,35 +37,35 @@ Bases
 Read-only properties
 --------------------
 
-.. autoattribute:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.inversion
+.. autoattribute:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.inversion
    :noindex:
 
-.. autoattribute:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.retrogression
+.. autoattribute:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.retrogression
    :noindex:
 
-.. autoattribute:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.rotation
+.. autoattribute:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.rotation
    :noindex:
 
-.. autoattribute:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.transposition
+.. autoattribute:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.transposition
    :noindex:
 
 Special methods
 ---------------
 
-.. automethod:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__call__
+.. automethod:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__call__
    :noindex:
 
-.. automethod:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__eq__
+.. automethod:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__eq__
    :noindex:
 
-.. automethod:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__format__
+.. automethod:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__format__
    :noindex:
 
-.. automethod:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__hash__
+.. automethod:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__hash__
    :noindex:
 
-.. automethod:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__ne__
+.. automethod:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__ne__
    :noindex:
 
-.. automethod:: consort.tools.PitchClassSegmentTransform.PitchClassSegmentTransform.__repr__
+.. automethod:: consort.coretools.PitchClassSegmentTransform.PitchClassSegmentTransform.__repr__
    :noindex:
