@@ -9,7 +9,7 @@ class ClefSpanner(spannertools.Spanner):
 
     ::
 
-        >>> from consort import tools
+        >>> import consort
         >>> staff = Staff("c' d' e' f' g' a' b' c''")
         >>> clef = Clef('treble')
         >>> attach(clef, staff[0])
@@ -28,7 +28,7 @@ class ClefSpanner(spannertools.Spanner):
 
     ::
 
-        >>> clef_spanner = tools.ClefSpanner('percussion')
+        >>> clef_spanner = consort.spannertools.ClefSpanner('percussion')
         >>> attach(clef_spanner, staff[2:-2])
         >>> print(format(staff))
         \new Staff {
