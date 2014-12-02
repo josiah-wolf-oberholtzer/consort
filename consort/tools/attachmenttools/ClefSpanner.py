@@ -28,7 +28,7 @@ class ClefSpanner(spannertools.Spanner):
 
     ::
 
-        >>> clef_spanner = consort.spannertools.ClefSpanner('percussion')
+        >>> clef_spanner = consort.attachmenttools.ClefSpanner('percussion')
         >>> attach(clef_spanner, staff[2:-2])
         >>> print(format(staff))
         \new Staff {
