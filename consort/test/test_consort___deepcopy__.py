@@ -10,7 +10,7 @@ _classes_to_fix = ()
 
 classes = documentationtools.list_all_classes('consort')
 @pytest.mark.parametrize('class_', classes)
-def test_abjad___deepcopy___01(class_):
+def test_consort___deepcopy___01(class_):
     r'''All concrete classes with a storage format can copy.
     '''
 

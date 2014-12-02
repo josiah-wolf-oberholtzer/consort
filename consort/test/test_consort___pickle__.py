@@ -9,7 +9,7 @@ _classes_to_fix = ()
 
 classes = documentationtools.list_all_classes('consort')
 @pytest.mark.parametrize('class_', classes)
-def test_abjad_pickle_01(class_):
+def test_consort___pickle___01(class_):
     r'''All storage-formattable classes are pickable.
     '''
 
