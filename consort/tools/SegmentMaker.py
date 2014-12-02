@@ -213,15 +213,15 @@ class SegmentMaker(makertools.SegmentMaker):
             print('AnnotationManager (1):')
             if self.annotation_specifier is not None:
                 if self.annotation_specifier.show_stage_1:
-                    tools.AnnotationManager._annotate_stage_1(segment_session)
+                    annotationtools.AnnotationManager._annotate_stage_1(segment_session)
                 if self.annotation_specifier.show_stage_2:
-                    tools.AnnotationManager._annotate_stage_2(segment_session)
+                    annotationtools.AnnotationManager._annotate_stage_2(segment_session)
                 if self.annotation_specifier.show_stage_3:
-                    tools.AnnotationManager._annotate_stage_3(segment_session)
+                    annotationtools.AnnotationManager._annotate_stage_3(segment_session)
                 if self.annotation_specifier.show_stage_4:
-                    tools.AnnotationManager._annotate_stage_4(segment_session)
+                    annotationtools.AnnotationManager._annotate_stage_4(segment_session)
                 if self.annotation_specifier.show_stage_5:
-                    tools.AnnotationManager._annotate_stage_5(segment_session)
+                    annotationtools.AnnotationManager._annotate_stage_5(segment_session)
             print('\ttotal:', timer.elapsed_time)
 
         with systemtools.ForbidUpdate(segment_session.score):
@@ -248,7 +248,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     should_copy = True
                     if not self.annotation_specifier.show_unannotated_result:
                         should_copy = False
-                    tools.AnnotationManager._annotate_stage_6(
+                    annotationtools.AnnotationManager._annotate_stage_6(
                         segment_session=segment_session,
                         should_copy=should_copy,
                         )
@@ -414,8 +414,8 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def set_annotation_specifier(self, annotation_specifier=None):
-        from consort import tools
-        prototype = (tools.AnnotationSpecifier, type(None))
+        from consort.tools import annotationtools
+        prototype = (annotationtools.AnnotationSpecifier, type(None))
         assert isinstance(annotation_specifier, prototype)
         self._annotation_specifier = annotation_specifier
 

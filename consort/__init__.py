@@ -1,2 +1,4 @@
 # -*- encoding: utf-8 -*-
-from . import tools
+
+from consort import tools
+from consort.tools import annotationtools
