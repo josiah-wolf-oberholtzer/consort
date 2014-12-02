@@ -8,8 +8,8 @@ install:
     - pip install -e . 
 
 script:
+    - ajv doctest ./consort
     - py.test -rf ./consort
-    - ajv dt ./consort
 
 notifications:
     email: false
