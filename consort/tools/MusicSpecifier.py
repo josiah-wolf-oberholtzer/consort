@@ -8,8 +8,8 @@ class MusicSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> from consort import tools
-        >>> music_specifier = tools.MusicSpecifier()
+        >>> import consort
+        >>> music_specifier = consort.tools.MusicSpecifier()
         >>> print(format(music_specifier))
         consort.tools.MusicSpecifier()
 
@@ -42,7 +42,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         rhythm_maker=None,
         seed=None,
         ):
-        from consort import tools
+        import consort
         if attachment_handler is not None:
             assert isinstance(attachment_handler, tools.AttachmentHandler)
         self._attachment_handler = attachment_handler
@@ -93,29 +93,27 @@ class MusicSpecifier(abctools.AbjadValueObject):
 
         ::
             
-            >>> from consort import tools
-            >>> music_specifier = tools.MusicSpecifier()
+            >>> import consort
+            >>> music_specifier = consort.tools.MusicSpecifier()
             >>> print(format(music_specifier._attribute_manifest))
             systemtools.AttributeManifest()
 
         '''
         from abjad.tools import systemtools
-        from consort import tools
-        from consort import attachmenttools
-        from consort import pitchtools
         from scoremanager import idetools
+        import consort
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
                 name='attachment_handler',
                 display_string='attachment maker',
                 command='am',
-                editor=attachmenttools.AttachmentHandler,
+                editor=consort.attachmenttools.AttachmentHandler,
                 ),
             systemtools.AttributeDetail(
                 name='grace_handler',
                 display_string='grace maker',
                 command='gm',
-                editor=tools.GraceHandler,
+                editor=consort.rhythmtools.GraceHandler,
                 ),
             systemtools.AttributeDetail(
                 name='labels',
@@ -127,7 +125,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='pitch_handler',
                 display_string='pitch maker',
                 command='pm',
-                editor=pitchtools.PitchHandler,
+                editor=consort.pitchtools.PitchHandler,
                 ),
             systemtools.AttributeDetail(
                 name='rhythm_maker',

@@ -42,13 +42,13 @@ class RhythmManager(abctools.AbjadValueObject):
 
     @staticmethod
     def _cleanup_silences(segment_session):
-        from consort import tools
+        import consort
         score = segment_session.score
         procedure = lambda x: isinstance(x, scoretools.MultimeasureRest)
         for voice in iterate(score).by_class(scoretools.Voice):
             for music in voice:
                 music_specifier = inspect_(music).get_indicator(
-                    tools.MusicSpecifier)
+                    consort.tools.MusicSpecifier)
                 if not music_specifier.is_sentinel:
                     continue
                 leaves = music.select_leaves()
@@ -62,7 +62,7 @@ class RhythmManager(abctools.AbjadValueObject):
 
     @staticmethod
     def _collect_attack_points(segment_session):
-        from consort import tools
+        import consort
         score = segment_session.score
         attack_point_map = collections.OrderedDict()
         iterator = iterate(score).by_timeline(component_class=scoretools.Note)
@@ -71,13 +71,13 @@ class RhythmManager(abctools.AbjadValueObject):
             if note is not logical_tie.head:
                 continue
             attack_point_signature = \
-                tools.AttackPointSignature.from_logical_tie(logical_tie)
+                consort.rhythmtools.AttackPointSignature.from_logical_tie(logical_tie)
             attack_point_map[logical_tie] = attack_point_signature
         segment_session.attack_point_map = attack_point_map
 
     @staticmethod
     def _consolidate_silences(segment_session):
-        from consort import tools
+        import consort
         score = segment_session.score
         meter_offsets = list(mathtools.cumulative_sums(
             x.implied_time_signature.duration
@@ -89,7 +89,7 @@ class RhythmManager(abctools.AbjadValueObject):
                 for music in reversed(voice):
                     assert score._is_forbidden_to_update
                     music_specifier = inspect_(music).get_indicator(
-                        tools.MusicSpecifier)
+                        consort.tools.MusicSpecifier)
                     if not music_specifier.is_sentinel:
                         continue
                     timespan = inspect_(music).get_timespan()
@@ -247,13 +247,13 @@ class RhythmManager(abctools.AbjadValueObject):
     def _populate_rhythms(segment_session):
         def grouper(timespan):
             music_specifier = None
-            if isinstance(timespan, tools.PerformedTimespan):
+            if isinstance(timespan, consort.timespantools.PerformedTimespan):
                 music_specifier = timespan.music_specifier
                 if music_specifier is None:
-                    music_specifier = tools.MusicSpecifier()
+                    music_specifier = consort.tools.MusicSpecifier()
             return music_specifier
-        from consort import tools
-        silent_music_specifier = tools.MusicSpecifier(
+        import consort
+        silent_music_specifier = consort.tools.MusicSpecifier(
             is_sentinel=True,
             )
         voicewise_timespans = segment_session.voicewise_timespans
@@ -422,8 +422,8 @@ class RhythmManager(abctools.AbjadValueObject):
         music=None,
         meters=None,
         ):
-        from consort import tools
-        music_specifier = inspect_(music).get_indicator(tools.MusicSpecifier)
+        import consort
+        music_specifier = inspect_(music).get_indicator(consort.tools.MusicSpecifier)
         rhythm_maker = music_specifier.rhythm_maker
         if rhythm_maker is not None:
             if rhythm_maker.duration_spelling_specifier is not None:

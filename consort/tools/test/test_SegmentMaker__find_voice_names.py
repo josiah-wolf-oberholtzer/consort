@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import templatetools
-from consort import tools
+import consort
 
 
 def test_SegmentMaker__find_voice_names_01():
@@ -14,7 +14,7 @@ def test_SegmentMaker__find_voice_names_01():
         'Violin \\d+ Bowing Voice',
         'Viola Bowing Voice',
         )
-    found_voice_names = tools.SegmentMaker._find_voice_names(
+    found_voice_names = consort.tools.SegmentMaker._find_voice_names(
         score_template=score_template,
         voice_identifier=voice_identifier,
         )

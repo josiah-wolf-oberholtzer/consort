@@ -24,7 +24,7 @@ class HarmonicFieldPitchHandler(PitchHandler):
         harmonic_fields=None,
         register_specifier=None,
         ):
-        from consort import tools
+        import consort
         PitchHandler.__init__(
             self,
             allow_repetition=allow_repetition,
@@ -75,7 +75,7 @@ class HarmonicFieldPitchHandler(PitchHandler):
         previous_pitch=None,
         seed=0,
         ):
-        from consort import tools
+        import consort
         attack_point_signature = tools.AttackPointSignature.from_logical_tie(
             logical_tie,
             )

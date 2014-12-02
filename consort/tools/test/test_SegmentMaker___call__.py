@@ -1,6 +1,7 @@
 # -*- encoding: utf -*-
-from abjad import *
-from consort import tools
+from abjad.tools import indicatortools
+from abjad.tools import templatetools
+import consort
 
 
 def test_SegmentMaker___call___01():
@@ -12,17 +13,17 @@ def test_SegmentMaker___call___01():
         contrabass_count=0,
         )
 
-    segment_maker = tools.SegmentMaker(
+    segment_maker = consort.tools.SegmentMaker(
         duration_in_seconds=2,
         score_template=score_template,
         settings=(
-            tools.MusicSetting(
-                timespan_maker=tools.TaleaTimespanMaker(),
+            consort.tools.MusicSetting(
+                timespan_maker=consort.timespantools.TaleaTimespanMaker(),
                 violin_1_bowing_voice=None,
                 violin_2_bowing_voice=None,
                 ),
             ),
-        tempo=Tempo((1, 4), 60),
+        tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=(
             (5, 8),
             (7, 16),

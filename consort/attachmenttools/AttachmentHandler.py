@@ -65,12 +65,12 @@ class AttachmentHandler(abctools.AbjadValueObject):
 
     @staticmethod
     def _process_session(segment_session):
-        from consort import tools
+        import consort
         score = segment_session.score
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
-                prototype = tools.MusicSpecifier
+                prototype = consort.tools.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
                 maker = music_specifier.attachment_handler
                 if maker is None:

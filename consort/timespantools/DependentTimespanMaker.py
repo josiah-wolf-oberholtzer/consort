@@ -4,7 +4,7 @@ from abjad.tools import datastructuretools
 from abjad.tools import mathtools
 from abjad.tools import sequencetools
 from abjad.tools import timespantools
-from consort.tools.TimespanMaker import TimespanMaker
+from consort.timespantools.TimespanMaker import TimespanMaker
 
 
 class DependentTimespanMaker(TimespanMaker):
@@ -12,8 +12,8 @@ class DependentTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> from consort import tools
-        >>> timespan_maker = tools.DependentTimespanMaker(
+        >>> import consort
+        >>> timespan_maker = consort.timespantools.DependentTimespanMaker(
         ...     include_inner_starts=True,
         ...     include_inner_stops=True,
         ...     voice_names=(
@@ -21,7 +21,7 @@ class DependentTimespanMaker(TimespanMaker):
         ...          ),
         ...     )
         >>> print(format(timespan_maker))
-        consort.tools.DependentTimespanMaker(
+        consort.timespantools.DependentTimespanMaker(
             include_inner_starts=True,
             include_inner_stops=True,
             voice_names=('Viola Voice',),
@@ -30,12 +30,12 @@ class DependentTimespanMaker(TimespanMaker):
     ::
 
         >>> timespan_inventory = timespantools.TimespanInventory([
-        ...     tools.PerformedTimespan(
+        ...     consort.timespantools.PerformedTimespan(
         ...         voice_name='Viola Voice',
         ...         start_offset=(1, 4),
         ...         stop_offset=(1, 1),
         ...         ),
-        ...     tools.PerformedTimespan(
+        ...     consort.timespantools.PerformedTimespan(
         ...         voice_name='Viola Voice',
         ...         start_offset=(3, 4),
         ...         stop_offset=(3, 2),
@@ -57,42 +57,42 @@ class DependentTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Cello Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Cello Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Violin Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Viola Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Cello Voice',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.timespantools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Violin Voice',

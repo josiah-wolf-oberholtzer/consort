@@ -82,7 +82,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> attack_point_signature = consort.tools.AttackPointSignature(
+        >>> attack_point_signature = consort.rhythmtools.AttackPointSignature(
         ...     division_position=0,
         ...     phrase_position=(1, 2),
         ...     segment_position=(4, 5),

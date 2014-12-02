@@ -63,7 +63,7 @@ class PitchClassPitchHandler(PitchHandler):
         register_spread=None,
         transform_stack=None,
         ):
-        from consort import tools
+        import consort
         PitchHandler.__init__(
             self,
             chord_expressions=chord_expressions,
@@ -187,7 +187,7 @@ class PitchClassPitchHandler(PitchHandler):
         logical_tie,
         phrase_seed,
         ):
-        from consort import tools
+        import consort
         register_specifier = self.register_specifier
         if register_specifier is None:
             register_specifier = tools.RegisterSpecifier()

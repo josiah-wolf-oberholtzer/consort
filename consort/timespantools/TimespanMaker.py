@@ -74,8 +74,8 @@ class TimespanMaker(abctools.AbjadValueObject):
         stop_offset=None,
         voice_name=None,
         ):
-        from consort import tools
-        timespan = tools.PerformedTimespan(
+        import consort
+        timespan = consort.timespantools.PerformedTimespan(
             can_split=self.can_split,
             color=color,
             layer=layer,

@@ -20,12 +20,12 @@ class GraceHandler(abctools.AbjadValueObject):
 
     ::
 
-        >>> from consort import tools
-        >>> grace_handler = tools.GraceHandler(
+        >>> import consort
+        >>> grace_handler = consort.rhythmtools.GraceHandler(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
         >>> print(format(grace_handler))
-        consort.tools.GraceHandler(
+        consort.rhythmtools.GraceHandler(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),
             )
@@ -89,12 +89,12 @@ class GraceHandler(abctools.AbjadValueObject):
 
     @staticmethod
     def _process_session(segment_session):
-        from consort import tools
+        import consort
         score = segment_session.score
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
-                prototype = tools.MusicSpecifier
+                prototype = consort.tools.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
                 maker = music_specifier.grace_handler
                 if maker is None:

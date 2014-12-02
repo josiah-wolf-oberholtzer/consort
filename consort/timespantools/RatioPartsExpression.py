@@ -12,13 +12,13 @@ class RatioPartsExpression(abctools.AbjadObject):
 
         ::
 
-            >>> from consort import tools
-            >>> expression = tools.RatioPartsExpression(
+            >>> import consort
+            >>> expression = consort.timespantools.RatioPartsExpression(
             ...     ratio=(1, 2, 1),
             ...     parts=(0, 2),
             ...     )
             >>> print(format(expression))
-            consort.tools.RatioPartsExpression(
+            consort.timespantools.RatioPartsExpression(
                 parts=(0, 2),
                 ratio=mathtools.Ratio(1, 2, 1),
                 )
@@ -39,7 +39,7 @@ class RatioPartsExpression(abctools.AbjadObject):
 
         ::
 
-            >>> expression = tools.RatioPartsExpression(
+            >>> expression = consort.timespantools.RatioPartsExpression(
             ...     ratio=(1, 2, 1),
             ...     parts=(0, 2),
             ...     timespan=timespantools.Timespan(
