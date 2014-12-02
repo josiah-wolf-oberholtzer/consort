@@ -46,10 +46,11 @@ class TaleaTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> music_specifiers = {
-        ...     'Violin': None,
-        ...     'Viola': None,
-        ...     }
+        >>> import collections
+        >>> music_specifiers = collections.OrderedDict([
+        ...     ('Violin', None),
+        ...     ('Viola', None),
+        ...     ])
         >>> target_timespan = timespantools.Timespan(0, 1)
         >>> timespan_inventory = timespan_maker(
         ...     music_specifiers=music_specifiers,
