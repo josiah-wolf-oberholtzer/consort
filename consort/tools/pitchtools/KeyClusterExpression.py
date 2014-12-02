@@ -139,9 +139,9 @@ class KeyClusterExpression(abctools.AbjadValueObject):
 
     def _get_chord_pitches(self, center_pitch):
         starting_diatonic_number = \
-            center_pitch.diatonic_pitch_number - (self.staff_space_width / 2)
+            center_pitch.diatonic_pitch_number - (self.staff_space_width // 2)
         diatonic_numbers = [starting_diatonic_number]
-        for i in range(1, int((self.staff_space_width / 2) + 1)):
+        for i in range(1, (self.staff_space_width // 2) + 1):
             step = 2 * i
             diatonic_number = starting_diatonic_number + step
             diatonic_numbers.append(diatonic_number)
