@@ -183,7 +183,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __call__(self):
         from consort import tools
-        from consort.tools import annotationtools
+        from consort import annotationtools
         from consort import attachmenttools
         from consort.tools import pitchtools
 
@@ -423,7 +423,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def set_annotation_specifier(self, annotation_specifier=None):
-        from consort.tools import annotationtools
+        from consort import annotationtools
         prototype = (annotationtools.AnnotationSpecifier, type(None))
         assert isinstance(annotation_specifier, prototype)
         self._annotation_specifier = annotation_specifier
