@@ -15,7 +15,7 @@ class AbsolutePitchHandler(PitchHandler):
         ...     pitches="c' d' e' f'",
         ...     )
         >>> print(format(pitch_handler))
-        consort.AbsolutePitchHandler(
+        consort.tools.AbsolutePitchHandler(
             pitches=datastructuretools.CyclicTuple(
                 [
                     pitchtools.NamedPitch("c'"),

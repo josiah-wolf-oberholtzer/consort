@@ -15,7 +15,7 @@ class PitchClassPitchHandler(PitchHandler):
         ...     pitch_classes="c' d' e' f'",
         ...     )
         >>> print(format(pitch_handler))
-        consort.PitchClassPitchHandler(
+        consort.tools.PitchClassPitchHandler(
             pitch_classes=datastructuretools.CyclicTuple(
                 [
                     pitchtools.NumberedPitchClass(0),

@@ -12,7 +12,7 @@ class KeyClusterExpression(abctools.AbjadValueObject):
         ...     include_black_keys=False,
         ...     )
         >>> print(format(key_cluster_expression))
-        consort.KeyClusterExpression(
+        consort.tools.KeyClusterExpression(
             arpeggio_direction=Up,
             include_black_keys=False,
             include_white_keys=True,

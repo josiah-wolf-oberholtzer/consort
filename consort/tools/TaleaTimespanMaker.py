@@ -23,7 +23,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ...         )
         ...     )
         >>> print(format(timespan_maker))
-        consort.TaleaTimespanMaker(
+        consort.tools.TaleaTimespanMaker(
             can_split=True,
             initial_silence_talea=rhythmmakertools.Talea(
                 counts=(0, 4),
@@ -59,25 +59,25 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Viola',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
@@ -99,25 +99,25 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Viola',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
@@ -141,25 +141,25 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Violin',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
                     voice_name='Viola',
                     ),
-                consort.PerformedTimespan(
+                consort.tools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),

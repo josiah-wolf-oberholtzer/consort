@@ -19,7 +19,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         ...     ratio=(2, 1),
         ...     )
         >>> print(format(register_inflection))
-        consort.RegisterInflection(
+        consort.tools.RegisterInflection(
             inflections=pitchtools.IntervalSegment(
                 (
                     pitchtools.NumberedInterval(-6),
@@ -156,7 +156,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.ascending()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-6),
@@ -170,7 +170,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         Emits new register inflection.
         '''
         import consort
-        return pitchtools.RegisterInflection(
+        return consort.RegisterInflection(
             inflections=(-6, 6),
             ratio=(1,),
             )
@@ -184,7 +184,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.descending()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(6),
@@ -198,7 +198,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         Emits new register inflection.
         '''
         import consort
-        return pitchtools.RegisterInflection.ascending().invert()
+        return consort.RegisterInflection.ascending().invert()
 
     def invert(self):
         r'''Inverts register inflection
@@ -208,7 +208,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.triangle().invert()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(6),
@@ -234,7 +234,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.zigzag().reverse()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(12),
@@ -262,7 +262,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.zigzag().rotate()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(12),
@@ -291,7 +291,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.triangle()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-6),
@@ -306,7 +306,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         Emits new register inflection.
         '''
         import consort
-        return pitchtools.RegisterInflection(
+        return consort.RegisterInflection(
             inflections=(-6, 6, -6),
             ratio=(1, 1),
             )
@@ -320,7 +320,7 @@ class RegisterInflection(abctools.AbjadValueObject):
             >>> import consort
             >>> inflection = consort.RegisterInflection.zigzag()
             >>> print(format(inflection))
-            consort.RegisterInflection(
+            consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
                     (
                         pitchtools.NumberedInterval(-12),
@@ -336,7 +336,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         Emits new register inflection.
         '''
         import consort
-        return pitchtools.RegisterInflection(
+        return consort.RegisterInflection(
             inflections=(-12, 6, -6, 12),
             ratio=(1, 1, 1),
             )

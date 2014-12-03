@@ -12,7 +12,7 @@ class PerformedTimespan(timespantools.Timespan):
         >>> import consort
         >>> timespan = consort.PerformedTimespan()
         >>> print(format(timespan))
-        consort.PerformedTimespan(
+        consort.tools.PerformedTimespan(
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )

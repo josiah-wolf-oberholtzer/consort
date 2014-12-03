@@ -22,7 +22,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
         ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
         ...     )
         >>> print(format(attachment_expression))
-        consort.AttachmentExpression(
+        consort.tools.AttachmentExpression(
             attachments=datastructuretools.TypedList(
                 [
                     indicatortools.Articulation('>'),

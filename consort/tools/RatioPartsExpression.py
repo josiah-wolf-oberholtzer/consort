@@ -18,7 +18,7 @@ class RatioPartsExpression(abctools.AbjadObject):
             ...     parts=(0, 2),
             ...     )
             >>> print(format(expression))
-            consort.RatioPartsExpression(
+            consort.tools.RatioPartsExpression(
                 parts=(0, 2),
                 ratio=mathtools.Ratio(1, 2, 1),
                 )

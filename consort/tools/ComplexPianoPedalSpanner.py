@@ -10,7 +10,7 @@ class ComplexPianoPedalSpanner(Spanner):
         >>> import consort
         >>> spanner = consort.ComplexPianoPedalSpanner()
         >>> print(format(spanner))
-        consort.ComplexPianoPedalSpanner(
+        consort.tools.ComplexPianoPedalSpanner(
             include_inner_leaves=False,
             )
 

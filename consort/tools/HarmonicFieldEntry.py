@@ -17,7 +17,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
         ...     tailing_pitches=('bf', 'g', 'af'),
         ...     )
         >>> print(format(entry))
-        consort.HarmonicFieldEntry(
+        consort.tools.HarmonicFieldEntry(
             leading_pitches=("f'", "e'", "df'"),
             structural_pitch=pitchtools.NamedPitch("c'"),
             tailing_pitches=('bf', 'g', 'af'),
@@ -109,7 +109,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
             >>> inverted_entry = entry.invert()
             >>> print(format(inverted_entry))
-            consort.HarmonicFieldEntry(
+            consort.tools.HarmonicFieldEntry(
                 leading_pitches=('g', 'af', 'b'),
                 structural_pitch=pitchtools.NamedPitch("c'"),
                 tailing_pitches=("d'", "f'", "e'"),
@@ -121,7 +121,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
             >>> inverted_entry = entry.invert(axis="d'")
             >>> print(format(inverted_entry))
-            consort.HarmonicFieldEntry(
+            consort.tools.HarmonicFieldEntry(
                 leading_pitches=('b', "c'", "ds'"),
                 structural_pitch=pitchtools.NamedPitch("e'"),
                 tailing_pitches=("fs'", "a'", "gs'"),
@@ -153,7 +153,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
             >>> inverted_entry = entry.invert_ornamental_pitches()
             >>> print(format(inverted_entry))
-            consort.HarmonicFieldEntry(
+            consort.tools.HarmonicFieldEntry(
                 leading_pitches=('g', 'af', 'b'),
                 structural_pitch=pitchtools.NamedPitch("c'"),
                 tailing_pitches=("d'", "f'", "e'"),
@@ -183,7 +183,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
             >>> retrograded_entry = entry.retrograde()
             >>> print(format(retrograded_entry))
-            consort.HarmonicFieldEntry(
+            consort.tools.HarmonicFieldEntry(
                 leading_pitches=('af', 'g', 'bf'),
                 structural_pitch=pitchtools.NamedPitch("c'"),
                 tailing_pitches=("df'", "e'", "f'"),
@@ -213,7 +213,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
             >>> rotated_entry = entry.rotate(1)
             >>> print(format(rotated_entry))
-            consort.HarmonicFieldEntry(
+            consort.tools.HarmonicFieldEntry(
                 leading_pitches=("e'", "d'", 'b'),
                 structural_pitch=pitchtools.NamedPitch("c'"),
                 tailing_pitches=("f'", "e'", "df'"),
@@ -248,7 +248,7 @@ class HarmonicFieldEntry(abctools.AbjadObject):
 
             >>> transposed_entry = entry.transpose('M2')
             >>> print(format(transposed_entry))
-            consort.HarmonicFieldEntry(
+            consort.tools.HarmonicFieldEntry(
                 leading_pitches=("g'", "fs'", "ef'"),
                 structural_pitch=pitchtools.NamedPitch("d'"),
                 tailing_pitches=("c'", 'a', 'bf'),

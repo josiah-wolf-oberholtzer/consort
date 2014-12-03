@@ -14,7 +14,7 @@ class ChordExpression(abctools.AbjadValueObject):
         ...     interval_numbers=(-1, 3, 7),
         ...     )
         >>> print(format(chord_expression))
-        consort.ChordExpression(
+        consort.tools.ChordExpression(
             arpeggio_direction=Down,
             interval_numbers=(-1, 3, 7),
             )
