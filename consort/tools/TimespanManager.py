@@ -19,36 +19,47 @@ class TimespanManager(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     @staticmethod
-    def _cleanup_performed_timespans(
+    def _split_timespans(
+        offsets=None,
+        timespan_inventory=None,
+        ):
+        offsets = list(offsets)
+        timespan_inventory.sort()
+        split_inventory = timespantools.TimespanInventory()
+        for timespan in timespan_inventory:
+            current_offsets = []
+            while offsets and offsets[0] <= timespan.start_offset:
+                offsets.pop(0)
+            while offsets and offsets[0] < timespan.stop_offset:
+                current_offsets.append(offsets.pop(0))
+            if current_offsets and timespan.can_split:
+                shards = timespan.split_at_offsets(current_offsets)
+                for shard in shards:
+                    if shard.minimum_duration:
+                        if shard.minimum_duration <= shard.duration:
+                            split_inventory.append(shard)
+                    else:
+                        split_inventory.append(shard)
+            else:
+                if timespan.minimum_duration:
+                    if timespan.minimum_duration <= timespan.duration:
+                        split_inventory.append(timespan)
+                else:
+                    split_inventory.append(timespan)
+        split_inventory.sort()
+        return split_inventory
+
+    @staticmethod
+    def _split_timespan_inventories(
         measure_offsets=None,
         voicewise_timespans=None,
         ):
         for voice_name in voicewise_timespans:
-            offsets = list(measure_offsets)
             timespan_inventory = voicewise_timespans[voice_name]
-            timespan_inventory.sort()
-            split_inventory = timespantools.TimespanInventory()
-            for timespan in timespan_inventory:
-                current_offsets = []
-                while offsets and offsets[0] <= timespan.start_offset:
-                    offsets.pop(0)
-                while offsets and offsets[0] < timespan.stop_offset:
-                    current_offsets.append(offsets.pop(0))
-                if current_offsets and timespan.can_split:
-                    shards = timespan.split_at_offsets(current_offsets)
-                    for shard in shards:
-                        if shard.minimum_duration:
-                            if shard.minimum_duration <= shard.duration:
-                                split_inventory.append(shard)
-                        else:
-                            split_inventory.append(shard)
-                else:
-                    if timespan.minimum_duration:
-                        if timespan.minimum_duration <= timespan.duration:
-                            split_inventory.append(timespan)
-                    else:
-                        split_inventory.append(timespan)
-            split_inventory.sort()
+            split_inventory = TimespanManager._split_timespans(
+                offsets=measure_offsets,
+                timespan_inventory=timespan_inventory,
+                )
             voicewise_timespans[voice_name] = split_inventory
 
     @staticmethod
@@ -124,7 +135,7 @@ class TimespanManager(abctools.AbjadValueObject):
             timespan_inventory.sort()
 
     @staticmethod
-    def _make_timespan_inventory(
+    def _make_multiplexed_timespans(
         dependent=False,
         score=None,
         score_template=None,
@@ -158,7 +169,7 @@ class TimespanManager(abctools.AbjadValueObject):
         return timespan_inventory
 
     @staticmethod
-    def _make_voicewise_timespans(
+    def _demultiplex_timespan_inventories(
         settings_count=None,
         timespan_inventory=None,
         ):
@@ -350,7 +361,7 @@ class TimespanManager(abctools.AbjadValueObject):
         score = score_template()
 
         with systemtools.Timer() as timer:
-            timespan_inventory = TimespanManager._make_timespan_inventory(
+            timespan_inventory = TimespanManager._make_multiplexed_timespans(
                 dependent=False,
                 score=score,
                 score_template=score_template,
@@ -371,7 +382,7 @@ class TimespanManager(abctools.AbjadValueObject):
         segment_session.meters = tuple(meters)
 
         with systemtools.Timer() as timer:
-            voicewise_timespans = TimespanManager._make_voicewise_timespans(
+            voicewise_timespans = TimespanManager._demultiplex_timespan_inventories(
                 settings_count=len(settings),
                 timespan_inventory=timespan_inventory,
                 )
@@ -392,7 +403,7 @@ class TimespanManager(abctools.AbjadValueObject):
                         )
 
         with systemtools.Timer() as timer:
-            TimespanManager._cleanup_performed_timespans(
+            TimespanManager._split_timespan_inventories(
                 measure_offsets=segment_session.measure_offsets,
                 voicewise_timespans=voicewise_timespans,
                 )
@@ -406,7 +417,7 @@ class TimespanManager(abctools.AbjadValueObject):
             assert voicewise_timespan_inventory.all_are_nonoverlapping
 
         with systemtools.Timer() as timer:
-            timespan_inventory = TimespanManager._make_timespan_inventory(
+            timespan_inventory = TimespanManager._make_multiplexed_timespans(
                 dependent=True,
                 score=score,
                 score_template=score_template,
@@ -420,7 +431,7 @@ class TimespanManager(abctools.AbjadValueObject):
             assert voicewise_timespan_inventory.all_are_nonoverlapping
 
         with systemtools.Timer() as timer:
-            voicewise_timespans = TimespanManager._make_voicewise_timespans(
+            voicewise_timespans = TimespanManager._demultiplex_timespan_inventories(
                 settings_count=len(settings),
                 timespan_inventory=timespan_inventory,
                 )

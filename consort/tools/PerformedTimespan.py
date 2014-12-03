@@ -26,6 +26,7 @@ class PerformedTimespan(timespantools.Timespan):
         '_color',
         '_layer',
         '_minimum_duration',
+        '_music',
         '_music_specifier',
         '_original_start_offset',
         '_original_stop_offset',
@@ -40,6 +41,7 @@ class PerformedTimespan(timespantools.Timespan):
         color=None,
         layer=None,
         minimum_duration=None,
+        music=None,
         music_specifier=None,
         original_start_offset=None,
         original_stop_offset=None,
@@ -65,6 +67,7 @@ class PerformedTimespan(timespantools.Timespan):
         if minimum_duration is not None:
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
+        self._music = music
         if music_specifier is not None:
             assert isinstance(music_specifier, consort.MusicSpecifier), \
                 music_specifier
@@ -134,6 +137,10 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def layer(self):
         return self._layer
+
+    @property
+    def music(self):
+        return self._music
 
     @property
     def music_specifier(self):
