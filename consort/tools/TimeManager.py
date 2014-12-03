@@ -213,16 +213,62 @@ class TimeManager(abctools.AbjadValueObject):
         for x in music[:]:
             if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
                 mutate(x).swap(scoretools.Container())
+        # TODO: perform rest consolidation here
         return music
 
     @staticmethod
     def division_is_silent(division):
+        r'''Is true when division only contains rests, at any depth.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> division = Container("c'4 d'4 e'4 f'4")
+            >>> consort.TimeManager.division_is_silent(division)
+            False
+
+        ::
+
+            >>> division = Container('r4 r8 r16 r32')
+            >>> consort.TimeManager.division_is_silent(division)
+            True
+
+        ::
+
+            >>> division = Container(r"c'4 \times 2/3 { d'8 r8 e'8 } f'4")
+            >>> consort.TimeManager.division_is_silent(division)
+            False
+
+        ::
+
+            >>> division = Container(r'\times 2/3 { r4 \times 2/3 { r8. } }')
+            >>> consort.TimeManager.division_is_silent(division)
+            True
+
+        Returns boolean.
+        '''
         rest_prototype = (
             scoretools.Rest,
             scoretools.MultimeasureRest,
             )
         leaves = division.select_leaves()
         return all(isinstance(leaf, rest_prototype) for leaf in leaves)
+
+    @staticmethod
+    def group_nonsilent_divisions(music):
+        group = []
+        for division in reversed(music):
+            if TimeManager.division_is_silent(division):
+                if group:
+                    yield reversed(group)
+                    group = []
+            else:
+                group.append(division)
+        if group:
+            yield reversed(group)
 
     @staticmethod
     def populate_timespan(timespan, seed=None):
@@ -235,18 +281,7 @@ class TimeManager(abctools.AbjadValueObject):
             seed,
             )
         assert inspect_(music).get_duration() == timespan.duration
-        groups = []
-        group = []
-        for division in music:
-            if TimeManager.division_is_silent(division):
-                if group:
-                    groups.append(group)
-                    group = []
-            else:
-                group.append(division)
-        if group:
-            groups.append(group)
-        for group in reversed(groups):
+        for group in TimeManager.group_nonsilent_divisions(music):
             start_offset = inspect_(group[0]).get_timespan().start_offset
             stop_offset = inspect_(group[-1]).get_timespan().stop_offset
             start_offset += timespan.start_offset
