@@ -202,6 +202,32 @@ class TimeManager(abctools.AbjadValueObject):
             yield music_specifier, grouped_timespans
 
     @staticmethod
+    def consolidate_rests(music):
+        rest_prototype = (
+            scoretools.Rest,
+            scoretools.MultimeasureRest,
+            )
+        if not isinstance(music[0]. scoretools.Tuplet):
+            leading_silence = scoretools.Container()
+            while isinstance(music[0][0], rest_prototype):
+                leading_silence.append(music[0].pop(0))
+            if leading_silence:
+                music.insert(0, leading_silence)
+        if not isinstance(music[-1]. scoretools.Tuplet):
+            tailing_silence = scoretools.Container()
+            while isinstance(music[-1][-1], rest_prototype):
+                tailing_silence.insert(0, music[-1].pop())
+            if tailing_silence:
+                music.append(tailing_silence)
+        if 2 < len(music):
+            return music
+        for division in tuple(reversed(music[:-1])):
+            index = music.index(division)
+            next_division = music[index + 1]
+            # TODO: consolidate rests here
+        return music
+
+    @staticmethod
     def make_simple_music(rhythm_maker, durations, seed):
         music = rhythm_maker(durations, seeds=seed)
         for i, x in enumerate(music):
@@ -213,7 +239,7 @@ class TimeManager(abctools.AbjadValueObject):
         for x in music[:]:
             if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
                 mutate(x).swap(scoretools.Container())
-        # TODO: perform rest consolidation here
+        music = TimeManager.consolidate_rests(music)
         return music
 
     @staticmethod
@@ -226,25 +252,27 @@ class TimeManager(abctools.AbjadValueObject):
 
         ::
 
-            >>> division = Container("c'4 d'4 e'4 f'4")
+            >>> division = scoretools.Container("c'4 d'4 e'4 f'4")
             >>> consort.TimeManager.division_is_silent(division)
             False
 
         ::
 
-            >>> division = Container('r4 r8 r16 r32')
+            >>> division = scoretools.Container('r4 r8 r16 r32')
             >>> consort.TimeManager.division_is_silent(division)
             True
 
         ::
 
-            >>> division = Container(r"c'4 \times 2/3 { d'8 r8 e'8 } f'4")
+            >>> division = scoretools.Container(
+            ...     r"c'4 \times 2/3 { d'8 r8 e'8 } f'4")
             >>> consort.TimeManager.division_is_silent(division)
             False
 
         ::
 
-            >>> division = Container(r'\times 2/3 { r4 \times 2/3 { r8. } }')
+            >>> division = scoretools.Container(
+            ...     r'\times 2/3 { r4 \times 2/3 { r8. } }')
             >>> consort.TimeManager.division_is_silent(division)
             True
 
@@ -259,16 +287,46 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def group_nonsilent_divisions(music):
+        r'''Groups non-silent divisions together.
+
+        Yields groups in reverse order.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> divisions = []
+            >>> divisions.append(scoretools.Container('r4'))
+            >>> divisions.append(scoretools.Container("c'4"))
+            >>> divisions.append(scoretools.Container('r4 r4'))
+            >>> divisions.append(scoretools.Container("d'4 d'4"))
+            >>> divisions.append(scoretools.Container("e'4 e'4 e'4"))
+            >>> divisions.append(scoretools.Container('r4 r4 r4'))
+            >>> divisions.append(scoretools.Container("f'4 f'4 f'4 f'4"))
+
+        ::
+
+            >>> for group in consort.TimeManager.group_nonsilent_divisions(
+            ...     divisions):
+            ...     print(group)
+            (Container("f'4 f'4 f'4 f'4"),)
+            (Container("d'4 d'4"), Container("e'4 e'4 e'4"))
+            (Container("c'4"),)
+
+        Returns generator.
+        '''
         group = []
-        for division in reversed(music):
+        for division in tuple(reversed(music)):
             if TimeManager.division_is_silent(division):
                 if group:
-                    yield reversed(group)
+                    yield tuple(reversed(group))
                     group = []
             else:
                 group.append(division)
         if group:
-            yield reversed(group)
+            yield tuple(reversed(group))
 
     @staticmethod
     def populate_timespan(timespan, seed=None):
