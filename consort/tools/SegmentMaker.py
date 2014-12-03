@@ -115,15 +115,11 @@ class SegmentMaker(makertools.SegmentMaker):
             cleaned up logical ties: ...
             collected attack points: ...
             total: ...
-        AnnotationManager (1):
-            total: ...
         GraceHandler:
             total: ...
         PitchHandler:
             total: ...
         AttachmentHandler:
-            total: ...
-        AnnotationManager (2):
             total: ...
 
     '''
@@ -131,7 +127,6 @@ class SegmentMaker(makertools.SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_annotation_specifier',
         '_discard_final_silence',
         '_duration_in_seconds',
         '_is_final_segment',
@@ -146,7 +141,6 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __init__(
         self,
-        annotation_specifier=None,
         discard_final_silence=None,
         duration_in_seconds=None,
         is_final_segment=None,
@@ -165,7 +159,6 @@ class SegmentMaker(makertools.SegmentMaker):
         if discard_final_silence is not None:
             discard_final_silence = bool(discard_final_silence)
         self._discard_final_silence = discard_final_silence
-        self.set_annotation_specifier(annotation_specifier)
         self.set_duration_in_seconds(duration_in_seconds)
         self.set_is_final_segment(is_final_segment)
         self.set_rehearsal_mark(rehearsal_mark)
@@ -204,24 +197,8 @@ class SegmentMaker(makertools.SegmentMaker):
         with timer:
             print('RhythmManager:')
             segment_session = consort.RhythmManager.execute(
-                annotation_specifier=self.annotation_specifier,
                 segment_session=segment_session,
                 )
-            print('\ttotal:', timer.elapsed_time)
-
-        with timer:
-            print('AnnotationManager (1):')
-            if self.annotation_specifier is not None:
-                if self.annotation_specifier.show_stage_1:
-                    consort.AnnotationManager._annotate_stage_1(segment_session)
-                if self.annotation_specifier.show_stage_2:
-                    consort.AnnotationManager._annotate_stage_2(segment_session)
-                if self.annotation_specifier.show_stage_3:
-                    consort.AnnotationManager._annotate_stage_3(segment_session)
-                if self.annotation_specifier.show_stage_4:
-                    consort.AnnotationManager._annotate_stage_4(segment_session)
-                if self.annotation_specifier.show_stage_5:
-                    consort.AnnotationManager._annotate_stage_5(segment_session)
             print('\ttotal:', timer.elapsed_time)
 
         with systemtools.ForbidUpdate(segment_session.score):
@@ -247,23 +224,6 @@ class SegmentMaker(makertools.SegmentMaker):
                     )
                 print('\ttotal:', timer.elapsed_time)
 
-        with timer:
-            print('AnnotationManager (2):')
-            if self.annotation_specifier is not None:
-                if self.annotation_specifier.show_annotated_result:
-                    should_copy = True
-                    if not self.annotation_specifier.show_unannotated_result:
-                        should_copy = False
-                    consort.AnnotationManager._annotate_stage_6(
-                        segment_session=segment_session,
-                        should_copy=should_copy,
-                        )
-                if self.annotation_specifier.show_unannotated_result:
-                    segment_session.scores.append(segment_session.score)
-            else:
-                segment_session.scores.append(segment_session.score)
-            print('\ttotal:', timer.elapsed_time)
-
         lilypond_file = self._make_lilypond_file()
         for score in segment_session.scores:
             score = self._configure_score(score)
@@ -277,27 +237,6 @@ class SegmentMaker(makertools.SegmentMaker):
         return self()
 
     ### PRIVATE METHODS ###
-
-    @staticmethod
-    def _logical_tie_to_voice(logical_tie):
-        parentage = inspect_(logical_tie.head).get_parentage()
-        voice = None
-        for parent in parentage:
-            if isinstance(parent, scoretools.Voice):
-                voice = parent
-        return voice
-
-    @staticmethod
-    def _logical_tie_to_music_specifier(logical_tie):
-        import consort
-        parentage = inspect_(logical_tie.head).get_parentage()
-        music_specifier = None
-        prototype = consort.MusicSpecifier
-        for parent in parentage:
-            if not inspect_(parent).has_indicator(prototype):
-                continue
-            music_specifier = inspect_(parent).get_indicator(prototype)
-        return music_specifier
 
     def _configure_score(self, score):
         if self.rehearsal_mark is not None:
@@ -378,6 +317,27 @@ class SegmentMaker(makertools.SegmentMaker):
         selected_voice_names = tuple(selected_voice_names)
         return selected_voice_names
 
+    @staticmethod
+    def _logical_tie_to_voice(logical_tie):
+        parentage = inspect_(logical_tie.head).get_parentage()
+        voice = None
+        for parent in parentage:
+            if isinstance(parent, scoretools.Voice):
+                voice = parent
+        return voice
+
+    @staticmethod
+    def _logical_tie_to_music_specifier(logical_tie):
+        import consort
+        parentage = inspect_(logical_tie.head).get_parentage()
+        music_specifier = None
+        prototype = consort.MusicSpecifier
+        for parent in parentage:
+            if not inspect_(parent).has_indicator(prototype):
+                continue
+            music_specifier = inspect_(parent).get_indicator(prototype)
+        return music_specifier
+
     def _make_lilypond_file(self):
         lilypond_file = lilypondfiletools.LilyPondFile()
         lilypond_file.use_relative_includes = True
@@ -418,12 +378,6 @@ class SegmentMaker(makertools.SegmentMaker):
             **music_specifiers
             )
         self._settings.append(setting)
-
-    def set_annotation_specifier(self, annotation_specifier=None):
-        import consort
-        prototype = (consort.AnnotationSpecifier, type(None))
-        assert isinstance(annotation_specifier, prototype)
-        self._annotation_specifier = annotation_specifier
 
     def set_duration_in_seconds(self, duration_in_seconds=None):
         if duration_in_seconds is not None:
@@ -532,10 +486,6 @@ class SegmentMaker(makertools.SegmentMaker):
         self._permitted_time_signatures = permitted_time_signatures
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def annotation_specifier(self):
-        return self._annotation_specifier
 
     @property
     def discard_final_silence(self):

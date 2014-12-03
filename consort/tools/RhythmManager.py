@@ -510,7 +510,6 @@ class RhythmManager(abctools.AbjadValueObject):
 
     @staticmethod
     def execute(
-        annotation_specifier=None,
         segment_session=None,
         ):
         with systemtools.Timer() as timer:
@@ -519,10 +518,6 @@ class RhythmManager(abctools.AbjadValueObject):
         with systemtools.Timer() as timer:
             RhythmManager._populate_rhythms(segment_session)
         print('\tpopulated rhythms:', timer.elapsed_time)
-        if annotation_specifier is not None and \
-            annotation_specifier.show_stage_4:
-            segment_session.unrewritten_score = \
-                mutate(segment_session.score).copy()
         with systemtools.Timer() as timer:
             RhythmManager._consolidate_silences(segment_session)
         print('\tconsolidated silences:', timer.elapsed_time)
