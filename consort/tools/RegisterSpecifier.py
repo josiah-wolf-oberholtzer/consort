@@ -110,7 +110,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         phrase_inflections=None,
         segment_inflections=None,
         ):
-        from consort.consorttools import RegisterInflectionInventory
+        from consort.tools import RegisterInflectionInventory
         if isinstance(center_pitch, type(self)):
             expr = center_pitch
             self._center_pitch = expr.center_pitch

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import datastructuretools
-from consort.consorttools.TimespanMaker import TimespanMaker
+from consort.tools.TimespanMaker import TimespanMaker
 
 
 class FloodedTimespanMaker(TimespanMaker):

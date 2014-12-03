@@ -421,7 +421,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def set_annotation_specifier(self, annotation_specifier=None):
         import consort
-        prototype = (consorttools.AnnotationSpecifier, type(None))
+        prototype = (tools.AnnotationSpecifier, type(None))
         assert isinstance(annotation_specifier, prototype)
         self._annotation_specifier = annotation_specifier
 

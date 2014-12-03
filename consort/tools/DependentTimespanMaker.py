@@ -4,7 +4,7 @@ from abjad.tools import datastructuretools
 from abjad.tools import mathtools
 from abjad.tools import sequencetools
 from abjad.tools import timespantools
-from consort.consorttools.TimespanMaker import TimespanMaker
+from consort.tools.TimespanMaker import TimespanMaker
 
 
 class DependentTimespanMaker(TimespanMaker):

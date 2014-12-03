@@ -2,7 +2,7 @@
 import collections
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
-from consort.consorttools.PitchHandler import PitchHandler
+from consort.tools.PitchHandler import PitchHandler
 
 
 class AbsolutePitchHandler(PitchHandler):

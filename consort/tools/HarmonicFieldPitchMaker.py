@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import sequencetools
 from abjad.tools.topleveltools import inspect_
-from consort.consorttools.PitchHandler import PitchHandler
+from consort.tools.PitchHandler import PitchHandler
 
 
 class HarmonicFieldPitchHandler(PitchHandler):

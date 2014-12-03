@@ -1,2 +1,2 @@
 # -*- encoding: utf-8 -*-
-from consort.consorttools import *
+from consort.tools import *

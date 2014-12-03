@@ -33,7 +33,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         **attachment_expressions
         ):
         import consort
-        prototype = consorttools.AttachmentExpression
+        prototype = tools.AttachmentExpression
         validated_attachment_expressions = {}
         for name, attachment_expression in attachment_expressions.items():
             if attachment_expression is None:
