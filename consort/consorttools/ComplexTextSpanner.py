@@ -12,11 +12,11 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         >>> import consort
         >>> staff = Staff("c'4 d'4 r4 e'4")
-        >>> spanner_one = consort.attachmenttools.ComplexTextSpanner(
+        >>> spanner_one = consort.ComplexTextSpanner(
         ...     direction=Up,
         ...     markup='foo',
         ...     )
-        >>> spanner_two = consort.attachmenttools.ComplexTextSpanner(
+        >>> spanner_two = consort.ComplexTextSpanner(
         ...     direction=Down,
         ...     markup='bar',
         ...     )

@@ -21,11 +21,11 @@ class GraceHandler(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> grace_handler = consort.consorttools.GraceHandler(
+        >>> grace_handler = consort.GraceHandler(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
         >>> print(format(grace_handler))
-        consort.consorttools.GraceHandler(
+        consort.GraceHandler(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),
             )
@@ -94,7 +94,7 @@ class GraceHandler(abctools.AbjadValueObject):
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
-                prototype = consort.consorttools.MusicSpecifier
+                prototype = consort.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
                 maker = music_specifier.grace_handler
                 if maker is None:

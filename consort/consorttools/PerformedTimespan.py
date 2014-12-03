@@ -10,9 +10,9 @@ class PerformedTimespan(timespantools.Timespan):
     ::
 
         >>> import consort
-        >>> timespan = consort.consorttools.PerformedTimespan()
+        >>> timespan = consort.PerformedTimespan()
         >>> print(format(timespan))
-        consort.consorttools.PerformedTimespan(
+        consort.PerformedTimespan(
             start_offset=NegativeInfinity,
             stop_offset=Infinity,
             )
@@ -66,7 +66,7 @@ class PerformedTimespan(timespantools.Timespan):
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
         if music_specifier is not None:
-            assert isinstance(music_specifier, consort.consorttools.MusicSpecifier), \
+            assert isinstance(music_specifier, consort.MusicSpecifier), \
                 music_specifier
         self._music_specifier = music_specifier
         if original_start_offset is not None:

@@ -190,7 +190,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         def grouper(timespan):
             color = None
             music_specifier = None
-            if isinstance(timespan, consort.consorttools.PerformedTimespan):
+            if isinstance(timespan, consort.PerformedTimespan):
                 color = timespan.color
                 music_specifier = timespan.music_specifier
             return color, music_specifier, type(timespan)

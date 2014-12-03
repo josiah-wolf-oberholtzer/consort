@@ -13,12 +13,12 @@ def test_SegmentMaker___call___01():
         contrabass_count=0,
         )
 
-    segment_maker = consort.consorttools.SegmentMaker(
+    segment_maker = consort.SegmentMaker(
         duration_in_seconds=2,
         score_template=score_template,
         settings=(
-            consort.consorttools.MusicSetting(
-                timespan_maker=consort.consorttools.TaleaTimespanMaker(),
+            consort.MusicSetting(
+                timespan_maker=consort.TaleaTimespanMaker(),
                 violin_1_bowing_voice=None,
                 violin_2_bowing_voice=None,
                 ),

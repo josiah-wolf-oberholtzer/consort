@@ -9,9 +9,9 @@ class MusicSpecifier(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> music_specifier = consort.consorttools.MusicSpecifier()
+        >>> music_specifier = consort.MusicSpecifier()
         >>> print(format(music_specifier))
-        consort.consorttools.MusicSpecifier()
+        consort.MusicSpecifier()
 
     '''
 
@@ -94,7 +94,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
         ::
             
             >>> import consort
-            >>> music_specifier = consort.consorttools.MusicSpecifier()
+            >>> music_specifier = consort.MusicSpecifier()
             >>> print(format(music_specifier._attribute_manifest))
             systemtools.AttributeManifest()
 
@@ -107,13 +107,13 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='attachment_handler',
                 display_string='attachment maker',
                 command='am',
-                editor=consort.attachmenttools.AttachmentHandler,
+                editor=consort.AttachmentHandler,
                 ),
             systemtools.AttributeDetail(
                 name='grace_handler',
                 display_string='grace maker',
                 command='gm',
-                editor=consort.consorttools.GraceHandler,
+                editor=consort.GraceHandler,
                 ),
             systemtools.AttributeDetail(
                 name='labels',
@@ -125,7 +125,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='pitch_handler',
                 display_string='pitch maker',
                 command='pm',
-                editor=consort.pitchtools.PitchHandler,
+                editor=consort.PitchHandler,
                 ),
             systemtools.AttributeDetail(
                 name='rhythm_maker',

@@ -17,5 +17,5 @@ class RegisterInflectionInventory(datastructuretools.TypedList):
 
     @property
     def _item_callable(self):
-        from consort import pitchtools
+        import consort
         return pitchtools.RegisterInflection

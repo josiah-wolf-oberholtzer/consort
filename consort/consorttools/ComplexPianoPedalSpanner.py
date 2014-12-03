@@ -8,9 +8,9 @@ class ComplexPianoPedalSpanner(Spanner):
     ::
 
         >>> import consort
-        >>> spanner = consort.attachmenttools.ComplexPianoPedalSpanner()
+        >>> spanner = consort.ComplexPianoPedalSpanner()
         >>> print(format(spanner))
-        consort.attachmenttools.ComplexPianoPedalSpanner(
+        consort.ComplexPianoPedalSpanner(
             include_inner_leaves=False,
             )
 

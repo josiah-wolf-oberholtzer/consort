@@ -12,13 +12,13 @@ class AttackPointSignature(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> attack_point_signature = consort.consorttools.AttackPointSignature(
+        >>> attack_point_signature = consort.AttackPointSignature(
         ...     division_position=0,
         ...     phrase_position=(1, 2),
         ...     segment_position=(4, 5),
         ...     )
         >>> print(format(attack_point_signature))
-        consort.consorttools.AttackPointSignature(
+        consort.AttackPointSignature(
             division_index=0,
             division_position=durationtools.Multiplier(0, 1),
             logical_tie_index=0,
@@ -100,7 +100,7 @@ class AttackPointSignature(abctools.AbjadValueObject):
         head = logical_tie.head
         parentage = inspect_(head).get_parentage(include_self=False)
         for i, parent in enumerate(parentage):
-            if inspect_(parent).has_indicator(consort.consorttools.MusicSpecifier):
+            if inspect_(parent).has_indicator(consort.MusicSpecifier):
 
                 phrase = parent
                 phrase_timespan = inspect_(phrase).get_timespan()

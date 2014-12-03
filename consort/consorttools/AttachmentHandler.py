@@ -14,9 +14,9 @@ class AttachmentHandler(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> attachment_handler = consort.attachmenttools.AttachmentHandler()
+        >>> attachment_handler = consort.AttachmentHandler()
         >>> print(format(attachment_handler))
-        consort.attachmenttools.AttachmentHandler()
+        consort.AttachmentHandler()
 
     '''
 
@@ -32,8 +32,8 @@ class AttachmentHandler(abctools.AbjadValueObject):
         self,
         **attachment_expressions
         ):
-        from consort import attachmenttools
-        prototype = attachmenttools.AttachmentExpression
+        import consort
+        prototype = consorttools.AttachmentExpression
         validated_attachment_expressions = {}
         for name, attachment_expression in attachment_expressions.items():
             if attachment_expression is None:
@@ -70,7 +70,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:
-                prototype = consort.consorttools.MusicSpecifier
+                prototype = consort.MusicSpecifier
                 music_specifier = inspect_(container).get_effective(prototype)
                 maker = music_specifier.attachment_handler
                 if maker is None:

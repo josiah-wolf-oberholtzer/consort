@@ -7,12 +7,12 @@ class KeyClusterExpression(abctools.AbjadValueObject):
     r'''A key cluster expression.
 
         >>> import consort
-        >>> key_cluster_expression = consort.pitchtools.KeyClusterExpression(
+        >>> key_cluster_expression = consort.KeyClusterExpression(
         ...     arpeggio_direction=Up,
         ...     include_black_keys=False,
         ...     )
         >>> print(format(key_cluster_expression))
-        consort.pitchtools.KeyClusterExpression(
+        consort.KeyClusterExpression(
             arpeggio_direction=Up,
             include_black_keys=False,
             include_white_keys=True,

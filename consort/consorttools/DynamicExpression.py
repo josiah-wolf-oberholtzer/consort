@@ -11,7 +11,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         ::
 
             >>> import consort
-            >>> dynamic_expression = consort.attachmenttools.DynamicExpression(
+            >>> dynamic_expression = consort.DynamicExpression(
             ...     hairpin_start_token='sfp',
             ...     hairpin_stop_token='o',
             ...     )
@@ -38,7 +38,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> dynamic_expression = consort.attachmenttools.DynamicExpression(
+            >>> dynamic_expression = consort.DynamicExpression(
             ...     'f', 'p',
             ...     )
             >>> staff = Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
