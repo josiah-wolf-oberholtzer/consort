@@ -24,6 +24,7 @@ class PerformedTimespan(timespantools.Timespan):
     __slots__ = (
         '_can_split',
         '_color',
+        '_divisions',
         '_layer',
         '_minimum_duration',
         '_music',
@@ -39,6 +40,7 @@ class PerformedTimespan(timespantools.Timespan):
         self,
         can_split=None,
         color=None,
+        divisions=None,
         layer=None,
         minimum_duration=None,
         music=None,
@@ -61,6 +63,7 @@ class PerformedTimespan(timespantools.Timespan):
         if color is not None:
             color = str(color)
         self._color = color
+        self._divisions = divisions
         if layer is not None:
             layer = int(layer)
         self._layer = layer
@@ -119,6 +122,10 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def color(self):
         return self._color
+
+    @property
+    def divisions(self):
+        return self._divisions
 
     @property
     def is_left_broken(self):
