@@ -37,7 +37,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ...     score_template=score_template,
         ...     settings=(
         ...         consort.consorttools.MusicSetting(
-        ...             timespan_maker=consort.timespantools.TaleaTimespanMaker(),
+        ...             timespan_maker=consort.consorttools.TaleaTimespanMaker(),
         ...             violin_1_bowing_voice=consort.consorttools.MusicSpecifier(),
         ...             violin_2_bowing_voice=consort.consorttools.MusicSpecifier(),
         ...             ),
@@ -68,7 +68,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 ),
             settings=(
                 consort.consorttools.MusicSetting(
-                    timespan_maker=consort.timespantools.TaleaTimespanMaker(
+                    timespan_maker=consort.consorttools.TaleaTimespanMaker(
                         can_split=True,
                         playing_talea=rhythmmakertools.Talea(
                             counts=(4,),
@@ -191,7 +191,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
         with timer:
             print('TimespanManager:')
-            segment_session = consort.timespantools.TimespanManager.execute(
+            segment_session = consort.consorttools.TimespanManager.execute(
                 discard_final_silence=self.discard_final_silence,
                 permitted_time_signatures=self.permitted_time_signatures,
                 score_template=self.score_template,
@@ -203,7 +203,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
         with timer:
             print('RhythmManager:')
-            segment_session = consort.rhythmtools.RhythmManager.execute(
+            segment_session = consort.consorttools.RhythmManager.execute(
                 annotation_specifier=self.annotation_specifier,
                 segment_session=segment_session,
                 )
@@ -213,22 +213,22 @@ class SegmentMaker(makertools.SegmentMaker):
             print('AnnotationManager (1):')
             if self.annotation_specifier is not None:
                 if self.annotation_specifier.show_stage_1:
-                    consort.annotationtools.AnnotationManager._annotate_stage_1(segment_session)
+                    consort.consorttools.AnnotationManager._annotate_stage_1(segment_session)
                 if self.annotation_specifier.show_stage_2:
-                    consort.annotationtools.AnnotationManager._annotate_stage_2(segment_session)
+                    consort.consorttools.AnnotationManager._annotate_stage_2(segment_session)
                 if self.annotation_specifier.show_stage_3:
-                    consort.annotationtools.AnnotationManager._annotate_stage_3(segment_session)
+                    consort.consorttools.AnnotationManager._annotate_stage_3(segment_session)
                 if self.annotation_specifier.show_stage_4:
-                    consort.annotationtools.AnnotationManager._annotate_stage_4(segment_session)
+                    consort.consorttools.AnnotationManager._annotate_stage_4(segment_session)
                 if self.annotation_specifier.show_stage_5:
-                    consort.annotationtools.AnnotationManager._annotate_stage_5(segment_session)
+                    consort.consorttools.AnnotationManager._annotate_stage_5(segment_session)
             print('\ttotal:', timer.elapsed_time)
 
         with systemtools.ForbidUpdate(segment_session.score):
 
             with timer:
                 print('GraceHandler:')
-                consort.rhythmtools.GraceHandler._process_session(
+                consort.consorttools.GraceHandler._process_session(
                     segment_session,
                     )
                 print('\ttotal:', timer.elapsed_time)
@@ -254,7 +254,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     should_copy = True
                     if not self.annotation_specifier.show_unannotated_result:
                         should_copy = False
-                    consort.annotationtools.AnnotationManager._annotate_stage_6(
+                    consort.consorttools.AnnotationManager._annotate_stage_6(
                         segment_session=segment_session,
                         should_copy=should_copy,
                         )
@@ -420,8 +420,8 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def set_annotation_specifier(self, annotation_specifier=None):
-        from consort import annotationtools
-        prototype = (annotationtools.AnnotationSpecifier, type(None))
+        from consort import consorttools
+        prototype = (consorttools.AnnotationSpecifier, type(None))
         assert isinstance(annotation_specifier, prototype)
         self._annotation_specifier = annotation_specifier
 

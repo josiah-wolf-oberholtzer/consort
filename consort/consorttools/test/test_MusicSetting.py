@@ -13,7 +13,7 @@ score_template = templatetools.StringOrchestraScoreTemplate(
     contrabass_count=0,
     )
 target_timespan = timespantools.Timespan(0, 4)
-timespan_maker = consort.timespantools.TaleaTimespanMaker(
+timespan_maker = consort.consorttools.TaleaTimespanMaker(
     playing_talea=rhythmmakertools.Talea(
         counts=(1,),
         denominator=1,
@@ -40,7 +40,7 @@ def test_MusicSetting_01():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -48,7 +48,7 @@ def test_MusicSetting_01():
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -56,7 +56,7 @@ def test_MusicSetting_01():
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -64,7 +64,7 @@ def test_MusicSetting_01():
                     stop_offset=durationtools.Offset(3, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -97,7 +97,7 @@ def test_MusicSetting_02():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -133,7 +133,7 @@ def test_MusicSetting_03():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -141,7 +141,7 @@ def test_MusicSetting_03():
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -149,7 +149,7 @@ def test_MusicSetting_03():
                     stop_offset=durationtools.Offset(3, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -167,7 +167,7 @@ def test_MusicSetting_04():
 
     music_setting = consort.consorttools.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=consort.timespantools.RatioPartsExpression(
+        timespan_identifier=consort.consorttools.RatioPartsExpression(
             ratio=(1, 2, 1),
             parts=1,
             ),
@@ -185,7 +185,7 @@ def test_MusicSetting_04():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -193,7 +193,7 @@ def test_MusicSetting_04():
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -211,7 +211,7 @@ def test_MusicSetting_05():
 
     music_setting = consort.consorttools.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=consort.timespantools.RatioPartsExpression(
+        timespan_identifier=consort.consorttools.RatioPartsExpression(
             ratio=(1, 2, 1),
             parts=(0, 2),
             ),
@@ -229,7 +229,7 @@ def test_MusicSetting_05():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -237,7 +237,7 @@ def test_MusicSetting_05():
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -255,7 +255,7 @@ def test_MusicSetting_06():
 
     music_setting = consort.consorttools.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=consort.timespantools.RatioPartsExpression(
+        timespan_identifier=consort.consorttools.RatioPartsExpression(
             ratio=(1, 1, 1),
             parts=1,
             ),
@@ -273,7 +273,7 @@ def test_MusicSetting_06():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),
@@ -291,7 +291,7 @@ def test_MusicSetting_07():
 
     music_setting = consort.consorttools.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=consort.timespantools.RatioPartsExpression(
+        timespan_identifier=consort.consorttools.RatioPartsExpression(
             ratio=(1, 1, 1, 2),
             parts=(1, 3),
             ),
@@ -309,7 +309,7 @@ def test_MusicSetting_07():
         '''
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     layer=1,
                     music_specifier=consort.consorttools.MusicSpecifier(),

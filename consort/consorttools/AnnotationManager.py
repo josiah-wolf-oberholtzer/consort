@@ -25,7 +25,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         import consort
         rewritten_score = segment_session.score
         score_copy = mutate(rewritten_score).copy()
-        annotated_score = annotationtools.AnnotationManager.annotate(
+        annotated_score = consorttools.AnnotationManager.annotate(
             score=score_copy,
             segment_session=segment_session,
             )
@@ -55,7 +55,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         import consort
         rewritten_score = segment_session.score
         score_copy = mutate(rewritten_score).copy()
-        annotated_score = annotationtools.AnnotationManager.annotate(
+        annotated_score = consorttools.AnnotationManager.annotate(
             score=score_copy,
             segment_session=segment_session,
             )
@@ -84,7 +84,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         import consort
         rewritten_score = segment_session.score
         score_copy = mutate(rewritten_score).copy()
-        annotated_score = annotationtools.AnnotationManager.annotate(
+        annotated_score = consorttools.AnnotationManager.annotate(
             score=score_copy,
             segment_session=segment_session,
             )
@@ -111,7 +111,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         import consort
         unrewritten_score = segment_session.unrewritten_score
         score_copy = mutate(unrewritten_score).copy()
-        annotated_score = annotationtools.AnnotationManager.annotate(
+        annotated_score = consorttools.AnnotationManager.annotate(
             score=score_copy,
             segment_session=segment_session,
             )
@@ -123,7 +123,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         ):
         import consort
         score_copy = mutate(segment_session.score).copy()
-        annotated_score = annotationtools.AnnotationManager.annotate(
+        annotated_score = consorttools.AnnotationManager.annotate(
             score=score_copy,
             segment_session=segment_session,
             )
@@ -138,7 +138,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         score = segment_session.score
         if should_copy:
             score = mutate(score).copy()
-        annotated_score = annotationtools.AnnotationManager.annotate(
+        annotated_score = consorttools.AnnotationManager.annotate(
             score=score,
             segment_session=segment_session,
             )
@@ -190,7 +190,7 @@ class AnnotationManager(abctools.AbjadValueObject):
         def grouper(timespan):
             color = None
             music_specifier = None
-            if isinstance(timespan, consort.timespantools.PerformedTimespan):
+            if isinstance(timespan, consort.consorttools.PerformedTimespan):
                 color = timespan.color
                 music_specifier = timespan.music_specifier
             return color, music_specifier, type(timespan)

@@ -18,7 +18,7 @@ def test_SegmentMaker___call___01():
         score_template=score_template,
         settings=(
             consort.consorttools.MusicSetting(
-                timespan_maker=consort.timespantools.TaleaTimespanMaker(),
+                timespan_maker=consort.consorttools.TaleaTimespanMaker(),
                 violin_1_bowing_voice=None,
                 violin_2_bowing_voice=None,
                 ),

@@ -96,25 +96,25 @@ class TimespanManager(abctools.AbjadValueObject):
                 ))
             if shards:
                 if shards[0].start_offset != 0:
-                    silence = consort.timespantools.SilentTimespan(
+                    silence = consort.consorttools.SilentTimespan(
                         start_offset=0,
                         stop_offset=shards[0].start_offset,
                         )
                     silence_inventory.append(silence)
                 for one, two in sequencetools.iterate_sequence_nwise(shards):
-                    silence = consort.timespantools.SilentTimespan(
+                    silence = consort.consorttools.SilentTimespan(
                         start_offset=one.stop_offset,
                         stop_offset=two.start_offset,
                         )
                     silence_inventory.append(silence)
                 if shards[-1].stop_offset != measure_offsets[-1]:
-                    silence = consort.timespantools.SilentTimespan(
+                    silence = consort.consorttools.SilentTimespan(
                         start_offset=shards[-1].stop_offset,
                         stop_offset=measure_offsets[-1],
                         )
                     silence_inventory.append(silence)
             else:
-                silence = consort.timespantools.SilentTimespan(
+                silence = consort.consorttools.SilentTimespan(
                     start_offset=0,
                     stop_offset=measure_offsets[-1],
                     )
@@ -186,7 +186,7 @@ class TimespanManager(abctools.AbjadValueObject):
         timespan_inventories=None,
         ):
         import consort
-        manager = consort.timespantools.TimespanManager
+        manager = consort.consorttools.TimespanManager
         timespan_inventories = [x[1] for x in
             sorted(timespan_inventories.items(),
                 key=lambda item: item[0],
@@ -194,7 +194,7 @@ class TimespanManager(abctools.AbjadValueObject):
             ]
         resolved_inventory = timetools.TimespanCollection()
         for timespan in timespan_inventories[0]:
-            if isinstance(timespan, consort.timespantools.SilentTimespan):
+            if isinstance(timespan, consort.consorttools.SilentTimespan):
                 continue
             resolved_inventory.insert(timespan)
         for timespan_inventory in timespan_inventories[1:]:
@@ -203,7 +203,7 @@ class TimespanManager(abctools.AbjadValueObject):
                 timespan_inventory,
                 )
             for timespan in timespan_inventory:
-                if isinstance(timespan, consort.timespantools.SilentTimespan):
+                if isinstance(timespan, consort.consorttools.SilentTimespan):
                     continue
                 resolved_inventory.append(timespan)
             resolved_inventory.sort()
@@ -237,7 +237,7 @@ class TimespanManager(abctools.AbjadValueObject):
         ::
 
             >>> import consort
-            >>> manager = consort.timespantools.TimespanManager
+            >>> manager = consort.consorttools.TimespanManager
             >>> result = manager._subtract_timespan_inventories(
             ...      inventory_one,
             ...      inventory_two,

@@ -21,11 +21,11 @@ class GraceHandler(abctools.AbjadValueObject):
     ::
 
         >>> import consort
-        >>> grace_handler = consort.rhythmtools.GraceHandler(
+        >>> grace_handler = consort.consorttools.GraceHandler(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
         >>> print(format(grace_handler))
-        consort.rhythmtools.GraceHandler(
+        consort.consorttools.GraceHandler(
             counts=(0, 1, 0, 0, 2),
             minimum_preceding_duration=durationtools.Duration(1, 16),
             )

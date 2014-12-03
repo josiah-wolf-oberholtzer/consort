@@ -71,7 +71,7 @@ class RhythmManager(abctools.AbjadValueObject):
             if note is not logical_tie.head:
                 continue
             attack_point_signature = \
-                consort.rhythmtools.AttackPointSignature.from_logical_tie(logical_tie)
+                consort.consorttools.AttackPointSignature.from_logical_tie(logical_tie)
             attack_point_map[logical_tie] = attack_point_signature
         segment_session.attack_point_map = attack_point_map
 
@@ -247,7 +247,7 @@ class RhythmManager(abctools.AbjadValueObject):
     def _populate_rhythms(segment_session):
         def grouper(timespan):
             music_specifier = None
-            if isinstance(timespan, consort.timespantools.PerformedTimespan):
+            if isinstance(timespan, consort.consorttools.PerformedTimespan):
                 music_specifier = timespan.music_specifier
                 if music_specifier is None:
                     music_specifier = consort.consorttools.MusicSpecifier()

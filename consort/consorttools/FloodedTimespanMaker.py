@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import datastructuretools
-from consort.timespantools.TimespanMaker import TimespanMaker
+from consort.consorttools.TimespanMaker import TimespanMaker
 
 
 class FloodedTimespanMaker(TimespanMaker):
@@ -10,9 +10,9 @@ class FloodedTimespanMaker(TimespanMaker):
     ::
 
         >>> import consort
-        >>> timespan_maker = consort.timespantools.FloodedTimespanMaker()
+        >>> timespan_maker = consort.consorttools.FloodedTimespanMaker()
         >>> print(format(timespan_maker))
-        consort.timespantools.FloodedTimespanMaker(
+        consort.consorttools.FloodedTimespanMaker(
             can_split=True,
             )
 
@@ -30,13 +30,13 @@ class FloodedTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Cello Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),

@@ -5,7 +5,7 @@ from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import new
-from consort.timespantools.TimespanMaker import TimespanMaker
+from consort.consorttools.TimespanMaker import TimespanMaker
 from scoremanager import idetools
 import collections
 
@@ -16,14 +16,14 @@ class TaleaTimespanMaker(TimespanMaker):
     ::
 
         >>> import consort
-        >>> timespan_maker = consort.timespantools.TaleaTimespanMaker(
+        >>> timespan_maker = consort.consorttools.TaleaTimespanMaker(
         ...     initial_silence_talea=rhythmmakertools.Talea(
         ...         counts=(0, 4),
         ...         denominator=16,
         ...         )
         ...     )
         >>> print(format(timespan_maker))
-        consort.timespantools.TaleaTimespanMaker(
+        consort.consorttools.TaleaTimespanMaker(
             can_split=True,
             initial_silence_talea=rhythmmakertools.Talea(
                 counts=(0, 4),
@@ -59,25 +59,25 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Viola',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
@@ -99,25 +99,25 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Viola',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
@@ -141,25 +141,25 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Violin',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
                     voice_name='Viola',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
@@ -278,7 +278,7 @@ class TaleaTimespanMaker(TimespanMaker):
             pass
         elif len(timespans) == 2:
             pass
-        elif isinstance(timespans[-1], consort.timespantools.PerformedTimespan):
+        elif isinstance(timespans[-1], consort.consorttools.PerformedTimespan):
             fused_timespan = new(
                 timespans[1],
                 stop_offset=timespans[-1].stop_offset,
@@ -416,14 +416,14 @@ class TaleaTimespanMaker(TimespanMaker):
                         break
                     if self.padding:
                         if i == 0:
-                            timespan = consort.timespantools.SilentTimespan(
+                            timespan = consort.consorttools.SilentTimespan(
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
                                 voice_name=voice_name,
                                 )
                         elif i == len(durations) - 1:
-                            timespan = consort.timespantools.SilentTimespan(
+                            timespan = consort.consorttools.SilentTimespan(
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
@@ -513,14 +513,14 @@ class TaleaTimespanMaker(TimespanMaker):
                         break
                     if self.padding:
                         if i == 0:
-                            timespan = consort.timespantools.SilentTimespan(
+                            timespan = consort.consorttools.SilentTimespan(
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
                                 voice_name=voice_name,
                                 )
                         elif i == len(durations) - 1:
-                            timespan = consort.timespantools.SilentTimespan(
+                            timespan = consort.consorttools.SilentTimespan(
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,

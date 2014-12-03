@@ -17,7 +17,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> import consort
         >>> red_setting = consort.consorttools.MusicSetting(
         ...     color='red',
-        ...     timespan_maker=consort.timespantools.TaleaTimespanMaker(
+        ...     timespan_maker=consort.consorttools.TaleaTimespanMaker(
         ...         initial_silence_talea=rhythmmakertools.Talea(
         ...             counts=(0, 4),
         ...             denominator=16,
@@ -34,7 +34,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> print(format(red_setting))
         consort.consorttools.MusicSetting(
             color='red',
-            timespan_maker=consort.timespantools.TaleaTimespanMaker(
+            timespan_maker=consort.consorttools.TaleaTimespanMaker(
                 can_split=True,
                 initial_silence_talea=rhythmmakertools.Talea(
                     counts=(0, 4),
@@ -81,7 +81,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> print(format(timespan_inventory))
         timespantools.TimespanInventory(
             [
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     color='red',
                     layer=1,
@@ -90,7 +90,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     stop_offset=durationtools.Offset(5, 4),
                     voice_name='Violin 1 Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     color='red',
                     layer=1,
@@ -99,7 +99,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     color='red',
                     layer=1,
@@ -108,7 +108,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     stop_offset=durationtools.Offset(3, 2),
                     voice_name='Violin 2 Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     color='red',
                     layer=1,
@@ -117,7 +117,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin 1 Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     color='red',
                     layer=1,
@@ -126,7 +126,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Viola Bowing Voice',
                     ),
-                consort.timespantools.PerformedTimespan(
+                consort.consorttools.PerformedTimespan(
                     can_split=True,
                     color='red',
                     layer=1,
@@ -166,7 +166,7 @@ class MusicSetting(abctools.AbjadValueObject):
             prototype = (
                 timespantools.Timespan,
                 timespantools.TimespanInventory,
-                consort.timespantools.RatioPartsExpression,
+                consort.consorttools.RatioPartsExpression,
                 )
             assert isinstance(timespan_identifier, prototype)
         self._timespan_identifier = timespan_identifier
@@ -183,7 +183,7 @@ class MusicSetting(abctools.AbjadValueObject):
         self._music_specifiers = music_specifiers
         if timespan_maker is not None:
             assert isinstance(timespan_maker,
-                consort.timespantools.TimespanMaker), \
+                consort.consorttools.TimespanMaker), \
                 timespan_maker
         self._timespan_maker = timespan_maker
 
@@ -258,7 +258,7 @@ class MusicSetting(abctools.AbjadValueObject):
         elif isinstance(self.timespan_identifier, timespantools.Timespan):
             target_timespans = target_timespan & self.timespan_identifier
         else:
-            if isinstance(self.timespan_identifier, consort.timespantools.RatioPartsExpression):
+            if isinstance(self.timespan_identifier, consort.consorttools.RatioPartsExpression):
                 mask_timespans = self.timespan_identifier(target_timespan)
             else:
                 mask_timespans = self.timespan_identifier

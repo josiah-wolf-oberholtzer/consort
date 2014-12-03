@@ -113,7 +113,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
                 name='grace_handler',
                 display_string='grace maker',
                 command='gm',
-                editor=consort.rhythmtools.GraceHandler,
+                editor=consort.consorttools.GraceHandler,
                 ),
             systemtools.AttributeDetail(
                 name='labels',
