@@ -245,13 +245,6 @@ class RhythmManager(abctools.AbjadValueObject):
 
     @staticmethod
     def _populate_rhythms(segment_session):
-        def grouper(timespan):
-            music_specifier = None
-            if isinstance(timespan, consort.PerformedTimespan):
-                music_specifier = timespan.music_specifier
-                if music_specifier is None:
-                    music_specifier = consort.MusicSpecifier()
-            return music_specifier
         import consort
         silent_music_specifier = consort.MusicSpecifier(
             is_sentinel=True,
@@ -267,8 +260,8 @@ class RhythmManager(abctools.AbjadValueObject):
             timespan_inventory = voicewise_timespans[voice_name]
             voice = segment_session.score[voice_name]
             previous_silence = scoretools.Container()
-            for music_specifier, timespans in itertools.groupby(
-                timespan_inventory, grouper):
+            for music_specifier, timespans in consort.TimespanManager._group_timespans(
+                timespan_inventory):
                 if music_specifier is None:
                     rhythm_maker = rhythmmakertools.NoteRhythmMaker(
                         output_masks=[

@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+import itertools
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -17,6 +18,23 @@ class TimespanManager(abctools.AbjadValueObject):
     '''
 
     ### PRIVATE METHODS ###
+
+    @staticmethod
+    def _group_timespans(
+        timespan_inventory=None,
+        ):
+        def grouper(timespan):
+            music_specifier = None
+            if isinstance(timespan, consort.PerformedTimespan):
+                music_specifier = timespan.music_specifier
+                if music_specifier is None:
+                    music_specifier = consort.MusicSpecifier()
+            return music_specifier
+        import consort
+        for music_specifier, timespans in itertools.groupby(
+            timespan_inventory, grouper):
+            timespans = timespantools.TimespanInventory(timespans)
+            yield music_specifier, timespans
 
     @staticmethod
     def _split_timespans(
