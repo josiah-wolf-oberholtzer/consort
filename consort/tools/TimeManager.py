@@ -1,12 +1,16 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+import collections
 import itertools
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import metertools
+from abjad.tools import rhythmmakertools
 from abjad.tools import scoretools
+from abjad.tools import spannertools
 from abjad.tools import timespantools
+from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import mutate
 from abjad.tools.topleveltools import new
@@ -157,6 +161,31 @@ class TimeManager(abctools.AbjadValueObject):
         return tuple(meters)
 
     @staticmethod
+    def get_rhythm_maker(music_specifier):
+        if music_specifier is None:
+            rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                output_masks=[
+                    rhythmmakertools.BooleanPattern(
+                        indices=[0],
+                        period=1,
+                        )
+                    ],
+                )
+        elif music_specifier.rhythm_maker is None:
+            rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                beam_specifier=rhythmmakertools.BeamSpecifier(
+                    beam_each_division=False,
+                    beam_divisions_together=False,
+                    ),
+                tie_specifier=rhythmmakertools.TieSpecifier(
+                    tie_across_divisions=True,
+                    ),
+                )
+        else:
+            rhythm_maker = music_specifier.rhythm_maker
+        return rhythm_maker
+
+    @staticmethod
     def group_timespans(timespans):
         def grouper(timespan):
             music_specifier = None
@@ -187,8 +216,18 @@ class TimeManager(abctools.AbjadValueObject):
         return music
 
     @staticmethod
+    def division_is_silent(division):
+        rest_prototype = (
+            scoretools.Rest,
+            scoretools.MultimeasureRest,
+            )
+        leaves = division.select_leaves()
+        return all(isinstance(leaf, rest_prototype) for leaf in leaves)
+
+    @staticmethod
     def populate_timespan(timespan, seed=None):
-        rhythm_maker = timespan.music_specifier.rhythm_maker
+        populated_timespans = timespantools.TimespanInventory()
+        rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
         durations = timespan.divisions[:]
         music = TimeManager.make_simple_music(
             rhythm_maker,
@@ -196,6 +235,65 @@ class TimeManager(abctools.AbjadValueObject):
             seed,
             )
         assert inspect_(music).get_duration() == timespan.duration
+        groups = []
+        group = []
+        for division in music:
+            if TimeManager.division_is_silent(division):
+                if group:
+                    groups.append(group)
+                    group = []
+            else:
+                group.append(division)
+        if group:
+            groups.append(group)
+        for group in reversed(groups):
+            start_offset = inspect_(group[0]).get_timespan().start_offset
+            stop_offset = inspect_(group[-1]).get_timespan().stop_offset
+            start_offset += timespan.start_offset
+            stop_offset += timespan.stop_offset
+            container = scoretools.Container(group)
+            beam = spannertools.GeneralizedBeam(
+                durations=[division._get_duration() for division in music],
+                include_long_duration_notes=True,
+                include_long_duration_rests=False,
+                isolated_nib_direction=None,
+                use_stemlets=False,
+                )
+            attach(beam, container)
+            populated_timespan = new(
+                timespan,
+                divisions=None,
+                music=container,
+                start_offset=start_offset,
+                stop_offset=stop_offset,
+                )
+            populated_timespans.append(populated_timespan)
+        return populated_timespans
+
+    @staticmethod
+    def populate_timespans(
+        demultiplexed_timespans,
+        score_template,
+        ):
+        counter = collections.Counter()
+        voice_names = demultiplexed_timespans.keys()
+        voice_names = TimeManager.sort_voice_names(
+            score_template=score_template,
+            voice_names=voice_names,
+            )
+        for voice_name in voice_names:
+            populated_timespans = timespantools.TimespanInventory()
+            for timespan in demultiplexed_timespans[voice_name]:
+                music_specifier = timespan.music_specifier
+                if music_specifier not in counter:
+                    if music_specifier is None:
+                        seed = 0
+                    else:
+                        seed = music_specifier.seed or 0
+                    counter[music_specifier] = seed
+                result = TimeManager.populate_timespan(timespan, seed=seed)
+                populated_timespans.extend(result)
+            demultiplexed_timespans[voice_name] = populated_timespans
 
     @staticmethod
     def populate_multiplexed_timespans(
