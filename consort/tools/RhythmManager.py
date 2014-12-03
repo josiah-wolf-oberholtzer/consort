@@ -2,19 +2,19 @@
 from __future__ import print_function
 import collections
 import itertools
+from abjad.tools import abctools
 from abjad.tools import durationtools
-from abjad.tools import scoretools
-from abjad.tools import spannertools
 from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
+from abjad.tools import scoretools
 from abjad.tools import selectiontools
+from abjad.tools import spannertools
 from abjad.tools import systemtools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
 from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
-from abjad.tools import abctools
 
 
 class RhythmManager(abctools.AbjadValueObject):
@@ -165,7 +165,6 @@ class RhythmManager(abctools.AbjadValueObject):
     def _populate_rhythm_group(
         durations=None,
         initial_offset=None,
-        meters=None,
         rhythm_maker=None,
         seed=None,
         ):
@@ -227,15 +226,6 @@ class RhythmManager(abctools.AbjadValueObject):
                 use_stemlets=False,
                 )
             attach(beam, music)
-#            for division in music:
-#                beam = spannertools.GeneralizedBeam(
-#                    durations=[division._get_duration()],
-#                    include_long_duration_notes=True,
-#                    include_long_duration_rests=False,
-#                    isolated_nib_direction=None,
-#                    use_stemlets=True,
-#                    )
-#                attach(beam, division)
         assert sum([
             inspect_(music).get_duration(),
             inspect_(leading_silence).get_duration(),
@@ -297,7 +287,6 @@ class RhythmManager(abctools.AbjadValueObject):
                     RhythmManager._populate_rhythm_group(
                         durations=durations,
                         initial_offset=start_offset,
-                        meters=segment_session.meters,
                         rhythm_maker=rhythm_maker,
                         seed=seed,
                         )
