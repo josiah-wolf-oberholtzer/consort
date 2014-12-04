@@ -51,7 +51,7 @@ class PerformedTimespan(timespantools.Timespan):
         stop_offset=mathtools.Infinity(),
         voice_name=None,
         ):
-        import consort
+        #import consort
         timespantools.Timespan.__init__(
             self,
             start_offset=start_offset,
@@ -71,9 +71,9 @@ class PerformedTimespan(timespantools.Timespan):
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
         self._music = music
-        if music_specifier is not None:
-            assert isinstance(music_specifier, consort.MusicSpecifier), \
-                music_specifier
+        #if music_specifier is not None:
+        #    assert isinstance(music_specifier, consort.MusicSpecifier), \
+        #        music_specifier
         self._music_specifier = music_specifier
         if original_start_offset is not None:
             original_start_offset = durationtools.Offset(original_start_offset)
