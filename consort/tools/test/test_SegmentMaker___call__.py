@@ -103,7 +103,7 @@ def test_SegmentMaker___call___02():
         r'''
         \version "2.19.15"
         \language "english"
-
+        
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag time
@@ -130,7 +130,7 @@ def test_SegmentMaker___call___02():
                                     r8.
                                 }
                                 {
-                                    r4..
+                                    R1 * 7/16
                                     \bar "||"
                                 }
                             }
@@ -148,7 +148,7 @@ def test_SegmentMaker___call___02():
                                     r8.
                                 }
                                 {
-                                    r4..
+                                    R1 * 7/16
                                     \bar "||"
                                 }
                             }
@@ -395,7 +395,7 @@ def test_SegmentMaker___call___05():
                             }
                             {
                                 {
-                                    r4..
+                                    R1 * 7/16
                                     \bar "||"
                                 }
                             }
@@ -521,7 +521,7 @@ def test_SegmentMaker___call___06():
                             }
                             {
                                 {
-                                    r4..
+                                    R1 * 7/16
                                     \bar "||"
                                 }
                             }
@@ -531,10 +531,10 @@ def test_SegmentMaker___call___06():
                         \context Voice = "Voice 3" {
                             {
                                 {
-                                    r4..
+                                    R1 * 7/16
                                 }
                                 {
-                                    r4..
+                                    R1 * 7/16
                                     \bar "||"
                                 }
                             }
