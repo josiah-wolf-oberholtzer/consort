@@ -398,7 +398,7 @@ class TimeManager(abctools.AbjadValueObject):
                 meters,
                 score,
                 )
-        with systemtools.Timer('\tcollected attack points'):
+        with systemtools.Timer('\tcollected attack points: '):
             attack_point_map = TimeManager.collect_attack_points(score)
         segment_session.attack_point_map = attack_point_map
         segment_session.meters = meters
