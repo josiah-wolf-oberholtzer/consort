@@ -20,6 +20,16 @@ from abjad.tools.topleveltools import new
 from supriya.tools import timetools
 
 
+DEBUG = False
+
+
+def debug(message):
+    RED = '\033[91m'
+    END = '\033[0m'
+    if DEBUG:
+        print(RED + message + END)
+
+
 class TimeManager(abctools.AbjadValueObject):
 
     ### PUBLIC METHODS ###
@@ -328,6 +338,30 @@ class TimeManager(abctools.AbjadValueObject):
         return consolidated_timespans
 
     @staticmethod
+    def debug_timespans(timespans):
+        if not timespans:
+            debug('No timespans found.')
+        else:
+            debug('DEBUG: Dumping timespans:')
+        if isinstance(timespans, dict):
+            for voice_name in timespans:
+                debug('\t' + voice_name)
+                for timespan in timespans[voice_name]:
+                    debug('\t\t{}: {} to {}'.format(
+                        type(timespan).__name__,
+                        timespan.start_offset,
+                        timespan.stop_offset,
+                        ))
+        else:
+            for timespan in timespans:
+                debug('\t({}) {}: {} to {}'.format(
+                    timespan.voice_name,
+                    type(timespan).__name__,
+                    timespan.start_offset,
+                    timespan.stop_offset,
+                    ))
+
+    @staticmethod
     def demultiplex_timespans(multiplexed_timespans):
         demultiplexed_timespans = {}
         for timespan in multiplexed_timespans:
@@ -373,14 +407,6 @@ class TimeManager(abctools.AbjadValueObject):
                     settings,
                     target_duration,
                     )
-        for timespan in multiplexed_timespans:
-            print(
-                type(timespan).__name__,
-                timespan.voice_name,
-                timespan.start_offset,
-                timespan.stop_offset,
-                )
-
         with systemtools.Timer(
             enter_message='\tpopulating dependent timespans:',
             exit_message='\t\ttotal:',
@@ -712,6 +738,7 @@ class TimeManager(abctools.AbjadValueObject):
         '''
         inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
+        debug(repr(rhythm_maker))
         durations = timespan.divisions[:]
         music = TimeManager.make_simple_music(
             rhythm_maker,
@@ -756,8 +783,11 @@ class TimeManager(abctools.AbjadValueObject):
         voice_names = TimeManager.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
             inscribed_timespans = timespantools.TimespanInventory()
-            for timespan in demultiplexed_timespans[voice_name]:
+            uninscribed_timespans = demultiplexed_timespans[voice_name]
+            debug('{}: {}'.format(voice_name, len(uninscribed_timespans)))
+            for timespan in uninscribed_timespans:
                 if timespan.music is None:
+                    debug('\tHAS NO MUSIC')
                     music_specifier = timespan.music_specifier
                     if music_specifier not in counter:
                         if music_specifier is None:
@@ -766,8 +796,10 @@ class TimeManager(abctools.AbjadValueObject):
                             seed = music_specifier.seed or 0
                         counter[music_specifier] = seed
                     result = TimeManager.inscribe_timespan(timespan, seed=seed)
+                    debug('\tRESULT?: {}'.format(result))
                     inscribed_timespans.extend(result)
                 else:
+                    debug('\tHAS MUSIC')
                     inscribed_timespans.append(timespan)
             demultiplexed_timespans[voice_name] = inscribed_timespans
 
@@ -1014,11 +1046,13 @@ class TimeManager(abctools.AbjadValueObject):
             TimeManager.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
                 )
+        TimeManager.debug_timespans(demultiplexed_timespans)
         with systemtools.Timer('\t\tinscribed timespans:'):
             TimeManager.inscribe_demultiplexed_timespans(
                 demultiplexed_timespans,
                 score,
                 )
+        TimeManager.debug_timespans(demultiplexed_timespans)
         with systemtools.Timer('\t\tmultiplexed timespans:'):
             multiplexed_timespans = TimeManager.multiplex_timespans(
                 demultiplexed_timespans)
