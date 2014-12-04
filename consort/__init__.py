@@ -13,4 +13,4 @@ def debug(message):
     RED = '\033[91m'
     END = '\033[0m'
     if DEBUG:
-        print(RED + message + END)
+        print(RED + str(message) + END)
