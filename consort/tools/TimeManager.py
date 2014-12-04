@@ -10,6 +10,7 @@ from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
 from abjad.tools import scoretools
 from abjad.tools import spannertools
+from abjad.tools import systemtools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
@@ -22,6 +23,20 @@ from supriya.tools import timetools
 class TimeManager(abctools.AbjadValueObject):
 
     ### PUBLIC METHODS ###
+
+    @staticmethod
+    def collect_attack_points(score):
+        import consort
+        attack_point_map = collections.OrderedDict()
+        iterator = iterate(score).by_timeline(component_class=scoretools.Note)
+        for note in iterator:
+            logical_tie = inspect_(note).get_logical_tie()
+            if note is not logical_tie.head:
+                continue
+            attack_point_signature = \
+                consort.AttackPointSignature.from_logical_tie(logical_tie)
+            attack_point_map[logical_tie] = attack_point_signature
+        return attack_point_map
 
     @staticmethod
     def consolidate_demultiplexed_timespans(demultiplexed_timespans):
@@ -465,35 +480,42 @@ class TimeManager(abctools.AbjadValueObject):
         ):
         score = score_template()
         multiplexed_timespans = timespantools.TimespanInventory()
-        meters, meter_offsets, multiplexed_timespans = \
-            TimeManager.execute_pass_one(
-                discard_final_silence,
+        with systemtools.Timer() as timer:
+            meters, meter_offsets, multiplexed_timespans = \
+                TimeManager.execute_pass_one(
+                    discard_final_silence,
+                    multiplexed_timespans,
+                    permitted_time_signatures,
+                    score,
+                    score_template,
+                    settings,
+                    target_duration,
+                    )
+        with systemtools.Timer() as timer:
+            demultiplexed_timespans = TimeManager.execute_pass_two(
+                meter_offsets,
                 multiplexed_timespans,
-                permitted_time_signatures,
                 score,
                 score_template,
                 settings,
                 target_duration,
                 )
-        demultiplexed_timespans = TimeManager.execute_pass_two(
-            meter_offsets,
-            multiplexed_timespans,
-            score,
-            score_template,
-            settings,
-            target_duration,
-            )
-        demultiplexed_timespans = TimeManager.execute_pass_three(
-            demultiplexed_timespans,
-            meter_offsets,
-            score,
-            score_template,
-            )
-        score = TimeManager.populate_score(
-            demultiplexed_timespans,
-            meters,
-            score,
-            )
+        with systemtools.Timer() as timer:
+            demultiplexed_timespans = TimeManager.execute_pass_three(
+                demultiplexed_timespans,
+                meter_offsets,
+                score,
+                score_template,
+                )
+        with systemtools.Timer() as timer:
+            score = TimeManager.populate_score(
+                demultiplexed_timespans,
+                meters,
+                score,
+                )
+        with systemtools.Timer() as timer:
+            attack_point_map = TimeManager.collect_attack_points(score)
+        segment_session.attack_point_map = attack_point_map
         segment_session.meters = meters
         segment_session.score = score
         segment_session.voicewise_timespans = demultiplexed_timespans
