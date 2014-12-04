@@ -738,7 +738,7 @@ class TimeManager(abctools.AbjadValueObject):
 
         Returns timespan inventory.
         '''
-        import consort
+        #import consort
         inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
         #consort.debug(repr(rhythm_maker))
@@ -781,7 +781,7 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         score,
         ):
-        import consort
+        #import consort
         counter = collections.Counter()
         voice_names = demultiplexed_timespans.keys()
         voice_names = TimeManager.sort_voice_names(score, voice_names)
@@ -1216,7 +1216,7 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         meters,
         ):
-        import consort
+        #import consort
         meter_timespans = TimeManager.meters_to_timespans(meters)
         for voice_name in sorted(demultiplexed_timespans):
             inscribed_timespans = demultiplexed_timespans[voice_name]
