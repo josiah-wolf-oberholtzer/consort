@@ -132,6 +132,7 @@ class SegmentMaker(makertools.SegmentMaker):
     __slots__ = (
         '_discard_final_silence',
         '_duration_in_seconds',
+        '_include_stylesheets',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_rehearsal_mark',
@@ -146,6 +147,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self,
         discard_final_silence=None,
         duration_in_seconds=None,
+        include_stylesheets=None,
         is_final_segment=None,
         name=None,
         permitted_time_signatures=None,
@@ -162,6 +164,9 @@ class SegmentMaker(makertools.SegmentMaker):
         if discard_final_silence is not None:
             discard_final_silence = bool(discard_final_silence)
         self._discard_final_silence = discard_final_silence
+        if include_stylesheets is not None:
+            include_stylesheets = bool(include_stylesheets)
+        self._include_stylesheets = include_stylesheets
         self.set_duration_in_seconds(duration_in_seconds)
         self.set_is_final_segment(is_final_segment)
         self.set_rehearsal_mark(rehearsal_mark)
@@ -192,7 +197,7 @@ class SegmentMaker(makertools.SegmentMaker):
         with systemtools.ForbidUpdate(segment_session.score):
             with systemtools.Timer(
                 enter_message='GraceHandler:',
-                exit_message='\ttotal:', 
+                exit_message='\ttotal:',
                 ):
                 consort.GraceHandler._process_session(segment_session)
             with systemtools.Timer(
@@ -320,9 +325,10 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def _make_lilypond_file(self):
         lilypond_file = lilypondfiletools.LilyPondFile()
-        lilypond_file.use_relative_includes = True
-        for file_path in self.stylesheet_file_paths:
-            lilypond_file.file_initial_user_includes.append(file_path)
+        if self.include_stylesheets is None or self.include_stylesheets:
+            lilypond_file.use_relative_includes = True
+            for file_path in self.stylesheet_file_paths:
+                lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
 
@@ -489,7 +495,6 @@ class SegmentMaker(makertools.SegmentMaker):
             metadata['time_period'][1],
             )
         contents.append(time_period)
-        
         column = markuptools.MarkupCommand(
             'center-column', contents
             )
@@ -499,6 +504,10 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         final_markup = markuptools.Markup(italic, 'down')
         return final_markup
+
+    @property
+    def include_stylesheets(self):
+        return self._include_stylesheets
 
     @property
     def is_final_segment(self):
