@@ -25,6 +25,21 @@ class TimeManager(abctools.AbjadValueObject):
     ### PUBLIC METHODS ###
 
     @staticmethod
+    def cleanup_logical_ties(music):
+        for logical_tie in iterate(music).by_logical_tie(
+            nontrivial=True, pitched=True, reverse=True):
+            if len(logical_tie) != 2:
+                continue
+            if not logical_tie.all_leaves_are_in_same_parent:
+                continue
+            if logical_tie.written_duration == \
+                durationtools.Duration(1, 8):
+                mutate(logical_tie).replace([scoretools.Note("c'8")])
+            elif logical_tie.written_duration == \
+                durationtools.Duration(1, 16):
+                mutate(logical_tie).replace([scoretools.Note("c'16")])
+
+    @staticmethod
     def collect_attack_points(score):
         import consort
         attack_point_map = collections.OrderedDict()
@@ -1227,6 +1242,7 @@ class TimeManager(abctools.AbjadValueObject):
                         container,
                         intersecting_meters,
                         )
+                    TimeManager.cleanup_logical_ties(container)
 
     @staticmethod
     def rewrite_container_meter(
