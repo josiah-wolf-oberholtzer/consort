@@ -373,6 +373,14 @@ class TimeManager(abctools.AbjadValueObject):
                     settings,
                     target_duration,
                     )
+        for timespan in multiplexed_timespans:
+            print(
+                type(timespan).__name__,
+                timespan.voice_name,
+                timespan.start_offset,
+                timespan.stop_offset,
+                )
+
         with systemtools.Timer(
             enter_message='\tpopulating dependent timespans:',
             exit_message='\t\ttotal:',
@@ -405,9 +413,7 @@ class TimeManager(abctools.AbjadValueObject):
         segment_session.score = score
         segment_session.voicewise_timespans = demultiplexed_timespans
         # rewrite meters? (magic)
-        # populate score
         # perform other rhythmic processing
-        # collect attack points
         return segment_session
 
     @staticmethod
@@ -417,6 +423,13 @@ class TimeManager(abctools.AbjadValueObject):
         target_duration=None,
         timespan_inventory=None,
         ):
+        #for timespan in timespan_inventory:
+        #    print(
+        #        type(timespan).__name__,
+        #        timespan.voice_name,
+        #        timespan.start_offset,
+        #        timespan.stop_offset,
+        #        )
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
@@ -424,16 +437,19 @@ class TimeManager(abctools.AbjadValueObject):
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
         offset_counter[target_duration] += 100
-        if discard_final_silence is None:
-            discard_final_silence = False
-        else:
-            discard_final_silence = bool(discard_final_silence)
+        #for key, value in sorted(offset_counter.items()):
+        #    print(key, value)
+        discard_final_silence = bool(discard_final_silence)
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
             discard_final_orphan_downbeat=discard_final_silence,
             maximum_repetitions=2,
             )
+        if discard_final_silence:
+            meters = list(meters)
+            while target_duration < sum(_.duration for _ in meters):
+                meters.pop()
         return tuple(meters)
 
     @staticmethod
