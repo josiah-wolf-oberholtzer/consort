@@ -20,16 +20,6 @@ from abjad.tools.topleveltools import new
 from supriya.tools import timetools
 
 
-DEBUG = False
-
-
-def debug(message):
-    RED = '\033[91m'
-    END = '\033[0m'
-    if DEBUG:
-        print(RED + message + END)
-
-
 class TimeManager(abctools.AbjadValueObject):
 
     ### PUBLIC METHODS ###
@@ -339,22 +329,23 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def debug_timespans(timespans):
+        import consort
         if not timespans:
-            debug('No timespans found.')
+            consort.debug('No timespans found.')
         else:
-            debug('DEBUG: Dumping timespans:')
+            consort.debug('DEBUG: Dumping timespans:')
         if isinstance(timespans, dict):
             for voice_name in timespans:
-                debug('\t' + voice_name)
+                consort.debug('\t' + voice_name)
                 for timespan in timespans[voice_name]:
-                    debug('\t\t{}: {} to {}'.format(
+                    consort.debug('\t\t{}: {} to {}'.format(
                         type(timespan).__name__,
                         timespan.start_offset,
                         timespan.stop_offset,
                         ))
         else:
             for timespan in timespans:
-                debug('\t({}) {}: {} to {}'.format(
+                consort.debug('\t({}) {}: {} to {}'.format(
                     timespan.voice_name,
                     type(timespan).__name__,
                     timespan.start_offset,
@@ -727,9 +718,10 @@ class TimeManager(abctools.AbjadValueObject):
 
         Returns timespan inventory.
         '''
+        import consort
         inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
-        debug(repr(rhythm_maker))
+        consort.debug(repr(rhythm_maker))
         durations = timespan.divisions[:]
         music = TimeManager.make_simple_music(
             rhythm_maker,
@@ -769,16 +761,17 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         score,
         ):
+        import consort
         counter = collections.Counter()
         voice_names = demultiplexed_timespans.keys()
         voice_names = TimeManager.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
             inscribed_timespans = timespantools.TimespanInventory()
             uninscribed_timespans = demultiplexed_timespans[voice_name]
-            debug('{}: {}'.format(voice_name, len(uninscribed_timespans)))
+            consort.debug('{}: {}'.format(voice_name, len(uninscribed_timespans)))
             for timespan in uninscribed_timespans:
                 if timespan.music is None:
-                    debug('\tHAS NO MUSIC')
+                    consort.debug('\tHAS NO MUSIC')
                     music_specifier = timespan.music_specifier
                     if music_specifier not in counter:
                         if music_specifier is None:
@@ -787,10 +780,10 @@ class TimeManager(abctools.AbjadValueObject):
                             seed = music_specifier.seed or 0
                         counter[music_specifier] = seed
                     result = TimeManager.inscribe_timespan(timespan, seed=seed)
-                    debug('\tRESULT?: {}'.format(result))
+                    consort.debug('\tRESULT?: {}'.format(result))
                     inscribed_timespans.extend(result)
                 else:
-                    debug('\tHAS MUSIC')
+                    consort.debug('\tHAS MUSIC')
                     inscribed_timespans.append(timespan)
             demultiplexed_timespans[voice_name] = inscribed_timespans
 
