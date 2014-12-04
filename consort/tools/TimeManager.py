@@ -365,7 +365,6 @@ class TimeManager(abctools.AbjadValueObject):
             demultiplexed_timespans,
             )
         TimeManager.consolidate_demultiplexed_timespans(
-            meter_offsets,
             demultiplexed_timespans,
             )
         TimeManager.inscribe_demultiplexed_timespans(
@@ -374,7 +373,7 @@ class TimeManager(abctools.AbjadValueObject):
             )
         multiplexed_timespans = TimeManager.multiplex_timespans(
             demultiplexed_timespans)
-        return meters, multiplexed_timespans
+        return meters, meter_offsets, multiplexed_timespans
 
     @staticmethod
     def execute_pass_two(
@@ -400,7 +399,6 @@ class TimeManager(abctools.AbjadValueObject):
             demultiplexed_timespans,
             )
         TimeManager.consolidate_demultiplexed_timespans(
-            meter_offsets,
             demultiplexed_timespans,
             )
         TimeManager.inscribe_demultiplexed_timespans(
@@ -438,7 +436,10 @@ class TimeManager(abctools.AbjadValueObject):
                 start_offset = group.start_offset,
                 stop_offset = group.stop_offset,
                 durations = [_.duration for _ in group]
-                music = TimeManager.make_simple_music(rhythm_maker, durations)
+                music = TimeManager.make_simple_music(
+                    rhythm_maker,
+                    durations,
+                    )
                 silent_timespan = consort.PerformedTimespan(
                     music=music,
                     start_offset=start_offset,
@@ -568,7 +569,7 @@ class TimeManager(abctools.AbjadValueObject):
                 yield music_specifier, grouped_timespans
 
     @staticmethod
-    def make_simple_music(rhythm_maker, durations, seed):
+    def make_simple_music(rhythm_maker, durations, seed=None):
         music = rhythm_maker(durations, seeds=seed)
         for i, x in enumerate(music):
             if len(x) == 1 and isinstance(x[0], scoretools.Tuplet):
@@ -1042,7 +1043,7 @@ class TimeManager(abctools.AbjadValueObject):
                 timespan_inventory=timespan_inventory,
                 )
 
-    @property
+    @staticmethod
     def populate_score(
         demultiplexed_timespans,
         meters,
@@ -1214,8 +1215,10 @@ class TimeManager(abctools.AbjadValueObject):
 
         '''
         resulting_timespans = timetools.TimespanCollection()
-        if not inventory_one or not inventory_two:
-            return resulting_timespans
+        if not inventory_two:
+            return timespantools.TimespanInventory(inventory_one)
+        elif not inventory_one:
+            return timespantools.TimespanInventory()
         subtractee_index = 0
         subtractor_index = 0
         subtractee = None
@@ -1256,5 +1259,5 @@ class TimeManager(abctools.AbjadValueObject):
         else:
             resulting_timespans.insert(inventory_one[subtractee_index:])
         resulting_timespans = timespantools.TimespanInventory(
-            resulting_timespans)
+            resulting_timespans[:])
         return resulting_timespans
