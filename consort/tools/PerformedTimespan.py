@@ -2,6 +2,7 @@
 from abjad.tools import durationtools
 from abjad.tools import timespantools
 from abjad.tools import mathtools
+from abjad.tools.topleveltools import inspect_
 
 
 class PerformedTimespan(timespantools.Timespan):
@@ -63,6 +64,9 @@ class PerformedTimespan(timespantools.Timespan):
         if color is not None:
             color = str(color)
         self._color = color
+        if divisions is not None:
+            divisions = tuple(durationtools.Duration(_) for _ in divisions)
+            assert sum(divisions) == self.duration
         self._divisions = divisions
         if layer is not None:
             layer = int(layer)
@@ -70,6 +74,8 @@ class PerformedTimespan(timespantools.Timespan):
         if minimum_duration is not None:
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
+        if music is not None:
+            assert inspect_(music).get_duration() == self.duration
         self._music = music
         #if music_specifier is not None:
         #    assert isinstance(music_specifier, consort.MusicSpecifier), \
