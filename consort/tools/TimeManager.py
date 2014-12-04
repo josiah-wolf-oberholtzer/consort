@@ -189,11 +189,11 @@ class TimeManager(abctools.AbjadValueObject):
         return music
 
     @staticmethod
-    def consolidate_timespans(timespans):
+    def consolidate_timespans(timespans, allow_silences=True):
         consolidated_timespans = timespantools.TimespanInventory()
         for music_specifier, grouped_timespans in \
             TimeManager.group_timespans(timespans):
-            if music_specifier is None:
+            if music_specifier is None and not allow_silences:
                 continue
             divisions = tuple(_.duration for _ in grouped_timespans)
             first_timespan = grouped_timespans[0]
@@ -306,6 +306,47 @@ class TimeManager(abctools.AbjadValueObject):
         return demultiplexed_timespans
 
     @staticmethod
+    def execute_pass_three(
+        demultiplexed_timespans,
+        meter_offsets,
+        score,
+        score_template,
+        target_duration,
+        ):
+        import consort
+        rhythm_maker = TimeManager.get_rhythm_maker(None)
+        for voice in iterate(score).by_class(scoretools.Voice):
+            voice_name = voice.name
+            if voice_name not in demultiplexed_timespans:
+                demultiplexed_timespans[voice_name] = \
+                    timespantools.TimespanInventory()
+            timespans = demultiplexed_timespans[voice_name]
+            silences = timespantools.TimespanInventory([
+                consort.SilentTimespan(
+                    start_offset=0,
+                    stop_offset=target_duration,
+                    voice_name=voice_name,
+                    )
+                ])
+            silences = TimeManager.subtract_timespan_inventories(
+                silences, timespans)
+            silences = TimeManager.split_timespans(meter_offsets, silences)
+            for group in silences.partition(include_tangent_timespans=True):
+                start_offset = group.start_offset,
+                stop_offset = group.stop_offset,
+                durations = [_.duration for _ in group]
+                music = TimeManager.make_simple_music(rhythm_maker, durations)
+                silent_timespan = consort.PerformedTimespan(
+                    music=music,
+                    start_offset=start_offset,
+                    stop_offset=stop_offset,
+                    voice_name=voice_name,
+                    )
+                timespans.append(silent_timespan)
+            timespans.sort()
+        return demultiplexed_timespans
+
+    @staticmethod
     def execute(
         discard_final_silence=None,
         permitted_time_signatures=None,
@@ -334,12 +375,13 @@ class TimeManager(abctools.AbjadValueObject):
             settings,
             target_duration,
             )
-        # populate silences
-        TimeManager.populate_silences(
+        demultiplexed_timespans = TimeManager.execute_pass_three(
             demultiplexed_timespans,
             meter_offsets,
+            score,
+            score_template,
+            target_duration,
             )
-        meter_timespans = TimeManager.meters_to_timespans()
         
         # make (pre-split) silent timespans
 
@@ -430,7 +472,6 @@ class TimeManager(abctools.AbjadValueObject):
         for x in music[:]:
             if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
                 mutate(x).swap(scoretools.Container())
-        music = TimeManager.consolidate_rests(music)
         return music
 
     @staticmethod
@@ -529,6 +570,7 @@ class TimeManager(abctools.AbjadValueObject):
             durations,
             seed,
             )
+        music = TimeManager.consolidate_rests(music)
         assert inspect_(music).get_duration() == timespan.duration
         for group in TimeManager.group_nonsilent_divisions(music):
             start_offset = inspect_(group[0]).get_timespan().start_offset
