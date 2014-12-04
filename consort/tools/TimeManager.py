@@ -360,8 +360,8 @@ class TimeManager(abctools.AbjadValueObject):
         score = score_template()
         multiplexed_timespans = timespantools.TimespanInventory()
         with systemtools.Timer(
-            '\t\ttotal:',
-            '\tpopulating independent timespans:',
+            enter_message='\tpopulating independent timespans:',
+            exit_message='\t\ttotal:',
             ):
             meters, meter_offsets, multiplexed_timespans = \
                 TimeManager.populate_independent_timespans(
@@ -374,8 +374,8 @@ class TimeManager(abctools.AbjadValueObject):
                     target_duration,
                     )
         with systemtools.Timer(
-            '\t\ttotal:',
-            '\tpopulating dependent timespans:',
+            enter_message='\tpopulating dependent timespans:',
+            exit_message='\t\ttotal:',
             ):
             demultiplexed_timespans = TimeManager.populate_dependent_timespans(
                 meter_offsets,
@@ -931,7 +931,7 @@ class TimeManager(abctools.AbjadValueObject):
         settings,
         target_duration,
         ):
-        with systemtools.Timer('\t\tpopulated dependent timespans:'):
+        with systemtools.Timer('\t\tpopulated timespans:'):
             TimeManager.populate_multiplexed_timespans(
                 dependent=True,
                 score=score,
@@ -969,7 +969,7 @@ class TimeManager(abctools.AbjadValueObject):
         settings,
         target_duration,
         ):
-        with systemtools.Timer('\t\tpopulated independent timespans:'):
+        with systemtools.Timer('\t\tpopulated timespans:'):
             TimeManager.populate_multiplexed_timespans(
                 dependent=False,
                 score=score,
