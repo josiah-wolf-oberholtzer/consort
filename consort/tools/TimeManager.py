@@ -415,6 +415,9 @@ class TimeManager(abctools.AbjadValueObject):
         score_template,
         ):
         import consort
+        silent_music_specifier = consort.MusicSpecifier(
+            is_sentinel=True,
+            )
         rhythm_maker = TimeManager.get_rhythm_maker(None)
         for voice in iterate(score).by_class(scoretools.Voice):
             voice_name = voice.name
@@ -436,12 +439,13 @@ class TimeManager(abctools.AbjadValueObject):
                 start_offset = group.start_offset,
                 stop_offset = group.stop_offset,
                 durations = [_.duration for _ in group]
-                music = TimeManager.make_simple_music(
+                silence = TimeManager.make_simple_music(
                     rhythm_maker,
                     durations,
                     )
+                attach(silent_music_specifier, silence, scope=scoretools.Voice)
                 silent_timespan = consort.PerformedTimespan(
-                    music=music,
+                    music=silence,
                     start_offset=start_offset,
                     stop_offset=stop_offset,
                     voice_name=voice_name,
@@ -807,6 +811,7 @@ class TimeManager(abctools.AbjadValueObject):
                 use_stemlets=False,
                 )
             attach(beam, container)
+            attach(timespan.music_specifier, container, scope=scoretools.Voice)
             inscribed_timespan = new(
                 timespan,
                 divisions=None,
