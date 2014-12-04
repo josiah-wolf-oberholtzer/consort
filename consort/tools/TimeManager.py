@@ -5,6 +5,7 @@ import itertools
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
+from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
 from abjad.tools import scoretools
@@ -12,6 +13,7 @@ from abjad.tools import spannertools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
+from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import mutate
 from abjad.tools.topleveltools import new
 from supriya.tools import timetools
@@ -28,178 +30,6 @@ class TimeManager(abctools.AbjadValueObject):
             consolidated_timespans = TimeManager.consolidate_timespans(
                 timespans)
             demultiplexed_timespans[voice_name] = consolidated_timespans
-
-    @staticmethod
-    def consolidate_timespans(timespans):
-        consolidated_timespans = timespantools.TimespanInventory()
-        for music_specifier, grouped_timespans in \
-            TimeManager.group_timespans(timespans):
-            if music_specifier is None:
-                continue
-            divisions = tuple(_.duration for _ in grouped_timespans)
-            first_timespan = grouped_timespans[0]
-            last_timespan = grouped_timespans[-1]
-            consolidated_timespan = new(
-                first_timespan,
-                divisions=divisions,
-                stop_offset=last_timespan.stop_offset,
-                original_stop_offset=last_timespan.original_stop_offset,
-                )
-            consolidated_timespans.append(consolidated_timespan)
-        consolidated_timespans.sort()
-        return consolidated_timespans
-
-    @staticmethod
-    def demultiplex_timespans(multiplexed_timespans):
-        demultiplexed_timespans = {}
-        for timespan in multiplexed_timespans:
-            voice_name, layer = timespan.voice_name, timespan.layer
-            if voice_name not in demultiplexed_timespans:
-                demultiplexed_timespans[voice_name] = {}
-            if layer not in demultiplexed_timespans[voice_name]:
-                demultiplexed_timespans[voice_name][layer] = \
-                    timespantools.TimespanInventory()
-            demultiplexed_timespans[voice_name][layer].append(
-                timespan)
-            demultiplexed_timespans[voice_name][layer]
-        for voice_name in demultiplexed_timespans:
-            timespan_inventories = demultiplexed_timespans[voice_name]
-            timespan_inventory = \
-                TimeManager.resolve_timespan_inventories(
-                    timespan_inventories)
-            demultiplexed_timespans[voice_name] = timespan_inventory
-        return demultiplexed_timespans
-
-    @staticmethod
-    def execute(
-        discard_final_silence=None,
-        permitted_time_signatures=None,
-        segment_session=None,
-        target_duration=None,
-        score_template=None,
-        settings=None,
-        ):
-
-        score = score_template()
-        multiplexed_timespans = timespantools.TimespanInventory()
-
-        # populate independent timespans
-        TimeManager._populate_multiplexed_timespans(
-            dependent=False,
-            score=score,
-            score_template=score_template,
-            settings=settings,
-            target_duration=target_duration,
-            timespan_inventory=multiplexed_timespans,
-            )
-
-        # find meters
-        segment_session.meters = TimeManager.find_meters(
-            discard_final_silence=discard_final_silence,
-            permitted_time_signatures=permitted_time_signatures,
-            target_duration=target_duration,
-            timespan_inventory=multiplexed_timespans,
-            )
-
-        # demultiplex
-        demultiplexed_timespans = TimeManager.demultiplex_timespans(
-            multiplexed_timespans)
-
-        # split performed timespans by meter offsets
-        TimeManager.split_demultiplexed_timespans(
-            segment_session.measure_offsets,
-            demultiplexed_timespans,
-            )
-
-        # consolidate performed timespans by music specifier
-        TimeManager.consolidate_demultiplexed_timespans(
-            segment_session.measure_offsets,
-            demultiplexed_timespans,
-            )
-
-        # inscribe grouped performed timespans with rhythms
-
-            # rebuild performed timespans without silence divisions
-            # (the inscription process should do the rebuilding)
-
-        # make dependent timespans
-
-        # make (pre-split) silent timespans
-
-        # rewrite meters? (magic)
-
-        # populate score
-
-        # perform other rhythmic processing
-
-        # collect attack points
-
-    @staticmethod
-    def find_meters(
-        discard_final_silence=None,
-        permitted_time_signatures=None,
-        target_duration=None,
-        timespan_inventory=None,
-        ):
-        offset_counter = datastructuretools.TypedCounter(
-            item_class=durationtools.Offset,
-            )
-        for timespan in timespan_inventory:
-            offset_counter[timespan.start_offset] += 2
-            offset_counter[timespan.stop_offset] += 1
-        offset_counter[target_duration] += 100
-        if discard_final_silence is None:
-            discard_final_silence = False
-        else:
-            discard_final_silence = bool(discard_final_silence)
-        meters = metertools.Meter.fit_meters_to_expr(
-            offset_counter,
-            permitted_time_signatures,
-            discard_final_orphan_downbeat=discard_final_silence,
-            maximum_repetitions=2,
-            )
-        return tuple(meters)
-
-    @staticmethod
-    def get_rhythm_maker(music_specifier):
-        if music_specifier is None:
-            rhythm_maker = rhythmmakertools.NoteRhythmMaker(
-                output_masks=[
-                    rhythmmakertools.BooleanPattern(
-                        indices=[0],
-                        period=1,
-                        )
-                    ],
-                )
-        elif music_specifier.rhythm_maker is None:
-            rhythm_maker = rhythmmakertools.NoteRhythmMaker(
-                beam_specifier=rhythmmakertools.BeamSpecifier(
-                    beam_each_division=False,
-                    beam_divisions_together=False,
-                    ),
-                tie_specifier=rhythmmakertools.TieSpecifier(
-                    tie_across_divisions=True,
-                    ),
-                )
-        else:
-            rhythm_maker = music_specifier.rhythm_maker
-        return rhythm_maker
-
-    @staticmethod
-    def group_timespans(timespans):
-        def grouper(timespan):
-            music_specifier = None
-            if isinstance(timespan, consort.PerformedTimespan):
-                music_specifier = timespan.music_specifier
-                if music_specifier is None:
-                    music_specifier = consort.MusicSpecifier()
-            return music_specifier
-        import consort
-        for music_specifier, grouped_timespans in itertools.groupby(
-            timespans, grouper):
-            grouped_timespans = timespantools.TimespanInventory(
-                grouped_timespans)
-            yield music_specifier, grouped_timespans
 
     @staticmethod
     def consolidate_rests(music):
@@ -359,6 +189,236 @@ class TimeManager(abctools.AbjadValueObject):
         return music
 
     @staticmethod
+    def consolidate_timespans(timespans):
+        consolidated_timespans = timespantools.TimespanInventory()
+        for music_specifier, grouped_timespans in \
+            TimeManager.group_timespans(timespans):
+            if music_specifier is None:
+                continue
+            divisions = tuple(_.duration for _ in grouped_timespans)
+            first_timespan = grouped_timespans[0]
+            last_timespan = grouped_timespans[-1]
+            consolidated_timespan = new(
+                first_timespan,
+                divisions=divisions,
+                stop_offset=last_timespan.stop_offset,
+                original_stop_offset=last_timespan.original_stop_offset,
+                )
+            consolidated_timespans.append(consolidated_timespan)
+        consolidated_timespans.sort()
+        return consolidated_timespans
+
+    @staticmethod
+    def demultiplex_timespans(multiplexed_timespans):
+        demultiplexed_timespans = {}
+        for timespan in multiplexed_timespans:
+            voice_name, layer = timespan.voice_name, timespan.layer
+            if voice_name not in demultiplexed_timespans:
+                demultiplexed_timespans[voice_name] = {}
+            if layer not in demultiplexed_timespans[voice_name]:
+                demultiplexed_timespans[voice_name][layer] = \
+                    timespantools.TimespanInventory()
+            demultiplexed_timespans[voice_name][layer].append(
+                timespan)
+            demultiplexed_timespans[voice_name][layer]
+        for voice_name in demultiplexed_timespans:
+            timespan_inventories = demultiplexed_timespans[voice_name]
+            timespan_inventory = \
+                TimeManager.resolve_timespan_inventories(
+                    timespan_inventories)
+            demultiplexed_timespans[voice_name] = timespan_inventory
+        return demultiplexed_timespans
+
+    @staticmethod
+    def execute_pass_one(
+        discard_final_silence,
+        multiplexed_timespans,
+        permitted_time_signatures,
+        score,
+        score_template,
+        settings,
+        target_duration,
+        ):
+        TimeManager.populate_multiplexed_timespans(
+            dependent=False,
+            score=score,
+            score_template=score_template,
+            settings=settings,
+            target_duration=target_duration,
+            timespan_inventory=multiplexed_timespans,
+            )
+        meters = TimeManager.find_meters(
+            discard_final_silence=discard_final_silence,
+            permitted_time_signatures=permitted_time_signatures,
+            target_duration=target_duration,
+            timespan_inventory=multiplexed_timespans,
+            )
+        meter_offsets = TimeManager.meters_to_offsets(meters)
+        demultiplexed_timespans = TimeManager.demultiplex_timespans(
+            multiplexed_timespans)
+        TimeManager.split_demultiplexed_timespans(
+            meter_offsets,
+            demultiplexed_timespans,
+            )
+        TimeManager.consolidate_demultiplexed_timespans(
+            meter_offsets,
+            demultiplexed_timespans,
+            )
+        TimeManager.inscribe_demultiplexed_timespans(
+            demultiplexed_timespans,
+            score,
+            )
+        multiplexed_timespans = TimeManager.multiplex_timespans(
+            demultiplexed_timespans)
+        return meters, multiplexed_timespans
+
+    @staticmethod
+    def execute_pass_two(
+        meter_offsets,
+        multiplexed_timespans,
+        score,
+        score_template,
+        settings,
+        target_duration,
+        ):
+        TimeManager.populate_multiplexed_timespans(
+            dependent=True,
+            score=score,
+            score_template=score_template,
+            settings=settings,
+            target_duration=target_duration,
+            timespan_inventory=multiplexed_timespans,
+            )
+        demultiplexed_timespans = TimeManager.demultiplex_timespans(
+            multiplexed_timespans)
+        TimeManager.split_demultiplexed_timespans(
+            meter_offsets,
+            demultiplexed_timespans,
+            )
+        TimeManager.consolidate_demultiplexed_timespans(
+            meter_offsets,
+            demultiplexed_timespans,
+            )
+        TimeManager.inscribe_demultiplexed_timespans(
+            demultiplexed_timespans,
+            score,
+            )
+        return demultiplexed_timespans
+
+    @staticmethod
+    def execute(
+        discard_final_silence=None,
+        permitted_time_signatures=None,
+        segment_session=None,
+        target_duration=None,
+        score_template=None,
+        settings=None,
+        ):
+        score = score_template()
+        multiplexed_timespans = timespantools.TimespanInventory()
+        meters, meter_offsets, multiplexed_timespans = \
+            TimeManager.execute_pass_one(
+                discard_final_silence,
+                multiplexed_timespans,
+                permitted_time_signatures,
+                score,
+                score_template,
+                settings,
+                target_duration,
+                )
+        demultiplexed_timespans = TimeManager.execute_pass_two(
+            meter_offsets,
+            multiplexed_timespans,
+            score,
+            score_template,
+            settings,
+            target_duration,
+            )
+        # populate silences
+        TimeManager.populate_silences(
+            demultiplexed_timespans,
+            meter_offsets,
+            )
+        meter_timespans = TimeManager.meters_to_timespans()
+        
+        # make (pre-split) silent timespans
+
+        # rewrite meters? (magic)
+
+        # populate score
+
+        # perform other rhythmic processing
+
+        # collect attack points
+
+    @staticmethod
+    def find_meters(
+        discard_final_silence=None,
+        permitted_time_signatures=None,
+        target_duration=None,
+        timespan_inventory=None,
+        ):
+        offset_counter = datastructuretools.TypedCounter(
+            item_class=durationtools.Offset,
+            )
+        for timespan in timespan_inventory:
+            offset_counter[timespan.start_offset] += 2
+            offset_counter[timespan.stop_offset] += 1
+        offset_counter[target_duration] += 100
+        if discard_final_silence is None:
+            discard_final_silence = False
+        else:
+            discard_final_silence = bool(discard_final_silence)
+        meters = metertools.Meter.fit_meters_to_expr(
+            offset_counter,
+            permitted_time_signatures,
+            discard_final_orphan_downbeat=discard_final_silence,
+            maximum_repetitions=2,
+            )
+        return tuple(meters)
+
+    @staticmethod
+    def get_rhythm_maker(music_specifier):
+        if music_specifier is None:
+            rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                output_masks=[
+                    rhythmmakertools.BooleanPattern(
+                        indices=[0],
+                        period=1,
+                        )
+                    ],
+                )
+        elif music_specifier.rhythm_maker is None:
+            rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                beam_specifier=rhythmmakertools.BeamSpecifier(
+                    beam_each_division=False,
+                    beam_divisions_together=False,
+                    ),
+                tie_specifier=rhythmmakertools.TieSpecifier(
+                    tie_across_divisions=True,
+                    ),
+                )
+        else:
+            rhythm_maker = music_specifier.rhythm_maker
+        return rhythm_maker
+
+    @staticmethod
+    def group_timespans(timespans):
+        def grouper(timespan):
+            music_specifier = None
+            if isinstance(timespan, consort.PerformedTimespan):
+                music_specifier = timespan.music_specifier
+                if music_specifier is None:
+                    music_specifier = consort.MusicSpecifier()
+            return music_specifier
+        import consort
+        for music_specifier, grouped_timespans in itertools.groupby(
+            timespans, grouper):
+            grouped_timespans = timespantools.TimespanInventory(
+                grouped_timespans)
+            yield music_specifier, grouped_timespans
+
+    @staticmethod
     def make_simple_music(rhythm_maker, durations, seed):
         music = rhythm_maker(durations, seeds=seed)
         for i, x in enumerate(music):
@@ -460,8 +520,8 @@ class TimeManager(abctools.AbjadValueObject):
             yield tuple(reversed(group))
 
     @staticmethod
-    def populate_timespan(timespan, seed=None):
-        populated_timespans = timespantools.TimespanInventory()
+    def inscribe_timespan(timespan, seed=None):
+        inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
         durations = timespan.divisions[:]
         music = TimeManager.make_simple_music(
@@ -484,40 +544,69 @@ class TimeManager(abctools.AbjadValueObject):
                 use_stemlets=False,
                 )
             attach(beam, container)
-            populated_timespan = new(
+            inscribed_timespan = new(
                 timespan,
                 divisions=None,
                 music=container,
                 start_offset=start_offset,
                 stop_offset=stop_offset,
                 )
-            populated_timespans.append(populated_timespan)
-        return populated_timespans
+            inscribed_timespans.append(inscribed_timespan)
+        return inscribed_timespans
 
     @staticmethod
-    def populate_timespans(
+    def inscribe_demultiplexed_timespans(
         demultiplexed_timespans,
-        score_template,
+        score,
         ):
         counter = collections.Counter()
         voice_names = demultiplexed_timespans.keys()
-        voice_names = TimeManager.sort_voice_names(
-            score_template=score_template,
-            voice_names=voice_names,
-            )
+        voice_names = TimeManager.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
-            populated_timespans = timespantools.TimespanInventory()
+            inscribed_timespans = timespantools.TimespanInventory()
             for timespan in demultiplexed_timespans[voice_name]:
-                music_specifier = timespan.music_specifier
-                if music_specifier not in counter:
-                    if music_specifier is None:
-                        seed = 0
-                    else:
-                        seed = music_specifier.seed or 0
-                    counter[music_specifier] = seed
-                result = TimeManager.populate_timespan(timespan, seed=seed)
-                populated_timespans.extend(result)
-            demultiplexed_timespans[voice_name] = populated_timespans
+                if timespan.music is None:
+                    music_specifier = timespan.music_specifier
+                    if music_specifier not in counter:
+                        if music_specifier is None:
+                            seed = 0
+                        else:
+                            seed = music_specifier.seed or 0
+                        counter[music_specifier] = seed
+                    result = TimeManager.inscribe_timespan(timespan, seed=seed)
+                    inscribed_timespans.extend(result)
+                else:
+                    inscribed_timespans.append(timespan)
+            demultiplexed_timespans[voice_name] = inscribed_timespans
+
+    @staticmethod
+    def meters_to_timespans(meters):
+        timespans = timetools.TimespanCollection()
+        offsets = TimeManager.meters_to_offsets(meters)
+        for i, meter in enumerate(meters):
+            start_offset = offsets[i]
+            stop_offset = offsets[i + 1]
+            timespan = timespantools.AnnotatedTimespan(
+                annotation=meter,
+                start_offset=start_offset,
+                stop_offset=stop_offset,
+                )
+            timespans.insert(timespan)
+        return timespans
+
+    @staticmethod
+    def meters_to_offsets(meters):
+        durations = [_.preprolated_duration for _ in meters]
+        offsets = mathtools.cumulative_sums(durations)
+        return tuple(offsets)
+
+    @staticmethod
+    def multiplex_timespans(demultiplexed_timespans):
+        multiplexed_timespans = timespantools.TimespanInventory()
+        for timespans in demultiplexed_timespans.values():
+            multiplexed_timespans.extend(timespans)
+        multiplexed_timespans.sort()
+        return multiplexed_timespans
 
     @staticmethod
     def populate_multiplexed_timespans(
@@ -583,14 +672,22 @@ class TimeManager(abctools.AbjadValueObject):
         return resolved_inventory
 
     @staticmethod
+    def sort_voice_names(score, voice_names):
+        result = []
+        for voice in iterate(score).by_class(scoretools.Voice):
+            if voice.name in voice_names:
+                result.append(voice.name)
+        return tuple(result)
+
+    @staticmethod
     def split_demultiplexed_timespans(
-        measure_offsets=None,
+        meter_offsets=None,
         demultiplexed_timespans=None,
         ):
         for voice_name in demultiplexed_timespans:
             timespan_inventory = demultiplexed_timespans[voice_name]
             split_inventory = TimeManager.split_timespans(
-                measure_offsets,
+                meter_offsets,
                 timespan_inventory,
                 )
             demultiplexed_timespans[voice_name] = split_inventory
