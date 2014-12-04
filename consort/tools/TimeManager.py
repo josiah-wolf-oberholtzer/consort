@@ -1097,8 +1097,13 @@ class TimeManager(abctools.AbjadValueObject):
         meters,
         score,
         ):
+        import consort
         time_signatures = [_.implied_time_signature for _ in meters]
         measures = scoretools.make_spacer_skip_measures(time_signatures)
+        if 'TimeSignatureContext' not in score:
+            time_signature_context = \
+                consort.ScoreTemplateManager.make_time_signature_context()
+            score.insert(0, time_signature_context)
         score['TimeSignatureContext'].extend(measures)
         for voice_name, timespans in demultiplexed_timespans.items():
             voice = score[voice_name]
