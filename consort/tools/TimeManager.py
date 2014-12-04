@@ -444,7 +444,6 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def find_meters(
-        discard_final_silence=None,
         permitted_time_signatures=None,
         target_duration=None,
         timespan_inventory=None,
@@ -456,18 +455,11 @@ class TimeManager(abctools.AbjadValueObject):
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
         offset_counter[target_duration] += 100
-        discard_final_silence = bool(discard_final_silence)
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
-            discard_final_orphan_downbeat=discard_final_silence,
             maximum_repetitions=2,
             )
-        if discard_final_silence:
-            meters = list(meters)
-            while timespan_inventory.duration < \
-                sum(_.duration for _ in meters[:-1]):
-                meters.pop()
         return tuple(meters)
 
     @staticmethod
@@ -1020,7 +1012,6 @@ class TimeManager(abctools.AbjadValueObject):
                 )
         with systemtools.Timer('\t\tfound meters:'):
             meters = TimeManager.find_meters(
-                discard_final_silence=discard_final_silence,
                 permitted_time_signatures=permitted_time_signatures,
                 target_duration=target_duration,
                 timespan_inventory=multiplexed_timespans,
@@ -1048,6 +1039,13 @@ class TimeManager(abctools.AbjadValueObject):
         with systemtools.Timer('\t\tmultiplexed timespans:'):
             multiplexed_timespans = TimeManager.multiplex_timespans(
                 demultiplexed_timespans)
+        with systemtools.Timer('\t\tpruned meters:'):
+            meters = TimeManager.prune_meters(
+                discard_final_silence,
+                meters,
+                multiplexed_timespans.stop_offset,
+                )
+            meter_offsets = TimeManager.meters_to_offsets(meters)
         return meters, meter_offsets, multiplexed_timespans
 
     @staticmethod
@@ -1149,6 +1147,21 @@ class TimeManager(abctools.AbjadValueObject):
                 timespans.append(silent_timespan)
             timespans.sort()
         return demultiplexed_timespans
+
+    @staticmethod
+    def prune_meters(
+        discard_final_silence,
+        meters,
+        stop_offset,
+        ):
+        discard_final_silence = bool(discard_final_silence)
+        if discard_final_silence:
+            meters = list(meters)
+            total_meter_durations = sum(_.duration for _ in meters[:-1])
+            while stop_offset <= total_meter_durations:
+                meters.pop()
+                total_meter_durations = sum(_.duration for _ in meters[:-1])
+        return tuple(meters)
 
     @staticmethod
     def resolve_timespan_inventories(
