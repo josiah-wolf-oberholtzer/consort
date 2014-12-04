@@ -132,7 +132,7 @@ class SegmentMaker(makertools.SegmentMaker):
     __slots__ = (
         '_discard_final_silence',
         '_duration_in_seconds',
-        '_include_stylesheets',
+        '_omit_stylesheets',
         '_is_final_segment',
         '_permitted_time_signatures',
         '_rehearsal_mark',
@@ -147,7 +147,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self,
         discard_final_silence=None,
         duration_in_seconds=None,
-        include_stylesheets=None,
+        omit_stylesheets=None,
         is_final_segment=None,
         name=None,
         permitted_time_signatures=None,
@@ -164,9 +164,9 @@ class SegmentMaker(makertools.SegmentMaker):
         if discard_final_silence is not None:
             discard_final_silence = bool(discard_final_silence)
         self._discard_final_silence = discard_final_silence
-        if include_stylesheets is not None:
-            include_stylesheets = bool(include_stylesheets)
-        self._include_stylesheets = include_stylesheets
+        if omit_stylesheets is not None:
+            omit_stylesheets = bool(omit_stylesheets)
+        self._omit_stylesheets = omit_stylesheets
         self.set_duration_in_seconds(duration_in_seconds)
         self.set_is_final_segment(is_final_segment)
         self.set_rehearsal_mark(rehearsal_mark)
@@ -325,7 +325,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def _make_lilypond_file(self):
         lilypond_file = lilypondfiletools.LilyPondFile()
-        if self.include_stylesheets is None or self.include_stylesheets:
+        if not self.omit_stylesheets:
             lilypond_file.use_relative_includes = True
             for file_path in self.stylesheet_file_paths:
                 lilypond_file.file_initial_user_includes.append(file_path)
@@ -506,8 +506,8 @@ class SegmentMaker(makertools.SegmentMaker):
         return final_markup
 
     @property
-    def include_stylesheets(self):
-        return self._include_stylesheets
+    def omit_stylesheets(self):
+        return self._omit_stylesheets
 
     @property
     def is_final_segment(self):

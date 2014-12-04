@@ -9,7 +9,7 @@ def test_SegmentMaker___call___01():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=2,
-        include_stylesheets=False,
+        omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
             ),
@@ -81,7 +81,7 @@ def test_SegmentMaker___call___02():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=False,
         duration_in_seconds=2,
-        include_stylesheets=False,
+        omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
             ),
