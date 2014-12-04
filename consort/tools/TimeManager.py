@@ -449,13 +449,6 @@ class TimeManager(abctools.AbjadValueObject):
         target_duration=None,
         timespan_inventory=None,
         ):
-        #for timespan in timespan_inventory:
-        #    print(
-        #        type(timespan).__name__,
-        #        timespan.voice_name,
-        #        timespan.start_offset,
-        #        timespan.stop_offset,
-        #        )
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
@@ -463,8 +456,6 @@ class TimeManager(abctools.AbjadValueObject):
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
         offset_counter[target_duration] += 100
-        #for key, value in sorted(offset_counter.items()):
-        #    print(key, value)
         discard_final_silence = bool(discard_final_silence)
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
@@ -474,7 +465,8 @@ class TimeManager(abctools.AbjadValueObject):
             )
         if discard_final_silence:
             meters = list(meters)
-            while target_duration < sum(_.duration for _ in meters):
+            while timespan_inventory.duration < \
+                sum(_.duration for _ in meters[:-1]):
                 meters.pop()
         return tuple(meters)
 
@@ -1220,6 +1212,10 @@ class TimeManager(abctools.AbjadValueObject):
                 offsets.pop(0)
             while offsets and offsets[0] < timespan.stop_offset:
                 current_offsets.append(offsets.pop(0))
+            if hasattr(timespan, 'music') and timespan.music:
+                # We don't need to split inscribed timespans
+                split_inventory.append(timespan)
+                continue
             if current_offsets and timespan.can_split:
                 shards = timespan.split_at_offsets(current_offsets)
                 for shard in shards:
