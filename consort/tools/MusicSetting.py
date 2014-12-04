@@ -232,7 +232,7 @@ class MusicSetting(abctools.AbjadValueObject):
             elif isinstance(music_specifier, consort.MusicSpecifier):
                 music_specifier = (music_specifier,)
             music_specifier = datastructuretools.CyclicTuple(music_specifier)
-            voice_name = score_template.voice_name_abbreviations[name]
+            voice_name = score_template.context_name_abbreviations[name]
             voice = score[voice_name]
             voice_index = inspect_(voice).get_parentage().score_index
             voice_name = voice.name

@@ -84,7 +84,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group.append(staff)
         attach(clef, voice)
         abbreviation = stringtools.to_accent_free_snake_case(name)
-        score_template._voice_name_abbreviations[abbreviation] = voice.name
+        score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
@@ -130,13 +130,13 @@ class ScoreTemplateManager(abctools.AbjadObject):
             ))
         attach(indicatortools.Clef('treble'), upper_voice)
         attach(indicatortools.Clef('bass'), lower_voice)
-        score_template._voice_name_abbreviations[
+        score_template._context_name_abbreviations[
             'piano_rh'] = upper_voice.name
-        score_template._voice_name_abbreviations[
+        score_template._context_name_abbreviations[
             'piano_dynamics'] = dynamics.name
-        score_template._voice_name_abbreviations[
+        score_template._context_name_abbreviations[
             'piano_lh'] = lower_voice.name
-        score_template._voice_name_abbreviations[
+        score_template._context_name_abbreviations[
             'piano_pedals'] = pedals.name
         return performer_group
 
@@ -178,9 +178,9 @@ class ScoreTemplateManager(abctools.AbjadObject):
             attach(clef, left_hand_voice)
             right_hand_abbreviation = '{}_rh'.format(abbreviation)
             left_hand_abbreviation = '{}_lh'.format(abbreviation)
-            score_template._voice_name_abbreviations[
+            score_template._context_name_abbreviations[
                 right_hand_abbreviation] = right_hand_voice.name
-            score_template._voice_name_abbreviations[
+            score_template._context_name_abbreviations[
                 left_hand_abbreviation] = left_hand_voice.name
         else:
             voice = scoretools.Voice(
@@ -193,7 +193,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 )
             performer_group.append(staff)
             attach(clef, voice)
-            score_template._voice_name_abbreviations[abbreviation] = voice.name
+            score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
@@ -221,7 +221,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         attach(clef, voice)
         abbreviation = abbreviation or \
             stringtools.to_accent_free_snake_case(name)
-        score_template._voice_name_abbreviations[abbreviation] = voice.name
+        score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
