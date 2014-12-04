@@ -210,6 +210,7 @@ class SegmentMaker(makertools.SegmentMaker):
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
+        lilypond_file.score = score
         return lilypond_file
 
     def __illustrate__(self):
