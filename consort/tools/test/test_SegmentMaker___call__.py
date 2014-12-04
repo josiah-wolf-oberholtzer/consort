@@ -405,3 +405,129 @@ def test_SegmentMaker___call___05():
             >>
         }
         '''), format(lilypond_file)
+
+
+def test_SegmentMaker___call___06():
+    segment_maker = consort.SegmentMaker(
+        discard_final_silence=True,
+        duration_in_seconds=3,
+        omit_stylesheets=True,
+        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+            staff_count=2,
+            ),
+        settings=(
+            consort.MusicSetting(
+                timespan_maker=consort.TaleaTimespanMaker(
+                    initial_silence_talea=rhythmmakertools.Talea(
+                        counts=(0, 3),
+                        denominator=16,
+                        ),
+                    silence_talea=rhythmmakertools.Talea(
+                        counts=(1,),
+                        denominator=8,
+                        ),
+                    minimum_duration=durationtools.Duration(1, 8),
+                    ),
+                v1=consort.MusicSpecifier(
+                    rhythm_maker=rhythmmakertools.TaleaRhythmMaker(
+                        talea=rhythmmakertools.Talea(
+                            counts=(1, 2),
+                            denominator=16,
+                            ),
+                        ),
+                    ),
+                v2=consort.MusicSpecifier(
+                    rhythm_maker=rhythmmakertools.TaleaRhythmMaker(
+                        talea=rhythmmakertools.Talea(
+                            counts=(2, 1),
+                            denominator=16,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        tempo=indicatortools.Tempo((1, 4), 60),
+        permitted_time_signatures=((5, 8), (7, 16)),
+        )
+    lilypond_file = segment_maker()
+    assert systemtools.TestManager.compare(
+        format(lilypond_file),
+        r'''
+        \version "2.19.15"
+        \language "english"
+
+        \score {
+            \context Score = "Grouped Rhythmic Staves Score" <<
+                \tag time
+                \context TimeSignatureContext = "TimeSignatureContext" {
+                    {
+                        \time 7/16
+                        \tempo 4=60
+                        s1 * 7/16
+                    }
+                    {
+                        s1 * 7/16
+                    }
+                }
+                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
+                    \context RhythmicStaff = "Staff 1" {
+                        \context Voice = "Voice 1" {
+                            {
+                                {
+                                    c'16 [
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
+                                }
+                            }
+                            {
+                                {
+                                    r8.
+                                }
+                            }
+                            {
+                                {
+                                    c'16 [
+                                    \set stemLeftBeamCount = 1
+                                    c'8 ]
+                                }
+                            }
+                            {
+                                {
+                                    r4
+                                    \bar "||"
+                                }
+                            }
+                        }
+                    }
+                    \context RhythmicStaff = "Staff 2" {
+                        \context Voice = "Voice 2" {
+                            {
+                                {
+                                    r8.
+                                }
+                            }
+                            {
+                                {
+                                    c'8 [
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 2
+                                    c'16
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
+                                }
+                            }
+                            {
+                                {
+                                    r4..
+                                    \bar "||"
+                                }
+                            }
+                        }
+                    }
+                >>
+            >>
+        }
+        '''), format(lilypond_file)
