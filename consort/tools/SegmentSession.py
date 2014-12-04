@@ -13,7 +13,6 @@ class SegmentSession(abctools.AbjadValueObject):
         'attack_point_map',
         'meters',
         'score',
-        'scores',
         'segment_maker',
         'voicewise_timespans',
         'unrewritten_score',
@@ -28,7 +27,6 @@ class SegmentSession(abctools.AbjadValueObject):
         self.attack_point_map = None
         self.meters = None
         self.score = None
-        self.scores = []
         self.segment_maker = segment_maker
         self.voicewise_timespans = None
         self.unrewritten_score = None
