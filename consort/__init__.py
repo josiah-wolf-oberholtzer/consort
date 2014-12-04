@@ -2,7 +2,7 @@
 from consort.tools import *
 
 
-DEBUG = False
+DEBUG = True
 
 
 def debug(message):

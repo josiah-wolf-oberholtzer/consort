@@ -1201,6 +1201,7 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         meters,
         ):
+        #import consort
         meter_timespans = TimeManager.meters_to_timespans(meters)
         for voice_name in demultiplexed_timespans:
             inscribed_timespans = demultiplexed_timespans[voice_name]
@@ -1216,6 +1217,12 @@ class TimeManager(abctools.AbjadValueObject):
                         _.translate(-inscribed_timespan.start_offset)
                         for _ in intersecting_meters
                         ]
+                    #consort.debug(voice_name)
+                    #consort.debug('\t{}'.format(container))
+                    #container_timespan = inspect_(container).get_timespan()
+                    #consort.debug('\t\t{!s}'.format(container_timespan))
+                    #for meter_timespan in intersecting_meters:
+                    #    consort.debug('\t\t{!s}'.format(meter_timespan))
                     TimeManager.rewrite_container_meter(
                         container,
                         meter_timespans,
