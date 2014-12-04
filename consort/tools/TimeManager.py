@@ -203,28 +203,159 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def consolidate_rests(music):
-        rest_prototype = (
+        r"""Consolidates non-tupleted rests into separate containers in
+        `music`.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> music = scoretools.Container(r'''
+            ...     { r4 c'8 }
+            ...     \times 2/3 { d'4 r8 }
+            ...     { r4 e'4 f'4 r4 }
+            ...     { r4 g8 r8 }
+            ...     { r4 }
+            ...     { r4 }
+            ...     { a'4 \times 2/3 { b'4 r8 } }
+            ...     { c''4 r8 }
+            ...     ''')
+            >>> print(format(music))
+            {
+                {
+                    r4
+                    c'8
+                }
+                \times 2/3 {
+                    d'4
+                    r8
+                }
+                {
+                    r4
+                    e'4
+                    f'4
+                    r4
+                }
+                {
+                    r4
+                    g8
+                    r8
+                }
+                {
+                    r4
+                }
+                {
+                    r4
+                }
+                {
+                    a'4
+                    \times 2/3 {
+                        b'4
+                        r8
+                    }
+                }
+                {
+                    c''4
+                    r8
+                }
+            }
+
+        ::
+
+            >>> music = consort.TimeManager.consolidate_rests(music)
+            >>> print(format(music))
+            {
+                {
+                    r4
+                }
+                {
+                    c'8
+                }
+                \times 2/3 {
+                    d'4
+                    r8
+                }
+                {
+                    r4
+                }
+                {
+                    e'4
+                    f'4
+                }
+                {
+                    r4
+                    r4
+                }
+                {
+                    g8
+                }
+                {
+                    r8
+                    r4
+                    r4
+                }
+                {
+                    a'4
+                    \times 2/3 {
+                        b'4
+                        r8
+                    }
+                }
+                {
+                    c''4
+                }
+                {
+                    r8
+                }
+            }
+
+        Returns `music`.
+        """
+        prototype = (
             scoretools.Rest,
             scoretools.MultimeasureRest,
             )
-        if not isinstance(music[0]. scoretools.Tuplet):
+        initial_music_duration = inspect_(music).get_duration()
+        initial_leaves = music.select_leaves()
+        if not isinstance(music[0], scoretools.Tuplet):
             leading_silence = scoretools.Container()
-            while isinstance(music[0][0], rest_prototype):
+            while isinstance(music[0][0], prototype):
                 leading_silence.append(music[0].pop(0))
             if leading_silence:
                 music.insert(0, leading_silence)
-        if not isinstance(music[-1]. scoretools.Tuplet):
+        if not isinstance(music[-1], scoretools.Tuplet):
             tailing_silence = scoretools.Container()
-            while isinstance(music[-1][-1], rest_prototype):
+            while isinstance(music[-1][-1], prototype):
                 tailing_silence.insert(0, music[-1].pop())
             if tailing_silence:
                 music.append(tailing_silence)
-        if 2 < len(music):
+        if len(music) < 2:
             return music
-        for division in tuple(reversed(music[:-1])):
-            index = music.index(division)
+        indices = reversed(range(len(music) - 1))
+        for index in indices:
+            division = music[index]
             next_division = music[index + 1]
-            # TODO: consolidate rests here
+            silence = scoretools.Container()
+            if not isinstance(division, scoretools.Tuplet):
+                while division and isinstance(division[-1], prototype):
+                    silence.insert(0, division.pop())
+            if not isinstance(next_division, scoretools.Tuplet):
+                while next_division and \
+                    isinstance(next_division[0], prototype):
+                    silence.append(next_division.pop(0))
+            if silence:
+                music.insert(index + 1, silence)
+            if not division:
+                music.remove(division)
+            if not next_division:
+                music.remove(next_division)
+        for division in music[:]:
+            if not division:
+                music.remove(division)
+        assert inspect_(music).get_duration() == initial_music_duration
+        assert music.select_leaves() == initial_leaves
         return music
 
     @staticmethod
