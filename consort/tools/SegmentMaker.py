@@ -97,22 +97,25 @@ class SegmentMaker(makertools.SegmentMaker):
     ::
 
         >>> lilypond_file = segment_maker()
-        TimespanManager:
-            made independent timespans: ...
-            found meters: ...
-            made voicewise timespans (1/2): ...
-            cleaned-up performed timespans: ...
-            made dependent timespans: ...
-            made voicewise timespans (2/2): ...
-            made silent timespans: ...
-            total: ...
-        RhythmManager:
-            populated time signature context: ...
-            populated rhythms: ...
-            consolidated silences: ...
-            rewrote meters: ...
-            cleaned up silences: ...
-            cleaned up logical ties: ...
+        TimeManager:
+            populating independent timespans:
+                populated timespans: ...
+                found meters: ...
+                demultiplexed timespans: ...
+                split timespans: ...
+                consolidated timespans: ...
+                inscribed timespans: ...
+                multiplexed timespans: ...
+                total: ...
+            populating dependent timespans:
+                populated timespans: ...
+                demultiplexed timespans: ...
+                split timespans: ...
+                consolidated timespans: ...
+                inscribed timespans: ...
+                total: ...
+            populated silent timespans: ...
+            populated score: ...
             collected attack points: ...
             total: ...
         GraceHandler:
@@ -176,15 +179,9 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __call__(self):
         import consort
-
         segment_session = consort.SegmentSession(segment_maker=self)
-        segment_session.score = self.score_template()
-        assert isinstance(segment_session.score, scoretools.Score)
-        timer = systemtools.Timer()
-
-        with timer:
-            print('TimespanManager:')
-            segment_session = consort.TimespanManager.execute(
+        with systemtools.Timer('\ttotal:', 'TimeManager:'):
+            segment_session = consort.TimeManager.execute(
                 discard_final_silence=self.discard_final_silence,
                 permitted_time_signatures=self.permitted_time_signatures,
                 score_template=self.score_template,
@@ -192,45 +189,27 @@ class SegmentMaker(makertools.SegmentMaker):
                 settings=self.settings or (),
                 target_duration=self.target_duration,
                 )
-            print('\ttotal:', timer.elapsed_time)
-
-        with timer:
-            print('RhythmManager:')
-            segment_session = consort.RhythmManager.execute(
-                segment_session=segment_session,
-                )
-            print('\ttotal:', timer.elapsed_time)
-
         with systemtools.ForbidUpdate(segment_session.score):
-
-            with timer:
-                print('GraceHandler:')
-                consort.GraceHandler._process_session(
-                    segment_session,
-                    )
-                print('\ttotal:', timer.elapsed_time)
-
-            with timer:
-                print('PitchHandler:')
-                consort.PitchHandler._process_session(
-                    segment_session,
-                    )
-                print('\ttotal:', timer.elapsed_time)
-
-            with timer:
-                print('AttachmentHandler:')
-                consort.AttachmentHandler._process_session(
-                    segment_session,
-                    )
-                print('\ttotal:', timer.elapsed_time)
-
+            with systemtools.Timer(
+                enter_message='GraceHandler:',
+                exit_message='\ttotal:', 
+                ):
+                consort.GraceHandler._process_session(segment_session)
+            with systemtools.Timer(
+                enter_message='PitchHandler:',
+                exit_message='\ttotal:',
+                ):
+                consort.PitchHandler._process_session(segment_session)
+            with systemtools.Timer(
+                enter_message='AttachmentHandler:',
+                exit_message='\ttotal:',
+                ):
+                consort.AttachmentHandler._process_session(segment_session)
         lilypond_file = self._make_lilypond_file()
-        for score in segment_session.scores:
-            score = self._configure_score(score)
-            score_block = lilypondfiletools.Block(name='score')
-            score_block.items.append(score)
-            lilypond_file.items.append(score_block)
-
+        score = self._configure_score(segment_session.score)
+        score_block = lilypondfiletools.Block(name='score')
+        score_block.items.append(score)
+        lilypond_file.items.append(score_block)
         return lilypond_file
 
     def __illustrate__(self):
