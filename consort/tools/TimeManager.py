@@ -1201,9 +1201,9 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         meters,
         ):
-        #import consort
+        import consort
         meter_timespans = TimeManager.meters_to_timespans(meters)
-        for voice_name in demultiplexed_timespans:
+        for voice_name in sorted(demultiplexed_timespans):
             inscribed_timespans = demultiplexed_timespans[voice_name]
             for inscribed_timespan in inscribed_timespans:
                 for container in inscribed_timespan.music:
@@ -1218,14 +1218,14 @@ class TimeManager(abctools.AbjadValueObject):
                         for _ in intersecting_meters
                         ]
                     #consort.debug(voice_name)
-                    #consort.debug('\t{}'.format(container))
+                    #consort.debug('\t{!r}'.format(container))
                     #container_timespan = inspect_(container).get_timespan()
                     #consort.debug('\t\t{!s}'.format(container_timespan))
                     #for meter_timespan in intersecting_meters:
                     #    consort.debug('\t\t{!s}'.format(meter_timespan))
                     TimeManager.rewrite_container_meter(
                         container,
-                        meter_timespans,
+                        intersecting_meters,
                         )
 
     @staticmethod
@@ -1233,9 +1233,27 @@ class TimeManager(abctools.AbjadValueObject):
         container,
         meter_timespans,
         ):
+        #import consort
         assert meter_timespans
         assert meter_timespans[0].start_offset <= \
             inspect_(container).get_timespan().start_offset
+        container_timespan = inspect_(container).get_timespan()
+        if len(meter_timespans) == 1:
+            if meter_timespans[0].is_congruent_to_timespan(container_timespan) \
+                and TimeManager.division_is_silent(container):
+                TimeManager.rewrite_silent_container_meter(container)
+        else:
+            pass
+
+    @staticmethod
+    def rewrite_silent_container_meter(
+        container=None,
+        ):
+        multi_measure_rest = scoretools.MultimeasureRest(1)
+        duration = inspect_(container).get_duration()
+        multiplier = durationtools.Multiplier(duration)
+        attach(multiplier, multi_measure_rest)
+        container[:] = [multi_measure_rest]
 
     @staticmethod
     def sort_voice_names(score, voice_names):
