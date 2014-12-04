@@ -151,13 +151,13 @@ class TimeManager(abctools.AbjadValueObject):
         initial_leaves = music.select_leaves()
         if not isinstance(music[0], scoretools.Tuplet):
             leading_silence = scoretools.Container()
-            while isinstance(music[0][0], prototype):
+            while music[0] and isinstance(music[0][0], prototype):
                 leading_silence.append(music[0].pop(0))
             if leading_silence:
                 music.insert(0, leading_silence)
         if not isinstance(music[-1], scoretools.Tuplet):
             tailing_silence = scoretools.Container()
-            while isinstance(music[-1][-1], prototype):
+            while music[-1] and isinstance(music[-1][-1], prototype):
                 tailing_silence.insert(0, music[-1].pop())
             if tailing_silence:
                 music.append(tailing_silence)
@@ -669,6 +669,119 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def inscribe_timespan(timespan, seed=None):
+        r'''Inscribes `timespan`.
+
+        ::
+
+            >>> import consort
+            >>> music_specifier = consort.MusicSpecifier(
+            ...     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
+            ...         beam_specifier=rhythmmakertools.BeamSpecifier(
+            ...             beam_each_division=False,
+            ...             ),
+            ...         output_masks=[
+            ...             rhythmmakertools.BooleanPattern(
+            ...                 indices=[0],
+            ...                 period=3,
+            ...                 ),
+            ...             ],
+            ...         ),
+            ...     )
+
+        ::
+
+            >>> timespan = consort.PerformedTimespan(
+            ...     divisions=[durationtools.Duration(1, 4)] * 7,
+            ...     start_offset=0,
+            ...     stop_offset=(7, 4),
+            ...     music_specifier=music_specifier,
+            ...     )
+            >>> print(format(timespan))
+            consort.tools.PerformedTimespan(
+                divisions=(
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 4),
+                    durationtools.Duration(1, 4),
+                    ),
+                music_specifier=consort.tools.MusicSpecifier(
+                    rhythm_maker=rhythmmakertools.NoteRhythmMaker(
+                        beam_specifier=rhythmmakertools.BeamSpecifier(
+                            beam_each_division=False,
+                            beam_divisions_together=False,
+                            ),
+                        output_masks=(
+                            rhythmmakertools.BooleanPattern(
+                                indices=(0,),
+                                period=3,
+                                ),
+                            ),
+                        ),
+                    ),
+                start_offset=durationtools.Offset(0, 1),
+                stop_offset=durationtools.Offset(7, 4),
+                )
+
+        ::
+
+            >>> result = consort.TimeManager.inscribe_timespan(timespan)
+            >>> print(format(result))
+            timespantools.TimespanInventory(
+                [
+                    consort.tools.PerformedTimespan(
+                        music=scoretools.Container(
+                            "{ c'4 } { c'4 }"
+                            ),
+                        music_specifier=consort.tools.MusicSpecifier(
+                            rhythm_maker=rhythmmakertools.NoteRhythmMaker(
+                                beam_specifier=rhythmmakertools.BeamSpecifier(
+                                    beam_each_division=False,
+                                    beam_divisions_together=False,
+                                    ),
+                                output_masks=(
+                                    rhythmmakertools.BooleanPattern(
+                                        indices=(0,),
+                                        period=3,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        original_start_offset=durationtools.Offset(0, 1),
+                        original_stop_offset=durationtools.Offset(7, 4),
+                        start_offset=durationtools.Offset(1, 4),
+                        stop_offset=durationtools.Offset(3, 4),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        music=scoretools.Container(
+                            "{ c'4 } { c'4 }"
+                            ),
+                        music_specifier=consort.tools.MusicSpecifier(
+                            rhythm_maker=rhythmmakertools.NoteRhythmMaker(
+                                beam_specifier=rhythmmakertools.BeamSpecifier(
+                                    beam_each_division=False,
+                                    beam_divisions_together=False,
+                                    ),
+                                output_masks=(
+                                    rhythmmakertools.BooleanPattern(
+                                        indices=(0,),
+                                        period=3,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        original_start_offset=durationtools.Offset(0, 1),
+                        original_stop_offset=durationtools.Offset(7, 4),
+                        start_offset=durationtools.Offset(1, 1),
+                        stop_offset=durationtools.Offset(3, 2),
+                        ),
+                    ]
+                )
+
+        Returns timespan inventory.
+        '''
         inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
         durations = timespan.divisions[:]
@@ -683,7 +796,7 @@ class TimeManager(abctools.AbjadValueObject):
             start_offset = inspect_(group[0]).get_timespan().start_offset
             stop_offset = inspect_(group[-1]).get_timespan().stop_offset
             start_offset += timespan.start_offset
-            stop_offset += timespan.stop_offset
+            stop_offset += timespan.start_offset
             container = scoretools.Container(group)
             beam = spannertools.GeneralizedBeam(
                 durations=[division._get_duration() for division in music],
@@ -701,6 +814,7 @@ class TimeManager(abctools.AbjadValueObject):
                 stop_offset=stop_offset,
                 )
             inscribed_timespans.append(inscribed_timespan)
+        inscribed_timespans.sort()
         return inscribed_timespans
 
     @staticmethod
