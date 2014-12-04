@@ -485,6 +485,13 @@ class TimeManager(abctools.AbjadValueObject):
                 )
         else:
             rhythm_maker = music_specifier.rhythm_maker
+            rhythm_maker = new(
+                rhythm_maker,
+                beam_specifier=rhythmmakertools.BeamSpecifier(
+                    beam_each_division=False,
+                    beam_divisions_together=False,
+                    ),
+                )
         return rhythm_maker
 
     @staticmethod
