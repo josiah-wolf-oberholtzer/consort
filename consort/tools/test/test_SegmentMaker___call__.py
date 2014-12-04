@@ -413,7 +413,7 @@ def test_SegmentMaker___call___06():
         duration_in_seconds=3,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
-            staff_count=2,
+            staff_count=3,
             ),
         settings=(
             consort.MusicSetting(
@@ -520,6 +520,19 @@ def test_SegmentMaker___call___06():
                                 }
                             }
                             {
+                                {
+                                    r4..
+                                    \bar "||"
+                                }
+                            }
+                        }
+                    }
+                    \context RhythmicStaff = "Staff 3" {
+                        \context Voice = "Voice 3" {
+                            {
+                                {
+                                    r4..
+                                }
                                 {
                                     r4..
                                     \bar "||"

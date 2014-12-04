@@ -417,6 +417,11 @@ class TimeManager(abctools.AbjadValueObject):
                 score,
                 score_template,
                 )
+        with systemtools.Timer('\trewrote meters:'):
+            TimeManager.rewrite_meters(
+                demultiplexed_timespans,
+                meters,
+                )
         with systemtools.Timer('\tpopulated score:'):
             score = TimeManager.populate_score(
                 demultiplexed_timespans,
@@ -1192,6 +1197,40 @@ class TimeManager(abctools.AbjadValueObject):
             resolved_inventory[:],
             )
         return resolved_inventory
+
+    @staticmethod
+    def rewrite_meters(
+        demultiplexed_timespans,
+        meters,
+        ):
+        meter_timespans = TimeManager.meters_to_timespans(meters)
+        for voice_name in demultiplexed_timespans:
+            inscribed_timespans = demultiplexed_timespans[voice_name]
+            for inscribed_timespan in inscribed_timespans:
+                for container in inscribed_timespan.music:
+                    container_timespan = inspect_(container).get_timespan()
+                    container_timespan = container_timespan.translate(
+                        inscribed_timespan.start_offset)
+                    intersecting_meters = \
+                        meter_timespans.find_timespans_intersecting_timespan(
+                            container_timespan)
+                    intersecting_meters = [
+                        _.translate(-inscribed_timespan.start_offset)
+                        for _ in intersecting_meters
+                        ]
+                    TimeManager.rewrite_container_meter(
+                        container,
+                        meter_timespans,
+                        )
+
+    @staticmethod
+    def rewrite_container_meter(
+        container,
+        meter_timespans,
+        ):
+        assert meter_timespans
+        assert meter_timespans[0].start_offset <= \
+            inspect_(container).get_timespan().start_offset
 
     @staticmethod
     def sort_voice_names(score, voice_names):
