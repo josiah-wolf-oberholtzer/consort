@@ -189,7 +189,111 @@ class TimeManager(abctools.AbjadValueObject):
         return music
 
     @staticmethod
-    def consolidate_timespans(timespans, allow_silences=True):
+    def consolidate_timespans(timespans, allow_silences=False):
+        r'''Consolidates contiguous performed timespans by music specifier.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> timespans = timespantools.TimespanInventory([
+            ...     consort.PerformedTimespan(
+            ...         start_offset=0,
+            ...         stop_offset=10,
+            ...         music_specifier='foo',
+            ...         ),
+            ...     consort.PerformedTimespan(
+            ...         start_offset=10,
+            ...         stop_offset=20,
+            ...         music_specifier='foo',
+            ...         ),
+            ...     consort.PerformedTimespan(
+            ...         start_offset=20,
+            ...         stop_offset=25,
+            ...         music_specifier='bar',
+            ...         ),
+            ...     consort.PerformedTimespan(
+            ...         start_offset=40,
+            ...         stop_offset=50,
+            ...         music_specifier='bar',
+            ...         ),
+            ...     consort.PerformedTimespan(
+            ...         start_offset=50,
+            ...         stop_offset=58,
+            ...         music_specifier='bar',
+            ...         ),
+            ...     ])
+            >>> print(format(timespans))
+            timespantools.TimespanInventory(
+                [
+                    consort.tools.PerformedTimespan(
+                        music_specifier='foo',
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(10, 1),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        music_specifier='foo',
+                        start_offset=durationtools.Offset(10, 1),
+                        stop_offset=durationtools.Offset(20, 1),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        music_specifier='bar',
+                        start_offset=durationtools.Offset(20, 1),
+                        stop_offset=durationtools.Offset(25, 1),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        music_specifier='bar',
+                        start_offset=durationtools.Offset(40, 1),
+                        stop_offset=durationtools.Offset(50, 1),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        music_specifier='bar',
+                        start_offset=durationtools.Offset(50, 1),
+                        stop_offset=durationtools.Offset(58, 1),
+                        ),
+                    ]
+                )
+
+        ::
+
+            >>> timespans = consort.TimeManager.consolidate_timespans(
+            ...     timespans)
+            >>> print(format(timespans))
+            timespantools.TimespanInventory(
+                [
+                    consort.tools.PerformedTimespan(
+                        divisions=(
+                            durationtools.Duration(10, 1),
+                            durationtools.Duration(10, 1),
+                            ),
+                        music_specifier='foo',
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(20, 1),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        divisions=(
+                            durationtools.Duration(5, 1),
+                            ),
+                        music_specifier='bar',
+                        start_offset=durationtools.Offset(20, 1),
+                        stop_offset=durationtools.Offset(25, 1),
+                        ),
+                    consort.tools.PerformedTimespan(
+                        divisions=(
+                            durationtools.Duration(10, 1),
+                            durationtools.Duration(8, 1),
+                            ),
+                        music_specifier='bar',
+                        start_offset=durationtools.Offset(40, 1),
+                        stop_offset=durationtools.Offset(58, 1),
+                        ),
+                    ]
+                )
+
+        Returns new timespan inventory.
+        '''
         consolidated_timespans = timespantools.TimespanInventory()
         for music_specifier, grouped_timespans in \
             TimeManager.group_timespans(timespans):
@@ -311,7 +415,6 @@ class TimeManager(abctools.AbjadValueObject):
         meter_offsets,
         score,
         score_template,
-        target_duration,
         ):
         import consort
         rhythm_maker = TimeManager.get_rhythm_maker(None)
@@ -324,7 +427,7 @@ class TimeManager(abctools.AbjadValueObject):
             silences = timespantools.TimespanInventory([
                 consort.SilentTimespan(
                     start_offset=0,
-                    stop_offset=target_duration,
+                    stop_offset=meter_offsets[-1],
                     voice_name=voice_name,
                     )
                 ])
@@ -380,18 +483,20 @@ class TimeManager(abctools.AbjadValueObject):
             meter_offsets,
             score,
             score_template,
-            target_duration,
             )
-        
-        # make (pre-split) silent timespans
-
+        score = TimeManager.populate_score(
+            demultiplexed_timespans,
+            meters,
+            score,
+            )
+        segment_session.meters = meters
+        segment_session.score = score
+        segment_session.voicewise_timespans = demultiplexed_timespans
         # rewrite meters? (magic)
-
         # populate score
-
         # perform other rhythmic processing
-
         # collect attack points
+        return segment_session
 
     @staticmethod
     def find_meters(
@@ -454,11 +559,13 @@ class TimeManager(abctools.AbjadValueObject):
                     music_specifier = consort.MusicSpecifier()
             return music_specifier
         import consort
-        for music_specifier, grouped_timespans in itertools.groupby(
-            timespans, grouper):
-            grouped_timespans = timespantools.TimespanInventory(
-                grouped_timespans)
-            yield music_specifier, grouped_timespans
+        for partitioned_timespans in timespans.partition(
+            include_tangent_timespans=True):
+            for music_specifier, grouped_timespans in itertools.groupby(
+                partitioned_timespans, grouper):
+                grouped_timespans = timespantools.TimespanInventory(
+                    grouped_timespans)
+                yield music_specifier, grouped_timespans
 
     @staticmethod
     def make_simple_music(rhythm_maker, durations, seed):
@@ -623,6 +730,60 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def meters_to_timespans(meters):
+        r'''Convert `meters` into a collection of annotated timespans.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> meters = [
+            ...     metertools.Meter((3, 4)),
+            ...     metertools.Meter((2, 4)),
+            ...     metertools.Meter((6, 8)),
+            ...     metertools.Meter((5, 16)),
+            ...     ]
+
+        ::
+
+            >>> timespans = consort.TimeManager.meters_to_timespans(meters)
+            >>> print(format(timespans))
+            supriya.tools.timetools.TimespanCollection(
+                [
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(3, 4),
+                        annotation=metertools.Meter(
+                            '(3/4 (1/4 1/4 1/4))'
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(3, 4),
+                        stop_offset=durationtools.Offset(5, 4),
+                        annotation=metertools.Meter(
+                            '(2/4 (1/4 1/4))'
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(5, 4),
+                        stop_offset=durationtools.Offset(2, 1),
+                        annotation=metertools.Meter(
+                            '(6/8 ((3/8 (1/8 1/8 1/8)) (3/8 (1/8 1/8 1/8))))'
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(2, 1),
+                        stop_offset=durationtools.Offset(37, 16),
+                        annotation=metertools.Meter(
+                            '(5/16 (1/16 1/16 1/16 1/16 1/16))'
+                            ),
+                        ),
+                    ]
+                )
+
+        Returns timespan collections.
+        '''
         timespans = timetools.TimespanCollection()
         offsets = TimeManager.meters_to_offsets(meters)
         for i, meter in enumerate(meters):
@@ -638,12 +799,96 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def meters_to_offsets(meters):
+        r'''Converts `meters` to offsets.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> meters = [
+            ...     metertools.Meter((3, 4)),
+            ...     metertools.Meter((2, 4)),
+            ...     metertools.Meter((6, 8)),
+            ...     metertools.Meter((5, 16)),
+            ...     ]
+
+        ::
+
+            >>> offsets = consort.TimeManager.meters_to_offsets(meters)
+            >>> for x in offsets:
+            ...     x
+            ...
+            Offset(0, 1)
+            Offset(3, 4)
+            Offset(5, 4)
+            Offset(2, 1)
+            Offset(37, 16)
+
+        Returns tuple of offsets.
+        '''
         durations = [_.preprolated_duration for _ in meters]
         offsets = mathtools.cumulative_sums(durations)
+        offsets = [durationtools.Offset(_) for _ in offsets]
         return tuple(offsets)
 
     @staticmethod
     def multiplex_timespans(demultiplexed_timespans):
+        r'''Multiplexes `demultiplexed_timespans` into a single timespan
+        inventory.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> demultiplexed = {}
+            >>> demultiplexed['foo'] = timespantools.TimespanInventory([
+            ...     timespantools.Timespan(0, 10),
+            ...     timespantools.Timespan(15, 30),
+            ...     ])
+            >>> demultiplexed['bar'] = timespantools.TimespanInventory([
+            ...     timespantools.Timespan(5, 15),
+            ...     timespantools.Timespan(20, 35),
+            ...     ])
+            >>> demultiplexed['baz'] = timespantools.TimespanInventory([
+            ...     timespantools.Timespan(5, 40),
+            ...     ])
+
+        ::
+
+            >>> multiplexed = consort.TimeManager.multiplex_timespans(
+            ...     demultiplexed)
+            >>> print(format(multiplexed))
+            timespantools.TimespanInventory(
+                [
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(10, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(5, 1),
+                        stop_offset=durationtools.Offset(15, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(5, 1),
+                        stop_offset=durationtools.Offset(40, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(15, 1),
+                        stop_offset=durationtools.Offset(30, 1),
+                        ),
+                    timespantools.Timespan(
+                        start_offset=durationtools.Offset(20, 1),
+                        stop_offset=durationtools.Offset(35, 1),
+                        ),
+                    ]
+                )
+
+        Returns timespan inventory.
+        '''
         multiplexed_timespans = timespantools.TimespanInventory()
         for timespans in demultiplexed_timespans.values():
             multiplexed_timespans.extend(timespans)
@@ -682,6 +927,21 @@ class TimeManager(abctools.AbjadValueObject):
                 target_timespan=target_timespan,
                 timespan_inventory=timespan_inventory,
                 )
+
+    @property
+    def populate_score(
+        demultiplexed_timespans,
+        meters,
+        score,
+        ):
+        time_signatures = [_.implied_time_signature for _ in meters]
+        measures = scoretools.make_spacer_skip_measures(time_signatures)
+        score['TimeSignatureContext'].extend(measures)
+        for voice_name, timespans in demultiplexed_timespans.items():
+            voice = score[voice_name]
+            for timespan in timespans:
+                voice.append(timespan.music)
+        return score
 
     @staticmethod
     def resolve_timespan_inventories(
