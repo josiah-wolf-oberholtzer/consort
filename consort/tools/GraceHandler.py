@@ -2,15 +2,12 @@
 from __future__ import print_function
 import collections
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import scoretools
 from abjad.tools import schemetools
 from abjad.tools import selectiontools
 from abjad.tools import sequencetools
 from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 from abjad.tools.topleveltools import new
 from abjad.tools.topleveltools import override
 
@@ -27,7 +24,6 @@ class GraceHandler(abctools.AbjadValueObject):
         >>> print(format(grace_handler))
         consort.tools.GraceHandler(
             counts=(0, 1, 0, 0, 2),
-            minimum_preceding_duration=durationtools.Duration(1, 16),
             )
 
     '''
@@ -36,7 +32,6 @@ class GraceHandler(abctools.AbjadValueObject):
 
     __slots__ = (
         '_counts',
-        '_minimum_preceding_duration',
         )
 
     ### INITIALIZER ###
@@ -44,7 +39,6 @@ class GraceHandler(abctools.AbjadValueObject):
     def __init__(
         self,
         counts=None,
-        minimum_preceding_duration=durationtools.Duration(1, 16),
         ):
         if counts is not None:
             assert len(counts)
@@ -52,16 +46,13 @@ class GraceHandler(abctools.AbjadValueObject):
                 counts)
             counts = tuple(counts)
         self._counts = counts
-        minimum_preceding_duration = durationtools.Duration(
-            minimum_preceding_duration)
-        self._minimum_preceding_duration = minimum_preceding_duration
 
     ### SPECIAL METHODS ###
 
     def __call__(
         self,
         logical_tie,
-        music_index=0,
+        seed=0,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
         if self.counts is None:
@@ -90,21 +81,26 @@ class GraceHandler(abctools.AbjadValueObject):
     @staticmethod
     def _process_session(segment_session):
         import consort
-        score = segment_session.score
         counter = collections.Counter()
-        for voice in iterate(score).by_class(scoretools.Voice):
-            for container in voice:
-                prototype = consort.MusicSpecifier
-                music_specifier = inspect_(container).get_effective(prototype)
-                maker = music_specifier.grace_handler
-                if maker is None:
-                    continue
-                if music_specifier not in counter:
-                    seed = music_specifier.seed or 0
-                    counter[music_specifier] = seed
-                seed = counter[music_specifier]
-                maker(container, music_index=seed)
-                counter[music_specifier] += 1
+        attack_point_map = segment_session.attack_point_map
+        for logical_tie in attack_point_map:
+            music_specifier = \
+                consort.SegmentMaker._logical_tie_to_music_specifier(
+                    logical_tie)
+            if not music_specifier:
+                continue
+            grace_handler = music_specifier.grace_handler
+            if not grace_handler:
+                continue
+            previous_leaf = logical_tie.head._get_leaf(-1)
+            if previous_leaf is None:
+                continue
+            if music_specifier not in counter:
+                seed = music_specifier.seed or 0
+                counter[music_specifier] = seed
+            seed = counter[music_specifier]
+            grace_handler(logical_tie, seed=seed)
+            counter[music_specifier] += 1
 
     ### PUBLIC METHODS ###
 
@@ -129,7 +125,3 @@ class GraceHandler(abctools.AbjadValueObject):
     @property
     def counts(self):
         return self._counts
-
-    @property
-    def minimum_preceding_duration(self):
-        return self._minimum_preceding_duration
