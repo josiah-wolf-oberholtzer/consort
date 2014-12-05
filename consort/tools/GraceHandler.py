@@ -57,7 +57,7 @@ class GraceHandler(abctools.AbjadValueObject):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
         if self.counts is None:
             return
-        counts = sequencetools.Sequence(*self.counts).rotate(seed)
+        counts = sequencetools.Sequence(*self.counts).rotate(-seed)
         previous_leaf = logical_tie.head._get_leaf(-1)
         if previous_leaf is None:
             return
