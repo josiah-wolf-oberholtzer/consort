@@ -44,10 +44,10 @@ class MusicSpecifier(abctools.AbjadValueObject):
         ):
         import consort
         if attachment_handler is not None:
-            assert isinstance(attachment_handler, tools.AttachmentHandler)
+            assert isinstance(attachment_handler, consort.AttachmentHandler)
         self._attachment_handler = attachment_handler
         if grace_handler is not None:
-            assert isinstance(grace_handler, tools.GraceHandler)
+            assert isinstance(grace_handler, consort.GraceHandler)
         self._grace_handler = grace_handler
         self._hash = None
         if is_sentinel is not None:
@@ -59,7 +59,7 @@ class MusicSpecifier(abctools.AbjadValueObject):
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
         if pitch_handler is not None:
-            assert isinstance(pitch_handler, tools.PitchHandler)
+            assert isinstance(pitch_handler, consort.PitchHandler)
         self._pitch_handler = pitch_handler
         if pitches_are_nonsemantic is not None:
             pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
