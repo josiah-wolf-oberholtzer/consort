@@ -7,7 +7,73 @@ from abjad.tools import templatetools
 import consort
 
 
-def test_SegmentMaker___call___01():
+
+def test_SegmentMaker_01():
+    segment_maker = consort.SegmentMaker(
+        discard_final_silence=True,
+        duration_in_seconds=2,
+        omit_stylesheets=True,
+        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+            staff_count=2,
+            ),
+        settings=None,
+        tempo=indicatortools.Tempo((1, 4), 60),
+        permitted_time_signatures=((5, 8), (7, 16)),
+        )
+    lilypond_file = segment_maker()
+    assert systemtools.TestManager.compare(
+        format(lilypond_file),
+        r'''
+        \version "2.19.15"
+        \language "english"
+        
+        \score {
+            \context Score = "Grouped Rhythmic Staves Score" <<
+                \tag time
+                \context TimeSignatureContext = "TimeSignatureContext" {
+                    {
+                        \time 7/16
+                        \tempo 4=60
+                        s1 * 7/16
+                    }
+                    {
+                        s1 * 7/16
+                    }
+                }
+                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
+                    \context RhythmicStaff = "Staff 1" {
+                        \context Voice = "Voice 1" {
+                            {
+                                {
+                                    R1 * 7/16
+                                }
+                                {
+                                    R1 * 7/16
+                                    \bar "||"
+                                }
+                            }
+                        }
+                    }
+                    \context RhythmicStaff = "Staff 2" {
+                        \context Voice = "Voice 2" {
+                            {
+                                {
+                                    R1 * 7/16
+                                }
+                                {
+                                    R1 * 7/16
+                                    \bar "||"
+                                }
+                            }
+                        }
+                    }
+                >>
+            >>
+        }
+        '''), format(lilypond_file)
+
+
+def test_SegmentMaker_02():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=2,
@@ -79,7 +145,7 @@ def test_SegmentMaker___call___01():
         '''), format(lilypond_file)
 
 
-def test_SegmentMaker___call___02():
+def test_SegmentMaker_03():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=False,
         duration_in_seconds=2,
@@ -160,7 +226,7 @@ def test_SegmentMaker___call___02():
         '''), format(lilypond_file)
 
 
-def test_SegmentMaker___call___03():
+def test_SegmentMaker_04():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=2,
@@ -243,7 +309,7 @@ def test_SegmentMaker___call___03():
         '''), format(lilypond_file)
 
 
-def test_SegmentMaker___call___04():
+def test_SegmentMaker_05():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=2,
@@ -307,7 +373,7 @@ def test_SegmentMaker___call___04():
         '''), format(lilypond_file)
 
 
-def test_SegmentMaker___call___05():
+def test_SegmentMaker_06():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=3,
@@ -407,7 +473,7 @@ def test_SegmentMaker___call___05():
         '''), format(lilypond_file)
 
 
-def test_SegmentMaker___call___06():
+def test_SegmentMaker_07():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=3,
