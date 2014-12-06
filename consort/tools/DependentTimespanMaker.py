@@ -167,9 +167,12 @@ class DependentTimespanMaker(TimespanMaker):
             if timespan.voice_name in self.voice_names:
                 if not self.labels:
                     preexisting_timespans.append(timespan)
-                elif timespan.music_specifier.labels and \
-                    any(label in timespan.music_specifier.labels
-                        for label in self.labels):
+                elif not hasattr(timespan, 'music_specifier'):
+                    continue
+                elif not timespan.music_specifier.labels:
+                    continue
+                elif any(label in timespan.music_specifier.labels
+                    for label in self.labels):
                     preexisting_timespans.append(timespan)
         preexisting_timespans & target_timespan
         rotation_indices = self.rotation_indices or (0,)
