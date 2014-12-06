@@ -2,7 +2,7 @@
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
-from consort import tools
+import consort
 import collections
 
 
@@ -14,7 +14,7 @@ target_timespan = timespantools.Timespan(0, 1)
 
 
 def test_TaleaTimespanMaker_01():
-    timespan_maker = tools.TaleaTimespanMaker()
+    timespan_maker = consort.TaleaTimespanMaker()
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
@@ -55,7 +55,7 @@ def test_TaleaTimespanMaker_01():
 
 
 def test_TaleaTimespanMaker_02():
-    timespan_maker = tools.TaleaTimespanMaker(
+    timespan_maker = consort.TaleaTimespanMaker(
         initial_silence_talea=rhythmmakertools.Talea(
             counts=(1, 2),
             denominator=8,
@@ -101,7 +101,7 @@ def test_TaleaTimespanMaker_02():
 
 
 def test_TaleaTimespanMaker_03():
-    timespan_maker = tools.TaleaTimespanMaker(
+    timespan_maker = consort.TaleaTimespanMaker(
         synchronize_step=True,
         )
     timespan_inventory = timespan_maker(
@@ -144,7 +144,7 @@ def test_TaleaTimespanMaker_03():
 
 
 def test_TaleaTimespanMaker_04():
-    timespan_maker = tools.TaleaTimespanMaker(
+    timespan_maker = consort.TaleaTimespanMaker(
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
             denominator=8,
@@ -196,7 +196,7 @@ def test_TaleaTimespanMaker_04():
 
 
 def test_TaleaTimespanMaker_05():
-    timespan_maker = tools.TaleaTimespanMaker(
+    timespan_maker = consort.TaleaTimespanMaker(
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
             denominator=8,
@@ -243,7 +243,7 @@ def test_TaleaTimespanMaker_05():
 
 
 def test_TaleaTimespanMaker_06():
-    timespan_maker = tools.TaleaTimespanMaker(
+    timespan_maker = consort.TaleaTimespanMaker(
         initial_silence_talea=rhythmmakertools.Talea(
             counts=(0, 1),
             denominator=8,
@@ -299,7 +299,7 @@ def test_TaleaTimespanMaker_06():
 
 
 def test_TaleaTimespanMaker_07():
-    timespan_maker = tools.TaleaTimespanMaker(
+    timespan_maker = consort.TaleaTimespanMaker(
         initial_silence_talea=rhythmmakertools.Talea(
             counts=(0, 1),
             denominator=8,
