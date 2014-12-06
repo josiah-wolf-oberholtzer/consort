@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-from abjad import *
+from abjad.tools import rhythmmakertools
+from abjad.tools import systemtools
+from abjad.tools import timespantools
 from consort import tools
 import collections
 
