@@ -167,9 +167,9 @@ class DependentTimespanMaker(TimespanMaker):
             if timespan.voice_name in self.voice_names:
                 if not self.labels:
                     preexisting_timespans.append(timespan)
-                elif not hasattr(timespan, 'music_specifier'):
-                    continue
-                elif not timespan.music_specifier.labels:
+                elif not hasattr(timespan, 'music_specifier') or \
+                    not timespan.music_specifier or \
+                    not timespan.music_specifier.labels:
                     continue
                 elif any(label in timespan.music_specifier.labels
                     for label in self.labels):
