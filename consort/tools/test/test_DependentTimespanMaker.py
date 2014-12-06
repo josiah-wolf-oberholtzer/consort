@@ -23,8 +23,8 @@ def _make_timespan_inventory():
             voice_name='B',
             ),
         consort.PerformedTimespan(
-            start_offset=6,
-            stop_offset=8,
+            start_offset=60,
+            stop_offset=80,
             voice_name='A',
             ),
         consort.PerformedTimespan(
@@ -33,6 +33,7 @@ def _make_timespan_inventory():
             voice_name='B',
             ),
         ])
+    timespan_inventory.sort()
     return timespan_inventory
 
 
@@ -59,8 +60,8 @@ def test_DependentTimespanMaker_01():
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(6, 1),
-                    stop_offset=durationtools.Offset(8, 1),
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
@@ -105,11 +106,6 @@ def test_DependentTimespanMaker_02():
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(6, 1),
-                    stop_offset=durationtools.Offset(8, 1),
-                    voice_name='A',
-                    ),
-                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(20, 1),
                     stop_offset=durationtools.Offset(40, 1),
                     voice_name='A',
@@ -120,14 +116,19 @@ def test_DependentTimespanMaker_02():
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(60, 1),
                     stop_offset=durationtools.Offset(100, 1),
-                    voice_name='B',
+                    voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(65, 1),
                     stop_offset=durationtools.Offset(100, 1),
-                    voice_name='C',
+                    voice_name='B',
                     ),
                 ]
             )
@@ -172,11 +173,6 @@ def test_DependentTimespanMaker_03():
                     voice_name='D',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(6, 1),
-                    stop_offset=durationtools.Offset(8, 1),
-                    voice_name='A',
-                    ),
-                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(20, 1),
                     stop_offset=durationtools.Offset(40, 1),
                     voice_name='A',
@@ -187,19 +183,24 @@ def test_DependentTimespanMaker_03():
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(100, 1),
-                    voice_name='B',
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
+                    voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
+                    start_offset=durationtools.Offset(60, 1),
                     stop_offset=durationtools.Offset(100, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
+                    start_offset=durationtools.Offset(60, 1),
                     stop_offset=durationtools.Offset(100, 1),
                     voice_name='D',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(65, 1),
+                    stop_offset=durationtools.Offset(100, 1),
+                    voice_name='B',
                     ),
                 ]
             )
@@ -233,11 +234,6 @@ def test_DependentTimespanMaker_04():
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(6, 1),
-                    stop_offset=durationtools.Offset(8, 1),
-                    voice_name='A',
-                    ),
-                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(10, 1),
                     stop_offset=durationtools.Offset(50, 1),
                     voice_name='C',
@@ -253,8 +249,73 @@ def test_DependentTimespanMaker_04():
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(60, 1),
                     stop_offset=durationtools.Offset(90, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(65, 1),
+                    stop_offset=durationtools.Offset(100, 1),
+                    voice_name='B',
+                    ),
+                ]
+            )
+        '''), format(timespan_inventory)
+
+
+def test_DependentTimespanMaker_05():
+    music_specifiers = collections.OrderedDict([
+        ('C', None),
+        ])
+    target_timespan = timespantools.Timespan(10, 90)
+    timespan_maker = consort.DependentTimespanMaker(
+        voice_names=(
+            'A',
+            ),
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        timespan_inventory=_make_timespan_inventory(),
+        )
+    assert systemtools.TestManager.compare(
+        format(timespan_inventory),
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(20, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(10, 1),
+                    stop_offset=durationtools.Offset(40, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(20, 1),
+                    stop_offset=durationtools.Offset(40, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(25, 1),
+                    stop_offset=durationtools.Offset(50, 1),
+                    voice_name='B',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
