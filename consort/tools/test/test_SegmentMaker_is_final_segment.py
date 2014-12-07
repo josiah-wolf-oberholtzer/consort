@@ -5,7 +5,7 @@ from abjad.tools import templatetools
 import consort
 
 
-def test_SegmentMaker_rehearsal_mark_01():
+def test_SegmentMaker_is_final_segment_01():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
         duration_in_seconds=4,
