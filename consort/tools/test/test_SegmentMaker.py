@@ -26,7 +26,7 @@ def test_SegmentMaker_01():
         r'''
         \version "2.19.15"
         \language "english"
-        
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag time
@@ -113,12 +113,15 @@ def test_SegmentMaker_02():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r8.
+                                    r16
+                                    r8
                                     \bar "||"
                                 }
                             }
@@ -128,12 +131,15 @@ def test_SegmentMaker_02():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'4
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r8.
+                                    r16
+                                    r8
                                     \bar "||"
                                 }
                             }
@@ -169,7 +175,7 @@ def test_SegmentMaker_03():
         r'''
         \version "2.19.15"
         \language "english"
-        
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag time
@@ -188,12 +194,15 @@ def test_SegmentMaker_03():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r8.
+                                    r16
+                                    r8
                                 }
                                 {
                                     R1 * 7/16
@@ -206,12 +215,15 @@ def test_SegmentMaker_03():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'4
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r8.
+                                    r16
+                                    r8
                                 }
                                 {
                                     R1 * 7/16
@@ -269,16 +281,23 @@ def test_SegmentMaker_04():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4.. ~
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8 ~
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8 ~
                                 }
                                 {
                                     \set stemLeftBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r4.
+                                    r8
+                                    r4
                                     \bar "||"
                                 }
                             }
@@ -288,16 +307,23 @@ def test_SegmentMaker_04():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'4.. ~
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8 ~
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8 ~
                                 }
                                 {
                                     \set stemLeftBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r4.
+                                    r8
+                                    r4
                                     \bar "||"
                                 }
                             }
@@ -351,7 +377,12 @@ def test_SegmentMaker_05():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4..
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8 ~
+                                    \set stemLeftBeamCount = 1
+                                    c'8 ]
                                     \bar "||"
                                 }
                             }
@@ -361,7 +392,12 @@ def test_SegmentMaker_05():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'4..
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 1
+                                    \set stemRightBeamCount = 1
+                                    c'8 ~
+                                    \set stemLeftBeamCount = 1
+                                    c'8 ]
                                     \bar "||"
                                 }
                             }
@@ -426,12 +462,15 @@ def test_SegmentMaker_06():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4
+                                    c'8. ~ [
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
                                 }
                             }
                             {
                                 {
-                                    r8.
+                                    r16
+                                    r8
                                 }
                             }
                             {
@@ -521,7 +560,7 @@ def test_SegmentMaker_07():
         r'''
         \version "2.19.15"
         \language "english"
-
+        
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag time
@@ -550,7 +589,8 @@ def test_SegmentMaker_07():
                             }
                             {
                                 {
-                                    r8.
+                                    r16
+                                    r8
                                 }
                             }
                             {

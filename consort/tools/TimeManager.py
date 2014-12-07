@@ -1212,6 +1212,21 @@ class TimeManager(abctools.AbjadValueObject):
         return resolved_inventory
 
     @staticmethod
+    def can_rewrite_meter(inscribed_timespan):
+        music_specifier = inscribed_timespan.music_specifier
+        if music_specifier is None:
+            return True
+        rhythm_maker = music_specifier.rhythm_maker
+        if rhythm_maker is None:
+            return True
+        specifier = rhythm_maker.duration_spelling_specifier
+        if specifier is None:
+            return True
+        if specifier.permit_meter_rewriting is False:
+            return False
+        return True
+
+    @staticmethod
     def rewrite_meters(
         demultiplexed_timespans,
         meters,
@@ -1221,23 +1236,22 @@ class TimeManager(abctools.AbjadValueObject):
         for voice_name in sorted(demultiplexed_timespans):
             inscribed_timespans = demultiplexed_timespans[voice_name]
             for inscribed_timespan in inscribed_timespans:
+                if not TimeManager.can_rewrite_meter(inscribed_timespan):
+                    continue
                 for container in inscribed_timespan.music:
+                    #consort.debug(repr(container))
                     container_timespan = inspect_(container).get_timespan()
                     container_timespan = container_timespan.translate(
                         inscribed_timespan.start_offset)
+                    #consort.debug(container_timespan)
                     intersecting_meters = \
                         meter_timespans.find_timespans_intersecting_timespan(
                             container_timespan)
                     intersecting_meters = [
-                        _.translate(-inscribed_timespan.start_offset)
+                        _.translate(-1 * inscribed_timespan.start_offset)
                         for _ in intersecting_meters
                         ]
-                    #consort.debug(voice_name)
-                    #consort.debug('\t{!r}'.format(container))
-                    #container_timespan = inspect_(container).get_timespan()
-                    #consort.debug('\t\t{!s}'.format(container_timespan))
-                    #for meter_timespan in intersecting_meters:
-                    #    consort.debug('\t\t{!s}'.format(meter_timespan))
+                    #consort.debug(intersecting_meters)
                     TimeManager.rewrite_container_meter(
                         container,
                         intersecting_meters,
@@ -1249,27 +1263,41 @@ class TimeManager(abctools.AbjadValueObject):
         container,
         meter_timespans,
         ):
-        #import consort
         assert meter_timespans
         assert meter_timespans[0].start_offset <= \
             inspect_(container).get_timespan().start_offset
         container_timespan = inspect_(container).get_timespan()
-        if len(meter_timespans) == 1:
+        if isinstance(container, scoretools.Tuplet):
+            contents_duration = container._contents_duration
+            meter = metertools.Meter(contents_duration)
+            mutate(container[:]).rewrite_meter(
+                meter,
+                boundary_depth=1,
+                maximum_dot_count=1,
+                )
+        elif len(meter_timespans) == 1:
             if meter_timespans[0].is_congruent_to_timespan(container_timespan) \
                 and TimeManager.division_is_silent(container):
-                TimeManager.rewrite_silent_container_meter(container)
+                multi_measure_rest = scoretools.MultimeasureRest(1)
+                duration = inspect_(container).get_duration()
+                multiplier = durationtools.Multiplier(duration)
+                attach(multiplier, multi_measure_rest)
+                container[:] = [multi_measure_rest]
+            else:
+                meter = meter_timespans[0].annotation
+                meter_offset = meter_timespans[0].start_offset
+                container_timespan = inspect_(container).get_timespan()
+                container_offset = container_timespan.start_offset
+                initial_offset = container_offset - meter_offset
+                mutate(container[:]).rewrite_meter(
+                    meter,
+                    boundary_depth=1,
+                    initial_offset=initial_offset,
+                    maximum_dot_count=1,
+                    )
         else:
+            # TODO: handle barline-crossing containers
             pass
-
-    @staticmethod
-    def rewrite_silent_container_meter(
-        container=None,
-        ):
-        multi_measure_rest = scoretools.MultimeasureRest(1)
-        duration = inspect_(container).get_duration()
-        multiplier = durationtools.Multiplier(duration)
-        attach(multiplier, multi_measure_rest)
-        container[:] = [multi_measure_rest]
 
     @staticmethod
     def sort_voice_names(score, voice_names):
