@@ -8,7 +8,7 @@ import consort
 def test_SegmentMaker_rehearsal_mark_01():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=4,
+        target_duration_in_seconds=4,
         omit_stylesheets=True,
         rehearsal_mark='A',
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
@@ -68,7 +68,7 @@ def test_SegmentMaker_rehearsal_mark_01():
 def test_SegmentMaker_rehearsal_mark_02():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=4,
+        target_duration_in_seconds=4,
         name='A transitional segment',
         omit_stylesheets=True,
         rehearsal_mark='A Part 1',

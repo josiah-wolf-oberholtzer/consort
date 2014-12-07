@@ -11,7 +11,7 @@ import consort
 def test_SegmentMaker_01():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=2,
+        target_duration_in_seconds=2,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -76,7 +76,7 @@ def test_SegmentMaker_01():
 def test_SegmentMaker_02():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=2,
+        target_duration_in_seconds=2,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -154,7 +154,7 @@ def test_SegmentMaker_02():
 def test_SegmentMaker_03():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=False,
-        duration_in_seconds=2,
+        target_duration_in_seconds=2,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -241,7 +241,7 @@ def test_SegmentMaker_03():
 def test_SegmentMaker_04():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=2,
+        target_duration_in_seconds=2,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -338,7 +338,7 @@ def test_SegmentMaker_04():
 def test_SegmentMaker_05():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=2,
+        target_duration_in_seconds=2,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -412,7 +412,7 @@ def test_SegmentMaker_05():
 def test_SegmentMaker_06():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=3,
+        target_duration_in_seconds=3,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -515,7 +515,7 @@ def test_SegmentMaker_06():
 def test_SegmentMaker_07():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        duration_in_seconds=3,
+        target_duration_in_seconds=3,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=3,

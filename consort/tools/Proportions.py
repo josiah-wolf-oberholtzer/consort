@@ -27,13 +27,13 @@ class Proportions(datastructuretools.TypedList):
 
     ### PUBLIC METHODS ###
 
-    def get_segment_duration_in_seconds(self, segment_index, total_seconds):
+    def get_segment_target_duration_in_seconds(self, segment_index, total_seconds):
         segment_proportions = self[segment_index]
         segment_total = sum(sequencetools.flatten_sequence(
             segment_proportions))
         ratio = durationtools.Multiplier(segment_total, self.total)
-        duration_in_seconds = ratio * total_seconds
-        return duration_in_seconds
+        target_duration_in_seconds = ratio * total_seconds
+        return target_duration_in_seconds
 
     ### PUBLIC PROPERTIES ###
 

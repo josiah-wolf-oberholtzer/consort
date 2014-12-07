@@ -40,7 +40,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ...             violin_2_bowing_voice=consort.MusicSpecifier(),
         ...             ),
         ...         ),
-        ...     duration_in_seconds=2,
+        ...     target_duration_in_seconds=2,
         ...     tempo=indicatortools.Tempo((1, 4), 72),
         ...     permitted_time_signatures=(
         ...         (5, 8),
@@ -49,7 +49,7 @@ class SegmentMaker(makertools.SegmentMaker):
         ...     )
         >>> print(format(segment_maker))
         consort.tools.SegmentMaker(
-            duration_in_seconds=durationtools.Duration(2, 1),
+            target_duration_in_seconds=durationtools.Duration(2, 1),
             permitted_time_signatures=indicatortools.TimeSignatureInventory(
                 [
                     indicatortools.TimeSignature((5, 8)),
@@ -129,7 +129,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     __slots__ = (
         '_discard_final_silence',
-        '_duration_in_seconds',
+        '_target_duration_in_seconds',
         '_omit_stylesheets',
         '_is_final_segment',
         '_permitted_time_signatures',
@@ -144,7 +144,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def __init__(
         self,
         discard_final_silence=None,
-        duration_in_seconds=None,
+        target_duration_in_seconds=None,
         omit_stylesheets=None,
         is_final_segment=None,
         name=None,
@@ -159,7 +159,7 @@ class SegmentMaker(makertools.SegmentMaker):
             name=name,
             )
         self.discard_final_silence = discard_final_silence
-        self.duration_in_seconds = duration_in_seconds
+        self.target_duration_in_seconds = target_duration_in_seconds
         self.is_final_segment = is_final_segment
         self.omit_stylesheets = omit_stylesheets
         self.permitted_time_signatures = permitted_time_signatures
@@ -308,14 +308,14 @@ class SegmentMaker(makertools.SegmentMaker):
         self._discard_final_silence = discard_final_silence
 
     @property
-    def duration_in_seconds(self):
-        return self._duration_in_seconds
+    def target_duration_in_seconds(self):
+        return self._target_duration_in_seconds
 
-    @duration_in_seconds.setter
-    def duration_in_seconds(self, duration_in_seconds):
-        if duration_in_seconds is not None:
-            duration_in_seconds = durationtools.Duration(duration_in_seconds)
-        self._duration_in_seconds = duration_in_seconds
+    @target_duration_in_seconds.setter
+    def target_duration_in_seconds(self, target_duration_in_seconds):
+        if target_duration_in_seconds is not None:
+            target_duration_in_seconds = durationtools.Duration(target_duration_in_seconds)
+        self._target_duration_in_seconds = target_duration_in_seconds
 
     @property
     def final_markup(self):
@@ -504,12 +504,12 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def target_duration(self):
         tempo = self.tempo
-        tempo_duration_in_seconds = durationtools.Duration(
+        tempo_target_duration_in_seconds = durationtools.Duration(
             tempo.duration_to_milliseconds(tempo.duration),
             1000,
             )
         target_duration = durationtools.Duration((
-            self.duration_in_seconds / tempo_duration_in_seconds
+            self.target_duration_in_seconds / tempo_target_duration_in_seconds
             ).limit_denominator(8))
         target_duration *= tempo.duration
         count = target_duration // durationtools.Duration(1, 8)
