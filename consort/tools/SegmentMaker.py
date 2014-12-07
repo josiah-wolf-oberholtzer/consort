@@ -171,7 +171,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self.set_is_final_segment(is_final_segment)
         self.set_rehearsal_mark(rehearsal_mark)
         self.set_score_template(score_template)
-        self.set_tempo(tempo)
+        self.tempo = tempo
         self.set_permitted_time_signatures(permitted_time_signatures)
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
@@ -447,28 +447,6 @@ class SegmentMaker(makertools.SegmentMaker):
         '''
         self._score_template = score_template
 
-    def set_tempo(self, tempo=None):
-        r'''
-
-        ::
-
-            >>> import consort
-            >>> segment_maker = consort.SegmentMaker()
-            >>> tempo = indicatortools.Tempo((1, 4), 52)
-            >>> segment_maker.set_tempo(tempo)
-            >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
-                tempo=indicatortools.Tempo(
-                    duration=durationtools.Duration(1, 4),
-                    units_per_minute=52,
-                    ),
-                )
-
-        '''
-        if tempo is not None and not isinstance(tempo, indicatortools.Tempo):
-            tempo = indicatortools.Tempo(tempo)
-        self._tempo = tempo
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -585,7 +563,31 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def tempo(self):
+        r'''Gets and sets segment maker tempo.
+
+        ::
+
+            >>> import consort
+            >>> segment_maker = consort.SegmentMaker()
+            >>> tempo = indicatortools.Tempo((1, 4), 52)
+            >>> segment_maker.tempo = tempo
+            >>> print(format(segment_maker))
+            consort.tools.SegmentMaker(
+                tempo=indicatortools.Tempo(
+                    duration=durationtools.Duration(1, 4),
+                    units_per_minute=52,
+                    ),
+                )
+
+        '''
         return self._tempo
+
+    @tempo.setter
+    def tempo(self, tempo):
+        if tempo is not None:
+            if not isinstance(tempo, indicatortools.Tempo):
+                tempo = indicatortools.Tempo(tempo)
+        self._tempo = tempo
 
     @property
     def timespan(self):
