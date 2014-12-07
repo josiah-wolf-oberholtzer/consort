@@ -7,14 +7,19 @@ python:
 before_install:
     - wget -q http://download.linuxaudio.org/lilypond/binaries/linux-64/lilypond-2.19.15-1.linux-64.sh
     - sudo sh lilypond-2.19.15-1.linux-64.sh --batch
+    - pip install coveralls
+    - pip install coverage
 
 install:
     - pip install -r requirements.txt
     - pip install -e . 
 
 script:
-    - ajv doctest ./consort
-    - py.test -rf ./consort
+    - coverage run -a ajv doctest ./consort
+    - coverage run -a py.test -rf ./consort
+
+after_success:
+    coveralls
 
 notifications:
     email: false
