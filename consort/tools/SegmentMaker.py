@@ -162,13 +162,15 @@ class SegmentMaker(makertools.SegmentMaker):
             name=name,
             )
         self.discard_final_silence = discard_final_silence
+        self.duration_in_seconds = duration_in_seconds
         self.is_final_segment = is_final_segment
         self.omit_stylesheets = omit_stylesheets
-        self.set_duration_in_seconds(duration_in_seconds)
-        self.set_rehearsal_mark(rehearsal_mark)
-        self.set_score_template(score_template)
+        self.rehearsal_mark = rehearsal_mark
+        self.score_template = score_template
         self.tempo = tempo
+
         self.set_permitted_time_signatures(permitted_time_signatures)
+
         if settings is not None:
             assert isinstance(settings, collections.Sequence)
             prototype = consort.MusicSetting
@@ -359,11 +361,6 @@ class SegmentMaker(makertools.SegmentMaker):
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
 
-    def set_duration_in_seconds(self, duration_in_seconds=None):
-        if duration_in_seconds is not None:
-            duration_in_seconds = durationtools.Duration(duration_in_seconds)
-        self._duration_in_seconds = duration_in_seconds
-
     def set_permitted_time_signatures(self, permitted_time_signatures=None):
         r'''
 
@@ -391,38 +388,6 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
         self._permitted_time_signatures = permitted_time_signatures
 
-    def set_rehearsal_mark(self, rehearsal_mark=None):
-        self._rehearsal_mark = rehearsal_mark
-
-    def set_score_template(self, score_template=None):
-        r'''
-
-        ::
-
-            >>> import consort
-            >>> segment_maker = consort.SegmentMaker()
-            >>> score_template = templatetools.StringOrchestraScoreTemplate(
-            ...     violin_count=2,
-            ...     viola_count=1,
-            ...     cello_count=1,
-            ...     contrabass_count=0,
-            ...     )
-            >>> segment_maker.set_score_template(score_template)
-            >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
-                score_template=templatetools.StringOrchestraScoreTemplate(
-                    violin_count=2,
-                    viola_count=1,
-                    cello_count=1,
-                    contrabass_count=0,
-                    split_hands=True,
-                    use_percussion_clefs=False,
-                    ),
-                )
-
-        '''
-        self._score_template = score_template
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -438,6 +403,12 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def duration_in_seconds(self):
         return self._duration_in_seconds
+
+    @duration_in_seconds.setter
+    def duration_in_seconds(self, duration_in_seconds):
+        if duration_in_seconds is not None:
+            duration_in_seconds = durationtools.Duration(duration_in_seconds)
+        self._duration_in_seconds = duration_in_seconds
 
     @property
     def final_markup(self):
@@ -504,6 +475,10 @@ class SegmentMaker(makertools.SegmentMaker):
     def rehearsal_mark(self):
         return self._rehearsal_mark
 
+    @rehearsal_mark.setter
+    def rehearsal_mark(self, rehearsal_mark):
+        self._rehearsal_mark = rehearsal_mark
+
     @property
     def score_package_metadata(self):
         module_name = '{}.__metadata__'.format(self.score_package_name)
@@ -526,7 +501,37 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def score_template(self):
+        r'''Gets and sets segment maker's score template.
+
+        ::
+
+            >>> import consort
+            >>> segment_maker = consort.SegmentMaker()
+            >>> score_template = templatetools.StringOrchestraScoreTemplate(
+            ...     violin_count=2,
+            ...     viola_count=1,
+            ...     cello_count=1,
+            ...     contrabass_count=0,
+            ...     )
+            >>> segment_maker.score_template = score_template
+            >>> print(format(segment_maker))
+            consort.tools.SegmentMaker(
+                score_template=templatetools.StringOrchestraScoreTemplate(
+                    violin_count=2,
+                    viola_count=1,
+                    cello_count=1,
+                    contrabass_count=0,
+                    split_hands=True,
+                    use_percussion_clefs=False,
+                    ),
+                )
+
+        '''
         return self._score_template
+
+    @score_template.setter
+    def score_template(self, score_template):
+        self._score_template = score_template
 
     @property
     def settings(self):
