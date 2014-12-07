@@ -152,6 +152,10 @@ class PerformedTimespan(timespantools.Timespan):
         return self._layer
 
     @property
+    def minimum_duration(self):
+        return self._minimum_duration
+
+    @property
     def music(self):
         return self._music
 
@@ -166,10 +170,6 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def original_stop_offset(self):
         return self._original_stop_offset
-
-    @property
-    def minimum_duration(self):
-        return self._minimum_duration
 
     @property
     def voice_name(self):

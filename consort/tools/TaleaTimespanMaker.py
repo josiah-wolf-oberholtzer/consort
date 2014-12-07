@@ -643,12 +643,12 @@ class TaleaTimespanMaker(TimespanMaker):
         return self._padding
 
     @property
-    def playing_talea(self):
-        return self._playing_talea
-
-    @property
     def playing_groupings(self):
         return self._playing_groupings
+
+    @property
+    def playing_talea(self):
+        return self._playing_talea
 
     @property
     def reflect(self):

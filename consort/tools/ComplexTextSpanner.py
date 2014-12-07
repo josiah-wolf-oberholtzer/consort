@@ -116,33 +116,13 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         return lilypond_format_bundle
 
-    def _previous_spanner_is_similar(self, leaf):
-        previous_leaf = leaf._get_leaf(-1)
-        previous_spanner = None
-        previous_spanner_is_similar = False
-        if previous_leaf is not None:
-            spanners = previous_leaf._get_spanners(type(self))
-            if spanners:
-                assert len(spanners) == 1
-                previous_spanner = tuple(spanners)[0]
-                if previous_spanner.direction == self.direction:
-                    if previous_spanner.markup == self.markup:
-                        previous_spanner_is_similar = True
-        return previous_spanner_is_similar
-
-    def _next_spanner_is_similar(self, leaf):
-        next_leaf = leaf._get_leaf(1)
-        next_spanner = None
-        next_spanner_is_similar = False
-        if next_leaf is not None:
-            spanners = next_leaf._get_spanners(type(self))
-            if spanners:
-                assert len(spanners) == 1
-                next_spanner = tuple(spanners)[0]
-                if next_spanner.direction == self.direction:
-                    if next_spanner.markup == self.markup:
-                        next_spanner_is_similar = True
-        return next_spanner_is_similar
+    def _make_markup(self, lilypond_format_bundle):
+        direction = self.direction or Up
+        markup = markuptools.Markup(
+            self.markup.contents,
+            direction,
+            )
+        lilypond_format_bundle.right.markup.append(markup)
 
     def _make_spanner_start(self, lilypond_format_bundle):
         override = lilypondnametools.LilyPondGrobOverride(
@@ -195,13 +175,33 @@ class ComplexTextSpanner(spannertools.Spanner):
         string = r'<> \stopTextSpan'
         lilypond_format_bundle.after.indicators.append(string)
 
-    def _make_markup(self, lilypond_format_bundle):
-        direction = self.direction or Up
-        markup = markuptools.Markup(
-            self.markup.contents,
-            direction,
-            )
-        lilypond_format_bundle.right.markup.append(markup)
+    def _next_spanner_is_similar(self, leaf):
+        next_leaf = leaf._get_leaf(1)
+        next_spanner = None
+        next_spanner_is_similar = False
+        if next_leaf is not None:
+            spanners = next_leaf._get_spanners(type(self))
+            if spanners:
+                assert len(spanners) == 1
+                next_spanner = tuple(spanners)[0]
+                if next_spanner.direction == self.direction:
+                    if next_spanner.markup == self.markup:
+                        next_spanner_is_similar = True
+        return next_spanner_is_similar
+
+    def _previous_spanner_is_similar(self, leaf):
+        previous_leaf = leaf._get_leaf(-1)
+        previous_spanner = None
+        previous_spanner_is_similar = False
+        if previous_leaf is not None:
+            spanners = previous_leaf._get_spanners(type(self))
+            if spanners:
+                assert len(spanners) == 1
+                previous_spanner = tuple(spanners)[0]
+                if previous_spanner.direction == self.direction:
+                    if previous_spanner.markup == self.markup:
+                        previous_spanner_is_similar = True
+        return previous_spanner_is_similar
 
     ### PUBLIC PROPERTIES ###
 

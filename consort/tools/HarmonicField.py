@@ -80,23 +80,6 @@ class HarmonicField(datastructuretools.TypedTuple):
 
     ### PRIVATE METHODS ###
 
-    def _find_nearest_entries(
-        self,
-        structural_pitch,
-        entry_count=1,
-        pitch_range=None,
-        ):
-        entry_count = int(entry_count)
-        structural_pitch = pitchtools.NamedPitch(structural_pitch)
-        entries = sorted(self,
-            key=lambda x: abs(
-                (x.structural_pitch - structural_pitch).semitones
-                ),
-            )
-        if pitch_range is not None:
-            entries = [x for x in entries if x in pitch_range]
-        return entries[:entry_count]
-
     def _find_matching_entries(
         self,
         structural_pitch_class_subset=None,
@@ -122,6 +105,23 @@ class HarmonicField(datastructuretools.TypedTuple):
                     matching_entries.remove(entry)
                     nonmatching_entries.append(entry)
         return matching_entries, nonmatching_entries
+
+    def _find_nearest_entries(
+        self,
+        structural_pitch,
+        entry_count=1,
+        pitch_range=None,
+        ):
+        entry_count = int(entry_count)
+        structural_pitch = pitchtools.NamedPitch(structural_pitch)
+        entries = sorted(self,
+            key=lambda x: abs(
+                (x.structural_pitch - structural_pitch).semitones
+                ),
+            )
+        if pitch_range is not None:
+            entries = [x for x in entries if x in pitch_range]
+        return entries[:entry_count]
 
     ### PRIVATE PROPERTIES ###
 
@@ -362,6 +362,25 @@ class HarmonicField(datastructuretools.TypedTuple):
     ### PUBLIC PROPERTIES ###
 
     @property
+    def pitch_range(self):
+        r'''Gets pitch range of harmonic field.
+
+        ::
+
+            >>> pitch_range = harmonic_field.pitch_range
+            >>> pitch_range
+            PitchRange(range_string='[C4, F5]')
+
+        Returns pitch range.
+        '''
+        from abjad.tools import pitchtools
+        pitches = self.pitches
+        minimum = min(pitches)
+        maximum = max(pitches)
+        pitch_range = pitchtools.PitchRange.from_pitches(minimum, maximum)
+        return pitch_range
+
+    @property
     def pitches(self):
         r'''Gets all pitches in harmonic field.
 
@@ -390,25 +409,6 @@ class HarmonicField(datastructuretools.TypedTuple):
         for entry in self:
             pitches.extend(entry.pitches)
         return pitchtools.PitchSegment(pitches)
-
-    @property
-    def pitch_range(self):
-        r'''Gets pitch range of harmonic field.
-
-        ::
-
-            >>> pitch_range = harmonic_field.pitch_range
-            >>> pitch_range
-            PitchRange(range_string='[C4, F5]')
-
-        Returns pitch range.
-        '''
-        from abjad.tools import pitchtools
-        pitches = self.pitches
-        minimum = min(pitches)
-        maximum = max(pitches)
-        pitch_range = pitchtools.PitchRange.from_pitches(minimum, maximum)
-        return pitch_range
 
     @property
     def structural_pitches(self):

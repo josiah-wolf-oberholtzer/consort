@@ -12,10 +12,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
     ### PUBLIC METHODS ###
 
     @staticmethod
-    def make_staff_name(name):
-        name = ''.join(x for x in name if x.isalpha())
-        name = '{}Staff'.format(name)
-        return name
+    def attach_tag(label, context):
+        tag = indicatortools.LilyPondCommand(
+            name="tag {}".format(label),
+            format_slot='before',
+            )
+        attach(tag, context)
 
     @staticmethod
     def make_ensemble_group(
@@ -225,6 +227,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
         return performer_group
 
     @staticmethod
+    def make_staff_name(name):
+        name = ''.join(x for x in name if x.isalpha())
+        name = '{}Staff'.format(name)
+        return name
+
+    @staticmethod
     def make_time_signature_context():
         time_signature_context = scoretools.Context(
             context_name='TimeSignatureContext',
@@ -233,11 +241,3 @@ class ScoreTemplateManager(abctools.AbjadObject):
         label = 'time'
         ScoreTemplateManager.attach_tag(label, time_signature_context)
         return time_signature_context
-
-    @staticmethod
-    def attach_tag(label, context):
-        tag = indicatortools.LilyPondCommand(
-            name="tag {}".format(label),
-            format_slot='before',
-            )
-        attach(tag, context)

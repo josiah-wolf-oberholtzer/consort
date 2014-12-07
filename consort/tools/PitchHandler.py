@@ -103,38 +103,6 @@ class PitchHandler(abctools.AbjadValueObject):
                 )
 
     @staticmethod
-    def _get_seed(
-        attack_point_signature,
-        music_specifier,
-        pitch_application_rate,
-        seeds_by_music_specifier,
-        seeds_by_voice,
-        voice,
-        ):
-        if music_specifier not in seeds_by_music_specifier:
-            seed = (music_specifier.seed or 0) - 1
-            seeds_by_music_specifier[music_specifier] = seed
-            seeds_by_voice[voice] = seed
-        if pitch_application_rate == 'phrase':
-            if attack_point_signature.is_first_of_phrase:
-                seeds_by_music_specifier[music_specifier] += 1
-                seed = seeds_by_music_specifier[music_specifier]
-                seeds_by_voice[voice] = seed
-            else:
-                seed = seeds_by_voice[voice]
-        elif pitch_application_rate == 'division':
-            if attack_point_signature.is_first_of_division:
-                seeds_by_music_specifier[music_specifier] += 1
-                seed = seeds_by_music_specifier[music_specifier]
-                seeds_by_voice[voice] = seed
-            else:
-                seed = seeds_by_voice[voice]
-        else:
-            seeds_by_music_specifier[music_specifier] += 1
-            seed = seeds_by_music_specifier[music_specifier]
-        return seed
-
-    @staticmethod
     def _get_instrument(logical_tie):
         component = logical_tie.head
         prototype = instrumenttools.Instrument
@@ -167,6 +135,38 @@ class PitchHandler(abctools.AbjadValueObject):
         if pitch_range is None:
             pitch_range = instrument.pitch_range
         return pitch_range
+
+    @staticmethod
+    def _get_seed(
+        attack_point_signature,
+        music_specifier,
+        pitch_application_rate,
+        seeds_by_music_specifier,
+        seeds_by_voice,
+        voice,
+        ):
+        if music_specifier not in seeds_by_music_specifier:
+            seed = (music_specifier.seed or 0) - 1
+            seeds_by_music_specifier[music_specifier] = seed
+            seeds_by_voice[voice] = seed
+        if pitch_application_rate == 'phrase':
+            if attack_point_signature.is_first_of_phrase:
+                seeds_by_music_specifier[music_specifier] += 1
+                seed = seeds_by_music_specifier[music_specifier]
+                seeds_by_voice[voice] = seed
+            else:
+                seed = seeds_by_voice[voice]
+        elif pitch_application_rate == 'division':
+            if attack_point_signature.is_first_of_division:
+                seeds_by_music_specifier[music_specifier] += 1
+                seed = seeds_by_music_specifier[music_specifier]
+                seeds_by_voice[voice] = seed
+            else:
+                seed = seeds_by_voice[voice]
+        else:
+            seeds_by_music_specifier[music_specifier] += 1
+            seed = seeds_by_music_specifier[music_specifier]
+        return seed
 
     @staticmethod
     def _get_transposition(

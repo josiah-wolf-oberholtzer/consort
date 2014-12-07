@@ -9,6 +9,7 @@ from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
 from abjad.tools import scoretools
+from abjad.tools import selectiontools
 from abjad.tools import spannertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
@@ -23,6 +24,21 @@ from supriya.tools import timetools
 class TimeManager(abctools.AbjadValueObject):
 
     ### PUBLIC METHODS ###
+
+    @staticmethod
+    def can_rewrite_meter(inscribed_timespan):
+        music_specifier = inscribed_timespan.music_specifier
+        if music_specifier is None:
+            return True
+        rhythm_maker = music_specifier.rhythm_maker
+        if rhythm_maker is None:
+            return True
+        specifier = rhythm_maker.duration_spelling_specifier
+        if specifier is None:
+            return True
+        if specifier.permit_meter_rewriting is False:
+            return False
+        return True
 
     @staticmethod
     def cleanup_logical_ties(music):
@@ -389,6 +405,49 @@ class TimeManager(abctools.AbjadValueObject):
         return demultiplexed_timespans
 
     @staticmethod
+    def division_is_silent(division):
+        r'''Is true when division only contains rests, at any depth.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> division = scoretools.Container("c'4 d'4 e'4 f'4")
+            >>> consort.TimeManager.division_is_silent(division)
+            False
+
+        ::
+
+            >>> division = scoretools.Container('r4 r8 r16 r32')
+            >>> consort.TimeManager.division_is_silent(division)
+            True
+
+        ::
+
+            >>> division = scoretools.Container(
+            ...     r"c'4 \times 2/3 { d'8 r8 e'8 } f'4")
+            >>> consort.TimeManager.division_is_silent(division)
+            False
+
+        ::
+
+            >>> division = scoretools.Container(
+            ...     r'\times 2/3 { r4 \times 2/3 { r8. } }')
+            >>> consort.TimeManager.division_is_silent(division)
+            True
+
+        Returns boolean.
+        '''
+        rest_prototype = (
+            scoretools.Rest,
+            scoretools.MultimeasureRest,
+            )
+        leaves = division.select_leaves()
+        return all(isinstance(leaf, rest_prototype) for leaf in leaves)
+
+    @staticmethod
     def execute(
         discard_final_silence=None,
         permitted_time_signatures=None,
@@ -506,81 +565,6 @@ class TimeManager(abctools.AbjadValueObject):
         return rhythm_maker
 
     @staticmethod
-    def group_timespans(timespans):
-        def grouper(timespan):
-            music_specifier = None
-            if isinstance(timespan, consort.PerformedTimespan):
-                music_specifier = timespan.music_specifier
-                if music_specifier is None:
-                    music_specifier = consort.MusicSpecifier()
-            return music_specifier
-        import consort
-        for partitioned_timespans in timespans.partition(
-            include_tangent_timespans=True):
-            for music_specifier, grouped_timespans in itertools.groupby(
-                partitioned_timespans, grouper):
-                grouped_timespans = timespantools.TimespanInventory(
-                    grouped_timespans)
-                yield music_specifier, grouped_timespans
-
-    @staticmethod
-    def make_simple_music(rhythm_maker, durations, seed=None):
-        music = rhythm_maker(durations, seeds=seed)
-        for i, x in enumerate(music):
-            if len(x) == 1 and isinstance(x[0], scoretools.Tuplet):
-                music[i] = x[0]
-            else:
-                music[i] = scoretools.Container(x)
-        music = scoretools.Container(music)
-        for x in music[:]:
-            if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
-                mutate(x).swap(scoretools.Container())
-        return music
-
-    @staticmethod
-    def division_is_silent(division):
-        r'''Is true when division only contains rests, at any depth.
-
-        ::
-
-            >>> import consort
-
-        ::
-
-            >>> division = scoretools.Container("c'4 d'4 e'4 f'4")
-            >>> consort.TimeManager.division_is_silent(division)
-            False
-
-        ::
-
-            >>> division = scoretools.Container('r4 r8 r16 r32')
-            >>> consort.TimeManager.division_is_silent(division)
-            True
-
-        ::
-
-            >>> division = scoretools.Container(
-            ...     r"c'4 \times 2/3 { d'8 r8 e'8 } f'4")
-            >>> consort.TimeManager.division_is_silent(division)
-            False
-
-        ::
-
-            >>> division = scoretools.Container(
-            ...     r'\times 2/3 { r4 \times 2/3 { r8. } }')
-            >>> consort.TimeManager.division_is_silent(division)
-            True
-
-        Returns boolean.
-        '''
-        rest_prototype = (
-            scoretools.Rest,
-            scoretools.MultimeasureRest,
-            )
-        leaves = division.select_leaves()
-        return all(isinstance(leaf, rest_prototype) for leaf in leaves)
-
-    @staticmethod
     def group_nonsilent_divisions(music):
         r'''Groups non-silent divisions together.
 
@@ -622,6 +606,50 @@ class TimeManager(abctools.AbjadValueObject):
                 group.append(division)
         if group:
             yield tuple(reversed(group))
+
+    @staticmethod
+    def group_timespans(timespans):
+        def grouper(timespan):
+            music_specifier = None
+            if isinstance(timespan, consort.PerformedTimespan):
+                music_specifier = timespan.music_specifier
+                if music_specifier is None:
+                    music_specifier = consort.MusicSpecifier()
+            return music_specifier
+        import consort
+        for partitioned_timespans in timespans.partition(
+            include_tangent_timespans=True):
+            for music_specifier, grouped_timespans in itertools.groupby(
+                partitioned_timespans, grouper):
+                grouped_timespans = timespantools.TimespanInventory(
+                    grouped_timespans)
+                yield music_specifier, grouped_timespans
+
+    @staticmethod
+    def inscribe_demultiplexed_timespans(
+        demultiplexed_timespans,
+        score,
+        ):
+        counter = collections.Counter()
+        voice_names = demultiplexed_timespans.keys()
+        voice_names = TimeManager.sort_voice_names(score, voice_names)
+        for voice_name in voice_names:
+            inscribed_timespans = timespantools.TimespanInventory()
+            uninscribed_timespans = demultiplexed_timespans[voice_name]
+            for timespan in uninscribed_timespans:
+                if timespan.music is None:
+                    music_specifier = timespan.music_specifier
+                    if music_specifier not in counter:
+                        if music_specifier is None:
+                            seed = 0
+                        else:
+                            seed = music_specifier.seed or 0
+                        counter[music_specifier] = seed
+                    result = TimeManager.inscribe_timespan(timespan, seed=seed)
+                    inscribed_timespans.extend(result)
+                else:
+                    inscribed_timespans.append(timespan)
+            demultiplexed_timespans[voice_name] = inscribed_timespans
 
     @staticmethod
     def inscribe_timespan(timespan, seed=None):
@@ -775,30 +803,70 @@ class TimeManager(abctools.AbjadValueObject):
         return inscribed_timespans
 
     @staticmethod
-    def inscribe_demultiplexed_timespans(
-        demultiplexed_timespans,
-        score,
-        ):
-        counter = collections.Counter()
-        voice_names = demultiplexed_timespans.keys()
-        voice_names = TimeManager.sort_voice_names(score, voice_names)
-        for voice_name in voice_names:
-            inscribed_timespans = timespantools.TimespanInventory()
-            uninscribed_timespans = demultiplexed_timespans[voice_name]
-            for timespan in uninscribed_timespans:
-                if timespan.music is None:
-                    music_specifier = timespan.music_specifier
-                    if music_specifier not in counter:
-                        if music_specifier is None:
-                            seed = 0
-                        else:
-                            seed = music_specifier.seed or 0
-                        counter[music_specifier] = seed
-                    result = TimeManager.inscribe_timespan(timespan, seed=seed)
-                    inscribed_timespans.extend(result)
-                else:
-                    inscribed_timespans.append(timespan)
-            demultiplexed_timespans[voice_name] = inscribed_timespans
+    def leaf_is_tied(leaf):
+        prototype = spannertools.Tie
+        leaf_tie = None
+        if inspect_(leaf).get_spanners(prototype):
+            leaf_tie = inspect_(leaf).get_spanner(prototype)
+        else:
+            return False
+        next_leaf = inspect_(leaf).get_leaf(1)
+        if next_leaf is not None:
+            if inspect_(next_leaf).get_spanners(prototype):
+                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
+                if leaf_tie is next_leaf_tie:
+                    return True
+        return False
+
+    @staticmethod
+    def make_simple_music(rhythm_maker, durations, seed=None):
+        music = rhythm_maker(durations, seeds=seed)
+        for i, x in enumerate(music):
+            if len(x) == 1 and isinstance(x[0], scoretools.Tuplet):
+                music[i] = x[0]
+            else:
+                music[i] = scoretools.Container(x)
+        music = scoretools.Container(music)
+        for x in music[:]:
+            if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
+                mutate(x).swap(scoretools.Container())
+        return music
+
+    @staticmethod
+    def meters_to_offsets(meters):
+        r'''Converts `meters` to offsets.
+
+        ::
+
+            >>> import consort
+
+        ::
+
+            >>> meters = [
+            ...     metertools.Meter((3, 4)),
+            ...     metertools.Meter((2, 4)),
+            ...     metertools.Meter((6, 8)),
+            ...     metertools.Meter((5, 16)),
+            ...     ]
+
+        ::
+
+            >>> offsets = consort.TimeManager.meters_to_offsets(meters)
+            >>> for x in offsets:
+            ...     x
+            ...
+            Offset(0, 1)
+            Offset(3, 4)
+            Offset(5, 4)
+            Offset(2, 1)
+            Offset(37, 16)
+
+        Returns tuple of offsets.
+        '''
+        durations = [_.preprolated_duration for _ in meters]
+        offsets = mathtools.cumulative_sums(durations)
+        offsets = [durationtools.Offset(_) for _ in offsets]
+        return tuple(offsets)
 
     @staticmethod
     def meters_to_timespans(meters):
@@ -868,42 +936,6 @@ class TimeManager(abctools.AbjadValueObject):
                 )
             timespans.insert(timespan)
         return timespans
-
-    @staticmethod
-    def meters_to_offsets(meters):
-        r'''Converts `meters` to offsets.
-
-        ::
-
-            >>> import consort
-
-        ::
-
-            >>> meters = [
-            ...     metertools.Meter((3, 4)),
-            ...     metertools.Meter((2, 4)),
-            ...     metertools.Meter((6, 8)),
-            ...     metertools.Meter((5, 16)),
-            ...     ]
-
-        ::
-
-            >>> offsets = consort.TimeManager.meters_to_offsets(meters)
-            >>> for x in offsets:
-            ...     x
-            ...
-            Offset(0, 1)
-            Offset(3, 4)
-            Offset(5, 4)
-            Offset(2, 1)
-            Offset(37, 16)
-
-        Returns tuple of offsets.
-        '''
-        durations = [_.preprolated_duration for _ in meters]
-        offsets = mathtools.cumulative_sums(durations)
-        offsets = [durationtools.Offset(_) for _ in offsets]
-        return tuple(offsets)
 
     @staticmethod
     def multiplex_timespans(demultiplexed_timespans):
@@ -1205,49 +1237,6 @@ class TimeManager(abctools.AbjadValueObject):
         return resolved_inventory
 
     @staticmethod
-    def can_rewrite_meter(inscribed_timespan):
-        music_specifier = inscribed_timespan.music_specifier
-        if music_specifier is None:
-            return True
-        rhythm_maker = music_specifier.rhythm_maker
-        if rhythm_maker is None:
-            return True
-        specifier = rhythm_maker.duration_spelling_specifier
-        if specifier is None:
-            return True
-        if specifier.permit_meter_rewriting is False:
-            return False
-        return True
-
-    @staticmethod
-    def rewrite_meters(
-        demultiplexed_timespans,
-        meters,
-        ):
-        meter_timespans = TimeManager.meters_to_timespans(meters)
-        for voice_name in sorted(demultiplexed_timespans):
-            inscribed_timespans = demultiplexed_timespans[voice_name]
-            for inscribed_timespan in inscribed_timespans:
-                if not TimeManager.can_rewrite_meter(inscribed_timespan):
-                    continue
-                for container in inscribed_timespan.music:
-                    container_timespan = inspect_(container).get_timespan()
-                    container_timespan = container_timespan.translate(
-                        inscribed_timespan.start_offset)
-                    intersecting_meters = \
-                        meter_timespans.find_timespans_intersecting_timespan(
-                            container_timespan)
-                    intersecting_meters = [
-                        _.translate(-1 * inscribed_timespan.start_offset)
-                        for _ in intersecting_meters
-                        ]
-                    TimeManager.rewrite_container_meter(
-                        container,
-                        intersecting_meters,
-                        )
-                    TimeManager.cleanup_logical_ties(container)
-
-    @staticmethod
     def rewrite_container_meter(
         container,
         meter_timespans,
@@ -1255,6 +1244,8 @@ class TimeManager(abctools.AbjadValueObject):
         assert meter_timespans
         assert meter_timespans[0].start_offset <= \
             inspect_(container).get_timespan().start_offset
+        last_leaf = container.select_leaves()[-1]
+        is_tied = TimeManager.leaf_is_tied(last_leaf)
         container_timespan = inspect_(container).get_timespan()
         if isinstance(container, scoretools.Tuplet):
             contents_duration = container._contents_duration
@@ -1287,6 +1278,40 @@ class TimeManager(abctools.AbjadValueObject):
         else:
             # TODO: handle barline-crossing containers
             pass
+        if is_tied:
+            last_leaf = container.select_leaves()[-1]
+            next_leaf = inspect_(last_leaf).get_leaf(1)
+            selection = selectiontools.ContiguousSelection((
+                last_leaf, next_leaf))
+            selection._attach_tie_spanner_to_leaf_pair()
+
+    @staticmethod
+    def rewrite_meters(
+        demultiplexed_timespans,
+        meters,
+        ):
+        meter_timespans = TimeManager.meters_to_timespans(meters)
+        for voice_name in sorted(demultiplexed_timespans):
+            inscribed_timespans = demultiplexed_timespans[voice_name]
+            for inscribed_timespan in inscribed_timespans:
+                if not TimeManager.can_rewrite_meter(inscribed_timespan):
+                    continue
+                for container in inscribed_timespan.music:
+                    container_timespan = inspect_(container).get_timespan()
+                    container_timespan = container_timespan.translate(
+                        inscribed_timespan.start_offset)
+                    intersecting_meters = \
+                        meter_timespans.find_timespans_intersecting_timespan(
+                            container_timespan)
+                    intersecting_meters = [
+                        _.translate(-1 * inscribed_timespan.start_offset)
+                        for _ in intersecting_meters
+                        ]
+                    TimeManager.rewrite_container_meter(
+                        container,
+                        intersecting_meters,
+                        )
+                    TimeManager.cleanup_logical_ties(container)
 
     @staticmethod
     def sort_voice_names(score, voice_names):

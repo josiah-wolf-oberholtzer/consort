@@ -334,15 +334,6 @@ class SegmentMaker(makertools.SegmentMaker):
         return selected_voice_names
 
     @staticmethod
-    def logical_tie_to_voice(logical_tie):
-        parentage = inspect_(logical_tie.head).get_parentage()
-        voice = None
-        for parent in parentage:
-            if isinstance(parent, scoretools.Voice):
-                voice = parent
-        return voice
-
-    @staticmethod
     def logical_tie_to_music_specifier(logical_tie):
         import consort
         parentage = inspect_(logical_tie.head).get_parentage()
@@ -353,6 +344,15 @@ class SegmentMaker(makertools.SegmentMaker):
                 continue
             music_specifier = inspect_(parent).get_indicator(prototype)
         return music_specifier
+
+    @staticmethod
+    def logical_tie_to_voice(logical_tie):
+        parentage = inspect_(logical_tie.head).get_parentage()
+        voice = None
+        for parent in parentage:
+            if isinstance(parent, scoretools.Voice):
+                voice = parent
+        return voice
 
     def make_lilypond_file(self):
         lilypond_file = lilypondfiletools.LilyPondFile()
@@ -367,9 +367,6 @@ class SegmentMaker(makertools.SegmentMaker):
         if duration_in_seconds is not None:
             duration_in_seconds = durationtools.Duration(duration_in_seconds)
         self._duration_in_seconds = duration_in_seconds
-
-    def set_rehearsal_mark(self, rehearsal_mark=None):
-        self._rehearsal_mark = rehearsal_mark
 
     def set_is_final_segment(self, is_final_segment=None):
         r'''
@@ -390,6 +387,36 @@ class SegmentMaker(makertools.SegmentMaker):
         else:
             is_final_segment = True
         self._is_final_segment = is_final_segment
+
+    def set_permitted_time_signatures(self, permitted_time_signatures=None):
+        r'''
+
+        ::
+
+            >>> import consort
+            >>> segment_maker = consort.SegmentMaker()
+            >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
+            >>> segment_maker.set_permitted_time_signatures(time_signatures)
+            >>> print(format(segment_maker))
+            consort.tools.SegmentMaker(
+                permitted_time_signatures=indicatortools.TimeSignatureInventory(
+                    [
+                        indicatortools.TimeSignature((3, 4)),
+                        indicatortools.TimeSignature((2, 4)),
+                        indicatortools.TimeSignature((5, 8)),
+                        ]
+                    ),
+                )
+
+        '''
+        if permitted_time_signatures is not None:
+            permitted_time_signatures = indicatortools.TimeSignatureInventory(
+                items=permitted_time_signatures,
+                )
+        self._permitted_time_signatures = permitted_time_signatures
+
+    def set_rehearsal_mark(self, rehearsal_mark=None):
+        self._rehearsal_mark = rehearsal_mark
 
     def set_score_template(self, score_template=None):
         r'''
@@ -442,33 +469,6 @@ class SegmentMaker(makertools.SegmentMaker):
             tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
 
-    def set_permitted_time_signatures(self, permitted_time_signatures=None):
-        r'''
-
-        ::
-
-            >>> import consort
-            >>> segment_maker = consort.SegmentMaker()
-            >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
-            >>> segment_maker.set_permitted_time_signatures(time_signatures)
-            >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
-                permitted_time_signatures=indicatortools.TimeSignatureInventory(
-                    [
-                        indicatortools.TimeSignature((3, 4)),
-                        indicatortools.TimeSignature((2, 4)),
-                        indicatortools.TimeSignature((5, 8)),
-                        ]
-                    ),
-                )
-
-        '''
-        if permitted_time_signatures is not None:
-            permitted_time_signatures = indicatortools.TimeSignatureInventory(
-                items=permitted_time_signatures,
-                )
-        self._permitted_time_signatures = permitted_time_signatures
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -504,12 +504,12 @@ class SegmentMaker(makertools.SegmentMaker):
         return final_markup
 
     @property
-    def omit_stylesheets(self):
-        return self._omit_stylesheets
-
-    @property
     def is_final_segment(self):
         return self._is_final_segment
+
+    @property
+    def omit_stylesheets(self):
+        return self._omit_stylesheets
 
     @property
     def permitted_time_signatures(self):

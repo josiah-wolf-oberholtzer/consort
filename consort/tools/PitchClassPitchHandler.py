@@ -144,6 +144,21 @@ class PitchClassPitchHandler(PitchHandler):
             (pitch, pitch.octave_number, pitch_range)
         return pitch
 
+    def _get_pitch(
+        self,
+        pitch_class,
+        registration,
+        seed,
+        ):
+        octavations = self.octavations or self._default_octavations
+        octave = octavations[seed]
+        pitch = pitchtools.NamedPitch(pitch_class, octave)
+        pitch_range = pitchtools.PitchRange('[C0, C8)')
+        pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
+        pitch = registration([pitch])[0]
+        pitch = pitchtools.NamedPitch(pitch)
+        return pitch
+
     def _get_pitch_class(
         self,
         previous_pitch,
@@ -165,21 +180,6 @@ class PitchClassPitchHandler(PitchHandler):
                         pitch_class = transform(pitch_class)
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
         return pitch_class
-
-    def _get_pitch(
-        self,
-        pitch_class,
-        registration,
-        seed,
-        ):
-        octavations = self.octavations or self._default_octavations
-        octave = octavations[seed]
-        pitch = pitchtools.NamedPitch(pitch_class, octave)
-        pitch_range = pitchtools.PitchRange('[C0, C8)')
-        pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
-        pitch = registration([pitch])[0]
-        pitch = pitchtools.NamedPitch(pitch)
-        return pitch
 
     def _get_registration(
         self,

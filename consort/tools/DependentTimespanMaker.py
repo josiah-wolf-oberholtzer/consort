@@ -263,16 +263,16 @@ class DependentTimespanMaker(TimespanMaker):
         return self._include_inner_stops
 
     @property
-    def rotation_indices(self):
-        return self._rotation_indices
-
-    @property
     def is_dependent(self):
         return True
 
     @property
     def labels(self):
         return self._labels
+
+    @property
+    def rotation_indices(self):
+        return self._rotation_indices
 
     @property
     def voice_names(self):
