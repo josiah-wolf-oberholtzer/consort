@@ -156,7 +156,6 @@ class SegmentMaker(makertools.SegmentMaker):
         settings=None,
         tempo=None,
         ):
-        import consort
         makertools.SegmentMaker.__init__(
             self,
             name=name,
@@ -165,18 +164,11 @@ class SegmentMaker(makertools.SegmentMaker):
         self.duration_in_seconds = duration_in_seconds
         self.is_final_segment = is_final_segment
         self.omit_stylesheets = omit_stylesheets
+        self.permitted_time_signatures = permitted_time_signatures
         self.rehearsal_mark = rehearsal_mark
         self.score_template = score_template
         self.tempo = tempo
-
-        self.set_permitted_time_signatures(permitted_time_signatures)
-
-        if settings is not None:
-            assert isinstance(settings, collections.Sequence)
-            prototype = consort.MusicSetting
-            assert all(isinstance(x, prototype) for x in settings)
-            settings = list(settings)
-        self._settings = settings or []
+        self.settings = settings
 
     ### SPECIAL METHODS ###
 
@@ -361,33 +353,6 @@ class SegmentMaker(makertools.SegmentMaker):
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
 
-    def set_permitted_time_signatures(self, permitted_time_signatures=None):
-        r'''
-
-        ::
-
-            >>> import consort
-            >>> segment_maker = consort.SegmentMaker()
-            >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
-            >>> segment_maker.set_permitted_time_signatures(time_signatures)
-            >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
-                permitted_time_signatures=indicatortools.TimeSignatureInventory(
-                    [
-                        indicatortools.TimeSignature((3, 4)),
-                        indicatortools.TimeSignature((2, 4)),
-                        indicatortools.TimeSignature((5, 8)),
-                        ]
-                    ),
-                )
-
-        '''
-        if permitted_time_signatures is not None:
-            permitted_time_signatures = indicatortools.TimeSignatureInventory(
-                items=permitted_time_signatures,
-                )
-        self._permitted_time_signatures = permitted_time_signatures
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -469,7 +434,35 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def permitted_time_signatures(self):
+        r'''Gets and sets segment maker's permitted time signatures.
+
+        ::
+
+            >>> import consort
+            >>> segment_maker = consort.SegmentMaker()
+            >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
+            >>> segment_maker.permitted_time_signatures = time_signatures
+            >>> print(format(segment_maker))
+            consort.tools.SegmentMaker(
+                permitted_time_signatures=indicatortools.TimeSignatureInventory(
+                    [
+                        indicatortools.TimeSignature((3, 4)),
+                        indicatortools.TimeSignature((2, 4)),
+                        indicatortools.TimeSignature((5, 8)),
+                        ]
+                    ),
+                )
+
+        '''
         return self._permitted_time_signatures
+
+    @permitted_time_signatures.setter
+    def permitted_time_signatures(self, permitted_time_signatures):
+        if permitted_time_signatures is not None:
+            permitted_time_signatures = indicatortools.TimeSignatureInventory(
+                items=permitted_time_signatures,
+                )
+        self._permitted_time_signatures = permitted_time_signatures
 
     @property
     def rehearsal_mark(self):
@@ -535,9 +528,16 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def settings(self):
-        if self._settings is None:
-            return None
         return tuple(self._settings)
+
+    @settings.setter
+    def settings(self, settings):
+        import consort
+        if settings is not None:
+            assert isinstance(settings, collections.Sequence)
+            assert all(isinstance(_, consort.MusicSetting) for _ in settings)
+            settings = list(settings)
+        self._settings = settings or []
 
     @property
     def stylesheet_file_paths(self):
