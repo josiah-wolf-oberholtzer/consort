@@ -243,37 +243,25 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def configure_score(self, score):
+        first_leaf = score['TimeSignatureContext'].select_leaves()[0]
         if self.rehearsal_mark is not None:
-            markup = markuptools.Markup(r'''
-                \override #'(box-padding . 0.5)
-                    \box "{}"
-                " "
-                \fontsize #-3
-                    "{}"
-                '''.format(str(self.rehearsal_mark), self.name or ' '),
+            markup_a = markuptools.Markup(
+                '"{}"'.format(str(self.rehearsal_mark)),
                 )
-            rehearsal_mark = indicatortools.RehearsalMark(
-                markup=markup,
-                )
-            attach(
-                rehearsal_mark,
-                score['TimeSignatureContext'].select_leaves()[0],
-                )
+            markup_a = markup_a.box()
+            markup_a = markup_a.override(('box-padding', 0.5))
+            markup_b = markuptools.Markup('"{}"'.format(self.name or ' '))
+            markup_b = markup_b.fontsize(-3)
+            markup = markuptools.Markup.concat([markup_a, ' ', markup_b])
+            rehearsal_mark = indicatortools.RehearsalMark(markup=markup)
+            attach(rehearsal_mark, first_leaf)
         if self.tempo is not None:
-            attach(
-                self.tempo,
-                score['TimeSignatureContext'].select_leaves()[0],
-                )
+            attach(self.tempo, first_leaf)
         if self.is_final_segment:
             score.add_final_markup(self.final_markup)
-            score.add_final_bar_line(
-                to_each_voice=True,
-                )
+            score.add_final_bar_line(abbreviation='|.', to_each_voice=True)
         else:
-            score.add_final_bar_line(
-                abbreviation='||',
-                to_each_voice=True,
-                )
+            score.add_final_bar_line(abbreviation='||', to_each_voice=True)
         assert inspect_(score).is_well_formed()
         return score
 
