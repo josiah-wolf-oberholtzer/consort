@@ -321,15 +321,14 @@ class SegmentMaker(makertools.SegmentMaker):
     def final_markup(self):
         metadata = self.score_package_metadata
         contents = [' ', ' ', ' ']
-        locale = metadata['locale']
+        locale = metadata.get('locale', 'Nowhere')
         if isinstance(locale, str):
             contents.append(locale)
         else:
             contents.extend(locale)
-        time_period = '{} - {}'.format(
-            metadata['time_period'][0],
-            metadata['time_period'][1],
-            )
+        time_period_default = ('2001', '3001')
+        time_period = metadata.get('time_period', time_period_default)
+        time_period = '{} - {}'.format(time_period[0], time_period[1])
         contents.append(time_period)
         column = markuptools.MarkupCommand(
             'center-column', contents
@@ -417,8 +416,11 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def score_package_metadata(self):
         module_name = '{}.__metadata__'.format(self.score_package_name)
-        module = importlib.import_module(module_name)
-        metadata = getattr(module, 'metadata')
+        try:
+            module = importlib.import_module(module_name)
+            metadata = getattr(module, 'metadata')
+        except ImportError:
+            metadata = {}
         return metadata
 
     @property
