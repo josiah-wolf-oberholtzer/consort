@@ -85,7 +85,7 @@ class GraceHandler(abctools.AbjadValueObject):
         attack_point_map = segment_session.attack_point_map
         for logical_tie in attack_point_map:
             music_specifier = \
-                consort.SegmentMaker._logical_tie_to_music_specifier(
+                consort.SegmentMaker.logical_tie_to_music_specifier(
                     logical_tie)
             if not music_specifier:
                 continue

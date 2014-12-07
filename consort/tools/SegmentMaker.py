@@ -210,8 +210,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 exit_message='\ttotal:',
                 ):
                 consort.AttachmentHandler._process_session(segment_session)
-        lilypond_file = self._make_lilypond_file()
-        score = self._configure_score(segment_session.score)
+        lilypond_file = self.make_lilypond_file()
+        score = self.configure_score(segment_session.score)
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
@@ -221,9 +221,40 @@ class SegmentMaker(makertools.SegmentMaker):
     def __illustrate__(self):
         return self()
 
-    ### PRIVATE METHODS ###
+    ### PRIVATE PROPERTIES ###
 
-    def _configure_score(self, score):
+    @property
+    def _storage_format_specification(self):
+        from abjad.tools import systemtools
+        manager = systemtools.StorageFormatManager
+        keyword_argument_names = manager.get_keyword_argument_names(self)
+        keyword_argument_names = list(keyword_argument_names)
+        if not self.settings:
+            keyword_argument_names.remove('settings')
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=keyword_argument_names
+            )
+
+    ### PUBLIC METHODS ###
+
+    def add_setting(
+        self,
+        color=None,
+        timespan_identifier=None,
+        timespan_maker=None,
+        **music_specifiers
+        ):
+        import consort
+        setting = consort.MusicSetting(
+            color=color,
+            timespan_identifier=timespan_identifier,
+            timespan_maker=timespan_maker,
+            **music_specifiers
+            )
+        self._settings.append(setting)
+
+    def configure_score(self, score):
         if self.rehearsal_mark is not None:
             markup = markuptools.Markup(r'''
                 \override #'(box-padding . 0.5)
@@ -259,7 +290,7 @@ class SegmentMaker(makertools.SegmentMaker):
         return score
 
     @staticmethod
-    def _find_voice_names(
+    def find_voice_names(
         score_template=None,
         voice_identifier=None,
         ):
@@ -278,7 +309,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ...     'Violin \\d+ Bowing Voice',
             ...     'Viola Bowing Voice',
             ...     )
-            >>> consort.SegmentMaker._find_voice_names(
+            >>> consort.SegmentMaker.find_voice_names(
             ...     score_template=score_template,
             ...     voice_identifier=voice_identifier,
             ...     )
@@ -303,7 +334,7 @@ class SegmentMaker(makertools.SegmentMaker):
         return selected_voice_names
 
     @staticmethod
-    def _logical_tie_to_voice(logical_tie):
+    def logical_tie_to_voice(logical_tie):
         parentage = inspect_(logical_tie.head).get_parentage()
         voice = None
         for parent in parentage:
@@ -312,7 +343,7 @@ class SegmentMaker(makertools.SegmentMaker):
         return voice
 
     @staticmethod
-    def _logical_tie_to_music_specifier(logical_tie):
+    def logical_tie_to_music_specifier(logical_tie):
         import consort
         parentage = inspect_(logical_tie.head).get_parentage()
         music_specifier = None
@@ -323,7 +354,7 @@ class SegmentMaker(makertools.SegmentMaker):
             music_specifier = inspect_(parent).get_indicator(prototype)
         return music_specifier
 
-    def _make_lilypond_file(self):
+    def make_lilypond_file(self):
         lilypond_file = lilypondfiletools.LilyPondFile()
         if not self.omit_stylesheets:
             lilypond_file.use_relative_includes = True
@@ -331,39 +362,6 @@ class SegmentMaker(makertools.SegmentMaker):
                 lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        from abjad.tools import systemtools
-        manager = systemtools.StorageFormatManager
-        keyword_argument_names = manager.get_keyword_argument_names(self)
-        keyword_argument_names = list(keyword_argument_names)
-        if not self.settings:
-            keyword_argument_names.remove('settings')
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names
-            )
-
-    ### PUBLIC METHODS ###
-
-    def add_setting(
-        self,
-        color=None,
-        timespan_identifier=None,
-        timespan_maker=None,
-        **music_specifiers
-        ):
-        import consort
-        setting = consort.MusicSetting(
-            color=color,
-            timespan_identifier=timespan_identifier,
-            timespan_maker=timespan_maker,
-            **music_specifiers
-            )
-        self._settings.append(setting)
 
     def set_duration_in_seconds(self, duration_in_seconds=None):
         if duration_in_seconds is not None:
