@@ -452,7 +452,7 @@ class TimeManager(abctools.AbjadValueObject):
         discard_final_silence=None,
         permitted_time_signatures=None,
         segment_session=None,
-        target_duration=None,
+        desired_duration=None,
         score_template=None,
         settings=None,
         ):
@@ -470,7 +470,7 @@ class TimeManager(abctools.AbjadValueObject):
                     score,
                     score_template,
                     settings,
-                    target_duration,
+                    desired_duration,
                     )
         with systemtools.Timer(
             enter_message='\tpopulating dependent timespans:',
@@ -482,7 +482,7 @@ class TimeManager(abctools.AbjadValueObject):
                 score,
                 score_template,
                 settings,
-                target_duration,
+                desired_duration,
                 )
         with systemtools.Timer('\tpopulated silent timespans:'):
             demultiplexed_timespans = TimeManager.populate_silent_timespans(
@@ -515,7 +515,7 @@ class TimeManager(abctools.AbjadValueObject):
     @staticmethod
     def find_meters(
         permitted_time_signatures=None,
-        target_duration=None,
+        desired_duration=None,
         timespan_inventory=None,
         ):
         offset_counter = datastructuretools.TypedCounter(
@@ -524,7 +524,7 @@ class TimeManager(abctools.AbjadValueObject):
         for timespan in timespan_inventory:
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
-        offset_counter[target_duration] += 100
+        offset_counter[desired_duration] += 100
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
@@ -1006,7 +1006,7 @@ class TimeManager(abctools.AbjadValueObject):
         score,
         score_template,
         settings,
-        target_duration,
+        desired_duration,
         ):
         with systemtools.Timer('\t\tpopulated timespans:'):
             TimeManager.populate_multiplexed_timespans(
@@ -1014,7 +1014,7 @@ class TimeManager(abctools.AbjadValueObject):
                 score=score,
                 score_template=score_template,
                 settings=settings,
-                target_duration=target_duration,
+                desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
                 )
         with systemtools.Timer('\t\tdemultiplexed timespans:'):
@@ -1044,7 +1044,7 @@ class TimeManager(abctools.AbjadValueObject):
         score,
         score_template,
         settings,
-        target_duration,
+        desired_duration,
         ):
         with systemtools.Timer('\t\tpopulated timespans:'):
             TimeManager.populate_multiplexed_timespans(
@@ -1052,13 +1052,13 @@ class TimeManager(abctools.AbjadValueObject):
                 score=score,
                 score_template=score_template,
                 settings=settings,
-                target_duration=target_duration,
+                desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
                 )
         with systemtools.Timer('\t\tfound meters:'):
             meters = TimeManager.find_meters(
                 permitted_time_signatures=permitted_time_signatures,
-                target_duration=target_duration,
+                desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
                 )
         meter_offsets = TimeManager.meters_to_offsets(meters)
@@ -1097,10 +1097,10 @@ class TimeManager(abctools.AbjadValueObject):
         score=None,
         score_template=None,
         settings=None,
-        target_duration=None,
+        desired_duration=None,
         timespan_inventory=None,
         ):
-        target_timespan = timespantools.Timespan(0, target_duration)
+        target_timespan = timespantools.Timespan(0, desired_duration)
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         independent_settings = [setting for setting in settings

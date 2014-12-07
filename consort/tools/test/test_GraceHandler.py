@@ -19,7 +19,7 @@ def test_GraceHandler_01():
         )
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        target_duration_in_seconds=4,
+        desired_duration_in_seconds=4,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -163,7 +163,7 @@ def test_GraceHandler_02():
         )
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        target_duration_in_seconds=4,
+        desired_duration_in_seconds=4,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,
@@ -329,7 +329,7 @@ def test_GraceHandler_03():
         )
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        target_duration_in_seconds=4,
+        desired_duration_in_seconds=4,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=2,

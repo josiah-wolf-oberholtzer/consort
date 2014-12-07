@@ -8,7 +8,7 @@ import consort
 def test_SegmentMaker_is_final_segment_01():
     segment_maker = consort.SegmentMaker(
         discard_final_silence=True,
-        target_duration_in_seconds=4,
+        desired_duration_in_seconds=4,
         is_final_segment=True,
         omit_stylesheets=True,
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
