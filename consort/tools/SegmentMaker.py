@@ -161,14 +161,10 @@ class SegmentMaker(makertools.SegmentMaker):
             self,
             name=name,
             )
-        if discard_final_silence is not None:
-            discard_final_silence = bool(discard_final_silence)
-        self._discard_final_silence = discard_final_silence
-        if omit_stylesheets is not None:
-            omit_stylesheets = bool(omit_stylesheets)
-        self._omit_stylesheets = omit_stylesheets
+        self.discard_final_silence = discard_final_silence
+        self.is_final_segment = is_final_segment
+        self.omit_stylesheets = omit_stylesheets
         self.set_duration_in_seconds(duration_in_seconds)
-        self.set_is_final_segment(is_final_segment)
         self.set_rehearsal_mark(rehearsal_mark)
         self.set_score_template(score_template)
         self.tempo = tempo
@@ -368,26 +364,6 @@ class SegmentMaker(makertools.SegmentMaker):
             duration_in_seconds = durationtools.Duration(duration_in_seconds)
         self._duration_in_seconds = duration_in_seconds
 
-    def set_is_final_segment(self, is_final_segment=None):
-        r'''
-
-        ::
-
-            >>> import consort
-            >>> segment_maker = consort.SegmentMaker()
-            >>> segment_maker.set_is_final_segment(True)
-            >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
-                is_final_segment=True,
-                )
-
-        '''
-        if not is_final_segment:
-            is_final_segment = None
-        else:
-            is_final_segment = True
-        self._is_final_segment = is_final_segment
-
     def set_permitted_time_signatures(self, permitted_time_signatures=None):
         r'''
 
@@ -453,6 +429,12 @@ class SegmentMaker(makertools.SegmentMaker):
     def discard_final_silence(self):
         return self._discard_final_silence
 
+    @discard_final_silence.setter
+    def discard_final_silence(self, discard_final_silence):
+        if discard_final_silence is not None:
+            discard_final_silence = bool(discard_final_silence)
+        self._discard_final_silence = discard_final_silence
+
     @property
     def duration_in_seconds(self):
         return self._duration_in_seconds
@@ -483,11 +465,36 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def is_final_segment(self):
+        r'''Gets and sets if segment maker's segment is final.
+
+        ::
+
+            >>> import consort
+            >>> segment_maker = consort.SegmentMaker()
+            >>> segment_maker.is_final_segment = True
+            >>> print(format(segment_maker))
+            consort.tools.SegmentMaker(
+                is_final_segment=True,
+                )
+
+        '''
         return self._is_final_segment
+
+    @is_final_segment.setter
+    def is_final_segment(self, is_final_segment):
+        if is_final_segment is not None:
+            is_final_segment = bool(is_final_segment)
+        self._is_final_segment = is_final_segment
 
     @property
     def omit_stylesheets(self):
         return self._omit_stylesheets
+
+    @omit_stylesheets.setter
+    def omit_stylesheets(self, omit_stylesheets):
+        if omit_stylesheets is not None:
+            omit_stylesheets = bool(omit_stylesheets)
+        self._omit_stylesheets = omit_stylesheets
 
     @property
     def permitted_time_signatures(self):
