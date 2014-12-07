@@ -3,7 +3,6 @@ from __future__ import print_function
 import collections
 import importlib
 import os
-import re
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
@@ -14,7 +13,6 @@ from abjad.tools import templatetools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 from experimental.tools import makertools
 
 
@@ -278,50 +276,6 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
         assert inspect_(score).is_well_formed()
         return score
-
-    @staticmethod
-    def find_voice_names(
-        score_template=None,
-        voice_identifier=None,
-        ):
-        r'''Find voice names matching `voice_identifier` in `score_template`:
-
-        ::
-
-            >>> import consort
-            >>> score_template = templatetools.StringOrchestraScoreTemplate(
-            ...     violin_count=2,
-            ...     viola_count=1,
-            ...     cello_count=1,
-            ...     contrabass_count=1,
-            ...     )
-            >>> voice_identifier = (
-            ...     'Violin \\d+ Bowing Voice',
-            ...     'Viola Bowing Voice',
-            ...     )
-            >>> consort.SegmentMaker.find_voice_names(
-            ...     score_template=score_template,
-            ...     voice_identifier=voice_identifier,
-            ...     )
-            ('Violin 1 Bowing Voice', 'Violin 2 Bowing Voice', 'Viola Bowing Voice')
-
-        '''
-        score = score_template()
-        all_voice_names = [voice.name for voice in
-            iterate(score).by_class(scoretools.Voice)]
-        matched_voice_names = set()
-        for voice_identifier in voice_identifier:
-            pattern = re.compile(voice_identifier)
-            for voice_name in all_voice_names:
-                match = pattern.match(voice_name)
-                if match:
-                    matched_voice_names.add(voice_name)
-        selected_voice_names = []
-        for voice_name in all_voice_names:
-            if voice_name in matched_voice_names:
-                selected_voice_names.append(voice_name)
-        selected_voice_names = tuple(selected_voice_names)
-        return selected_voice_names
 
     @staticmethod
     def logical_tie_to_music_specifier(logical_tie):
