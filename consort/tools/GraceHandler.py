@@ -32,20 +32,37 @@ class GraceHandler(abctools.AbjadValueObject):
 
     __slots__ = (
         '_counts',
+        '_only_if_preceded_by_nonsilence',
+        '_only_if_preceded_by_silence',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        counts=None,
+        counts=(1,),
+        only_if_preceded_by_nonsilence=None,
+        only_if_preceded_by_silence=None,
         ):
         if counts is not None:
+            if not isinstance(counts, collections.Sequence):
+                counts = (counts,)
             assert len(counts)
             assert mathtools.all_are_nonnegative_integer_equivalent_numbers(
                 counts)
             counts = tuple(counts)
         self._counts = counts
+        if only_if_preceded_by_nonsilence is not None:
+            only_if_preceded_by_nonsilence = bool(
+                only_if_preceded_by_nonsilence)
+        if only_if_preceded_by_silence is not None:
+            only_if_preceded_by_silence = bool(
+                only_if_preceded_by_silence)
+        assert not (
+            only_if_preceded_by_silence and only_if_preceded_by_nonsilence
+            )
+        self._only_if_preceded_by_silence = only_if_preceded_by_silence
+        self._only_if_preceded_by_nonsilence = only_if_preceded_by_nonsilence
 
     ### SPECIAL METHODS ###
 
@@ -61,6 +78,17 @@ class GraceHandler(abctools.AbjadValueObject):
         previous_leaf = logical_tie.head._get_leaf(-1)
         if previous_leaf is None:
             return
+        silence_prototype = (
+            scoretools.Rest,
+            scoretools.MultimeasureRest,
+            scoretools.Skip,
+            )
+        if self.only_if_preceded_by_silence:
+            if not isinstance(previous_leaf, silence_prototype):
+                return
+        if self.only_if_preceded_by_nonsilence:
+            if isinstance(previous_leaf, silence_prototype):
+                return
         grace_count = counts[0]
         if not grace_count:
             return
@@ -125,3 +153,11 @@ class GraceHandler(abctools.AbjadValueObject):
     @property
     def counts(self):
         return self._counts
+
+    @property
+    def only_if_preceded_by_nonsilence(self):
+        return self._only_if_preceded_by_nonsilence
+
+    @property
+    def only_if_preceded_by_silence(self):
+        return self._only_if_preceded_by_silence
