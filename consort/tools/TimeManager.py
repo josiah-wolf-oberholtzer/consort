@@ -27,6 +27,11 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def can_rewrite_meter(inscribed_timespan):
+        r'''Is true if containers to be inscribed into `inscribed_timespan` can
+        undergo meter rewriting. Otherwise false.
+
+        Returns boolean.
+        '''
         music_specifier = inscribed_timespan.music_specifier
         if music_specifier is None:
             return True
