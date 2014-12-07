@@ -738,10 +738,8 @@ class TimeManager(abctools.AbjadValueObject):
 
         Returns timespan inventory.
         '''
-        #import consort
         inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = TimeManager.get_rhythm_maker(timespan.music_specifier)
-        #consort.debug(repr(rhythm_maker))
         durations = timespan.divisions[:]
         music = TimeManager.make_simple_music(
             rhythm_maker,
@@ -781,17 +779,14 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         score,
         ):
-        #import consort
         counter = collections.Counter()
         voice_names = demultiplexed_timespans.keys()
         voice_names = TimeManager.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
             inscribed_timespans = timespantools.TimespanInventory()
             uninscribed_timespans = demultiplexed_timespans[voice_name]
-            #consort.debug('{}: {}'.format(voice_name, len(uninscribed_timespans)))
             for timespan in uninscribed_timespans:
                 if timespan.music is None:
-                    #consort.debug('\tHAS NO MUSIC')
                     music_specifier = timespan.music_specifier
                     if music_specifier not in counter:
                         if music_specifier is None:
@@ -800,10 +795,8 @@ class TimeManager(abctools.AbjadValueObject):
                             seed = music_specifier.seed or 0
                         counter[music_specifier] = seed
                     result = TimeManager.inscribe_timespan(timespan, seed=seed)
-                    #consort.debug('\tRESULT?: {}'.format(result))
                     inscribed_timespans.extend(result)
                 else:
-                    #consort.debug('\tHAS MUSIC')
                     inscribed_timespans.append(timespan)
             demultiplexed_timespans[voice_name] = inscribed_timespans
 
@@ -1231,7 +1224,6 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         meters,
         ):
-        #import consort
         meter_timespans = TimeManager.meters_to_timespans(meters)
         for voice_name in sorted(demultiplexed_timespans):
             inscribed_timespans = demultiplexed_timespans[voice_name]
@@ -1239,11 +1231,9 @@ class TimeManager(abctools.AbjadValueObject):
                 if not TimeManager.can_rewrite_meter(inscribed_timespan):
                     continue
                 for container in inscribed_timespan.music:
-                    #consort.debug(repr(container))
                     container_timespan = inspect_(container).get_timespan()
                     container_timespan = container_timespan.translate(
                         inscribed_timespan.start_offset)
-                    #consort.debug(container_timespan)
                     intersecting_meters = \
                         meter_timespans.find_timespans_intersecting_timespan(
                             container_timespan)
@@ -1251,7 +1241,6 @@ class TimeManager(abctools.AbjadValueObject):
                         _.translate(-1 * inscribed_timespan.start_offset)
                         for _ in intersecting_meters
                         ]
-                    #consort.debug(intersecting_meters)
                     TimeManager.rewrite_container_meter(
                         container,
                         intersecting_meters,
@@ -1332,7 +1321,7 @@ class TimeManager(abctools.AbjadValueObject):
             while offsets and offsets[0] < timespan.stop_offset:
                 current_offsets.append(offsets.pop(0))
             if hasattr(timespan, 'music') and timespan.music:
-                # We don't need to split inscribed timespans
+                # We don't need to split already-inscribed timespans
                 split_inventory.append(timespan)
                 continue
             if current_offsets and timespan.can_split:
