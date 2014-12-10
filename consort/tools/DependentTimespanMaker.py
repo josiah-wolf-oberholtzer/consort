@@ -224,7 +224,7 @@ class DependentTimespanMaker(TimespanMaker):
     @property
     def _attribute_manifest(self):
         from abjad.tools import systemtools
-        from scoremanager import idetools
+        from ide import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
                 name='can_split',

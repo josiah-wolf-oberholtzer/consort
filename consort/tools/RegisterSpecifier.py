@@ -149,7 +149,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         '''
         from abjad.tools import systemtools
         import consort
-        from scoremanager import idetools
+        from ide import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
                 name='center_pitch',

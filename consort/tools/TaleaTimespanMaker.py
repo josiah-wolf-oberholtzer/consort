@@ -6,7 +6,7 @@ from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
 from abjad.tools.topleveltools import new
 from consort.tools.TimespanMaker import TimespanMaker
-from scoremanager import idetools
+from ide import idetools
 import collections
 
 

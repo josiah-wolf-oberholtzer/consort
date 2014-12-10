@@ -2,7 +2,7 @@
 from abjad.tools import abctools
 from abjad.tools import systemtools
 from abjad.tools.topleveltools import new
-from scoremanager import idetools
+from ide import idetools
 
 
 class HarmonicFieldEntry(abctools.AbjadObject):
