@@ -11,7 +11,9 @@ before_install:
     - pip install coverage
 
 install:
-    - pip install -r requirements.txt
+    - pip install --allow-external abjad --allow-unverified abjad -e git://github.com/Abjad/abjad.git#egg=abjad
+    - pip install --allow-external ide --allow-unverified ide -e git://github.com/Abjad/ide.git#egg=ide
+    - pip install --allow-external supriya --allow-unverified supriya -e git://github.com/Pulgama/supriya.git#egg=supriya
     - pip install -e . 
 
 script:
