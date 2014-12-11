@@ -4,7 +4,6 @@ from distutils.core import setup
 
 install_requires = (
     'abjad',
-    'ide',
     'supriya',
     )
 
