@@ -36,8 +36,8 @@ class PitchHandler(abctools.AbjadValueObject):
         self._forbid_repetitions = forbid_repetitions
         if chord_expressions is not None:
             prototype = (
-                tools.ChordExpression,
-                tools.KeyClusterExpression,
+                consort.ChordExpression,
+                consort.KeyClusterExpression,
                 )
             assert chord_expressions
             assert all(isinstance(x, prototype) for x in chord_expressions)

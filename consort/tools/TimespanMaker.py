@@ -6,7 +6,7 @@ from abjad.tools import timespantools
 
 
 class TimespanMaker(abctools.AbjadValueObject):
-    r'''Abstract base class for timespan tools.
+    r'''Abstract base class for timespan makers.
     '''
 
     ### CLASS VARIABLES ###

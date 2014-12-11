@@ -18,4 +18,4 @@ class RegisterSpecifierInventory(datastructuretools.TypedList):
     @property
     def _item_callable(self):
         import consort
-        return tools.RegisterSpecifier
+        return consort.RegisterSpecifier

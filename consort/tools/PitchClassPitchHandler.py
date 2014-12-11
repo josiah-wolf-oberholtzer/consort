@@ -86,7 +86,7 @@ class PitchClassPitchHandler(PitchHandler):
         self._pitch_range = pitch_range
         self._pitch_classes = pitch_classes
         if register_specifier is not None:
-            assert isinstance(register_specifier, tools.RegisterSpecifier)
+            assert isinstance(register_specifier, consort.RegisterSpecifier)
         self._register_specifier = register_specifier
         if register_spread is not None:
             register_spread = int(register_spread)
@@ -190,7 +190,7 @@ class PitchClassPitchHandler(PitchHandler):
         import consort
         register_specifier = self.register_specifier
         if register_specifier is None:
-            register_specifier = tools.RegisterSpecifier()
+            register_specifier = consort.RegisterSpecifier()
         register = register_specifier.find_register(
             attack_point_signature,
             seed=phrase_seed,

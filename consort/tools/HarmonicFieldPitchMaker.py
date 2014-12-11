@@ -30,7 +30,7 @@ class HarmonicFieldPitchHandler(PitchHandler):
             allow_repetition=allow_repetition,
             chord_expressions=chord_expressions,
             )
-        prototype = tools.HarmonicField
+        prototype = consort.HarmonicField
         if harmonic_fields:
             if isinstance(harmonic_fields, prototype):
                 harmonic_fields = (harmonic_fields,)
@@ -38,7 +38,7 @@ class HarmonicFieldPitchHandler(PitchHandler):
             harmonic_fields = sequencetools.CyclicTuple(harmonic_fields)
         self._harmonic_fields = harmonic_fields
         if register_specifier is not None:
-            assert isinstance(register_specifier, tools.RegisterSpecifier)
+            assert isinstance(register_specifier, consort.RegisterSpecifier)
         self._register_specifier = register_specifier
 
     ### PRIVATE METHODS ###
@@ -76,12 +76,12 @@ class HarmonicFieldPitchHandler(PitchHandler):
         seed=0,
         ):
         import consort
-        attack_point_signature = tools.AttackPointSignature.from_logical_tie(
+        attack_point_signature = consort.AttackPointSignature.from_logical_tie(
             logical_tie,
             )
         register_specifier = self.register_specifier
         if register_specifier is None:
-            register_specifier = tools.RegisterSpecifier()
+            register_specifier = consort.RegisterSpecifier()
         register = register_specifier.find_register(
             attack_point_signature,
             seed=seed

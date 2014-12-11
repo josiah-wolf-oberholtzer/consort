@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import systemtools
 from abjad.tools import timespantools
-from consort import tools
+import consort
 import collections
 
 
@@ -13,7 +13,7 @@ target_timespan = timespantools.Timespan(0, 1)
 
 
 def test_FloodedTimespanMaker_01():
-    timespan_maker = tools.FloodedTimespanMaker()
+    timespan_maker = consort.FloodedTimespanMaker()
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
