@@ -39,8 +39,9 @@ class PitchHandler(abctools.AbjadValueObject):
                 consort.ChordExpression,
                 consort.KeyClusterExpression,
                 )
-            assert chord_expressions
-            assert all(isinstance(x, prototype) for x in chord_expressions)
+            assert chord_expressions, chord_expressions
+            assert all(isinstance(x, prototype) for x in chord_expressions), \
+                chord_expressions
             chord_expressions = datastructuretools.CyclicTuple(
                 chord_expressions,
                 )
@@ -56,7 +57,8 @@ class PitchHandler(abctools.AbjadValueObject):
                 pitchtools.Multiplication,
                 pitchtools.Transposition,
                 )
-            assert all(isinstance(_, prototype) for _ in transform_stack)
+            assert all(isinstance(_, prototype) for _ in transform_stack), \
+                transform_stack
             transform_stack = tuple(transform_stack)
         self._transform_stack = transform_stack
 
