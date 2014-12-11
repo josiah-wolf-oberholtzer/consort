@@ -85,7 +85,7 @@ class ClefSpanner(spannertools.Spanner):
 
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
-        first_leaf = self._leaves[0]
+        first_leaf = self._get_leaves()[0]
         current_clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
         if self._is_my_only_leaf(leaf):
             if self.clef != current_clef:
