@@ -803,6 +803,8 @@ class TimeManager(abctools.AbjadValueObject):
                 start_offset=start_offset,
                 stop_offset=stop_offset,
                 )
+            assert inspect_(container).get_duration() == \
+                inscribed_timespan.duration
             inscribed_timespans.append(inscribed_timespan)
         inscribed_timespans.sort()
         return inscribed_timespans
@@ -1146,6 +1148,8 @@ class TimeManager(abctools.AbjadValueObject):
         for voice_name, timespans in demultiplexed_timespans.items():
             voice = score[voice_name]
             for timespan in timespans:
+                assert timespan.duration == \
+                    inspect_(timespan.music).get_duration()
                 voice.append(timespan.music)
         return score
 
