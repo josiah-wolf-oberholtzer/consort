@@ -496,19 +496,26 @@ class TimeManager(abctools.AbjadValueObject):
                 score,
                 score_template,
                 )
+
+        with systemtools.Timer('\tvalidated timespans:'):
+            TimeManager.validate_timespans(demultiplexed_timespans)
+
         with systemtools.Timer('\trewrote meters:'):
             TimeManager.rewrite_meters(
                 demultiplexed_timespans,
                 meters,
                 )
+
         with systemtools.Timer('\tpopulated score:'):
             score = TimeManager.populate_score(
                 demultiplexed_timespans,
                 meters,
                 score,
                 )
+
         with systemtools.Timer('\tcollected attack points: '):
             attack_point_map = TimeManager.collect_attack_points(score)
+
         segment_session.attack_point_map = attack_point_map
         segment_session.meters = meters
         segment_session.score = score
@@ -789,7 +796,8 @@ class TimeManager(abctools.AbjadValueObject):
             stop_offset = inspect_(group[-1]).get_timespan().stop_offset
             start_offset += timespan.start_offset
             stop_offset += timespan.start_offset
-            container = scoretools.Container(group)
+            container = scoretools.Container()
+            container.extend(group)
             beam = spannertools.GeneralizedBeam(
                 durations=[division._get_duration() for division in music],
                 include_long_duration_notes=True,
@@ -808,6 +816,8 @@ class TimeManager(abctools.AbjadValueObject):
                 )
             assert inspect_(container).get_duration() == \
                 inscribed_timespan.duration
+            assert inspect_(container).get_timespan().start_offset == 0
+            assert inspect_(container[0]).get_timespan().start_offset == 0
             inscribed_timespans.append(inscribed_timespan)
         inscribed_timespans.sort()
         return inscribed_timespans
@@ -1035,6 +1045,9 @@ class TimeManager(abctools.AbjadValueObject):
                 meter_offsets,
                 demultiplexed_timespans,
                 )
+        with systemtools.Timer('\t\tpruned short timespans:'):
+            for voice_name, timespans in demultiplexed_timespans.items():
+                TimeManager.prune_short_timespans(timespans)
         with systemtools.Timer('\t\tconsolidated timespans:'):
             TimeManager.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
@@ -1092,6 +1105,8 @@ class TimeManager(abctools.AbjadValueObject):
         with systemtools.Timer('\t\tmultiplexed timespans:'):
             multiplexed_timespans = TimeManager.multiplex_timespans(
                 demultiplexed_timespans)
+        with systemtools.Timer('\t\tpruned short timespans:'):
+            TimeManager.prune_short_timespans(multiplexed_timespans)
         with systemtools.Timer('\t\tpruned meters:'):
             meters = TimeManager.prune_meters(
                 discard_final_silence,
@@ -1219,6 +1234,13 @@ class TimeManager(abctools.AbjadValueObject):
         return tuple(meters)
 
     @staticmethod
+    def prune_short_timespans(timespans):
+        for timespan in timespans[:]:
+            if timespan.minimum_duration and \
+                timespan.duration < timespan.minimum_duration:
+                timespans.remove(timespan)
+
+    @staticmethod
     def resolve_timespan_inventories(
         timespan_inventories=None,
         ):
@@ -1238,6 +1260,10 @@ class TimeManager(abctools.AbjadValueObject):
                 resolved_inventory,
                 timespan_inventory,
                 )
+            for timespan in resolved_inventory[:]:
+                if timespan.minimum_duration and \
+                    timespan.duration < timespan.minimum_duration:
+                    resolved_inventory.remove(timespan)
             for timespan in timespan_inventory:
                 if isinstance(timespan, consort.SilentTimespan):
                     continue
@@ -1268,21 +1294,18 @@ class TimeManager(abctools.AbjadValueObject):
                 maximum_dot_count=1,
                 )
         elif len(meter_timespans) == 1:
-
             container_timespan = inspect_(container).get_timespan()
             container_start_offset = container_timespan.start_offset
             container_stop_offset = container_timespan.stop_offset
             meter_timespan = meter_timespans[0]
             relative_meter_start_offset = meter_timespan.start_offset
             assert relative_meter_start_offset <= container_start_offset
-
             absolute_meter_stop_offset = (
                 relative_meter_start_offset +
                 container_start_offset +
                 meter_timespan.duration
                 )
             assert container_stop_offset <= absolute_meter_stop_offset
-
             if meter_timespan.is_congruent_to_timespan(container_timespan) \
                 and TimeManager.division_is_silent(container):
                 multi_measure_rest = scoretools.MultimeasureRest(1)
@@ -1302,7 +1325,7 @@ class TimeManager(abctools.AbjadValueObject):
                     )
         else:
             # TODO: handle barline-crossing containers
-            pass
+            raise AssertionError('Barline-crossing containers not permitted.')
         if is_tied:
             last_leaf = container.select_leaves()[-1]
             next_leaf = inspect_(last_leaf).get_leaf(1)
@@ -1328,14 +1351,20 @@ class TimeManager(abctools.AbjadValueObject):
                     ))
                 if not TimeManager.can_rewrite_meter(inscribed_timespan):
                     continue
-                for container in inscribed_timespan.music:
+                for i, container in enumerate(inscribed_timespan.music):
                     container_timespan = inspect_(container).get_timespan()
                     container_timespan = container_timespan.translate(
                         inscribed_timespan.start_offset)
+                    if i == 0:
+                        assert container_timespan.start_offset == \
+                            inscribed_timespan.start_offset
+                    if i == (len(inscribed_timespan.music) - 1):
+                        assert container_timespan.stop_offset == \
+                            inscribed_timespan.stop_offset
                     intersecting_meters = \
                         meter_timespans.find_timespans_intersecting_timespan(
                             container_timespan)
-                    intersecting_meters = [
+                    shifted_intersecting_meters = [
                         _.translate(-1 * inscribed_timespan.start_offset)
                         for _ in intersecting_meters
                         ]
@@ -1347,7 +1376,7 @@ class TimeManager(abctools.AbjadValueObject):
                         consort.debug('\t\t\t' + repr(intersecting_meter))
                     TimeManager.rewrite_container_meter(
                         container,
-                        intersecting_meters,
+                        shifted_intersecting_meters,
                         )
                     TimeManager.cleanup_logical_ties(container)
 
@@ -1528,3 +1557,15 @@ class TimeManager(abctools.AbjadValueObject):
         resulting_timespans = timespantools.TimespanInventory(
             resulting_timespans[:])
         return resulting_timespans
+
+    @staticmethod
+    def validate_timespans(demultiplexed_timespans):
+        durations = set()
+        for voice_name, timespans in demultiplexed_timespans.items():
+            timespans.sort()
+            assert timespans.start_offset == 0
+            assert timespans.all_are_contiguous
+            assert timespans.all_are_well_formed
+            assert timespans.all_are_nonoverlapping
+            durations.add(timespans.stop_offset)
+        assert len(tuple(durations)) == 1
