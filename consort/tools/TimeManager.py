@@ -779,6 +779,9 @@ class TimeManager(abctools.AbjadValueObject):
             durations,
             seed,
             )
+        assert inspect_(music).get_duration() == timespan.duration
+        for container, duration in zip(music, durations):
+            assert inspect_(container).get_duration() == duration
         music = TimeManager.consolidate_rests(music)
         assert inspect_(music).get_duration() == timespan.duration
         for group in TimeManager.group_nonsilent_divisions(music):
@@ -1265,7 +1268,22 @@ class TimeManager(abctools.AbjadValueObject):
                 maximum_dot_count=1,
                 )
         elif len(meter_timespans) == 1:
-            if meter_timespans[0].is_congruent_to_timespan(container_timespan) \
+
+            container_timespan = inspect_(container).get_timespan()
+            container_start_offset = container_timespan.start_offset
+            container_stop_offset = container_timespan.stop_offset
+            meter_timespan = meter_timespans[0]
+            relative_meter_start_offset = meter_timespan.start_offset
+            assert relative_meter_start_offset <= container_start_offset
+
+            absolute_meter_stop_offset = (
+                relative_meter_start_offset +
+                container_start_offset +
+                meter_timespan.duration
+                )
+            assert container_stop_offset <= absolute_meter_stop_offset
+
+            if meter_timespan.is_congruent_to_timespan(container_timespan) \
                 and TimeManager.division_is_silent(container):
                 multi_measure_rest = scoretools.MultimeasureRest(1)
                 duration = inspect_(container).get_duration()
@@ -1273,11 +1291,9 @@ class TimeManager(abctools.AbjadValueObject):
                 attach(multiplier, multi_measure_rest)
                 container[:] = [multi_measure_rest]
             else:
-                meter = meter_timespans[0].annotation
-                meter_offset = meter_timespans[0].start_offset
-                container_timespan = inspect_(container).get_timespan()
-                container_offset = container_timespan.start_offset
-                initial_offset = container_offset - meter_offset
+                meter = meter_timespan.annotation
+                meter_offset = meter_timespan.start_offset
+                initial_offset = container_start_offset - meter_offset
                 mutate(container[:]).rewrite_meter(
                     meter,
                     boundary_depth=1,
@@ -1299,10 +1315,17 @@ class TimeManager(abctools.AbjadValueObject):
         demultiplexed_timespans,
         meters,
         ):
+        import consort
         meter_timespans = TimeManager.meters_to_timespans(meters)
         for voice_name in sorted(demultiplexed_timespans):
+            consort.debug('VOICE: {}'.format(voice_name))
             inscribed_timespans = demultiplexed_timespans[voice_name]
             for inscribed_timespan in inscribed_timespans:
+                consort.debug('\t{!s} {!s} {!r}'.format(
+                    inscribed_timespan.start_offset,
+                    inscribed_timespan.stop_offset,
+                    inscribed_timespan.music,
+                    ))
                 if not TimeManager.can_rewrite_meter(inscribed_timespan):
                     continue
                 for container in inscribed_timespan.music:
@@ -1316,6 +1339,12 @@ class TimeManager(abctools.AbjadValueObject):
                         _.translate(-1 * inscribed_timespan.start_offset)
                         for _ in intersecting_meters
                         ]
+                    consort.debug('\t\t{!r} {!r}'.format(
+                        container,
+                        container_timespan,
+                        ))
+                    for intersecting_meter in intersecting_meters:
+                        consort.debug('\t\t\t' + repr(intersecting_meter))
                     TimeManager.rewrite_container_meter(
                         container,
                         intersecting_meters,
