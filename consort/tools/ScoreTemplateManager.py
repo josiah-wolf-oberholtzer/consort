@@ -13,8 +13,9 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def attach_tag(label, context):
+        label = stringtools.to_dash_case(label)
         tag = indicatortools.LilyPondCommand(
-            name="tag {}".format(label),
+            name="tag #'{}".format(label),
             format_slot='before',
             )
         attach(tag, context)
@@ -178,6 +179,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             performer_group.append(right_hand_staff)
             performer_group.append(left_hand_staff)
             attach(clef, left_hand_voice)
+            attach(indicatortools.Clef('percussion'), right_hand_voice)
             right_hand_abbreviation = '{}_rh'.format(abbreviation)
             left_hand_abbreviation = '{}_lh'.format(abbreviation)
             score_template._context_name_abbreviations[
