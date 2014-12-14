@@ -14,67 +14,86 @@ import copy
 class AttachmentExpression(abctools.AbjadValueObject):
     r'''An attachment specifier.
 
-    ::
+    ..  container:: example
 
-        >>> import consort
-        >>> attachment_expression = consort.AttachmentExpression(
-        ...     attachments=(indicatortools.Articulation('>'),),
-        ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
-        ...     )
-        >>> print(format(attachment_expression))
-        consort.tools.AttachmentExpression(
-            attachments=datastructuretools.TypedList(
-                [
-                    indicatortools.Articulation('>'),
-                    ]
-                ),
-            selector=selectortools.Selector(
-                callbacks=(
-                    selectortools.PrototypeSelectorCallback(
-                        prototype=scoretools.Leaf,
-                        ),
-                    selectortools.RunSelectorCallback(
-                        prototype=scoretools.Note,
-                        ),
-                    selectortools.ItemSelectorCallback(
-                        item=0,
-                        apply_to_each=True,
+        ::
+
+            >>> import consort
+            >>> attachment_expression = consort.AttachmentExpression(
+            ...     attachments=(indicatortools.Articulation('>'),),
+            ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
+            ...     )
+            >>> print(format(attachment_expression))
+            consort.tools.AttachmentExpression(
+                attachments=datastructuretools.TypedList(
+                    [
+                        indicatortools.Articulation('>'),
+                        ]
+                    ),
+                selector=selectortools.Selector(
+                    callbacks=(
+                        selectortools.PrototypeSelectorCallback(
+                            prototype=scoretools.Leaf,
+                            ),
+                        selectortools.RunSelectorCallback(
+                            prototype=scoretools.Note,
+                            ),
+                        selectortools.ItemSelectorCallback(
+                            item=0,
+                            apply_to_each=True,
+                            ),
                         ),
                     ),
-                ),
-            )
+                )
 
-    ::
+        ::
 
-        >>> attachment_expression = consort.AttachmentExpression(
-        ...     attachments=(
-        ...         consort.DynamicExpression(
-        ...             hairpin_start_token='sfz',
-        ...             hairpin_stop_token='o',
-        ...             ),
-        ...         ),
-        ...     selector=selectortools.Selector().by_leaves().by_run(Note),
-        ...     )
+            >>> attachment_expression = consort.AttachmentExpression(
+            ...     attachments=(
+            ...         consort.DynamicExpression(
+            ...             hairpin_start_token='sfz',
+            ...             hairpin_stop_token='o',
+            ...             ),
+            ...         ),
+            ...     selector=selectortools.Selector().by_leaves().by_run(Note),
+            ...     )
 
-    ::
+        ::
 
-        >>> staff = Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
-        >>> attachment_expression(staff)
-        >>> print(format(staff))
-        \new Staff {
-            c'8 \sfz
-            r8
-            \override Hairpin #'circled-tip = ##t
-            d'8 \> \sfz
-            e'8 \!
-            \revert Hairpin #'circled-tip
-            r8
-            \override Hairpin #'circled-tip = ##t
-            f'8 \> \sfz
-            g'8
-            a'8 \!
-            \revert Hairpin #'circled-tip
-        }
+            >>> staff = Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
+            >>> attachment_expression(staff)
+            >>> print(format(staff))
+            \new Staff {
+                c'8 \sfz
+                r8
+                \override Hairpin #'circled-tip = ##t
+                d'8 \> \sfz
+                e'8 \!
+                \revert Hairpin #'circled-tip
+                r8
+                \override Hairpin #'circled-tip = ##t
+                f'8 \> \sfz
+                g'8
+                a'8 \!
+                \revert Hairpin #'circled-tip
+            }
+
+    ..  container:: example
+
+        ::
+
+            >>> attachment_expression = consort.AttachmentExpression(
+            ...     attachments=spannertools.Slur(),
+            ...     )
+            >>> staff = Staff("c'4 d'4 e'4 f'4")
+            >>> attachment_expression(staff)
+            >>> print(format(staff))
+            \new Staff {
+                c'4 (
+                d'4
+                e'4
+                f'4 )
+            }
 
     '''
 
@@ -110,7 +129,7 @@ class AttachmentExpression(abctools.AbjadValueObject):
         music,
         seed=0,
         ):
-        if not self.attachments or not self.selector:
+        if not self.attachments:
             return
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
         selector = self.selector
@@ -127,6 +146,10 @@ class AttachmentExpression(abctools.AbjadValueObject):
                 # spanners
                 if isinstance(attachment, spannertools.Spanner):
                     attachment = copy.copy(attachment)
+                    attach(attachment, selection)
+                elif isinstance(attachment, type) and \
+                    issubclass(attachment, spannertools.Spanner):
+                    attachment = attachment()
                     attach(attachment, selection)
                 # expressions
                 elif hasattr(attachment, '__call__'):
