@@ -657,8 +657,11 @@ class TimeManager(abctools.AbjadValueObject):
                         else:
                             seed = music_specifier.seed or 0
                         counter[music_specifier] = seed
+                    seed = counter[music_specifier]
                     result = TimeManager.inscribe_timespan(timespan, seed=seed)
                     inscribed_timespans.extend(result)
+                    # Negative rotation mimics advancing through a series.
+                    counter[music_specifier] -= 1
                 else:
                     inscribed_timespans.append(timespan)
             demultiplexed_timespans[voice_name] = inscribed_timespans

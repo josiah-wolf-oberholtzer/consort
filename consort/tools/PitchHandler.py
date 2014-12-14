@@ -153,20 +153,20 @@ class PitchHandler(abctools.AbjadValueObject):
             seeds_by_voice[voice] = seed
         if pitch_application_rate == 'phrase':
             if attack_point_signature.is_first_of_phrase:
-                seeds_by_music_specifier[music_specifier] += 1
+                seeds_by_music_specifier[music_specifier] -= 1
                 seed = seeds_by_music_specifier[music_specifier]
                 seeds_by_voice[voice] = seed
             else:
                 seed = seeds_by_voice[voice]
         elif pitch_application_rate == 'division':
             if attack_point_signature.is_first_of_division:
-                seeds_by_music_specifier[music_specifier] += 1
+                seeds_by_music_specifier[music_specifier] -= 1
                 seed = seeds_by_music_specifier[music_specifier]
                 seeds_by_voice[voice] = seed
             else:
                 seed = seeds_by_voice[voice]
         else:
-            seeds_by_music_specifier[music_specifier] += 1
+            seeds_by_music_specifier[music_specifier] -= 1
             seed = seeds_by_music_specifier[music_specifier]
         return seed
 

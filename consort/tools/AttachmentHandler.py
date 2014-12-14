@@ -80,7 +80,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
                     counter[music_specifier] = seed
                 seed = counter[music_specifier]
                 maker(container, music_index=seed)
-                counter[music_specifier] += 1
+                counter[music_specifier] -= 1
 
     ### PRIVATE PROPERTIES ###
 
