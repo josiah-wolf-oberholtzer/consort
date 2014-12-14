@@ -49,7 +49,7 @@ def test_GraceHandler_01():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4
@@ -193,7 +193,7 @@ def test_GraceHandler_02():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4
@@ -359,7 +359,7 @@ def test_GraceHandler_03():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4
@@ -506,7 +506,7 @@ def test_GraceHandler_04():
         
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4
@@ -596,7 +596,7 @@ def test_GraceHandler_05():
         
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4

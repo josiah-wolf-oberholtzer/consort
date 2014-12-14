@@ -27,7 +27,7 @@ def test_SegmentMaker_is_final_segment_01():
         
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4

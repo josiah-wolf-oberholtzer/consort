@@ -29,7 +29,7 @@ def test_SegmentMaker_01():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16
@@ -100,7 +100,7 @@ def test_SegmentMaker_02():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16
@@ -178,7 +178,7 @@ def test_SegmentMaker_03():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16
@@ -265,7 +265,7 @@ def test_SegmentMaker_04():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16
@@ -364,7 +364,7 @@ def test_SegmentMaker_05():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16
@@ -446,7 +446,7 @@ def test_SegmentMaker_06():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16
@@ -563,7 +563,7 @@ def test_SegmentMaker_07():
         
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 7/16

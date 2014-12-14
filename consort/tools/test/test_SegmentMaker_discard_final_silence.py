@@ -33,7 +33,7 @@ def test_SegmentMaker_discard_final_silence_01():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4
@@ -108,7 +108,7 @@ def test_SegmentMaker_discard_final_silence_02():
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
-                \tag time
+                \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
                         \time 4/4
