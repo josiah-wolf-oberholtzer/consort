@@ -48,8 +48,7 @@ def _make_timespan_inventory():
 
 def test_DependentTimespanMaker_01():
     timespan_inventory = _make_timespan_inventory()
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -89,7 +88,7 @@ def test_DependentTimespanMaker_01():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_02():
@@ -108,8 +107,7 @@ def test_DependentTimespanMaker_02():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -159,7 +157,7 @@ def test_DependentTimespanMaker_02():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_03():
@@ -179,8 +177,7 @@ def test_DependentTimespanMaker_03():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -240,7 +237,7 @@ def test_DependentTimespanMaker_03():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_04():
@@ -259,8 +256,7 @@ def test_DependentTimespanMaker_04():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -310,7 +306,7 @@ def test_DependentTimespanMaker_04():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_05():
@@ -328,8 +324,7 @@ def test_DependentTimespanMaker_05():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -379,7 +374,7 @@ def test_DependentTimespanMaker_05():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_06():
@@ -399,8 +394,7 @@ def test_DependentTimespanMaker_06():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -465,7 +459,7 @@ def test_DependentTimespanMaker_06():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_07():
@@ -485,8 +479,7 @@ def test_DependentTimespanMaker_07():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -551,7 +544,7 @@ def test_DependentTimespanMaker_07():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_08():
@@ -572,8 +565,7 @@ def test_DependentTimespanMaker_08():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -648,7 +640,7 @@ def test_DependentTimespanMaker_08():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_09():
@@ -670,8 +662,7 @@ def test_DependentTimespanMaker_09():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -746,7 +737,7 @@ def test_DependentTimespanMaker_09():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_10():
@@ -768,8 +759,7 @@ def test_DependentTimespanMaker_10():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -844,7 +834,7 @@ def test_DependentTimespanMaker_10():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_11():
@@ -866,8 +856,7 @@ def test_DependentTimespanMaker_11():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -927,7 +916,7 @@ def test_DependentTimespanMaker_11():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_12():
@@ -950,8 +939,7 @@ def test_DependentTimespanMaker_12():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -1011,7 +999,7 @@ def test_DependentTimespanMaker_12():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_13():
@@ -1034,8 +1022,7 @@ def test_DependentTimespanMaker_13():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -1090,7 +1077,7 @@ def test_DependentTimespanMaker_13():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')
 
 
 def test_DependentTimespanMaker_14():
@@ -1113,8 +1100,7 @@ def test_DependentTimespanMaker_14():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -1154,4 +1140,4 @@ def test_DependentTimespanMaker_14():
                     ),
                 ]
             )
-        '''), format(timespan_inventory)
+        ''')

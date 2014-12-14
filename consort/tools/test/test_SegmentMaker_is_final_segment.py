@@ -19,8 +19,7 @@ def test_SegmentMaker_is_final_segment_01():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -60,4 +59,4 @@ def test_SegmentMaker_is_final_segment_01():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')

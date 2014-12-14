@@ -25,8 +25,7 @@ def test_SegmentMaker_discard_final_silence_01():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -78,7 +77,7 @@ def test_SegmentMaker_discard_final_silence_01():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_discard_final_silence_02():
@@ -100,8 +99,7 @@ def test_SegmentMaker_discard_final_silence_02():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -135,4 +133,4 @@ def test_SegmentMaker_discard_final_silence_02():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')

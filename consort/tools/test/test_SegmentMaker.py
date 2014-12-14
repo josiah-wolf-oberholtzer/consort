@@ -21,8 +21,7 @@ def test_SegmentMaker_01():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -70,7 +69,7 @@ def test_SegmentMaker_01():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_02():
@@ -92,8 +91,7 @@ def test_SegmentMaker_02():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -148,7 +146,7 @@ def test_SegmentMaker_02():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_03():
@@ -170,8 +168,7 @@ def test_SegmentMaker_03():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -235,7 +232,7 @@ def test_SegmentMaker_03():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_04():
@@ -257,8 +254,7 @@ def test_SegmentMaker_04():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -332,7 +328,7 @@ def test_SegmentMaker_04():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_05():
@@ -356,8 +352,7 @@ def test_SegmentMaker_05():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -406,7 +401,7 @@ def test_SegmentMaker_05():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_06():
@@ -438,8 +433,7 @@ def test_SegmentMaker_06():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -509,7 +503,7 @@ def test_SegmentMaker_06():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_SegmentMaker_07():
@@ -555,8 +549,7 @@ def test_SegmentMaker_07():
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -649,4 +642,4 @@ def test_SegmentMaker_07():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')

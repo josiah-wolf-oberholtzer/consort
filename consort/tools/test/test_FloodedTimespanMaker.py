@@ -18,8 +18,7 @@ def test_FloodedTimespanMaker_01():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [

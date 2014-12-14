@@ -35,8 +35,7 @@ def test_MusicSetting_01():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [
@@ -92,8 +91,7 @@ def test_MusicSetting_02():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [
@@ -128,8 +126,7 @@ def test_MusicSetting_03():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [
@@ -180,8 +177,7 @@ def test_MusicSetting_04():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [
@@ -224,8 +220,7 @@ def test_MusicSetting_05():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [
@@ -268,8 +263,7 @@ def test_MusicSetting_06():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [
@@ -304,8 +298,7 @@ def test_MusicSetting_07():
         target_timespan=target_timespan,
         )
 
-    assert systemtools.TestManager.compare(
-        result,
+    assert format(result) == systemtools.TestManager.clean_string(
         '''
         timespantools.TimespanInventory(
             [

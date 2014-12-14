@@ -41,8 +41,7 @@ def test_GraceHandler_01():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -147,7 +146,7 @@ def test_GraceHandler_01():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_GraceHandler_02():
@@ -185,8 +184,7 @@ def test_GraceHandler_02():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -313,7 +311,7 @@ def test_GraceHandler_02():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_GraceHandler_03():
@@ -351,8 +349,7 @@ def test_GraceHandler_03():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -461,8 +458,7 @@ def test_GraceHandler_03():
                 >>
             >>
         }
-        '''), format(lilypond_file)
-
+        ''')
 
 def test_GraceHandler_04():
     music_specifier = consort.MusicSpecifier(
@@ -498,8 +494,7 @@ def test_GraceHandler_04():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -551,7 +546,7 @@ def test_GraceHandler_04():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')
 
 
 def test_GraceHandler_05():
@@ -588,8 +583,7 @@ def test_GraceHandler_05():
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file = segment_maker()
-    assert systemtools.TestManager.compare(
-        format(lilypond_file),
+    assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.15"
         \language "english"
@@ -641,4 +635,4 @@ def test_GraceHandler_05():
                 >>
             >>
         }
-        '''), format(lilypond_file)
+        ''')

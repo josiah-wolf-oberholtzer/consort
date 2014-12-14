@@ -19,8 +19,7 @@ def test_TaleaTimespanMaker_01():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -51,7 +50,7 @@ def test_TaleaTimespanMaker_01():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
 
 
 def test_TaleaTimespanMaker_02():
@@ -65,8 +64,7 @@ def test_TaleaTimespanMaker_02():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -97,7 +95,7 @@ def test_TaleaTimespanMaker_02():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
 
 
 def test_TaleaTimespanMaker_03():
@@ -108,8 +106,7 @@ def test_TaleaTimespanMaker_03():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -140,7 +137,7 @@ def test_TaleaTimespanMaker_03():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
 
 
 def test_TaleaTimespanMaker_04():
@@ -154,8 +151,7 @@ def test_TaleaTimespanMaker_04():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -192,7 +188,7 @@ def test_TaleaTimespanMaker_04():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
 
 
 def test_TaleaTimespanMaker_05():
@@ -207,8 +203,7 @@ def test_TaleaTimespanMaker_05():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -239,7 +234,7 @@ def test_TaleaTimespanMaker_05():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
 
 
 def test_TaleaTimespanMaker_06():
@@ -257,8 +252,7 @@ def test_TaleaTimespanMaker_06():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -295,7 +289,7 @@ def test_TaleaTimespanMaker_06():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
 
 
 def test_TaleaTimespanMaker_07():
@@ -313,8 +307,7 @@ def test_TaleaTimespanMaker_07():
         target_timespan=timespantools.Timespan(2, 3),
         music_specifiers=music_specifiers,
         )
-    assert systemtools.TestManager.compare(
-        format(timespan_inventory),
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
             [
@@ -351,4 +344,4 @@ def test_TaleaTimespanMaker_07():
                 ]
             )
         '''
-        ), format(timespan_inventory)
+        )
