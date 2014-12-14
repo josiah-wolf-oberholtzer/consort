@@ -2,6 +2,7 @@
 from __future__ import print_function
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
+from abjad.tools import scoretools
 from abjad.tools import sequencetools
 from abjad.tools import spannertools
 from abjad.tools.topleveltools import attach
@@ -138,11 +139,13 @@ class AttachmentExpression(abctools.AbjadValueObject):
         selections = selector(music)
         for i, selection in enumerate(selections, seed):
             attachments = all_attachments[i]
+            #print(i, selection)
             if attachments is None:
                 continue
             if not isinstance(attachments, tuple):
                 attachments = (attachments,)
             for attachment in attachments:
+                #print('\t' + repr(attachment))
                 # spanners
                 if isinstance(attachment, spannertools.Spanner):
                     attachment = copy.copy(attachment)
@@ -156,9 +159,13 @@ class AttachmentExpression(abctools.AbjadValueObject):
                     attachment(selection)
                 # indicators
                 else:
-                    for component in selection:
+                    if isinstance(selection, scoretools.Leaf):
                         attachment = copy.copy(attachment)
-                        attach(attachment, component)
+                        attach(attachment, selection)
+                    else:
+                        for component in selection:
+                            attachment = copy.copy(attachment)
+                            attach(attachment, component)
 
     def __eq__(self, expr):
         if isinstance(expr, type(self)):
