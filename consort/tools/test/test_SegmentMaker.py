@@ -553,7 +553,7 @@ def test_SegmentMaker_07():
         r'''
         \version "2.19.15"
         \language "english"
-        
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
@@ -588,9 +588,9 @@ def test_SegmentMaker_07():
                             }
                             {
                                 {
-                                    c'16 [
-                                    \set stemLeftBeamCount = 1
-                                    c'8 ]
+                                    c'8 [
+                                    \set stemLeftBeamCount = 2
+                                    c'16 ]
                                 }
                             }
                             {
