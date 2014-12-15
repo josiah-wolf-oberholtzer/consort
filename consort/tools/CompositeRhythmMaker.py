@@ -136,6 +136,8 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
             assert isinstance(last, rhythmmakertools.RhythmMaker)
         if only is not None:
             assert isinstance(only, rhythmmakertools.RhythmMaker)
+        if rest is None:
+            rest = rhythmmakertools.NoteRhythmMaker()
         assert isinstance(rest, rhythmmakertools.RhythmMaker)
         self._first = first
         self._last = last
