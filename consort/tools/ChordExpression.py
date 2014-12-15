@@ -1,9 +1,14 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-from abjad import *
+from abjad import attach
+from abjad import indicatortools
+from abjad import pitchtools
+from abjad import scoretools
+from abjad import selectiontools
+from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 
-class ChordExpression(abctools.AbjadValueObject):
+class ChordExpression(LogicalTieExpression):
     r'''A chord expression.
 
     ::
@@ -26,7 +31,7 @@ class ChordExpression(abctools.AbjadValueObject):
         >>> attach(pitch_range, staff, scope=Staff)
         >>> logical_tie = inspect_(staff[1]).get_logical_tie()
         >>> chord_expression(logical_tie)
-        >>> f(staff)
+        >>> print(format(staff))
         \new Staff {
             c'4
             \arpeggioArrowDown
@@ -89,21 +94,10 @@ class ChordExpression(abctools.AbjadValueObject):
         for i, leaf in enumerate(logical_tie):
             chord = scoretools.Chord(leaf)
             chord.written_pitches = pitches
-            grace_containers = inspect_(leaf).get_grace_containers('after')
-            if grace_containers:
-                old_grace_container = grace_containers[0]
-                grace_notes = old_grace_container.select_leaves()
-                detach(scoretools.GraceContainer, leaf)
-            mutate(leaf).replace(chord)
+            self._replace(leaf, chord)
             if not i and self.arpeggio_direction is not None:
                 arpeggio = indicatortools.Arpeggio(self.arpeggio_direction)
                 attach(arpeggio, chord)
-            if grace_containers:
-                new_grace_container = scoretools.GraceContainer(
-                    grace_notes,
-                    kind='after',
-                    )
-                attach(new_grace_container, chord)
 
     ### PUBLIC PROPERTIES ###
 
