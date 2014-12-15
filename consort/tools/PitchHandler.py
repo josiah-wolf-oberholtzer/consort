@@ -31,45 +31,13 @@ class PitchHandler(HashCachingObject):
         pitch_application_rate=None,
         transform_stack=None,
         ):
-        import consort
         HashCachingObject.__init__(self)
-        if forbid_repetitions is not None:
-            forbid_repetitions = bool(forbid_repetitions)
-        self._forbid_repetitions = forbid_repetitions
-        if grace_logical_tie_expressions is not None:
-            prototype = consort.LogicalTieExpression
-            assert grace_logical_tie_expressions, grace_logical_tie_expressions
-            assert all(isinstance(_, prototype)
-                for _ in grace_logical_tie_expressions), \
-                grace_logical_tie_expressions
-            grace_logical_tie_expressions = datastructuretools.CyclicTuple(
-                grace_logical_tie_expressions,
-                )
-        self._grace_logical_tie_expressions = grace_logical_tie_expressions
-        if logical_tie_expressions is not None:
-            prototype = consort.LogicalTieExpression
-            assert logical_tie_expressions, logical_tie_expressions
-            assert all(isinstance(_, prototype)
-                for _ in logical_tie_expressions), \
-                logical_tie_expressions
-            logical_tie_expressions = datastructuretools.CyclicTuple(
-                logical_tie_expressions,
-                )
-        self._logical_tie_expressions = logical_tie_expressions
-        assert pitch_application_rate in (
-            None, 'logical_tie', 'division', 'phrase',
-            )
-        self._pitch_application_rate = pitch_application_rate
-        if transform_stack is not None:
-            prototype = (
-                pitchtools.Inversion,
-                pitchtools.Multiplication,
-                pitchtools.Transposition,
-                )
-            assert all(isinstance(_, prototype) for _ in transform_stack), \
-                transform_stack
-            transform_stack = tuple(transform_stack)
-        self._transform_stack = transform_stack
+        self._initialize_forbid_repetitions(forbid_repetitions)
+        self._initialize_grace_logical_tie_expressions(
+            grace_logical_tie_expressions)
+        self._initialize_logical_tie_expressions(logical_tie_expressions)
+        self._initialize_pitch_application_rate(pitch_application_rate)
+        self._initialize_transform_stack(transform_stack)
 
     ### SPECIAL METHODS ###
 
@@ -195,6 +163,56 @@ class PitchHandler(HashCachingObject):
             transposition = sounding_pitch - pitchtools.NamedPitch("c'")
             transposition = pitchtools.NumberedInterval(transposition)
         return transposition
+
+    def _initialize_forbid_repetitions(self, forbid_repetitions):
+        if forbid_repetitions is not None:
+            forbid_repetitions = bool(forbid_repetitions)
+        self._forbid_repetitions = forbid_repetitions
+
+    def _initialize_grace_logical_tie_expressions(self,
+        grace_logical_tie_expressions):
+        import consort
+        if grace_logical_tie_expressions is not None:
+            prototype = consort.LogicalTieExpression
+            assert grace_logical_tie_expressions, grace_logical_tie_expressions
+            assert all(isinstance(_, prototype)
+                for _ in grace_logical_tie_expressions), \
+                grace_logical_tie_expressions
+            grace_logical_tie_expressions = datastructuretools.CyclicTuple(
+                grace_logical_tie_expressions,
+                )
+        self._grace_logical_tie_expressions = grace_logical_tie_expressions
+
+    def _initialize_logical_tie_expressions(self, logical_tie_expressions):
+        import consort
+        if logical_tie_expressions is not None:
+            prototype = consort.LogicalTieExpression
+            assert logical_tie_expressions, logical_tie_expressions
+            assert all(isinstance(_, prototype)
+                for _ in logical_tie_expressions), \
+                logical_tie_expressions
+            logical_tie_expressions = datastructuretools.CyclicTuple(
+                logical_tie_expressions,
+                )
+        self._logical_tie_expressions = logical_tie_expressions
+
+    def _initialize_pitch_application_rate(self, pitch_application_rate):
+        assert pitch_application_rate in (
+            None, 'logical_tie', 'division', 'phrase',
+            )
+        self._pitch_application_rate = pitch_application_rate
+
+    def _initialize_transform_stack(self, transform_stack):
+        if transform_stack is not None:
+            prototype = (
+                pitchtools.Inversion,
+                pitchtools.Multiplication,
+                pitchtools.Transposition,
+                )
+            assert all(isinstance(_, prototype) for _ in transform_stack), \
+                transform_stack
+            transform_stack = tuple(transform_stack)
+        self._transform_stack = transform_stack
 
     @staticmethod
     def _process_session(segment_session):
