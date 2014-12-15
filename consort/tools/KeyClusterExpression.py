@@ -1,9 +1,14 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-from abjad import *
+from abjad import attach
+from abjad import indicatortools
+from abjad import pitchtools
+from abjad import scoretools
+from abjad import selectiontools
+from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 
-class KeyClusterExpression(abctools.AbjadValueObject):
+class KeyClusterExpression(LogicalTieExpression):
     r'''A key cluster expression.
 
         >>> import consort
@@ -24,7 +29,7 @@ class KeyClusterExpression(abctools.AbjadValueObject):
         >>> staff = Staff("c'4 d'4 ~ d'4 e'4")
         >>> logical_tie = inspect_(staff[1]).get_logical_tie()
         >>> key_cluster_expression(logical_tie)
-        >>> f(staff)
+        >>> print(format(staff))
         \new Staff {
             c'4
             \arpeggioArrowUp
@@ -101,14 +106,9 @@ class KeyClusterExpression(abctools.AbjadValueObject):
                 center_pitch = center_pitch.transpose(interval)
                 chord_pitches = self._get_chord_pitches(center_pitch)
         for i, leaf in enumerate(logical_tie):
-            chord = Chord(leaf)
+            chord = scoretools.Chord(leaf)
             chord.written_pitches = chord_pitches
-            grace_containers = inspect_(leaf).get_grace_containers('after')
-            if grace_containers:
-                old_grace_container = grace_containers[0]
-                grace_notes = old_grace_container.select_leaves()
-                detach(scoretools.GraceContainer, leaf)
-            mutate(leaf).replace(chord)
+            self._replace(leaf, chord)
             if i:
                 key_cluster = indicatortools.KeyCluster(
                     include_black_keys=self.include_black_keys,
@@ -128,12 +128,6 @@ class KeyClusterExpression(abctools.AbjadValueObject):
                         direction=self.arpeggio_direction,
                         )
                     attach(arpeggio, chord)
-            if grace_containers:
-                new_grace_container = scoretools.GraceContainer(
-                    grace_notes,
-                    kind='after',
-                    )
-                attach(new_grace_container, chord)
 
     ### PRIVATE PROPERTIES ###
 
