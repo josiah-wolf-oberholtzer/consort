@@ -53,8 +53,9 @@ class PitchClassPitchHandler(PitchHandler):
 
     def __init__(
         self,
-        chord_expressions=None,
         forbid_repetitions=None,
+        grace_logical_tie_expressions=None,
+        logical_tie_expressions=None,
         octavations=None,
         pitch_application_rate=None,
         pitch_classes=None,
@@ -66,8 +67,9 @@ class PitchClassPitchHandler(PitchHandler):
         import consort
         PitchHandler.__init__(
             self,
-            chord_expressions=chord_expressions,
             forbid_repetitions=forbid_repetitions,
+            grace_logical_tie_expressions=grace_logical_tie_expressions,
+            logical_tie_expressions=logical_tie_expressions,
             pitch_application_rate=pitch_application_rate,
             transform_stack=transform_stack,
             )

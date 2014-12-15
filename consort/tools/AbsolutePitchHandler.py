@@ -39,7 +39,8 @@ class AbsolutePitchHandler(PitchHandler):
     def __init__(
         self,
         forbid_repetitions=None,
-        chord_expressions=None,
+        grace_logical_tie_expressions=None,
+        logical_tie_expressions=None,
         pitch_application_rate=None,
         pitches=None,
         transform_stack=None,
@@ -47,7 +48,8 @@ class AbsolutePitchHandler(PitchHandler):
         PitchHandler.__init__(
             self,
             forbid_repetitions=forbid_repetitions,
-            chord_expressions=chord_expressions,
+            grace_logical_tie_expressions=grace_logical_tie_expressions,
+            logical_tie_expressions=logical_tie_expressions,
             pitch_application_rate=pitch_application_rate,
             transform_stack=transform_stack,
             )
@@ -76,7 +78,7 @@ class AbsolutePitchHandler(PitchHandler):
             )
         for i, leaf in enumerate(logical_tie):
             leaf.written_pitch = pitch
-        self._apply_chord_expression(
+        self._apply_logical_tie_expression(
             logical_tie,
             seed=seed,
             pitch_range=pitch_range,
