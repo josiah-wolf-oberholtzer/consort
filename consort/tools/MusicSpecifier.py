@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import abctools
 from abjad.tools import rhythmmakertools
+from consort.tools.HashCachingObject import HashCachingObject
 
 
-class MusicSpecifier(abctools.AbjadValueObject):
+class MusicSpecifier(HashCachingObject):
     r'''A music specifier.
 
     ::
@@ -31,7 +31,6 @@ class MusicSpecifier(abctools.AbjadValueObject):
     __slots__ = (
         '_attachment_handler',
         '_grace_handler',
-        '_hash',
         '_is_sentinel',
         '_labels',
         '_pitch_handler',
@@ -54,13 +53,13 @@ class MusicSpecifier(abctools.AbjadValueObject):
         seed=None,
         ):
         import consort
+        HashCachingObject.__init__(self)
         if attachment_handler is not None:
             assert isinstance(attachment_handler, consort.AttachmentHandler)
         self._attachment_handler = attachment_handler
         if grace_handler is not None:
             assert isinstance(grace_handler, consort.GraceHandler)
         self._grace_handler = grace_handler
-        self._hash = None
         if is_sentinel is not None:
             is_sentinel = bool(is_sentinel)
         self._is_sentinel = is_sentinel
@@ -85,20 +84,6 @@ class MusicSpecifier(abctools.AbjadValueObject):
         if seed is not None:
             seed = int(seed)
         self._seed = seed
-
-    ### SPECIAL METHODS ###
-
-    def __eq__(self, expr):
-        if isinstance(expr, type(self)):
-            if format(self) == format(expr):
-                return True
-        return False
-
-    def __hash__(self):
-        if self._hash is None:
-            hash_values = (type(self), format(self))
-            self._hash = hash(hash_values)
-        return self._hash
 
     ### PRIVATE PROPERTIES ###
 

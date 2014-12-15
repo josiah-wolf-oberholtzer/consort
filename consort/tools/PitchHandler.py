@@ -1,22 +1,21 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import abc
-from abjad import abctools
 from abjad import datastructuretools
 from abjad import inspect_
 from abjad import iterate
 from abjad import instrumenttools
 from abjad import pitchtools
+from consort.tools.HashCachingObject import HashCachingObject
 
 
-class PitchHandler(abctools.AbjadValueObject):
+class PitchHandler(HashCachingObject):
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
         '_forbid_repetitions',
         '_grace_logical_tie_expressions',
-        '_hash',
         '_logical_tie_expressions',
         '_pitch_application_rate',
         '_transform_stack',
@@ -33,7 +32,7 @@ class PitchHandler(abctools.AbjadValueObject):
         transform_stack=None,
         ):
         import consort
-        self._hash = None
+        HashCachingObject.__init__(self)
         if forbid_repetitions is not None:
             forbid_repetitions = bool(forbid_repetitions)
         self._forbid_repetitions = forbid_repetitions
@@ -86,18 +85,6 @@ class PitchHandler(abctools.AbjadValueObject):
         transposition,
         ):
         raise NotImplementedError
-
-    def __eq__(self, expr):
-        if isinstance(expr, type(self)):
-            if format(self) == format(expr):
-                return True
-        return False
-
-    def __hash__(self):
-        if self._hash is None:
-            hash_values = (type(self), format(self))
-            self._hash = hash(hash_values)
-        return self._hash
 
     ### PRIVATE METHODS ###
 

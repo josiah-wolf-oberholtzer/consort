@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-from abjad.tools import abctools
+import collections
+import copy
 from abjad.tools import datastructuretools
 from abjad.tools import scoretools
 from abjad.tools import sequencetools
@@ -8,11 +9,10 @@ from abjad.tools import spannertools
 from abjad.tools.topleveltools import attach
 from abjad.tools.topleveltools import new
 from experimental.tools import selectortools
-import collections
-import copy
+from consort.tools.HashCachingObject import HashCachingObject
 
 
-class AttachmentExpression(abctools.AbjadValueObject):
+class AttachmentExpression(HashCachingObject):
     r'''An attachment specifier.
 
     ..  container:: example
@@ -102,7 +102,6 @@ class AttachmentExpression(abctools.AbjadValueObject):
 
     __slots__ = (
         '_attachments',
-        '_hash',
         '_selector',
         )
 
@@ -113,12 +112,12 @@ class AttachmentExpression(abctools.AbjadValueObject):
         attachments=None,
         selector=None,
         ):
+        HashCachingObject.__init__(self)
         if attachments is not None:
             if not isinstance(attachments, collections.Sequence):
                 attachments = (attachments,)
             attachments = datastructuretools.TypedList(attachments)
         self._attachments = attachments
-        self._hash = None
         if selector is not None:
             assert isinstance(selector, selectortools.Selector)
         self._selector = selector
@@ -169,18 +168,6 @@ class AttachmentExpression(abctools.AbjadValueObject):
                         for component in selection:
                             attachment = copy.copy(attachment)
                             attach(attachment, component)
-
-    def __eq__(self, expr):
-        if isinstance(expr, type(self)):
-            if format(self) == format(expr):
-                return True
-        return False
-
-    def __hash__(self):
-        if self._hash is None:
-            hash_values = (type(self), format(self))
-            self._hash = hash(hash_values)
-        return self._hash
 
     ### PRIVATE PROPERTIES ###
 
