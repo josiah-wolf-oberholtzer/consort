@@ -15,7 +15,7 @@ class PitchHandler(HashCachingObject):
 
     __slots__ = (
         '_forbid_repetitions',
-        '_grace_logical_tie_expressions',
+        '_grace_expressions',
         '_logical_tie_expressions',
         '_pitch_application_rate',
         '_transform_stack',
@@ -26,15 +26,14 @@ class PitchHandler(HashCachingObject):
     def __init__(
         self,
         forbid_repetitions=None,
-        grace_logical_tie_expressions=None,
+        grace_expressions=None,
         logical_tie_expressions=None,
         pitch_application_rate=None,
         transform_stack=None,
         ):
         HashCachingObject.__init__(self)
         self._initialize_forbid_repetitions(forbid_repetitions)
-        self._initialize_grace_logical_tie_expressions(
-            grace_logical_tie_expressions)
+        self._initialize_grace_expressions(grace_expressions)
         self._initialize_logical_tie_expressions(logical_tie_expressions)
         self._initialize_pitch_application_rate(pitch_application_rate)
         self._initialize_transform_stack(transform_stack)
@@ -169,19 +168,18 @@ class PitchHandler(HashCachingObject):
             forbid_repetitions = bool(forbid_repetitions)
         self._forbid_repetitions = forbid_repetitions
 
-    def _initialize_grace_logical_tie_expressions(self,
-        grace_logical_tie_expressions):
+    def _initialize_grace_expressions(self, grace_expressions):
         import consort
-        if grace_logical_tie_expressions is not None:
+        if grace_expressions is not None:
             prototype = consort.LogicalTieExpression
-            assert grace_logical_tie_expressions, grace_logical_tie_expressions
+            assert grace_expressions, grace_expressions
             assert all(isinstance(_, prototype)
-                for _ in grace_logical_tie_expressions), \
-                grace_logical_tie_expressions
-            grace_logical_tie_expressions = datastructuretools.CyclicTuple(
-                grace_logical_tie_expressions,
+                for _ in grace_expressions), \
+                grace_expressions
+            grace_expressions = datastructuretools.CyclicTuple(
+                grace_expressions,
                 )
-        self._grace_logical_tie_expressions = grace_logical_tie_expressions
+        self._grace_expressions = grace_expressions
 
     def _initialize_logical_tie_expressions(self, logical_tie_expressions):
         import consort
@@ -276,8 +274,8 @@ class PitchHandler(HashCachingObject):
         return self._forbid_repetitions
 
     @property
-    def grace_logical_tie_expressions(self):
-        return self._grace_logical_tie_expressions
+    def grace_expressions(self):
+        return self._grace_expressions
 
     @property
     def logical_tie_expressions(self):
