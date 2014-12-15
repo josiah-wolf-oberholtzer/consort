@@ -13,6 +13,17 @@ class MusicSpecifier(abctools.AbjadValueObject):
         >>> print(format(music_specifier))
         consort.tools.MusicSpecifier()
 
+    ..  container:: example
+
+        MusicSpecifier can accept CompositeRhythmMakers in their `rhythm_maker`
+        slot:
+
+        ::
+
+            >>> music_specifier = consort.MusicSpecifier(
+            ...     rhythm_maker=consort.CompositeRhythmMaker(),
+            ...     )
+
     '''
 
     ### CLASS VARIABLES ###
