@@ -4,6 +4,7 @@ import abc
 from abjad import abctools
 from abjad import datastructuretools
 from abjad import inspect_
+from abjad import iterate
 from abjad import instrumenttools
 from abjad import pitchtools
 
@@ -39,7 +40,8 @@ class PitchHandler(abctools.AbjadValueObject):
         if grace_logical_tie_expressions is not None:
             prototype = consort.LogicalTieExpression
             assert grace_logical_tie_expressions, grace_logical_tie_expressions
-            assert all(isinstance(x, prototype) for x in grace_logical_tie_expressions), \
+            assert all(isinstance(_, prototype)
+                for _ in grace_logical_tie_expressions), \
                 grace_logical_tie_expressions
             grace_logical_tie_expressions = datastructuretools.CyclicTuple(
                 grace_logical_tie_expressions,
@@ -48,7 +50,8 @@ class PitchHandler(abctools.AbjadValueObject):
         if logical_tie_expressions is not None:
             prototype = consort.LogicalTieExpression
             assert logical_tie_expressions, logical_tie_expressions
-            assert all(isinstance(x, prototype) for x in logical_tie_expressions), \
+            assert all(isinstance(_, prototype)
+                for _ in logical_tie_expressions), \
                 logical_tie_expressions
             logical_tie_expressions = datastructuretools.CyclicTuple(
                 logical_tie_expressions,
@@ -110,6 +113,23 @@ class PitchHandler(abctools.AbjadValueObject):
                 logical_tie,
                 pitch_range=pitch_range,
                 )
+
+    @staticmethod
+    def _get_grace_logical_ties(logical_tie):
+        logical_ties = []
+        head = logical_tie.head
+        previous_leaf = inspect_(head).get_leaf(-1)
+        if previous_leaf is None:
+            return logical_ties
+        grace_containers = inspect_(previous_leaf).get_grace_containers(
+            'after')
+        if grace_containers:
+            grace_container = grace_containers[0]
+            for logical_tie in iterate(grace_container).by_logical_tie(
+                pitched=True,
+                ):
+                logical_ties.append(logical_tie)
+        return logical_ties
 
     @staticmethod
     def _get_instrument(logical_tie):
