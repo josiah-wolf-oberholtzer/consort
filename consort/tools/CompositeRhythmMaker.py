@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad import new
 from abjad import abctools
 from abjad import durationtools
 from abjad import rhythmmakertools
@@ -202,6 +203,36 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
                 result.extend(rest)
         return result
 
+    ### PUBLIC METHODS ###
+
+    def new(
+        self,
+        first=None,
+        last=None,
+        only=None,
+        rest=None,
+        **kwargs
+        ):
+        first = first or self.first
+        last = last or self.last
+        only = only or self.only
+        rest = rest or self.rest
+        if first is not None:
+            first = new(first, **kwargs)
+        if last is not None:
+            last = new(last, **kwargs)
+        if only is not None:
+            only = new(only, **kwargs)
+        if rest is not None:
+            rest = new(rest, **kwargs)
+        result = new(
+            self,
+            first=first,
+            last=last,
+            only=only,
+            rest=rest,
+            )
+        return result
 
     ### PUBLIC PROPERTIES ###
 
