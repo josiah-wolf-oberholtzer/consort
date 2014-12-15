@@ -53,12 +53,7 @@ class AbsolutePitchHandler(PitchHandler):
             pitch_application_rate=pitch_application_rate,
             transform_stack=transform_stack,
             )
-        if pitches is not None:
-            if not isinstance(pitches, collections.Sequence):
-                pitches = (pitches,)
-            pitches = pitchtools.PitchSegment(pitches)
-            pitches = datastructuretools.CyclicTuple(pitches)
-        self._pitches = pitches
+        self._initialize_pitches(pitches)
 
     ### SPECIAL METHODS ###
 
@@ -108,6 +103,14 @@ class AbsolutePitchHandler(PitchHandler):
                     for transform in self.transform_stack:
                         pitch = transform(pitch)
         return pitch
+
+    def _initialize_pitches(self, pitches):
+        if pitches is not None:
+            if not isinstance(pitches, collections.Sequence):
+                pitches = (pitches,)
+            pitches = pitchtools.PitchSegment(pitches)
+            pitches = datastructuretools.CyclicTuple(pitches)
+        self._pitches = pitches
 
     ### PUBLIC PROPERTIES ###
 
