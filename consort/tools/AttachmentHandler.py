@@ -38,8 +38,10 @@ class AttachmentHandler(abctools.AbjadValueObject):
         for name, attachment_expression in attachment_expressions.items():
             if attachment_expression is None:
                 continue
-            assert isinstance(attachment_expression, prototype), \
-                (name, attachment_expression)
+            if not isinstance(attachment_expression, prototype):
+                attachment_expression = consort.AttachmentExpression(
+                    attachments=attachment_expression,
+                    )
             validated_attachment_expressions[name] = attachment_expression
         self._attachment_expressions = validated_attachment_expressions
 
