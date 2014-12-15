@@ -1,12 +1,11 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import abc
-from abjad.tools import abctools
-from abjad.tools import datastructuretools
-from abjad.tools import instrumenttools
-from abjad.tools import pitchtools
-from abjad.tools import systemtools
-from abjad.tools.topleveltools import inspect_
+from abjad import abctools
+from abjad import datastructuretools
+from abjad import inspect_
+from abjad import instrumenttools
+from abjad import pitchtools
 
 
 class PitchHandler(abctools.AbjadValueObject):
@@ -14,9 +13,10 @@ class PitchHandler(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_chord_expressions',
         '_forbid_repetitions',
+        '_grace_logical_tie_expressions',
         '_hash',
+        '_logical_tie_expressions',
         '_pitch_application_rate',
         '_transform_stack',
         )
@@ -26,27 +26,34 @@ class PitchHandler(abctools.AbjadValueObject):
     def __init__(
         self,
         forbid_repetitions=None,
-        chord_expressions=None,
+        grace_logical_tie_expressions=None,
+        logical_tie_expressions=None,
         pitch_application_rate=None,
         transform_stack=None,
         ):
         import consort
+        self._hash = None
         if forbid_repetitions is not None:
             forbid_repetitions = bool(forbid_repetitions)
         self._forbid_repetitions = forbid_repetitions
-        if chord_expressions is not None:
-            prototype = (
-                consort.ChordExpression,
-                consort.KeyClusterExpression,
+        if grace_logical_tie_expressions is not None:
+            prototype = consort.LogicalTieExpression
+            assert grace_logical_tie_expressions, grace_logical_tie_expressions
+            assert all(isinstance(x, prototype) for x in grace_logical_tie_expressions), \
+                grace_logical_tie_expressions
+            grace_logical_tie_expressions = datastructuretools.CyclicTuple(
+                grace_logical_tie_expressions,
                 )
-            assert chord_expressions, chord_expressions
-            assert all(isinstance(x, prototype) for x in chord_expressions), \
-                chord_expressions
-            chord_expressions = datastructuretools.CyclicTuple(
-                chord_expressions,
+        self._grace_logical_tie_expressions = grace_logical_tie_expressions
+        if logical_tie_expressions is not None:
+            prototype = consort.LogicalTieExpression
+            assert logical_tie_expressions, logical_tie_expressions
+            assert all(isinstance(x, prototype) for x in logical_tie_expressions), \
+                logical_tie_expressions
+            logical_tie_expressions = datastructuretools.CyclicTuple(
+                logical_tie_expressions,
                 )
-        self._chord_expressions = chord_expressions
-        self._hash = None
+        self._logical_tie_expressions = logical_tie_expressions
         assert pitch_application_rate in (
             None, 'logical_tie', 'division', 'phrase',
             )
@@ -91,15 +98,15 @@ class PitchHandler(abctools.AbjadValueObject):
 
     ### PRIVATE METHODS ###
 
-    def _apply_chord_expression(
+    def _apply_logical_tie_expression(
         self,
         logical_tie,
         pitch_range=None,
         seed=0,
         ):
-        if self.chord_expressions:
-            chord_expression = self.chord_expressions[seed]
-            chord_expression(
+        if self.logical_tie_expressions:
+            logical_tie_expression = self.logical_tie_expressions[seed]
+            logical_tie_expression(
                 logical_tie,
                 pitch_range=pitch_range,
                 )
@@ -240,12 +247,16 @@ class PitchHandler(abctools.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def chord_expressions(self):
-        return self._chord_expressions
-
-    @property
     def forbid_repetitions(self):
         return self._forbid_repetitions
+
+    @property
+    def grace_logical_tie_expressions(self):
+        return self._grace_logical_tie_expressions
+
+    @property
+    def logical_tie_expressions(self):
+        return self._logical_tie_expressions
 
     @property
     def pitch_application_rate(self):
