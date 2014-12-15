@@ -32,13 +32,17 @@ class TimeManager(abctools.AbjadValueObject):
 
         Returns boolean.
         '''
+        import consort
         music_specifier = inscribed_timespan.music_specifier
         if music_specifier is None:
             return True
         rhythm_maker = music_specifier.rhythm_maker
         if rhythm_maker is None:
             return True
-        specifier = rhythm_maker.duration_spelling_specifier
+        if isinstance(rhythm_maker, consort.CompositeRhythmMaker):
+            specifier = rhythm_maker.rest.duration_spelling_specifier
+        else:
+            specifier = rhythm_maker.duration_spelling_specifier
         if specifier is None:
             return True
         if specifier.permit_meter_rewriting is False:
@@ -546,6 +550,7 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def get_rhythm_maker(music_specifier):
+        import consort
         if music_specifier is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
                 output_masks=[
@@ -563,6 +568,14 @@ class TimeManager(abctools.AbjadValueObject):
                     ),
                 tie_specifier=rhythmmakertools.TieSpecifier(
                     tie_across_divisions=True,
+                    ),
+                )
+        elif isinstance(music_specifier.rhythm_maker,
+            consort.CompositeRhythmMaker):
+            rhythm_maker = music_specifier.rhythm_maker.new(
+                beam_specifier=rhythmmakertools.BeamSpecifier(
+                    beam_each_division=False,
+                    beam_divisions_together=False,
                     ),
                 )
         else:
