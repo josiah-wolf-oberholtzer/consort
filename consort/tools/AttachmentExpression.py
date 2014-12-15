@@ -156,7 +156,10 @@ class AttachmentExpression(abctools.AbjadValueObject):
                     attach(attachment, selection)
                 # expressions
                 elif hasattr(attachment, '__call__'):
-                    attachment(selection)
+                    try:
+                        attachment(selection, seed=seed)
+                    except TypeError:
+                        attachment(selection)
                 # indicators
                 else:
                     if isinstance(selection, scoretools.Leaf):
