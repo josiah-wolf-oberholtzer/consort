@@ -64,7 +64,6 @@ class PitchClassPitchHandler(PitchHandler):
         register_spread=None,
         transform_stack=None,
         ):
-        import consort
         PitchHandler.__init__(
             self,
             forbid_repetitions=forbid_repetitions,
@@ -73,27 +72,11 @@ class PitchClassPitchHandler(PitchHandler):
             pitch_application_rate=pitch_application_rate,
             transform_stack=transform_stack,
             )
-        pitch_classes = pitchtools.PitchClassSegment(
-            items=pitch_classes,
-            item_class=pitchtools.NumberedPitchClass,
-            )
-        pitch_classes = datastructuretools.CyclicTuple(pitch_classes)
-        if octavations is not None:
-            assert octavations
-            assert all(isinstance(x, int) for x in octavations)
-            octavations = datastructuretools.CyclicTuple(octavations)
-        self._octavations = octavations
-        if pitch_range is not None:
-            assert isinstance(pitch_range, pitchtools.PitchRange)
-        self._pitch_range = pitch_range
-        self._pitch_classes = pitch_classes
-        if register_specifier is not None:
-            assert isinstance(register_specifier, consort.RegisterSpecifier)
-        self._register_specifier = register_specifier
-        if register_spread is not None:
-            register_spread = int(register_spread)
-            assert 0 <= register_spread < 12
-        self._register_spread = register_spread
+        self._initialize_octavations(octavations)
+        self._initialize_pitch_classes(pitch_classes)
+        self._initialize_pitch_range(pitch_range)
+        self._initialize_register_specifier(register_specifier)
+        self._initialize_register_spread(register_spread)
 
     ### SPECIAL METHODS ###
 
@@ -206,6 +189,38 @@ class PitchClassPitchHandler(PitchHandler):
                 ('[C4, C8)', register + register_spread),
                 ])
         return registration
+
+    def _initialize_octavations(self, octavations):
+        if octavations is not None:
+            assert octavations
+            assert all(isinstance(x, int) for x in octavations)
+            octavations = datastructuretools.CyclicTuple(octavations)
+        self._octavations = octavations
+
+    def _initialize_pitch_classes(self, pitch_classes):
+        pitch_classes = pitchtools.PitchClassSegment(
+            items=pitch_classes,
+            item_class=pitchtools.NumberedPitchClass,
+            )
+        pitch_classes = datastructuretools.CyclicTuple(pitch_classes)
+        self._pitch_classes = pitch_classes
+
+    def _initialize_pitch_range(self, pitch_range):
+        if pitch_range is not None:
+            assert isinstance(pitch_range, pitchtools.PitchRange)
+        self._pitch_range = pitch_range
+
+    def _initialize_register_specifier(self, register_specifier):
+        import consort
+        if register_specifier is not None:
+            assert isinstance(register_specifier, consort.RegisterSpecifier)
+        self._register_specifier = register_specifier
+
+    def _initialize_register_spread(self, register_spread):
+        if register_spread is not None:
+            register_spread = int(register_spread)
+            assert 0 <= register_spread < 12
+        self._register_spread = register_spread
 
     ### PUBLIC PROPERTIES ###
 
