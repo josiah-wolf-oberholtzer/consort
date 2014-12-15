@@ -65,7 +65,11 @@ class MusicSpecifier(abctools.AbjadValueObject):
             pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
         self._pitches_are_nonsemantic = pitches_are_nonsemantic
         if rhythm_maker is not None:
-            assert isinstance(rhythm_maker, rhythmmakertools.RhythmMaker)
+            prototype = (
+                rhythmmakertools.RhythmMaker,
+                consort.CompositeRhythmMaker,
+                )
+            assert isinstance(rhythm_maker, prototype)
         self._rhythm_maker = rhythm_maker
         if seed is not None:
             seed = int(seed)
