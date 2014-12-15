@@ -14,3 +14,7 @@ def debug(message):
     END = '\033[0m'
     if DEBUG:
         print(RED + str(message) + END)
+
+
+from abjad.tools import lilypondparsertools
+lilypondparsertools.LilyPondParser.register_markup_function('vstrut', [])

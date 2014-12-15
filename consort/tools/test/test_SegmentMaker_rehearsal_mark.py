@@ -37,7 +37,11 @@ def test_SegmentMaker_rehearsal_mark_01():
                                     \override
                                         #'(box-padding . 0.5)
                                         \box
-                                            A
+                                            \concat
+                                                {
+                                                    \vstrut
+                                                    A
+                                                }
                                     " "
                                     \fontsize
                                         #-3
@@ -83,7 +87,7 @@ def test_SegmentMaker_rehearsal_mark_02():
         r'''
         \version "2.19.15"
         \language "english"
-        
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
@@ -97,7 +101,11 @@ def test_SegmentMaker_rehearsal_mark_02():
                                     \override
                                         #'(box-padding . 0.5)
                                         \box
-                                            "A Part 1"
+                                            \concat
+                                                {
+                                                    \vstrut
+                                                    "A Part 1"
+                                                }
                                     " "
                                     \fontsize
                                         #-3
