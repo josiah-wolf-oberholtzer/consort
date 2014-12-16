@@ -187,7 +187,12 @@ class SegmentMaker(makertools.SegmentMaker):
                 enter_message='GraceHandler:',
                 exit_message='\ttotal:',
                 ):
-                consort.GraceHandler._process_session(segment_session)
+                maximum_grace_count = \
+                    consort.GraceHandler._find_maximum_grace_count(self)
+                consort.GraceHandler._process_session(
+                    segment_session,
+                    maximum_grace_count,
+                    )
             with systemtools.Timer(
                 enter_message='PitchHandler:',
                 exit_message='\ttotal:',
