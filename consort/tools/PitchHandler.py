@@ -215,12 +215,14 @@ class PitchHandler(HashCachingObject):
     def _process_logical_tie(self, logical_tie, pitch, pitch_range, seed):
         for leaf in logical_tie:
             leaf.written_pitch = pitch
+        grace_logical_ties = self._get_grace_logical_ties(logical_tie)
+        if str(pitch.accidental) and grace_logical_ties:
+            leaf.note_head.is_forced = True
         self._apply_logical_tie_expression(
             logical_tie,
             seed=seed,
             pitch_range=pitch_range,
             )
-        grace_logical_ties = self._get_grace_logical_ties(logical_tie)
         for i, grace_logical_tie in enumerate(grace_logical_ties, seed):
             for leaf in grace_logical_tie:
                 leaf.written_pitch = pitch
