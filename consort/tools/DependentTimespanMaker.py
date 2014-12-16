@@ -116,19 +116,15 @@ class DependentTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        forbid_splitting=None,
         include_inner_starts=None,
         include_inner_stops=None,
         labels=None,
-        minimum_duration=None,
         rotation_indices=None,
         timespan_specifier=None,
         voice_names=None,
         ):
         TimespanMaker.__init__(
             self,
-            forbid_splitting=forbid_splitting,
-            minimum_duration=minimum_duration,
             timespan_specifier=timespan_specifier,
             )
         if include_inner_starts is not None:
@@ -218,39 +214,6 @@ class DependentTimespanMaker(TimespanMaker):
                         )
                     timespan_inventory.append(timespan)
                     voice_counter[voice_name] += 1
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        from abjad.tools import systemtools
-        from ide import idetools
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='forbid_splitting',
-                display_string='forbid splitting',
-                command='fs',
-                editor=idetools.getters.get_boolean,
-                ),
-            systemtools.AttributeDetail(
-                name='minimum_duration',
-                display_string='minimum duration',
-                command='md',
-                editor=idetools.getters.get_duration,
-                ),
-            systemtools.AttributeDetail(
-                name='labels',
-                display_string='labels',
-                command='l',
-                editor=idetools.getters.get_strings,
-                ),
-            systemtools.AttributeDetail(
-                name='voice_names',
-                display_string='voice names',
-                command='vn',
-                editor=idetools.getters.get_strings,
-                ),
-            )
 
     ### PUBLIC PROPERTIES ###
 

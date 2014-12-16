@@ -177,10 +177,8 @@ class TaleaTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        forbid_splitting=None,
         fuse_groups=None,
         initial_silence_talea=None,
-        minimum_duration=None,
         padding=None,
         playing_talea=rhythmmakertools.Talea(
             counts=[4],
@@ -201,8 +199,6 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
-            forbid_splitting=forbid_splitting,
-            minimum_duration=minimum_duration,
             seed=seed,
             timespan_specifier=timespan_specifier,
             )
@@ -540,74 +536,6 @@ class TaleaTimespanMaker(TimespanMaker):
             if final_offset < start_offset:
                 final_offset = start_offset
         return timespan_inventory, final_offset
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        from abjad.tools import systemtools
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='forbid_splitting',
-                display_string='forbid splitting',
-                command='fs',
-                editor=idetools.getters.get_boolean,
-                ),
-            systemtools.AttributeDetail(
-                name='initial_silence_talea',
-                display_string='initial silence talea',
-                command='it',
-                editor=rhythmmakertools.Talea,
-                ),
-            systemtools.AttributeDetail(
-                name='minimum_duration',
-                display_string='minimum duration',
-                command='md',
-                editor=idetools.getters.get_duration,
-                ),
-            systemtools.AttributeDetail(
-                name='playing_talea',
-                display_string='playing talea',
-                command='pt',
-                editor=rhythmmakertools.Talea,
-                ),
-            systemtools.AttributeDetail(
-                name='playing_groupings',
-                display_string='playing groupings',
-                command='pg',
-                editor=idetools.getters.get_nonnegative_integers,
-                ),
-            systemtools.AttributeDetail(
-                name='repeat',
-                display_string='repeat',
-                command='rp',
-                editor=idetools.getters.get_boolean,
-                ),
-            systemtools.AttributeDetail(
-                name='silence_talea',
-                display_string='silence talea',
-                command='st',
-                editor=rhythmmakertools.Talea,
-                ),
-            systemtools.AttributeDetail(
-                name='step_anchor',
-                display_string='step anchor',
-                command='sa',
-                editor=idetools.getters.get_durations,
-                ),
-            systemtools.AttributeDetail(
-                name='synchronize_groupings',
-                display_string='synchonize groupings',
-                command='sg',
-                editor=idetools.getters.get_boolean,
-                ),
-            systemtools.AttributeDetail(
-                name='synchronize_step',
-                display_string='synchonize step',
-                command='sy',
-                editor=idetools.getters.get_boolean,
-                ),
-            )
 
     ### PUBLIC PROPERTIES ###
 

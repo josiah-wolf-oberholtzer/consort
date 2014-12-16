@@ -342,7 +342,9 @@ def test_SegmentMaker_05():
         settings=(
             consort.MusicSetting(
                 timespan_maker=consort.FloodedTimespanMaker(
-                    minimum_duration=durationtools.Duration(1, 8),
+                    timespan_specifier=consort.TimespanSpecifier(
+                        minimum_duration=durationtools.Duration(1, 8),
+                        ),
                     ),
                 v1=consort.MusicSpecifier(),
                 v2=consort.MusicSpecifier(),
@@ -423,7 +425,9 @@ def test_SegmentMaker_06():
                         counts=(1,),
                         denominator=8,
                         ),
-                    minimum_duration=durationtools.Duration(1, 8),
+                    timespan_specifier=consort.TimespanSpecifier(
+                        minimum_duration=durationtools.Duration(1, 8),
+                        ),
                     ),
                 v1=consort.MusicSpecifier(),
                 v2=consort.MusicSpecifier(),
@@ -525,7 +529,9 @@ def test_SegmentMaker_07():
                         counts=(1,),
                         denominator=8,
                         ),
-                    minimum_duration=durationtools.Duration(1, 8),
+                    timespan_specifier=consort.TimespanSpecifier(
+                        minimum_duration=durationtools.Duration(1, 8),
+                        ),
                     ),
                 v1=consort.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.TaleaRhythmMaker(

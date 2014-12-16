@@ -12,8 +12,6 @@ class TimespanMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_forbid_splitting',
-        '_minimum_duration',
         '_seed',
         '_timespan_specifier',
         )
@@ -23,18 +21,10 @@ class TimespanMaker(abctools.AbjadValueObject):
     @abc.abstractmethod
     def __init__(
         self,
-        forbid_splitting=None,
-        minimum_duration=None,
         seed=None,
         timespan_specifier=None,
         ):
         import consort
-        if forbid_splitting is not None:
-            forbid_splitting = bool(forbid_splitting)
-        self._forbid_splitting = forbid_splitting
-        if minimum_duration is not None:
-            minimum_duration = durationtools.Duration(minimum_duration)
-        self._minimum_duration = minimum_duration
         if seed is not None:
             seed = int(seed)
         self._seed = seed
@@ -78,13 +68,14 @@ class TimespanMaker(abctools.AbjadValueObject):
         voice_name=None,
         ):
         import consort
+        timespan_specifier = self.timespan_specifier or \
+            consort.TimespanSpecifier()
         timespan = consort.PerformedTimespan(
-            forbid_splitting=self.forbid_splitting,
+            forbid_fusing=timespan_specifier.forbid_fusing,
+            forbid_splitting=timespan_specifier.forbid_splitting,
             layer=layer,
-            minimum_duration=self.minimum_duration,
+            minimum_duration=timespan_specifier.minimum_duration,
             music_specifier=music_specifier,
-            original_start_offset=start_offset,
-            original_stop_offset=stop_offset,
             start_offset=start_offset,
             stop_offset=stop_offset,
             voice_name=voice_name,
@@ -94,16 +85,8 @@ class TimespanMaker(abctools.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def forbid_splitting(self):
-        return self._forbid_splitting
-
-    @property
     def is_dependent(self):
         return False
-
-    @property
-    def minimum_duration(self):
-        return self._minimum_duration
 
     @property
     def seed(self):
