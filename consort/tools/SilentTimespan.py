@@ -40,10 +40,6 @@ class SilentTimespan(timespantools.Timespan):
         return True
 
     @property
-    def color(self):
-        return None
-
-    @property
     def is_left_broken(self):
         return False
 

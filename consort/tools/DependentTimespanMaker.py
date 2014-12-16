@@ -154,7 +154,6 @@ class DependentTimespanMaker(TimespanMaker):
 
     def _make_timespans(
         self,
-        color=None,
         layer=None,
         music_specifiers=None,
         target_timespan=None,
@@ -209,7 +208,6 @@ class DependentTimespanMaker(TimespanMaker):
                     current_music_specifier = \
                         music_specifier[music_specifier_index]
                     timespan = self._make_performed_timespan(
-                        color=color,
                         layer=layer,
                         music_specifier=current_music_specifier,
                         start_offset=start_offset,

@@ -301,7 +301,6 @@ class TaleaTimespanMaker(TimespanMaker):
 
     def _make_timespans(
         self,
-        color=None,
         layer=None,
         music_specifiers=None,
         target_timespan=None,
@@ -332,7 +331,6 @@ class TaleaTimespanMaker(TimespanMaker):
         else:
             procedure = self._make_without_synchronized_step
         new_timespan_inventory, final_offset = procedure(
-            color=color,
             initial_silence_talea=initial_silence_talea,
             layer=layer,
             playing_talea=playing_talea,
@@ -352,7 +350,6 @@ class TaleaTimespanMaker(TimespanMaker):
 
     def _make_with_synchronized_step(
         self,
-        color=None,
         initial_silence_talea=None,
         layer=None,
         playing_talea=None,
@@ -431,7 +428,6 @@ class TaleaTimespanMaker(TimespanMaker):
                                 )
                         else:
                             timespan = self._make_performed_timespan(
-                                color=color,
                                 layer=layer,
                                 music_specifier=current_music_specifier,
                                 start_offset=current_offset,
@@ -440,7 +436,6 @@ class TaleaTimespanMaker(TimespanMaker):
                                 )
                     else:
                         timespan = self._make_performed_timespan(
-                            color=color,
                             layer=layer,
                             music_specifier=current_music_specifier,
                             start_offset=current_offset,
@@ -465,7 +460,6 @@ class TaleaTimespanMaker(TimespanMaker):
 
     def _make_without_synchronized_step(
         self,
-        color=None,
         initial_silence_talea=None,
         layer=None,
         playing_talea=None,
@@ -528,7 +522,6 @@ class TaleaTimespanMaker(TimespanMaker):
                                 )
                         else:
                             timespan = self._make_performed_timespan(
-                                color=color,
                                 layer=layer,
                                 music_specifier=current_music_specifier,
                                 start_offset=current_offset,
@@ -537,7 +530,6 @@ class TaleaTimespanMaker(TimespanMaker):
                                 )
                     else:
                         timespan = self._make_performed_timespan(
-                            color=color,
                             layer=layer,
                             music_specifier=current_music_specifier,
                             start_offset=current_offset,

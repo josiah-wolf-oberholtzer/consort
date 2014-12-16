@@ -24,7 +24,6 @@ class PerformedTimespan(timespantools.Timespan):
 
     __slots__ = (
         '_can_split',
-        '_color',
         '_divisions',
         '_layer',
         '_minimum_duration',
@@ -40,7 +39,6 @@ class PerformedTimespan(timespantools.Timespan):
     def __init__(
         self,
         can_split=None,
-        color=None,
         divisions=None,
         layer=None,
         minimum_duration=None,
@@ -61,9 +59,6 @@ class PerformedTimespan(timespantools.Timespan):
         if can_split is not None:
             can_split = bool(can_split)
         self._can_split = can_split
-        if color is not None:
-            color = str(color)
-        self._color = color
         if divisions is not None:
             divisions = tuple(durationtools.Duration(_) for _ in divisions)
             assert sum(divisions) == self.duration
@@ -124,10 +119,6 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def can_split(self):
         return self._can_split
-
-    @property
-    def color(self):
-        return self._color
 
     @property
     def divisions(self):

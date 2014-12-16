@@ -40,7 +40,6 @@ class TimespanMaker(abctools.AbjadValueObject):
 
     def __call__(
         self,
-        color=None,
         layer=None,
         music_specifiers=None,
         target_timespan=None,
@@ -54,7 +53,6 @@ class TimespanMaker(abctools.AbjadValueObject):
         if not music_specifiers:
             return timespan_inventory
         self._make_timespans(
-            color=color,
             layer=layer,
             music_specifiers=music_specifiers,
             target_timespan=target_timespan,
@@ -67,7 +65,6 @@ class TimespanMaker(abctools.AbjadValueObject):
 
     def _make_performed_timespan(
         self,
-        color=None,
         layer=None,
         music_specifier=None,
         start_offset=None,
@@ -77,7 +74,6 @@ class TimespanMaker(abctools.AbjadValueObject):
         import consort
         timespan = consort.PerformedTimespan(
             can_split=self.can_split,
-            color=color,
             layer=layer,
             minimum_duration=self.minimum_duration,
             music_specifier=music_specifier,

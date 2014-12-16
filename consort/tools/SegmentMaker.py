@@ -233,14 +233,12 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def add_setting(
         self,
-        color=None,
         timespan_identifier=None,
         timespan_maker=None,
         **music_specifiers
         ):
         import consort
         setting = consort.MusicSetting(
-            color=color,
             timespan_identifier=timespan_identifier,
             timespan_maker=timespan_maker,
             **music_specifiers

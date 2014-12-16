@@ -16,7 +16,6 @@ class MusicSetting(abctools.AbjadValueObject):
 
         >>> import consort
         >>> red_setting = consort.MusicSetting(
-        ...     color='red',
         ...     timespan_maker=consort.TaleaTimespanMaker(
         ...         initial_silence_talea=rhythmmakertools.Talea(
         ...             counts=(0, 4),
@@ -33,7 +32,6 @@ class MusicSetting(abctools.AbjadValueObject):
         ...     )
         >>> print(format(red_setting))
         consort.tools.MusicSetting(
-            color='red',
             timespan_maker=consort.tools.TaleaTimespanMaker(
                 can_split=True,
                 initial_silence_talea=rhythmmakertools.Talea(
@@ -83,7 +81,6 @@ class MusicSetting(abctools.AbjadValueObject):
             [
                 consort.tools.PerformedTimespan(
                     can_split=True,
-                    color='red',
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
@@ -92,7 +89,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
-                    color='red',
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
@@ -101,7 +97,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
-                    color='red',
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(5, 4),
@@ -110,7 +105,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
-                    color='red',
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 2),
@@ -119,7 +113,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
-                    color='red',
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
@@ -128,7 +121,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     ),
                 consort.tools.PerformedTimespan(
                     can_split=True,
-                    color='red',
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
@@ -143,7 +135,6 @@ class MusicSetting(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_color',
         '_music_specifiers',
         '_timespan_identifier',
         '_timespan_maker',
@@ -153,15 +144,11 @@ class MusicSetting(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        color=None,
         timespan_identifier=None,
         timespan_maker=None,
         **music_specifiers
         ):
         import consort
-        if color is not None:
-            color = str(color)
-        self._color = color
         if timespan_identifier is not None:
             prototype = (
                 timespantools.Timespan,
@@ -207,7 +194,6 @@ class MusicSetting(abctools.AbjadValueObject):
         target_timespans = self._get_target_timespans(target_timespan)
         for target_timespan in target_timespans:
             timespan_inventory = self.timespan_maker(
-                color=self.color,
                 layer=layer,
                 music_specifiers=music_specifiers,
                 target_timespan=target_timespan,
@@ -282,10 +268,6 @@ class MusicSetting(abctools.AbjadValueObject):
             )
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def color(self):
-        return self._color
 
     @property
     def music_specifiers(self):
