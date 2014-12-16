@@ -53,11 +53,13 @@ class FloodedTimespanMaker(TimespanMaker):
         self,
         forbid_splitting=None,
         minimum_duration=None,
+        timespan_specifier=None,
         ):
         TimespanMaker.__init__(
             self,
             forbid_splitting=forbid_splitting,
             minimum_duration=minimum_duration,
+            timespan_specifier=timespan_specifier,
             )
 
     ### PRIVATE METHODS ###

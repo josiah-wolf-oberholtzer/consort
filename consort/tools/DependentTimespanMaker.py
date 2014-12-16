@@ -122,12 +122,14 @@ class DependentTimespanMaker(TimespanMaker):
         labels=None,
         minimum_duration=None,
         rotation_indices=None,
+        timespan_specifier=None,
         voice_names=None,
         ):
         TimespanMaker.__init__(
             self,
             forbid_splitting=forbid_splitting,
             minimum_duration=minimum_duration,
+            timespan_specifier=timespan_specifier,
             )
         if include_inner_starts is not None:
             include_inner_starts = bool(include_inner_starts)

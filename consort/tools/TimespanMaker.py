@@ -15,6 +15,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         '_forbid_splitting',
         '_minimum_duration',
         '_seed',
+        '_timespan_specifier',
         )
 
     ### INITIALIZER ###
@@ -25,7 +26,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         forbid_splitting=None,
         minimum_duration=None,
         seed=None,
+        timespan_specifier=None,
         ):
+        import consort
         if forbid_splitting is not None:
             forbid_splitting = bool(forbid_splitting)
         self._forbid_splitting = forbid_splitting
@@ -35,6 +38,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         if seed is not None:
             seed = int(seed)
         self._seed = seed
+        if timespan_specifier is not None:
+            assert isinstance(timespan_specifier, consort.TimespanSpecifier)
+        self._timespan_specifier = timespan_specifier
 
     ### SPECIAL METHODS ###
 
@@ -102,3 +108,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     @property
     def seed(self):
         return self._seed
+
+    @property
+    def timespan_specifier(self):
+        return self._timespan_specifier

@@ -197,12 +197,14 @@ class TaleaTimespanMaker(TimespanMaker):
         step_anchor=Right,
         synchronize_groupings=False,
         synchronize_step=False,
+        timespan_specifier=None,
         ):
         TimespanMaker.__init__(
             self,
             forbid_splitting=forbid_splitting,
             minimum_duration=minimum_duration,
             seed=seed,
+            timespan_specifier=timespan_specifier,
             )
 
         if fuse_groups is not None:
