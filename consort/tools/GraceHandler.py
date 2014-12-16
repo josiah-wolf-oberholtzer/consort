@@ -100,7 +100,6 @@ class GraceHandler(abctools.AbjadValueObject):
             grace_notes,
             kind=kind,
             )
-        override(grace_container).stem.length = 8
         override(grace_container).flag.stroke_style = \
             schemetools.Scheme('grace', force_quotes=True)
         override(grace_container).script.font_size = 0.5
