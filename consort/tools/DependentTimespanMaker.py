@@ -116,7 +116,7 @@ class DependentTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        can_split=None,
+        forbid_splitting=None,
         include_inner_starts=None,
         include_inner_stops=None,
         labels=None,
@@ -126,7 +126,7 @@ class DependentTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
-            can_split=can_split,
+            forbid_splitting=forbid_splitting,
             minimum_duration=minimum_duration,
             )
         if include_inner_starts is not None:
@@ -225,9 +225,9 @@ class DependentTimespanMaker(TimespanMaker):
         from ide import idetools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
-                name='can_split',
-                display_string='can split',
-                command='cp',
+                name='forbid_splitting',
+                display_string='forbid splitting',
+                command='fs',
                 editor=idetools.getters.get_boolean,
                 ),
             systemtools.AttributeDetail(

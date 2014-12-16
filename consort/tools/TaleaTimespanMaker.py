@@ -24,7 +24,6 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     )
         >>> print(format(timespan_maker))
         consort.tools.TaleaTimespanMaker(
-            can_split=True,
             initial_silence_talea=rhythmmakertools.Talea(
                 counts=(0, 4),
                 denominator=16,
@@ -60,25 +59,21 @@ class TaleaTimespanMaker(TimespanMaker):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Viola',
@@ -100,25 +95,21 @@ class TaleaTimespanMaker(TimespanMaker):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(3, 4),
                     voice_name='Violin',
@@ -142,25 +133,21 @@ class TaleaTimespanMaker(TimespanMaker):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Violin',
@@ -190,7 +177,7 @@ class TaleaTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        can_split=True,
+        forbid_splitting=None,
         fuse_groups=None,
         initial_silence_talea=None,
         minimum_duration=None,
@@ -213,7 +200,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
-            can_split=can_split,
+            forbid_splitting=forbid_splitting,
             minimum_duration=minimum_duration,
             seed=seed,
             )
@@ -559,9 +546,9 @@ class TaleaTimespanMaker(TimespanMaker):
         from abjad.tools import systemtools
         return systemtools.AttributeManifest(
             systemtools.AttributeDetail(
-                name='can_split',
-                display_string='can split',
-                command='cp',
+                name='forbid_splitting',
+                display_string='forbid splitting',
+                command='fs',
                 editor=idetools.getters.get_boolean,
                 ),
             systemtools.AttributeDetail(

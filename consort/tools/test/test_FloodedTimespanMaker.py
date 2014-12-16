@@ -23,13 +23,11 @@ def test_FloodedTimespanMaker_01():
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 1),
                     voice_name='Two',

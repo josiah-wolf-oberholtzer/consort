@@ -2,7 +2,6 @@
 from abjad.tools import durationtools
 from abjad.tools import timespantools
 from abjad.tools import mathtools
-from abjad.tools.topleveltools import inspect_
 
 
 class PerformedTimespan(timespantools.Timespan):
@@ -23,7 +22,7 @@ class PerformedTimespan(timespantools.Timespan):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_can_split',
+        '_forbid_splitting',
         '_divisions',
         '_layer',
         '_minimum_duration',
@@ -38,8 +37,8 @@ class PerformedTimespan(timespantools.Timespan):
 
     def __init__(
         self,
-        can_split=None,
         divisions=None,
+        forbid_splitting=None,
         layer=None,
         minimum_duration=None,
         music=None,
@@ -50,19 +49,18 @@ class PerformedTimespan(timespantools.Timespan):
         stop_offset=mathtools.Infinity(),
         voice_name=None,
         ):
-        #import consort
         timespantools.Timespan.__init__(
             self,
             start_offset=start_offset,
             stop_offset=stop_offset,
             )
-        if can_split is not None:
-            can_split = bool(can_split)
-        self._can_split = can_split
         if divisions is not None:
             divisions = tuple(durationtools.Duration(_) for _ in divisions)
             assert sum(divisions) == self.duration
         self._divisions = divisions
+        if forbid_splitting is not None:
+            forbid_splitting = bool(forbid_splitting)
+        self._forbid_splitting = forbid_splitting
         if layer is not None:
             layer = int(layer)
         self._layer = layer
@@ -117,12 +115,12 @@ class PerformedTimespan(timespantools.Timespan):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def can_split(self):
-        return self._can_split
-
-    @property
     def divisions(self):
         return self._divisions
+
+    @property
+    def forbid_splitting(self):
+        return self._forbid_splitting
 
     @property
     def is_left_broken(self):

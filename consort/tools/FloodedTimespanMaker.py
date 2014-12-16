@@ -12,9 +12,7 @@ class FloodedTimespanMaker(TimespanMaker):
         >>> import consort
         >>> timespan_maker = consort.FloodedTimespanMaker()
         >>> print(format(timespan_maker))
-        consort.tools.FloodedTimespanMaker(
-            can_split=True,
-            )
+        consort.tools.FloodedTimespanMaker()
 
     ::
 
@@ -31,13 +29,11 @@ class FloodedTimespanMaker(TimespanMaker):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
                     voice_name='Violin Voice',
@@ -55,12 +51,12 @@ class FloodedTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        can_split=True,
+        forbid_splitting=None,
         minimum_duration=None,
         ):
         TimespanMaker.__init__(
             self,
-            can_split=can_split,
+            forbid_splitting=forbid_splitting,
             minimum_duration=minimum_duration,
             )
 

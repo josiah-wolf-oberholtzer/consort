@@ -1432,7 +1432,9 @@ class TimeManager(abctools.AbjadValueObject):
                 # We don't need to split already-inscribed timespans
                 split_inventory.append(timespan)
                 continue
-            if current_offsets and timespan.can_split:
+            elif timespan.forbid_splitting:
+                continue
+            if current_offsets:
                 shards = timespan.split_at_offsets(current_offsets)
                 for shard in shards:
                     if shard.minimum_duration:

@@ -12,7 +12,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_can_split',
+        '_forbid_splitting',
         '_minimum_duration',
         '_seed',
         )
@@ -22,13 +22,13 @@ class TimespanMaker(abctools.AbjadValueObject):
     @abc.abstractmethod
     def __init__(
         self,
-        can_split=None,
+        forbid_splitting=None,
         minimum_duration=None,
         seed=None,
         ):
-        if can_split is not None:
-            can_split = bool(can_split)
-        self._can_split = can_split
+        if forbid_splitting is not None:
+            forbid_splitting = bool(forbid_splitting)
+        self._forbid_splitting = forbid_splitting
         if minimum_duration is not None:
             minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
@@ -73,7 +73,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         ):
         import consort
         timespan = consort.PerformedTimespan(
-            can_split=self.can_split,
+            forbid_splitting=self.forbid_splitting,
             layer=layer,
             minimum_duration=self.minimum_duration,
             music_specifier=music_specifier,
@@ -88,8 +88,8 @@ class TimespanMaker(abctools.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def can_split(self):
-        return self._can_split
+    def forbid_splitting(self):
+        return self._forbid_splitting
 
     @property
     def is_dependent(self):

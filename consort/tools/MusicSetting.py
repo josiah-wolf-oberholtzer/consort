@@ -33,7 +33,6 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> print(format(red_setting))
         consort.tools.MusicSetting(
             timespan_maker=consort.tools.TaleaTimespanMaker(
-                can_split=True,
                 initial_silence_talea=rhythmmakertools.Talea(
                     counts=(0, 4),
                     denominator=16,
@@ -80,7 +79,6 @@ class MusicSetting(abctools.AbjadValueObject):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
@@ -88,7 +86,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(1, 1),
@@ -96,7 +93,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(5, 4),
@@ -104,7 +100,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 2 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(3, 2),
@@ -112,7 +107,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),
@@ -120,7 +114,6 @@ class MusicSetting(abctools.AbjadValueObject):
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    can_split=True,
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     start_offset=durationtools.Offset(7, 4),

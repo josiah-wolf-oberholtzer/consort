@@ -36,8 +36,8 @@ class SilentTimespan(timespantools.Timespan):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def can_split(self):
-        return True
+    def forbid_splitting(self):
+        return False
 
     @property
     def is_left_broken(self):

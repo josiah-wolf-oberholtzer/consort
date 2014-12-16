@@ -67,7 +67,6 @@ class SegmentMaker(makertools.SegmentMaker):
             settings=(
                 consort.tools.MusicSetting(
                     timespan_maker=consort.tools.TaleaTimespanMaker(
-                        can_split=True,
                         playing_talea=rhythmmakertools.Talea(
                             counts=(4,),
                             denominator=16,
