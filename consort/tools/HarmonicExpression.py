@@ -71,7 +71,7 @@ class HarmonicExpression(LogicalTieExpression):
             chord = scoretools.Chord(leaf)
             chord.written_pitches = [stopped_pitch, touched_pitch]
             chord.note_heads[0].is_parenthesized = True
-            chord.note_heads[0].tweak.font_size = -3
+            chord.note_heads[0].tweak.font_size = -4
             chord.note_heads[1].tweak.style = 'harmonic'
             self._replace(leaf, chord)
 
