@@ -22,6 +22,7 @@ class PerformedTimespan(timespantools.Timespan):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_forbid_fusing',
         '_forbid_splitting',
         '_divisions',
         '_layer',
@@ -38,6 +39,7 @@ class PerformedTimespan(timespantools.Timespan):
     def __init__(
         self,
         divisions=None,
+        forbid_fusing=None,
         forbid_splitting=None,
         layer=None,
         minimum_duration=None,
@@ -58,6 +60,9 @@ class PerformedTimespan(timespantools.Timespan):
             divisions = tuple(durationtools.Duration(_) for _ in divisions)
             assert sum(divisions) == self.duration
         self._divisions = divisions
+        if forbid_fusing is not None:
+            forbid_fusing = bool(forbid_fusing)
+        self._forbid_fusing = forbid_fusing
         if forbid_splitting is not None:
             forbid_splitting = bool(forbid_splitting)
         self._forbid_splitting = forbid_splitting
@@ -117,6 +122,10 @@ class PerformedTimespan(timespantools.Timespan):
     @property
     def divisions(self):
         return self._divisions
+
+    @property
+    def forbid_fusing(self):
+        return self._forbid_fusing
 
     @property
     def forbid_splitting(self):

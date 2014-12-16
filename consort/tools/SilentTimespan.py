@@ -36,6 +36,10 @@ class SilentTimespan(timespantools.Timespan):
     ### PUBLIC PROPERTIES ###
 
     @property
+    def forbid_fusing(self):
+        return False
+
+    @property
     def forbid_splitting(self):
         return False
 
