@@ -95,25 +95,12 @@ class PitchClassPitchHandler(PitchHandler):
             logical_tie,
             phrase_seed,
             )
-        pitch_class = self._get_pitch_class(
-            previous_pitch,
-            seed,
-            )
-        pitch = self._get_pitch(
-            pitch_class,
-            registration,
-            seed,
-            )
+        pitch_class = self._get_pitch_class(previous_pitch, seed)
+        pitch = self._get_pitch(pitch_class, registration, seed)
         pitch_range = self.pitch_range or pitch_range
         if pitch_range is not None:
             pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
-        for i, leaf in enumerate(logical_tie):
-            leaf.written_pitch = pitch
-        self._apply_chord_expression(
-            logical_tie,
-            seed=seed,
-            pitch_range=pitch_range,
-            )
+        self._process_logical_tie(logical_tie, pitch, pitch_range, seed)
         return pitch
 
     ### PRIVATE METHODS ###

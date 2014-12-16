@@ -212,6 +212,22 @@ class PitchHandler(HashCachingObject):
             transform_stack = tuple(transform_stack)
         self._transform_stack = transform_stack
 
+    def _process_logical_tie(self, logical_tie, pitch, pitch_range, seed):
+        for leaf in logical_tie:
+            leaf.written_pitch = pitch
+        self._apply_logical_tie_expression(
+            logical_tie,
+            seed=seed,
+            pitch_range=pitch_range,
+            )
+        grace_logical_ties = self._get_grace_logical_ties(logical_tie)
+        for i, grace_logical_tie in enumerate(grace_logical_ties, seed):
+            for leaf in grace_logical_tie:
+                leaf.written_pitch = pitch
+            if self.grace_expressions:
+                grace_expression = self.grace_expressions[i]
+                grace_expression(grace_logical_tie)
+
     @staticmethod
     def _process_session(segment_session):
         import consort

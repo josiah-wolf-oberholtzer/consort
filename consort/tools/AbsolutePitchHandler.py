@@ -67,17 +67,8 @@ class AbsolutePitchHandler(PitchHandler):
         seed,
         transposition,
         ):
-        pitch = self._get_pitch(
-            previous_pitch,
-            seed,
-            )
-        for i, leaf in enumerate(logical_tie):
-            leaf.written_pitch = pitch
-        self._apply_logical_tie_expression(
-            logical_tie,
-            seed=seed,
-            pitch_range=pitch_range,
-            )
+        pitch = self._get_pitch(previous_pitch, seed)
+        self._process_logical_tie(logical_tie, pitch, pitch_range, seed)
         return pitch
 
     ### PRIVATE METHODS ###
