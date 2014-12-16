@@ -26,14 +26,14 @@ class HarmonicExpression(LogicalTieExpression):
             c'4
             <
                 \parenthesize
-                \tweak #'font-size #-3
+                \tweak #'font-size #-4
                 d'
                 \tweak #'style #'harmonic
                 g'
             >4 ~
             <
                 \parenthesize
-                \tweak #'font-size #-3
+                \tweak #'font-size #-4
                 d'
                 \tweak #'style #'harmonic
                 g'

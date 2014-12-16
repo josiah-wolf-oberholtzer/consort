@@ -66,11 +66,9 @@ def test_GraceHandler_01():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -84,11 +82,9 @@ def test_GraceHandler_01():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                             }
@@ -109,11 +105,9 @@ def test_GraceHandler_01():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                             }
@@ -124,11 +118,9 @@ def test_GraceHandler_01():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -209,11 +201,9 @@ def test_GraceHandler_02():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                             }
@@ -224,12 +214,10 @@ def test_GraceHandler_02():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -238,13 +226,11 @@ def test_GraceHandler_02():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -263,13 +249,11 @@ def test_GraceHandler_02():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                             }
@@ -280,11 +264,9 @@ def test_GraceHandler_02():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -293,12 +275,10 @@ def test_GraceHandler_02():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -379,12 +359,10 @@ def test_GraceHandler_03():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -393,14 +371,12 @@ def test_GraceHandler_03():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -419,14 +395,12 @@ def test_GraceHandler_03():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                             }
@@ -440,12 +414,10 @@ def test_GraceHandler_03():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
@@ -519,11 +491,9 @@ def test_GraceHandler_04():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                             }
@@ -613,11 +583,9 @@ def test_GraceHandler_05():
                                     {
                                         \override Flag #'stroke-style = #"grace"
                                         \override Script #'font-size = #0.5
-                                        \override Stem #'length = #8
                                         c'16
                                         \revert Flag #'stroke-style
                                         \revert Script #'font-size
-                                        \revert Stem #'length
                                     }
                                 }
                                 {
