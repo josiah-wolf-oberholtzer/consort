@@ -640,15 +640,22 @@ class TimeManager(abctools.AbjadValueObject):
                 music_specifier = timespan.music_specifier
                 if music_specifier is None:
                     music_specifier = consort.MusicSpecifier()
-            return music_specifier
+            forbid_fusing = timespan.forbid_fusing
+            return music_specifier, forbid_fusing
         import consort
         for partitioned_timespans in timespans.partition(
             include_tangent_timespans=True):
-            for music_specifier, grouped_timespans in itertools.groupby(
+            for key, grouped_timespans in itertools.groupby(
                 partitioned_timespans, grouper):
-                grouped_timespans = timespantools.TimespanInventory(
-                    grouped_timespans)
-                yield music_specifier, grouped_timespans
+                music_specifier, forbid_fusing = key
+                if forbid_fusing:
+                    for timespan in grouped_timespans:
+                        group = timespantools.TimespanInventory([timespan])
+                        yield music_specifier, group
+                else:
+                    group = timespantools.TimespanInventory(
+                        grouped_timespans)
+                    yield music_specifier, group
 
     @staticmethod
     def inscribe_demultiplexed_timespans(
