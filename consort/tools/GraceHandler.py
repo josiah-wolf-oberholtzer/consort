@@ -119,11 +119,14 @@ class GraceHandler(abctools.AbjadValueObject):
     def _find_maximum_grace_count(segment_maker):
         maximum_grace_count = 0
         for music_setting in segment_maker._settings:
-            for music_specifier in music_setting.music_specifiers.values():
-                if music_specifier.grace_handler is None:
-                    continue
-                counts = max(music_specifier.grace_handler.counts)
-                maximum_grace_count = max(maximum_grace_count, counts)
+            for music_specifiers in music_setting.music_specifiers.values():
+                if not isinstance(music_specifiers, tuple):
+                    music_specifiers = (music_specifiers,)
+                for music_specifier in music_specifiers:
+                    if music_specifier.grace_handler is None:
+                        continue
+                    counts = max(music_specifier.grace_handler.counts)
+                    maximum_grace_count = max(maximum_grace_count, counts)
         return maximum_grace_count
 
     @staticmethod
