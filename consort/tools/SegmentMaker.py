@@ -208,6 +208,11 @@ class SegmentMaker(makertools.SegmentMaker):
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
         lilypond_file.score = score
+        with systemtools.Timer(
+            enter_message='Checking for wellformedness violations:',
+            exit_message='\ttotal:',
+            ):
+            self.validate_score(score)
         return lilypond_file
 
     def __illustrate__(self):
@@ -245,6 +250,19 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def configure_score(self, score):
+        self.attach_tempo(score)
+        self.attach_rehearsal_mark(score)
+        self.attach_final_bar_line(score)
+        return score
+
+    def attach_final_bar_line(self, score):
+        if self.is_final_segment:
+            score.add_final_markup(self.final_markup)
+            score.add_final_bar_line(abbreviation='|.', to_each_voice=True)
+        else:
+            score.add_final_bar_line(abbreviation='||', to_each_voice=True)
+
+    def attach_rehearsal_mark(self, score):
         first_leaf = score['TimeSignatureContext'].select_leaves()[0]
         if self.rehearsal_mark is not None:
             markup_a = markuptools.Markup(
@@ -257,15 +275,20 @@ class SegmentMaker(makertools.SegmentMaker):
             markup = markuptools.Markup.concat([markup_a, ' ', markup_b])
             rehearsal_mark = indicatortools.RehearsalMark(markup=markup)
             attach(rehearsal_mark, first_leaf)
+
+    def attach_tempo(self, score):
+        first_leaf = score['TimeSignatureContext'].select_leaves()[0]
         if self.tempo is not None:
             attach(self.tempo, first_leaf)
-        if self.is_final_segment:
-            score.add_final_markup(self.final_markup)
-            score.add_final_bar_line(abbreviation='|.', to_each_voice=True)
-        else:
-            score.add_final_bar_line(abbreviation='||', to_each_voice=True)
-        assert inspect_(score).is_well_formed()
-        return score
+
+    @staticmethod
+    def validate_score(score):
+        manager = systemtools.WellformednessManager(expr=score)
+        triples = manager()
+        for current_violators, current_total, current_check in triples:
+            print('\t', current_violators, current_total, current_check)
+        if current_violators:
+            raise AssertionError
 
     @staticmethod
     def logical_tie_to_music_specifier(logical_tie):
