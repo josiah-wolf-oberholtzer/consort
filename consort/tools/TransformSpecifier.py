@@ -61,7 +61,7 @@ class TransformSpecifier(abctools.AbjadValueObject):
     def __init__(
         self,
         transform_stacks=(None,),
-        ratio=(1, 1),
+        ratio=(1,),
         ):
         import consort
         prototype = (
