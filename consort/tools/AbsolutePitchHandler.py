@@ -62,6 +62,7 @@ class AbsolutePitchHandler(PitchHandler):
         attack_point_signature,
         logical_tie,
         phrase_seed,
+        pitch_expr_timespans,
         pitch_range,
         previous_pitch,
         seed,
@@ -102,6 +103,17 @@ class AbsolutePitchHandler(PitchHandler):
             pitches = pitchtools.PitchSegment(pitches)
             pitches = datastructuretools.CyclicTuple(pitches)
         self._pitches = pitches
+
+    ### PUBLIC METHODS ###
+
+    def get_pitch_expr_timespans(self, stop_offset):
+        import consort
+        transform_specifier = self._transform_specifier or \
+            consort.TransformSpecifier
+        pitch_expr = self._pitches
+        pitch_expr_timespans = transform_specifier.get_pitch_expr_timespans(
+            pitch_expr)
+        return pitch_expr_timespans
 
     ### PUBLIC PROPERTIES ###
 

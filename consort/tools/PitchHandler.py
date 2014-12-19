@@ -233,11 +233,13 @@ class PitchHandler(HashCachingObject):
     @staticmethod
     def _process_session(segment_session):
         import consort
+        stop_offset = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
+        phrase_seeds = {}
+        pitch_expr_timespans_by_music_specifier = {}
         previous_pitch_by_music_specifier = {}
         seeds_by_music_specifier = {}
         seeds_by_voice = {}
-        phrase_seeds = {}
         for logical_tie in attack_point_map:
             attack_point_signature = attack_point_map[logical_tie]
             music_specifier = \
@@ -248,6 +250,16 @@ class PitchHandler(HashCachingObject):
             pitch_handler = music_specifier.pitch_handler
             if not pitch_handler:
                 continue
+            if music_specifier not in previous_pitch_by_music_specifier:
+                previous_pitch_by_music_specifier[music_specifier] = None
+                pitch_expr_timespans = pitch_handler.get_pitch_expr_timespans(
+                    stop_offset)
+                pitch_expr_timespans_by_music_specifier[music_specifier] = \
+                    pitch_expr_timespans
+            pitch_expr_timespans = pitch_expr_timespans_by_music_specifier[
+                music_specifier]
+            old_previous_pitch = previous_pitch_by_music_specifier[
+                music_specifier]
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
             phrase_seed = PitchHandler._get_phrase_seed(
                 attack_point_signature,
@@ -272,18 +284,31 @@ class PitchHandler(HashCachingObject):
                 instrument,
                 logical_tie,
                 )
-            if music_specifier not in previous_pitch_by_music_specifier:
-                previous_pitch_by_music_specifier[music_specifier] = None
-            previous_pitch = previous_pitch_by_music_specifier[music_specifier]
-            previous_pitch_by_music_specifier[music_specifier] = pitch_handler(
+            new_previous_pitch = pitch_handler(
                 attack_point_signature,
                 logical_tie,
                 phrase_seed,
+                pitch_expr_timespans,
                 pitch_range,
-                previous_pitch,
+                old_previous_pitch,
                 seed,
                 transposition,
                 )
+            previous_pitch_by_music_specifier[music_specifier] = \
+                new_previous_pitch
+
+    ### PUBLIC METHODS ###
+
+    @abc.abstractmethod
+    def get_pitch_expr_timespans(self, stop_offset):
+        raise NotImplementedError
+        import consort
+        transform_specifier = self._transform_specifier or \
+            consort.TransformSpecifier
+        pitch_expr = self._get_pitch_expr_inventory()
+        pitch_expr_timespans = transform_specifier.get_pitch_expr_timespans(
+            pitch_expr)
+        return pitch_expr_timespans
 
     ### PUBLIC PROPERTIES ###
 

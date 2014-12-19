@@ -209,6 +209,17 @@ class PitchClassPitchHandler(PitchHandler):
             assert 0 <= register_spread < 12
         self._register_spread = register_spread
 
+    ### PUBLIC METHODS ###
+
+    def get_pitch_expr_timespans(self, stop_offset):
+        import consort
+        transform_specifier = self._transform_specifier or \
+            consort.TransformSpecifier
+        pitch_expr = self._pitch_classes
+        pitch_expr_timespans = transform_specifier.get_pitch_expr_timespans(
+            pitch_expr)
+        return pitch_expr_timespans
+
     ### PUBLIC PROPERTIES ###
 
     @property
