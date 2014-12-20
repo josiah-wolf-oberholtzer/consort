@@ -48,6 +48,25 @@ class PitchSpecifier(abctools.AbjadValueObject):
             ratio=mathtools.Ratio(1, 2, 3),
             )
 
+    ::
+
+        >>> pitch_specifier = consort.PitchSpecifier("c' e' g' a'")
+        >>> print(format(pitch_specifier))
+        consort.tools.PitchSpecifier(
+            pitch_segments=(
+                pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("c'"),
+                        pitchtools.NamedPitch("e'"),
+                        pitchtools.NamedPitch("g'"),
+                        pitchtools.NamedPitch("a'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                ),
+            ratio=mathtools.Ratio(1),
+            )
+
     '''
 
     ### CLASS VARIABLES ###
@@ -64,6 +83,8 @@ class PitchSpecifier(abctools.AbjadValueObject):
         pitch_segments=("c'",),
         ratio=(1,),
         ):
+        if not isinstance(pitch_segments, (list, tuple)):
+            pitch_segments = (pitch_segments,)
         coerced_pitch_segments = []
         for pitch_segment in pitch_segments:
             pitch_segment = pitchtools.PitchSegment(pitch_segment)
@@ -83,6 +104,14 @@ class PitchSpecifier(abctools.AbjadValueObject):
 
         ::
 
+            >>> pitch_specifier = consort.PitchSpecifier(
+            ...     pitch_segments=(
+            ...         "c' e' g'",
+            ...         "fs' g'",
+            ...         "b",
+            ...         ),
+            ...     ratio=(1, 2, 3),
+            ...     )
             >>> timespans = pitch_specifier.get_timespans(stop_offset=10)
             >>> print(format(timespans))
             supriya.tools.timetools.TimespanCollection(
