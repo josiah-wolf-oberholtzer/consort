@@ -12,19 +12,25 @@ class PitchClassPitchHandler(PitchHandler):
 
         >>> import consort
         >>> pitch_handler = consort.PitchClassPitchHandler(
-        ...     pitch_classes="c' d' e' f'",
+        ...     pitch_specifier="c' d' e' f'",
         ...     )
         >>> print(format(pitch_handler))
         consort.tools.PitchClassPitchHandler(
-            pitch_classes=datastructuretools.CyclicTuple(
-                [
-                    pitchtools.NumberedPitchClass(0),
-                    pitchtools.NumberedPitchClass(2),
-                    pitchtools.NumberedPitchClass(4),
-                    pitchtools.NumberedPitchClass(5),
-                    ]
+            pitch_specifier=consort.tools.PitchSpecifier(
+                pitch_segments=(
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("c'"),
+                            pitchtools.NamedPitch("d'"),
+                            pitchtools.NamedPitch("e'"),
+                            pitchtools.NamedPitch("f'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                ratio=mathtools.Ratio(1),
                 ),
-            ) 
+            )
 
     '''
 
@@ -32,7 +38,6 @@ class PitchClassPitchHandler(PitchHandler):
 
     __slots__ = (
         '_octavations',
-        '_pitch_classes',
         '_pitch_range',
         '_register_specifier',
         '_register_spread',
@@ -58,11 +63,11 @@ class PitchClassPitchHandler(PitchHandler):
         logical_tie_expressions=None,
         octavations=None,
         pitch_application_rate=None,
-        pitch_classes=None,
         pitch_range=None,
         register_specifier=None,
         register_spread=None,
         pitch_operation_specifier=None,
+        pitch_specifier=None,
         ):
         PitchHandler.__init__(
             self,
@@ -71,9 +76,9 @@ class PitchClassPitchHandler(PitchHandler):
             logical_tie_expressions=logical_tie_expressions,
             pitch_application_rate=pitch_application_rate,
             pitch_operation_specifier=pitch_operation_specifier,
+            pitch_specifier=pitch_specifier,
             )
         self._initialize_octavations(octavations)
-        self._initialize_pitch_classes(pitch_classes)
         self._initialize_pitch_range(pitch_range)
         self._initialize_register_specifier(register_specifier)
         self._initialize_register_spread(register_spread)
@@ -210,26 +215,11 @@ class PitchClassPitchHandler(PitchHandler):
             assert 0 <= register_spread < 12
         self._register_spread = register_spread
 
-    ### PUBLIC METHODS ###
-
-    def get_pitch_expr_timespans(self, stop_offset):
-        import consort
-        specifier = self._pitch_operation_specifier or \
-            consort.PitchOperationSpecifier
-        pitch_expr = self._pitch_classes
-        pitch_expr_timespans = specifier.get_pitch_expr_timespans(
-            pitch_expr)
-        return pitch_expr_timespans
-
     ### PUBLIC PROPERTIES ###
 
     @property
     def octavations(self):
         return self._octavations
-
-    @property
-    def pitch_classes(self):
-        return self._pitch_classes
 
     @property
     def pitch_range(self):

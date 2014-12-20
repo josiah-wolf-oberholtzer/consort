@@ -23,6 +23,7 @@ class PitchHandler(HashCachingObject):
         '_logical_tie_expressions',
         '_pitch_application_rate',
         '_pitch_operation_specifier',
+        '_pitch_specifier',
         )
 
     ### INITIALIZER ###
@@ -33,6 +34,7 @@ class PitchHandler(HashCachingObject):
         grace_expressions=None,
         logical_tie_expressions=None,
         pitch_application_rate=None,
+        pitch_specifier=None,
         pitch_operation_specifier=None,
         ):
         HashCachingObject.__init__(self)
@@ -40,6 +42,7 @@ class PitchHandler(HashCachingObject):
         self._initialize_grace_expressions(grace_expressions)
         self._initialize_logical_tie_expressions(logical_tie_expressions)
         self._initialize_pitch_application_rate(pitch_application_rate)
+        self._initialize_pitch_specifier(pitch_specifier)
         self._initialize_pitch_operation_specifier(pitch_operation_specifier)
 
     ### SPECIAL METHODS ###
@@ -211,6 +214,13 @@ class PitchHandler(HashCachingObject):
             assert isinstance(pitch_operation_specifier, prototype)
         self._pitch_operation_specifier = pitch_operation_specifier
 
+    def _initialize_pitch_specifier(self, pitch_specifier):
+        import consort
+        if pitch_specifier is not None:
+            if not isinstance(pitch_specifier, consort.PitchSpecifier):
+                pitch_specifier = consort.PitchSpecifier(pitch_specifier)
+        self._pitch_specifier = pitch_specifier
+
     def _process_logical_tie(self, logical_tie, pitch, pitch_range, seed):
         for leaf in logical_tie:
             leaf.written_pitch = pitch
@@ -232,7 +242,7 @@ class PitchHandler(HashCachingObject):
     @staticmethod
     def _process_session(segment_session):
         import consort
-        stop_offset = segment_session.measure_offsets[-1]
+        segment_duration = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
         phrase_seeds = {}
         pitch_expr_timespans_by_music_specifier = {}
@@ -240,25 +250,28 @@ class PitchHandler(HashCachingObject):
         seeds_by_music_specifier = {}
         seeds_by_voice = {}
         for logical_tie in attack_point_map:
-            attack_point_signature = attack_point_map[logical_tie]
             music_specifier = \
                 consort.SegmentMaker.logical_tie_to_music_specifier(
                     logical_tie)
-            if not music_specifier:
+            if not music_specifier or not music_specifier.pitch_handler:
                 continue
             pitch_handler = music_specifier.pitch_handler
-            if not pitch_handler:
-                continue
             if music_specifier not in previous_pitch_by_music_specifier:
                 previous_pitch_by_music_specifier[music_specifier] = None
-                pitch_expr_timespans = pitch_handler.get_pitch_expr_timespans(
-                    stop_offset)
+                pitch_specifier = pitch_handler.pitch_specifier
+                operation_specifier = pitch_handler.pitch_operation_specifier
+                pitch_expr_timespans = PitchHandler.get_pitch_expr_timespans(
+                    pitch_specifier=pitch_specifier,
+                    operation_specifier=operation_specifier,
+                    duration=segment_duration,
+                    )
                 pitch_expr_timespans_by_music_specifier[music_specifier] = \
                     pitch_expr_timespans
             pitch_expr_timespans = pitch_expr_timespans_by_music_specifier[
                 music_specifier]
             old_previous_pitch = previous_pitch_by_music_specifier[
                 music_specifier]
+            attack_point_signature = attack_point_map[logical_tie]
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
             phrase_seed = PitchHandler._get_phrase_seed(
                 attack_point_signature,
@@ -342,59 +355,54 @@ class PitchHandler(HashCachingObject):
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(0, 1),
                         stop_offset=durationtools.Offset(2, 1),
-                        annotation=pitchtools.PitchSegment(
-                            (
+                        annotation=datastructuretools.CyclicTuple(
+                            [
                                 pitchtools.NamedPitch("df'"),
                                 pitchtools.NamedPitch('gf'),
                                 pitchtools.NamedPitch('bf'),
-                                ),
-                            item_class=pitchtools.NamedPitch,
+                                ]
                             ),
                         ),
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(2, 1),
                         stop_offset=durationtools.Offset(3, 1),
-                        annotation=pitchtools.PitchSegment(
-                            (
+                        annotation=datastructuretools.CyclicTuple(
+                            [
                                 pitchtools.NamedPitch("g'"),
                                 pitchtools.NamedPitch("e'"),
                                 pitchtools.NamedPitch("f'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
+                                ]
                             ),
                         ),
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(3, 1),
                         stop_offset=durationtools.Offset(6, 1),
-                        annotation=pitchtools.PitchSegment(
-                            (
+                        annotation=datastructuretools.CyclicTuple(
+                            [
                                 pitchtools.NamedPitch("fs'"),
                                 pitchtools.NamedPitch("g'"),
                                 pitchtools.NamedPitch("a'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
+                                ]
                             ),
                         ),
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(6, 1),
                         stop_offset=durationtools.Offset(9, 1),
-                        annotation=pitchtools.PitchSegment(
-                            (
+                        annotation=datastructuretools.CyclicTuple(
+                            [
                                 pitchtools.NamedPitch('b'),
                                 pitchtools.NamedPitch('d'),
-                                ),
-                            item_class=pitchtools.NamedPitch,
+                                ]
                             ),
                         ),
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(9, 1),
                         stop_offset=durationtools.Offset(12, 1),
-                        annotation=pitchtools.PitchSegment(
-                            (
+                        annotation=datastructuretools.CyclicTuple(
+                            [
                                 pitchtools.NamedPitch('as'),
                                 pitchtools.NamedPitch("fss'"),
-                                ),
-                            item_class=pitchtools.NamedPitch,
+                                ]
                             ),
                         ),
                     ]
@@ -430,6 +438,7 @@ class PitchHandler(HashCachingObject):
             operation = operation_timespan.annotation
             if operation is not None:
                 pitches = operation(pitches)
+            pitches = datastructuretools.CyclicTuple(pitches)
             pitch_expr_timespan = timespantools.AnnotatedTimespan(
                 annotation=pitches,
                 start_offset=start_offset,
@@ -459,3 +468,7 @@ class PitchHandler(HashCachingObject):
     @property
     def pitch_operation_specifier(self):
         return self._pitch_operation_specifier
+
+    @property
+    def pitch_specifier(self):
+        return self._pitch_specifier

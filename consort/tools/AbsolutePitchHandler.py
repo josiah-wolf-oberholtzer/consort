@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
-import collections
-from abjad.tools import datastructuretools
+from __future__ import print_function
 from abjad.tools import pitchtools
 from consort.tools.PitchHandler import PitchHandler
 
@@ -12,17 +11,23 @@ class AbsolutePitchHandler(PitchHandler):
 
         >>> import consort
         >>> pitch_handler = consort.AbsolutePitchHandler(
-        ...     pitches="c' d' e' f'",
+        ...     pitch_specifier="c' d' e' f'",
         ...     )
         >>> print(format(pitch_handler))
         consort.tools.AbsolutePitchHandler(
-            pitches=datastructuretools.CyclicTuple(
-                [
-                    pitchtools.NamedPitch("c'"),
-                    pitchtools.NamedPitch("d'"),
-                    pitchtools.NamedPitch("e'"),
-                    pitchtools.NamedPitch("f'"),
-                    ]
+            pitch_specifier=consort.tools.PitchSpecifier(
+                pitch_segments=(
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("c'"),
+                            pitchtools.NamedPitch("d'"),
+                            pitchtools.NamedPitch("e'"),
+                            pitchtools.NamedPitch("f'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                ratio=mathtools.Ratio(1),
                 ),
             )
 
@@ -30,30 +35,7 @@ class AbsolutePitchHandler(PitchHandler):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = (
-        '_pitches',
-        )
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        forbid_repetitions=None,
-        grace_expressions=None,
-        logical_tie_expressions=None,
-        pitch_application_rate=None,
-        pitch_operation_specifier=None,
-        pitches=None,
-        ):
-        PitchHandler.__init__(
-            self,
-            forbid_repetitions=forbid_repetitions,
-            grace_expressions=grace_expressions,
-            logical_tie_expressions=logical_tie_expressions,
-            pitch_application_rate=pitch_application_rate,
-            pitch_operation_specifier=pitch_operation_specifier,
-            )
-        self._initialize_pitches(pitches)
+    __slots__ = ()
 
     ### SPECIAL METHODS ###
 
@@ -95,28 +77,3 @@ class AbsolutePitchHandler(PitchHandler):
                     for transform in self.pitch_operation_specifier:
                         pitch = transform(pitch)
         return pitch
-
-    def _initialize_pitches(self, pitches):
-        if pitches is not None:
-            if not isinstance(pitches, collections.Sequence):
-                pitches = (pitches,)
-            pitches = pitchtools.PitchSegment(pitches)
-            pitches = datastructuretools.CyclicTuple(pitches)
-        self._pitches = pitches
-
-    ### PUBLIC METHODS ###
-
-    def get_pitch_expr_timespans(self, stop_offset):
-        import consort
-        specifier = self._pitch_operation_specifier or \
-            consort.Pitchoperation_specifierSpecifier
-        pitch_expr = self._pitches
-        pitch_expr_timespans = specifier.get_pitch_expr_timespans(
-            pitch_expr)
-        return pitch_expr_timespans
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def pitches(self):
-        return self._pitches
