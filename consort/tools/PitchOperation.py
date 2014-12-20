@@ -10,14 +10,14 @@ class PitchOperation(abctools.AbjadValueObject):
 
         >>> import consort
         >>> pitch_operation = consort.PitchOperation(
-        ...     transforms=(
+        ...     operators=(
         ...         pitchtools.Rotation(1),
         ...         pitchtools.Transposition(2),
         ...         ),
         ...     )
         >>> print(format(pitch_operation))
         consort.tools.PitchOperation(
-            transforms=(
+            operators=(
                 pitchtools.Rotation(
                     index=1,
                     transpose=True,
@@ -39,35 +39,35 @@ class PitchOperation(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_transforms',
+        '_operators',
         )
 
     ### INITIALIZER ###
 
-    def __init__(self, transforms=None):
+    def __init__(self, operators=None):
         prototype = (
             pitchtools.Inversion,
             pitchtools.Multiplication,
             pitchtools.Transposition,
             pitchtools.Rotation,
             )
-        if transforms is not None:
-            assert len(transforms)
-            assert all(isinstance(_, prototype) for _ in transforms)
-            transforms = tuple(transforms)
-        self._transforms = transforms
+        if operators is not None:
+            assert len(operators)
+            assert all(isinstance(_, prototype) for _ in operators)
+            operators = tuple(operators)
+        self._operators = operators
 
     ### SPECIAL METHODS ###
 
     def __call__(self, pitch_expr):
-        if self.transforms is None:
+        if self.operators is None:
             return pitch_expr
-        for transform in self.transforms:
+        for transform in self.operators:
             pitch_expr = transform(pitch_expr)
         return pitch_expr
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def transforms(self):
-        return self._transforms
+    def operators(self):
+        return self._operators
