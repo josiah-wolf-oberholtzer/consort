@@ -7,7 +7,7 @@ from supriya import timetools
 
 
 class PitchOperationSpecifier(abctools.AbjadValueObject):
-    r'''A transform specifier.
+    r'''A operation specifier.
 
     ::
 
@@ -30,7 +30,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         consort.tools.PitchOperationSpecifier(
             pitch_operations=(
                 consort.tools.PitchOperation(
-                    transforms=(
+                    operators=(
                         pitchtools.Rotation(
                             index=1,
                             transpose=True,
@@ -42,7 +42,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                     ),
                 None,
                 consort.tools.PitchOperation(
-                    transforms=(
+                    operators=(
                         pitchtools.Rotation(
                             index=-1,
                             transpose=True,
@@ -57,6 +57,15 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             )
 
     '''
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = (
+        '_pitch_operations',
+        '_ratio',
+        )
+
+    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -77,8 +86,8 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
 
     ### PRIVATE METHODS ###
 
-    def _get_transform_timespans(self, stop_offset):
-        transform_timespans = timetools.TimespanCollection()
+    def _get_timespans(self, stop_offset):
+        timespans = timetools.TimespanCollection()
         target_timespan = timespantools.Timespan(
             start_offset=0,
             stop_offset=stop_offset,
@@ -91,18 +100,18 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                 start_offset=timespan.start_offset,
                 stop_offset=timespan.stop_offset,
                 )
-            transform_timespans.insert(annotated_timespan)
-        return transform_timespans
+            timespans.insert(annotated_timespan)
+        return timespans
 
     ### PUBLIC METHODS ###
 
-    def get_pitch_expr_timespans(self, pitch_expr, stop_offset):
+    def get_timespans(self, pitch_expr, stop_offset):
         r'''Gets pitch expr timespans.
 
         ::
 
             >>> pitch_expr = pitchtools.PitchClassSegment([0, 1, 4, 7])
-            >>> timespans = pitch_operation_specifier.get_pitch_expr_timespans(
+            >>> timespans = pitch_operation_specifier.get_timespans(
             ...     pitch_expr, 10)
             >>> print(format(timespans))
             supriya.tools.timetools.TimespanCollection(
@@ -152,16 +161,16 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         Returns timespan colleciton.
         '''
         pitch_expr_timespans = timetools.TimespanCollection()
-        transform_timespans = self._get_transform_timespans(stop_offset)
-        for transform_timespan in transform_timespans:
-            pitch_operation = transform_timespan.annotation
+        operation_timespans = self._get_timespans(stop_offset)
+        for operation_timespan in operation_timespans:
+            pitch_operation = operation_timespan.annotation
             if pitch_operation is not None:
-                transformed_pitch_expr = pitch_operation(pitch_expr)
+                operationed_pitch_expr = pitch_operation(pitch_expr)
             else:
-                transformed_pitch_expr = pitch_expr
+                operationed_pitch_expr = pitch_expr
             pitch_expr_timespan = new(
-                transform_timespan,
-                annotation=transformed_pitch_expr,
+                operation_timespan,
+                annotation=operationed_pitch_expr,
                 )
             pitch_expr_timespans.insert(pitch_expr_timespan)
         return pitch_expr_timespans
