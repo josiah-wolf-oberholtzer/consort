@@ -62,7 +62,7 @@ class PitchClassPitchHandler(PitchHandler):
         pitch_range=None,
         register_specifier=None,
         register_spread=None,
-        transform_stack=None,
+        pitch_operation_specifier=None,
         ):
         PitchHandler.__init__(
             self,
@@ -70,7 +70,7 @@ class PitchClassPitchHandler(PitchHandler):
             grace_expressions=grace_expressions,
             logical_tie_expressions=logical_tie_expressions,
             pitch_application_rate=pitch_application_rate,
-            transform_stack=transform_stack,
+            pitch_operation_specifier=pitch_operation_specifier,
             )
         self._initialize_octavations(octavations)
         self._initialize_pitch_classes(pitch_classes)
@@ -85,6 +85,7 @@ class PitchClassPitchHandler(PitchHandler):
         attack_point_signature,
         logical_tie,
         phrase_seed,
+        pitch_expr_timespans,
         pitch_range,
         previous_pitch,
         seed,
@@ -140,15 +141,15 @@ class PitchClassPitchHandler(PitchHandler):
             datastructuretools.CyclicTuple([pitchtools.NumberedPitchClass(0)])
         previous_pitch_class = pitchtools.NumberedPitchClass(previous_pitch)
         pitch_class = pitch_classes[seed]
-        if self.transform_stack:
-            for transform in self.transform_stack:
+        if self.pitch_operation:
+            for transform in self.pitch_operation:
                 pitch_class = transform(pitch_class)
         if 1 < len(set(pitch_classes)) and self.forbid_repetitions:
             while pitch_class == previous_pitch_class:
                 seed += 1
                 pitch_class = pitch_classes[seed]
-                if self.transform_stack:
-                    for transform in self.transform_stack:
+                if self.pitch_operation:
+                    for transform in self.pitch_operation:
                         pitch_class = transform(pitch_class)
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
         return pitch_class
@@ -213,10 +214,10 @@ class PitchClassPitchHandler(PitchHandler):
 
     def get_pitch_expr_timespans(self, stop_offset):
         import consort
-        transform_specifier = self._transform_specifier or \
-            consort.TransformSpecifier
+        specifier = self._pitch_operation_specifier or \
+            consort.PitchOperationSpecifier
         pitch_expr = self._pitch_classes
-        pitch_expr_timespans = transform_specifier.get_pitch_expr_timespans(
+        pitch_expr_timespans = specifier.get_pitch_expr_timespans(
             pitch_expr)
         return pitch_expr_timespans
 

@@ -18,7 +18,7 @@ class PitchHandler(HashCachingObject):
         '_grace_expressions',
         '_logical_tie_expressions',
         '_pitch_application_rate',
-        '_transform_stack',
+        '_pitch_operation_specifier',
         )
 
     ### INITIALIZER ###
@@ -29,14 +29,14 @@ class PitchHandler(HashCachingObject):
         grace_expressions=None,
         logical_tie_expressions=None,
         pitch_application_rate=None,
-        transform_stack=None,
+        pitch_operation_specifier=None,
         ):
         HashCachingObject.__init__(self)
         self._initialize_forbid_repetitions(forbid_repetitions)
         self._initialize_grace_expressions(grace_expressions)
         self._initialize_logical_tie_expressions(logical_tie_expressions)
         self._initialize_pitch_application_rate(pitch_application_rate)
-        self._initialize_transform_stack(transform_stack)
+        self._initialize_pitch_operation_specifier(pitch_operation_specifier)
 
     ### SPECIAL METHODS ###
 
@@ -200,17 +200,12 @@ class PitchHandler(HashCachingObject):
             )
         self._pitch_application_rate = pitch_application_rate
 
-    def _initialize_transform_stack(self, transform_stack):
-        if transform_stack is not None:
-            prototype = (
-                pitchtools.Inversion,
-                pitchtools.Multiplication,
-                pitchtools.Transposition,
-                )
-            assert all(isinstance(_, prototype) for _ in transform_stack), \
-                transform_stack
-            transform_stack = tuple(transform_stack)
-        self._transform_stack = transform_stack
+    def _initialize_pitch_operation_specifier(self, pitch_operation_specifier):
+        import consort
+        if pitch_operation_specifier is not None:
+            prototype = consort.PitchOperationSpecifier
+            assert isinstance(pitch_operation_specifier, prototype)
+        self._pitch_operation_specifier = pitch_operation_specifier
 
     def _process_logical_tie(self, logical_tie, pitch, pitch_range, seed):
         for leaf in logical_tie:
@@ -303,10 +298,10 @@ class PitchHandler(HashCachingObject):
     def get_pitch_expr_timespans(self, stop_offset):
         raise NotImplementedError
         import consort
-        transform_specifier = self._transform_specifier or \
-            consort.TransformSpecifier
+        pitch_operation_specifier = self._pitch_operation_specifier or \
+            consort.PitchOperationSpecifier
         pitch_expr = self._get_pitch_expr_inventory()
-        pitch_expr_timespans = transform_specifier.get_pitch_expr_timespans(
+        pitch_expr_timespans = pitch_operation_specifier.get_pitch_expr_timespans(
             pitch_expr)
         return pitch_expr_timespans
 
@@ -329,5 +324,5 @@ class PitchHandler(HashCachingObject):
         return self._pitch_application_rate
 
     @property
-    def transform_stack(self):
-        return self._transform_stack
+    def pitch_operation_specifier(self):
+        return self._pitch_operation_specifier

@@ -6,30 +6,30 @@ from abjad import timespantools
 from supriya import timetools
 
 
-class TransformSpecifier(abctools.AbjadValueObject):
+class PitchOperationSpecifier(abctools.AbjadValueObject):
     r'''A transform specifier.
 
     ::
 
         >>> import consort
-        >>> transform_specifier = consort.TransformSpecifier(
-        ...     transform_stacks=(
-        ...         consort.TransformStack((
+        >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
+        ...     pitch_operations=(
+        ...         consort.PitchOperation((
         ...             pitchtools.Rotation(1),
         ...             pitchtools.Transposition(1),
         ...             )),
         ...         None,
-        ...         consort.TransformStack((
+        ...         consort.PitchOperation((
         ...             pitchtools.Rotation(-1),
         ...             pitchtools.Transposition(-1),
         ...             ))
         ...         ),
         ...     ratio=(1, 2, 1),
         ...     )
-        >>> print(format(transform_specifier))
-        consort.tools.TransformSpecifier(
-            transform_stacks=(
-                consort.tools.TransformStack(
+        >>> print(format(pitch_operation_specifier))
+        consort.tools.PitchOperationSpecifier(
+            pitch_operations=(
+                consort.tools.PitchOperation(
                     transforms=(
                         pitchtools.Rotation(
                             index=1,
@@ -41,7 +41,7 @@ class TransformSpecifier(abctools.AbjadValueObject):
                         ),
                     ),
                 None,
-                consort.tools.TransformStack(
+                consort.tools.PitchOperation(
                     transforms=(
                         pitchtools.Rotation(
                             index=-1,
@@ -60,19 +60,19 @@ class TransformSpecifier(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        transform_stacks=(None,),
+        pitch_operations=(None,),
         ratio=(1,),
         ):
         import consort
         prototype = (
-            consort.TransformStack,
+            consort.PitchOperation,
             type(None),
             )
-        assert all(isinstance(x, prototype) for x in transform_stacks)
-        assert len(transform_stacks)
-        self._transform_stacks = tuple(transform_stacks)
+        assert all(isinstance(x, prototype) for x in pitch_operations)
+        assert len(pitch_operations)
+        self._pitch_operations = tuple(pitch_operations)
         ratio = mathtools.Ratio([abs(x) for x in ratio])
-        assert len(ratio) == len(transform_stacks)
+        assert len(ratio) == len(pitch_operations)
         self._ratio = ratio
 
     ### PRIVATE METHODS ###
@@ -85,9 +85,9 @@ class TransformSpecifier(abctools.AbjadValueObject):
             )
         divided_timespans = target_timespan.divide_by_ratio(self.ratio)
         for i, timespan in enumerate(divided_timespans):
-            transform_stack = self._transform_stacks[i]
+            pitch_operation = self._pitch_operations[i]
             annotated_timespan = timespantools.AnnotatedTimespan(
-                annotation=transform_stack,
+                annotation=pitch_operation,
                 start_offset=timespan.start_offset,
                 stop_offset=timespan.stop_offset,
                 )
@@ -102,7 +102,7 @@ class TransformSpecifier(abctools.AbjadValueObject):
         ::
 
             >>> pitch_expr = pitchtools.PitchClassSegment([0, 1, 4, 7])
-            >>> timespans = transform_specifier.get_pitch_expr_timespans(
+            >>> timespans = pitch_operation_specifier.get_pitch_expr_timespans(
             ...     pitch_expr, 10)
             >>> print(format(timespans))
             supriya.tools.timetools.TimespanCollection(
@@ -154,9 +154,9 @@ class TransformSpecifier(abctools.AbjadValueObject):
         pitch_expr_timespans = timetools.TimespanCollection()
         transform_timespans = self._get_transform_timespans(stop_offset)
         for transform_timespan in transform_timespans:
-            transform_stack = transform_timespan.annotation
-            if transform_stack is not None:
-                transformed_pitch_expr = transform_stack(pitch_expr)
+            pitch_operation = transform_timespan.annotation
+            if pitch_operation is not None:
+                transformed_pitch_expr = pitch_operation(pitch_expr)
             else:
                 transformed_pitch_expr = pitch_expr
             pitch_expr_timespan = new(
@@ -173,5 +173,5 @@ class TransformSpecifier(abctools.AbjadValueObject):
         return self._ratio
 
     @property
-    def transform_stacks(self):
-        return self._transform_stacks
+    def pitch_operations(self):
+        return self._pitch_operations

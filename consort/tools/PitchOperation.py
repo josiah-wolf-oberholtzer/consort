@@ -3,20 +3,20 @@ from abjad import abctools
 from abjad import pitchtools
 
 
-class TransformStack(abctools.AbjadValueObject):
+class PitchOperation(abctools.AbjadValueObject):
     r'''A transform stack.
 
     ::
 
         >>> import consort
-        >>> transform_stack = consort.TransformStack(
+        >>> pitch_operation = consort.PitchOperation(
         ...     transforms=(
         ...         pitchtools.Rotation(1),
         ...         pitchtools.Transposition(2),
         ...         ),
         ...     )
-        >>> print(format(transform_stack))
-        consort.tools.TransformStack(
+        >>> print(format(pitch_operation))
+        consort.tools.PitchOperation(
             transforms=(
                 pitchtools.Rotation(
                     index=1,
@@ -31,7 +31,7 @@ class TransformStack(abctools.AbjadValueObject):
     ::
 
         >>> pitch_classes = pitchtools.PitchClassSegment([0, 1, 4, 7])
-        >>> transform_stack(pitch_classes)
+        >>> pitch_operation(pitch_classes)
         PitchClassSegment([2, 7, 8, 11])
 
     '''

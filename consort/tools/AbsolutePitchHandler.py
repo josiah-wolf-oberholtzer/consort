@@ -42,8 +42,8 @@ class AbsolutePitchHandler(PitchHandler):
         grace_expressions=None,
         logical_tie_expressions=None,
         pitch_application_rate=None,
+        pitch_operation_specifier=None,
         pitches=None,
-        transform_stack=None,
         ):
         PitchHandler.__init__(
             self,
@@ -51,7 +51,7 @@ class AbsolutePitchHandler(PitchHandler):
             grace_expressions=grace_expressions,
             logical_tie_expressions=logical_tie_expressions,
             pitch_application_rate=pitch_application_rate,
-            transform_stack=transform_stack,
+            pitch_operation_specifier=pitch_operation_specifier,
             )
         self._initialize_pitches(pitches)
 
@@ -84,15 +84,15 @@ class AbsolutePitchHandler(PitchHandler):
             pitch = pitchtools.NamedPitch("c'")
         else:
             pitch = pitches[seed]
-        if self.transform_stack:
-            for transform in self.transform_stack:
+        if self.pitch_operation_specifier:
+            for transform in self.pitch_operation_specifier:
                 pitch = transform(pitch)
         if self.pitches and 1 < len(set(pitches)) and self.forbid_repetitions:
             while pitch == previous_pitch:
                 seed += 1
                 pitch = pitches[seed]
-                if self.transform_stack:
-                    for transform in self.transform_stack:
+                if self.pitch_operation_specifier:
+                    for transform in self.pitch_operation_specifier:
                         pitch = transform(pitch)
         return pitch
 
@@ -108,10 +108,10 @@ class AbsolutePitchHandler(PitchHandler):
 
     def get_pitch_expr_timespans(self, stop_offset):
         import consort
-        transform_specifier = self._transform_specifier or \
-            consort.TransformSpecifier
+        specifier = self._pitch_operation_specifier or \
+            consort.Pitchoperation_specifierSpecifier
         pitch_expr = self._pitches
-        pitch_expr_timespans = transform_specifier.get_pitch_expr_timespans(
+        pitch_expr_timespans = specifier.get_pitch_expr_timespans(
             pitch_expr)
         return pitch_expr_timespans
 
