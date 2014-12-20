@@ -2,10 +2,14 @@
 from __future__ import print_function
 import abc
 from abjad import datastructuretools
+from abjad import durationtools
 from abjad import inspect_
 from abjad import iterate
 from abjad import instrumenttools
 from abjad import pitchtools
+from abjad import sequencetools
+from abjad import timespantools
+from supriya import timetools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -294,15 +298,144 @@ class PitchHandler(HashCachingObject):
 
     ### PUBLIC METHODS ###
 
-    @abc.abstractmethod
-    def get_pitch_expr_timespans(self, stop_offset):
-        raise NotImplementedError
+    @staticmethod
+    def get_pitch_expr_timespans(
+        pitch_specifier=None,
+        operation_specifier=None,
+        duration=1,
+        ):
+        r'''Get pitch expression timespans.
+
+        ::
+
+            >>> import consort
+            >>> pitch_specifier = consort.PitchSpecifier(
+            ...     pitch_segments=(
+            ...         "c' e' g'",
+            ...         "fs' g' a'",
+            ...         "b d",
+            ...         ),
+            ...     ratio=(1, 2, 3),
+            ...     )
+            >>> operation_specifier = consort.PitchOperationSpecifier(
+            ...     pitch_operations=(
+            ...         consort.PitchOperation((
+            ...             pitchtools.Rotation(1),
+            ...             pitchtools.Transposition(1),
+            ...             )),
+            ...         None,
+            ...         consort.PitchOperation((
+            ...             pitchtools.Rotation(-1),
+            ...             pitchtools.Transposition(-1),
+            ...             ))
+            ...         ),
+            ...     ratio=(1, 2, 1),
+            ...     )
+            >>> timespans = consort.PitchHandler.get_pitch_expr_timespans(
+            ...     pitch_specifier=pitch_specifier,
+            ...     operation_specifier=operation_specifier,
+            ...     duration=12,
+            ...     )
+            >>> print(format(timespans))
+            supriya.tools.timetools.TimespanCollection(
+                [
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(2, 1),
+                        annotation=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("df'"),
+                                pitchtools.NamedPitch('gf'),
+                                pitchtools.NamedPitch('bf'),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(2, 1),
+                        stop_offset=durationtools.Offset(3, 1),
+                        annotation=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("g'"),
+                                pitchtools.NamedPitch("e'"),
+                                pitchtools.NamedPitch("f'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(3, 1),
+                        stop_offset=durationtools.Offset(6, 1),
+                        annotation=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch("fs'"),
+                                pitchtools.NamedPitch("g'"),
+                                pitchtools.NamedPitch("a'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(6, 1),
+                        stop_offset=durationtools.Offset(9, 1),
+                        annotation=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch('b'),
+                                pitchtools.NamedPitch('d'),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    timespantools.AnnotatedTimespan(
+                        start_offset=durationtools.Offset(9, 1),
+                        stop_offset=durationtools.Offset(12, 1),
+                        annotation=pitchtools.PitchSegment(
+                            (
+                                pitchtools.NamedPitch('as'),
+                                pitchtools.NamedPitch("fss'"),
+                                ),
+                            item_class=pitchtools.NamedPitch,
+                            ),
+                        ),
+                    ]
+                )
+
+        Returns timespans.
+        '''
         import consort
-        pitch_operation_specifier = self._pitch_operation_specifier or \
-            consort.PitchOperationSpecifier
-        pitch_expr = self._get_pitch_expr_inventory()
-        pitch_expr_timespans = pitch_operation_specifier.get_pitch_expr_timespans(
-            pitch_expr)
+        duration = durationtools.Duration(duration)
+        pitch_specifier = pitch_specifier or consort.PitchSpecifier()
+        operation_specifier = operation_specifier or \
+            consort.PitchOperationSpecifier()
+        pitch_expr_timespans = timetools.TimespanCollection()
+        pitch_timespans = pitch_specifier.get_timespans(duration)
+        operation_timespans = operation_specifier.get_timespans(duration)
+        offsets = set()
+        offsets.update(pitch_timespans.all_offsets)
+        offsets.update(operation_timespans.all_offsets)
+        offsets = tuple(sorted(offsets))
+        for start_offset, stop_offset in sequencetools.iterate_sequence_nwise(
+            offsets):
+            timespan = timespantools.Timespan(
+                start_offset=start_offset,
+                stop_offset=stop_offset,
+                )
+            pitch_timespan = \
+                pitch_timespans.find_timespans_intersecting_timespan(
+                    timespan)[0]
+            pitches = pitch_timespan.annotation
+            operation_timespan = \
+                operation_timespans.find_timespans_intersecting_timespan(
+                    timespan)[0]
+            operation = operation_timespan.annotation
+            if operation is not None:
+                pitches = operation(pitches)
+            pitch_expr_timespan = timespantools.AnnotatedTimespan(
+                annotation=pitches,
+                start_offset=start_offset,
+                stop_offset=stop_offset,
+                )
+            pitch_expr_timespans.insert(pitch_expr_timespan)
         return pitch_expr_timespans
 
     ### PUBLIC PROPERTIES ###
