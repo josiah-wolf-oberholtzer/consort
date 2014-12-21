@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad import abctools
 from abjad import mathtools
 from abjad import timespantools
@@ -72,6 +73,8 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         ratio=(1,),
         ):
         import consort
+        if not isinstance(pitch_operations, collections.Sequence):
+                pitch_operations = (pitch_operations,)
         prototype = (
             consort.PitchOperation,
             type(None),

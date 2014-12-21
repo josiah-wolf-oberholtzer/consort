@@ -90,7 +90,7 @@ class PitchClassPitchHandler(PitchHandler):
         attack_point_signature,
         logical_tie,
         phrase_seed,
-        pitch_expr_timespans,
+        pitch_choices,
         pitch_range,
         previous_pitch,
         seed,
@@ -101,12 +101,28 @@ class PitchClassPitchHandler(PitchHandler):
             logical_tie,
             phrase_seed,
             )
-        pitch_class = self._get_pitch_class(previous_pitch, seed)
-        pitch = self._get_pitch(pitch_class, registration, seed)
+        pitch_class = self._get_pitch_class(
+            pitch_choices,
+            previous_pitch,
+            seed,
+            )
+        pitch = self._get_pitch(
+            pitch_class,
+            registration,
+            seed,
+            )
         pitch_range = self.pitch_range or pitch_range
         if pitch_range is not None:
-            pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
-        self._process_logical_tie(logical_tie, pitch, pitch_range, seed)
+            pitch = self._fit_pitch_to_pitch_range(
+                pitch,
+                pitch_range,
+                )
+        self._process_logical_tie(
+            logical_tie,
+            pitch,
+            pitch_range,
+            seed,
+            )
         return pitch
 
     ### PRIVATE METHODS ###
@@ -139,11 +155,13 @@ class PitchClassPitchHandler(PitchHandler):
 
     def _get_pitch_class(
         self,
+        pitch_choices,
         previous_pitch,
         seed,
         ):
-        pitch_classes = self.pitch_classes or \
-            datastructuretools.CyclicTuple([pitchtools.NumberedPitchClass(0)])
+        pitch_classes = datastructuretools.CyclicTuple([
+            pitchtools.NumberedPitchClass(_) for _ in pitch_choices
+            ])
         previous_pitch_class = pitchtools.NumberedPitchClass(previous_pitch)
         pitch_class = pitch_classes[seed]
         if self.pitch_operation:

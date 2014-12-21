@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
-from abjad.tools import pitchtools
 from consort.tools.PitchHandler import PitchHandler
 
 
@@ -44,36 +43,38 @@ class AbsolutePitchHandler(PitchHandler):
         attack_point_signature,
         logical_tie,
         phrase_seed,
-        pitch_expr_timespans,
+        pitch_choices,
         pitch_range,
         previous_pitch,
         seed,
         transposition,
         ):
-        pitch = self._get_pitch(previous_pitch, seed)
-        self._process_logical_tie(logical_tie, pitch, pitch_range, seed)
+        pitch = self._get_pitch(
+            pitch_choices,
+            previous_pitch,
+            seed,
+            )
+        self._process_logical_tie(
+            logical_tie,
+            pitch,
+            pitch_range,
+            seed,
+            )
         return pitch
 
     ### PRIVATE METHODS ###
 
     def _get_pitch(
         self,
+        pitch_choices,
         previous_pitch,
         seed,
         ):
-        pitches = self.pitches
-        if not pitches:
-            pitch = pitchtools.NamedPitch("c'")
-        else:
-            pitch = pitches[seed]
-        if self.pitch_operation_specifier:
-            for transform in self.pitch_operation_specifier:
-                pitch = transform(pitch)
-        if self.pitches and 1 < len(set(pitches)) and self.forbid_repetitions:
+        pitch = pitch_choices[seed]
+        if pitch_choices and \
+            1 < len(set(pitch_choices)) and \
+            self.forbid_repetitions:
             while pitch == previous_pitch:
                 seed += 1
-                pitch = pitches[seed]
-                if self.pitch_operation_specifier:
-                    for transform in self.pitch_operation_specifier:
-                        pitch = transform(pitch)
+                pitch = pitch_choices[seed]
         return pitch

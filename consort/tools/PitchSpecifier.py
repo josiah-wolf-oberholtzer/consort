@@ -15,7 +15,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
         >>> pitch_specifier = consort.PitchSpecifier(
         ...     pitch_segments=(
         ...         "c' e' g'",
-        ...         "fs' g'",
+        ...         "fs' gs'",
         ...         "b",
         ...         ),
         ...     ratio=(1, 2, 3),
@@ -34,7 +34,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
                 pitchtools.PitchSegment(
                     (
                         pitchtools.NamedPitch("fs'"),
-                        pitchtools.NamedPitch("g'"),
+                        pitchtools.NamedPitch("gs'"),
                         ),
                     item_class=pitchtools.NamedPitch,
                     ),

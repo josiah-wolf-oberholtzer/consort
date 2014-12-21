@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad import abctools
 from abjad import pitchtools
 
@@ -52,6 +53,8 @@ class PitchOperation(abctools.AbjadValueObject):
             pitchtools.Rotation,
             )
         if operators is not None:
+            if not isinstance(operators, collections.Sequence):
+                operators = (operators,)
             assert len(operators)
             assert all(isinstance(_, prototype) for _ in operators)
             operators = tuple(operators)

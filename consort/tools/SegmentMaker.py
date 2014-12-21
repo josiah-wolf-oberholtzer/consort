@@ -503,7 +503,8 @@ class SegmentMaker(makertools.SegmentMaker):
     def settings(self, settings):
         import consort
         if settings is not None:
-            assert isinstance(settings, collections.Sequence)
+            if not isinstance(settings, collections.Sequence):
+                settings = (settings,)
             assert all(isinstance(_, consort.MusicSetting) for _ in settings)
             settings = list(settings)
         self._settings = settings or []

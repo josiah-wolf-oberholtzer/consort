@@ -114,6 +114,37 @@ class PitchHandler(HashCachingObject):
         phrase_seed = phrase_seeds[(voice, music_specifier)]
         return phrase_seed
 
+    def _get_pitch_choices(
+        self,
+        logical_tie,
+        music_specifier,
+        pitch_choice_timespans_by_music_specifier,
+        segment_duration,
+        ):
+        if music_specifier not in pitch_choice_timespans_by_music_specifier:
+            pitch_handler = music_specifier.pitch_handler
+            pitch_specifier = pitch_handler.pitch_specifier
+            operation_specifier = pitch_handler.pitch_operation_specifier
+            pitch_choice_timespans = PitchHandler.get_pitch_choice_timespans(
+                pitch_specifier=pitch_specifier,
+                operation_specifier=operation_specifier,
+                duration=segment_duration,
+                )
+            pitch_choice_timespans_by_music_specifier[music_specifier] = \
+                pitch_choice_timespans
+        timespans = pitch_choice_timespans_by_music_specifier[
+            music_specifier]
+        assert len(timespans)
+        start_offset = logical_tie.get_timespan().start_offset
+        # TODO: "overlapping" should include "starting at"
+        found_timespans = \
+            timespans.find_timespans_overlapping_offset(start_offset)
+        found_timespans += \
+            timespans.find_timespans_starting_at(start_offset)
+        timespan = found_timespans[0]
+        pitch_choices = timespan.annotation
+        return pitch_choices
+
     @staticmethod
     def _get_pitch_range(
         instrument,
@@ -122,7 +153,7 @@ class PitchHandler(HashCachingObject):
         prototype = pitchtools.PitchRange
         component = logical_tie.head
         pitch_range = inspect_(component).get_effective(prototype)
-        if pitch_range is None:
+        if pitch_range is None and instrument is not None:
             pitch_range = instrument.pitch_range
         return pitch_range
 
@@ -141,20 +172,20 @@ class PitchHandler(HashCachingObject):
             seeds_by_voice[voice] = seed
         if pitch_application_rate == 'phrase':
             if attack_point_signature.is_first_of_phrase:
-                seeds_by_music_specifier[music_specifier] -= 1
+                seeds_by_music_specifier[music_specifier] += 1
                 seed = seeds_by_music_specifier[music_specifier]
                 seeds_by_voice[voice] = seed
             else:
                 seed = seeds_by_voice[voice]
         elif pitch_application_rate == 'division':
             if attack_point_signature.is_first_of_division:
-                seeds_by_music_specifier[music_specifier] -= 1
+                seeds_by_music_specifier[music_specifier] += 1
                 seed = seeds_by_music_specifier[music_specifier]
                 seeds_by_voice[voice] = seed
             else:
                 seed = seeds_by_voice[voice]
         else:
-            seeds_by_music_specifier[music_specifier] -= 1
+            seeds_by_music_specifier[music_specifier] += 1
             seed = seeds_by_music_specifier[music_specifier]
         return seed
 
@@ -164,7 +195,8 @@ class PitchHandler(HashCachingObject):
         music_specifier,
         ):
         transposition = pitchtools.NumberedInterval(0)
-        if not music_specifier.pitches_are_nonsemantic:
+        if not music_specifier.pitches_are_nonsemantic and \
+            instrument is not None:
             sounding_pitch = instrument.sounding_pitch_of_written_middle_c
             transposition = sounding_pitch - pitchtools.NamedPitch("c'")
             transposition = pitchtools.NumberedInterval(transposition)
@@ -245,7 +277,7 @@ class PitchHandler(HashCachingObject):
         segment_duration = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
         phrase_seeds = {}
-        pitch_expr_timespans_by_music_specifier = {}
+        pitch_choice_timespans_by_music_specifier = {}
         previous_pitch_by_music_specifier = {}
         seeds_by_music_specifier = {}
         seeds_by_voice = {}
@@ -258,19 +290,14 @@ class PitchHandler(HashCachingObject):
             pitch_handler = music_specifier.pitch_handler
             if music_specifier not in previous_pitch_by_music_specifier:
                 previous_pitch_by_music_specifier[music_specifier] = None
-                pitch_specifier = pitch_handler.pitch_specifier
-                operation_specifier = pitch_handler.pitch_operation_specifier
-                pitch_expr_timespans = PitchHandler.get_pitch_expr_timespans(
-                    pitch_specifier=pitch_specifier,
-                    operation_specifier=operation_specifier,
-                    duration=segment_duration,
-                    )
-                pitch_expr_timespans_by_music_specifier[music_specifier] = \
-                    pitch_expr_timespans
-            pitch_expr_timespans = pitch_expr_timespans_by_music_specifier[
-                music_specifier]
             old_previous_pitch = previous_pitch_by_music_specifier[
                 music_specifier]
+            pitch_choices = pitch_handler._get_pitch_choices(
+                logical_tie,
+                music_specifier,
+                pitch_choice_timespans_by_music_specifier,
+                segment_duration,
+                )
             attack_point_signature = attack_point_map[logical_tie]
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
             phrase_seed = PitchHandler._get_phrase_seed(
@@ -300,7 +327,7 @@ class PitchHandler(HashCachingObject):
                 attack_point_signature,
                 logical_tie,
                 phrase_seed,
-                pitch_expr_timespans,
+                pitch_choices,
                 pitch_range,
                 old_previous_pitch,
                 seed,
@@ -312,7 +339,7 @@ class PitchHandler(HashCachingObject):
     ### PUBLIC METHODS ###
 
     @staticmethod
-    def get_pitch_expr_timespans(
+    def get_pitch_choice_timespans(
         pitch_specifier=None,
         operation_specifier=None,
         duration=1,
@@ -344,7 +371,7 @@ class PitchHandler(HashCachingObject):
             ...         ),
             ...     ratio=(1, 2, 1),
             ...     )
-            >>> timespans = consort.PitchHandler.get_pitch_expr_timespans(
+            >>> timespans = consort.PitchHandler.get_pitch_choice_timespans(
             ...     pitch_specifier=pitch_specifier,
             ...     operation_specifier=operation_specifier,
             ...     duration=12,
@@ -415,7 +442,7 @@ class PitchHandler(HashCachingObject):
         pitch_specifier = pitch_specifier or consort.PitchSpecifier()
         operation_specifier = operation_specifier or \
             consort.PitchOperationSpecifier()
-        pitch_expr_timespans = timetools.TimespanCollection()
+        pitch_choice_timespans = timetools.TimespanCollection()
         pitch_timespans = pitch_specifier.get_timespans(duration)
         operation_timespans = operation_specifier.get_timespans(duration)
         offsets = set()
@@ -439,13 +466,13 @@ class PitchHandler(HashCachingObject):
             if operation is not None:
                 pitches = operation(pitches)
             pitches = datastructuretools.CyclicTuple(pitches)
-            pitch_expr_timespan = timespantools.AnnotatedTimespan(
+            pitch_choice_timespan = timespantools.AnnotatedTimespan(
                 annotation=pitches,
                 start_offset=start_offset,
                 stop_offset=stop_offset,
                 )
-            pitch_expr_timespans.insert(pitch_expr_timespan)
-        return pitch_expr_timespans
+            pitch_choice_timespans.insert(pitch_choice_timespan)
+        return pitch_choice_timespans
 
     ### PUBLIC PROPERTIES ###
 
