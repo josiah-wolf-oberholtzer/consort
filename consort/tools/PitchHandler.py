@@ -158,6 +158,37 @@ class PitchHandler(HashCachingObject):
         return pitch_range
 
     @staticmethod
+    def _get_previous_pitch(
+        music_specifier,
+        previous_pitch_by_music_specifier,
+        voice,
+        ):
+        key = (voice, music_specifier)
+        if key not in previous_pitch_by_music_specifier:
+            previous_pitch_by_music_specifier[key] = None
+        previous_pitch = previous_pitch_by_music_specifier[key]
+        return previous_pitch
+
+    @staticmethod
+    def _set_previous_pitch(
+        attack_point_signature,
+        music_specifier,
+        pitch,
+        pitch_application_rate,
+        previous_pitch_by_music_specifier,
+        voice,
+        ):
+        key = (voice, music_specifier)
+        if pitch_application_rate == 'phrase':
+            if attack_point_signature.is_first_of_phrase:
+                previous_pitch_by_music_specifier[key] = pitch
+        elif pitch_application_rate == 'division':
+            if attack_point_signature.is_first_of_division:
+                previous_pitch_by_music_specifier[key] = pitch
+        else:
+            previous_pitch_by_music_specifier[key] = pitch
+
+    @staticmethod
     def _get_seed(
         attack_point_signature,
         music_specifier,
@@ -288,18 +319,23 @@ class PitchHandler(HashCachingObject):
             if not music_specifier or not music_specifier.pitch_handler:
                 continue
             pitch_handler = music_specifier.pitch_handler
-            if music_specifier not in previous_pitch_by_music_specifier:
-                previous_pitch_by_music_specifier[music_specifier] = None
-            old_previous_pitch = previous_pitch_by_music_specifier[
-                music_specifier]
+
+            attack_point_signature = attack_point_map[logical_tie]
+            voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
+
+            previous_pitch = pitch_handler._get_previous_pitch(
+                music_specifier,
+                previous_pitch_by_music_specifier,
+                voice,
+                )
+
             pitch_choices = pitch_handler._get_pitch_choices(
                 logical_tie,
                 music_specifier,
                 pitch_choice_timespans_by_music_specifier,
                 segment_duration,
                 )
-            attack_point_signature = attack_point_map[logical_tie]
-            voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
+
             phrase_seed = PitchHandler._get_phrase_seed(
                 attack_point_signature,
                 music_specifier,
@@ -314,6 +350,7 @@ class PitchHandler(HashCachingObject):
                 seeds_by_voice,
                 voice,
                 )
+
             instrument = PitchHandler._get_instrument(logical_tie)
             transposition = PitchHandler._get_transposition(
                 instrument,
@@ -323,18 +360,26 @@ class PitchHandler(HashCachingObject):
                 instrument,
                 logical_tie,
                 )
-            new_previous_pitch = pitch_handler(
+
+            previous_pitch = pitch_handler(
                 attack_point_signature,
                 logical_tie,
                 phrase_seed,
                 pitch_choices,
                 pitch_range,
-                old_previous_pitch,
+                previous_pitch,
                 seed,
                 transposition,
                 )
-            previous_pitch_by_music_specifier[music_specifier] = \
-                new_previous_pitch
+
+            pitch_handler._set_previous_pitch(
+                attack_point_signature,
+                music_specifier,
+                previous_pitch,
+                pitch_handler.pitch_application_rate,
+                previous_pitch_by_music_specifier,
+                voice,
+                )
 
     ### PUBLIC METHODS ###
 
