@@ -326,22 +326,26 @@ class PitchHandler(HashCachingObject):
 
         segment_duration = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
-        timewise_seeds_by_music_specifier = {}
-        phrase_seeds = {}
         pitch_choice_timespans_by_music_specifier = {}
-        pitch_seeds_by_music_specifier = {}
-        pitch_seeds_by_voice = {}
         previous_pitch_by_music_specifier = {}
 
+        phrase_seeds = {}
+        pitch_seeds_by_music_specifier = {}
+        pitch_seeds_by_voice = {}
+        timewise_seeds_by_music_specifier = {}
+
         for logical_tie in attack_point_map:
+
             music_specifier = \
                 consort.SegmentMaker.logical_tie_to_music_specifier(
                     logical_tie)
+
             if not music_specifier or not music_specifier.pitch_handler:
                 continue
-            pitch_handler = music_specifier.pitch_handler
 
+            pitch_handler = music_specifier.pitch_handler
             attack_point_signature = attack_point_map[logical_tie]
+            application_rate = pitch_handler.pitch_application_rate
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
 
             previous_pitch = pitch_handler._get_previous_pitch(
