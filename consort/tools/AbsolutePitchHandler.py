@@ -40,7 +40,6 @@ class AbsolutePitchHandler(PitchHandler):
 
     def __call__(
         self,
-        attack_point_seed,
         attack_point_signature,
         logical_tie,
         phrase_seed,
@@ -48,6 +47,7 @@ class AbsolutePitchHandler(PitchHandler):
         pitch_range,
         previous_pitch,
         pitch_seed,
+        timewise_seed,
         transposition,
         ):
         pitch = self._get_pitch(
@@ -58,13 +58,13 @@ class AbsolutePitchHandler(PitchHandler):
             )
         pitch = self._apply_deviation(
             pitch,
-            attack_point_seed,
+            timewise_seed,
             )
         self._process_logical_tie(
             logical_tie,
             pitch,
             pitch_range,
-            attack_point_seed,
+            timewise_seed,
             )
         return pitch
 

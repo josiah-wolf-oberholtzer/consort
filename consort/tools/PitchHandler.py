@@ -54,6 +54,7 @@ class PitchHandler(HashCachingObject):
     @abc.abstractmethod
     def __call__(
         self,
+        timewise_seed,
         logical_tie,
         attack_point_signature,
         phrase_seed,
@@ -92,15 +93,15 @@ class PitchHandler(HashCachingObject):
         return pitch
 
     @staticmethod
-    def _get_attack_point_seed(
-        attack_point_seeds_by_music_specifier,
+    def _get_timewise_seed(
+        timewise_seeds_by_music_specifier,
         music_specifier,
         ):
-        if music_specifier in attack_point_seeds_by_music_specifier:
-            attack_point_seeds_by_music_specifier[music_specifier] += 1
+        if music_specifier in timewise_seeds_by_music_specifier:
+            timewise_seeds_by_music_specifier[music_specifier] += 1
         else:
-            attack_point_seeds_by_music_specifier[music_specifier] = 0
-        return attack_point_seeds_by_music_specifier[music_specifier]
+            timewise_seeds_by_music_specifier[music_specifier] = 0
+        return timewise_seeds_by_music_specifier[music_specifier]
 
     @staticmethod
     def _get_grace_logical_ties(logical_tie):
@@ -325,7 +326,7 @@ class PitchHandler(HashCachingObject):
 
         segment_duration = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
-        attack_point_seeds_by_music_specifier = {}
+        timewise_seeds_by_music_specifier = {}
         phrase_seeds = {}
         pitch_choice_timespans_by_music_specifier = {}
         pitch_seeds_by_music_specifier = {}
@@ -356,8 +357,8 @@ class PitchHandler(HashCachingObject):
                 segment_duration,
                 )
 
-            attack_point_seed = PitchHandler._get_attack_point_seed(
-                attack_point_seeds_by_music_specifier,
+            timewise_seed = PitchHandler._get_timewise_seed(
+                timewise_seeds_by_music_specifier,
                 music_specifier,
                 )
             phrase_seed = PitchHandler._get_phrase_seed(
@@ -386,7 +387,6 @@ class PitchHandler(HashCachingObject):
                 )
 
             previous_pitch = pitch_handler(
-                attack_point_seed,
                 attack_point_signature,
                 logical_tie,
                 phrase_seed,
@@ -394,6 +394,7 @@ class PitchHandler(HashCachingObject):
                 pitch_range,
                 previous_pitch,
                 pitch_seed,
+                timewise_seed,
                 transposition,
                 )
 
