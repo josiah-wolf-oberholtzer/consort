@@ -10,7 +10,9 @@ class SeedSession(abctools.AbjadObject):
         '_current_timewise_logical_tie_seed',
         '_current_timewise_phrase_seed',
         '_current_voicewise_logical_tie_seed',
+        '_current_timewise_music_specifier_seed',
         '_timewise_logical_tie_seeds',
+        '_timewise_music_specifier_seeds',
         '_timewise_phrase_seeds',
         '_voicewise_logical_tie_seeds',
         )
@@ -21,6 +23,8 @@ class SeedSession(abctools.AbjadObject):
         self._current_timewise_logical_tie_seed = 0
         self._current_timewise_phrase_seed = 0
         self._current_voicewise_logical_tie_seed = 0
+        self._current_timewise_music_specifier_seed = 0
+        self._timewise_music_specifier_seeds = {}
         self._timewise_logical_tie_seeds = {}
         self._timewise_phrase_seeds = {}
         self._voicewise_logical_tie_seeds = {}
@@ -34,10 +38,6 @@ class SeedSession(abctools.AbjadObject):
         music_specifier,
         voice,
         ):
-        timewise_logical_tie_seed = 0
-        timewise_phrase_seed = 0
-        voicewise_logical_tie_seed = 0
-
         voicewise_logical_tie_seed = self._get_voicewise_logical_tie_seed(
             attack_point_signature,
             music_specifier,
@@ -49,16 +49,26 @@ class SeedSession(abctools.AbjadObject):
             music_specifier,
             voice,
             )
-        timewise_logical_tie_seed = self.timewise_logical_tie_seeds[
-            music_specifier]
-
-        return (
-            timewise_logical_tie_seed,
-            timewise_phrase_seed,
-            voicewise_logical_tie_seed,
-            )
+        timewise_music_specifier_seed = \
+            self._get_timewise_music_specifier_seed(
+                music_specifier,
+                )
+        self._current_timewise_phrase_seed = timewise_phrase_seed
+        self._current_voicewise_logical_tie_seed = voicewise_logical_tie_seed
+        self._current_timewise_music_specifier_seed = \
+            timewise_music_specifier_seed
 
     ### PRIVATE METHODS ###
+
+    def _get_timewise_music_specifier_seed(
+        self,
+        music_specifier,
+        ):
+        if music_specifier not in self._timewise_music_specifier_seeds:
+            self._timewise_music_specifier_seeds[music_specifier] = 0
+        seed = self._timewise_music_specifier_seeds[music_specifier]
+        self._timewise_music_specifier_seeds[music_specifier] += 1
+        return seed
 
     def _get_timewise_phrase_seed(
         self,
@@ -66,13 +76,13 @@ class SeedSession(abctools.AbjadObject):
         music_specifier,
         voice,
         ):
+        key = (voice, music_specifier)
         if attack_point_signature.is_first_of_phrase:
-            key = (voice, music_specifier)
             if key not in self._timewise_phrase_seeds:
-                phrase_seed = (music_specifier.seed or 0)
+                phrase_seed = (music_specifier.seed or 0) - 1
                 self._timewise_phrase_seeds[key] = phrase_seed
+            self._timewise_phrase_seeds[key] += 1
         phrase_seed = self._timewise_phrase_seeds[key]
-        self._timewise_phrase_seeds[key] += 1
         return phrase_seed
 
     def _get_voicewise_logical_tie_seed(
@@ -108,8 +118,8 @@ class SeedSession(abctools.AbjadObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def current_timewise_logical_tie_seed(self):
-        return self._current_timewise_logical_tie_seed
+    def current_timewise_music_specifier_seed(self):
+        return self._current_timewise_music_specifier_seed
 
     @property
     def current_timewise_phrase_seed(self):

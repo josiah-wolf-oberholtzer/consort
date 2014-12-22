@@ -42,29 +42,30 @@ class AbsolutePitchHandler(PitchHandler):
         self,
         attack_point_signature,
         logical_tie,
-        phrase_seed,
         pitch_choices,
-        pitch_range,
         previous_pitch,
-        pitch_seed,
-        timewise_seed,
-        transposition,
+        seed_session,
         ):
+        instrument = self._get_instrument(logical_tie)
+        pitch_range = self._get_pitch_range(
+            instrument,
+            logical_tie,
+            )
         pitch = self._get_pitch(
             attack_point_signature,
             pitch_choices,
             previous_pitch,
-            pitch_seed,
+            seed_session.current_voicewise_logical_tie_seed,
             )
         pitch = self._apply_deviation(
             pitch,
-            timewise_seed,
+            seed_session.current_timewise_music_specifier_seed,
             )
         self._process_logical_tie(
             logical_tie,
             pitch,
             pitch_range,
-            timewise_seed,
+            seed_session.current_timewise_music_specifier_seed,
             )
         return pitch
 

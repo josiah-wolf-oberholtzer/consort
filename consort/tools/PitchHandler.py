@@ -85,6 +85,7 @@ class PitchHandler(HashCachingObject):
         pitch,
         seed,
         ):
+        print('SEED', seed)
         if self.deviations:
             deviation = self.deviations[seed]
             pitch = pitchtools.NumberedPitch(pitch)
@@ -323,85 +324,49 @@ class PitchHandler(HashCachingObject):
     @staticmethod
     def _process_session(segment_session):
         import consort
-
+        maker = consort.SegmentMaker
         segment_duration = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
         pitch_choice_timespans_by_music_specifier = {}
         previous_pitch_by_music_specifier = {}
-
-        phrase_seeds = {}
-        pitch_seeds_by_music_specifier = {}
-        pitch_seeds_by_voice = {}
-        timewise_seeds_by_music_specifier = {}
-
+        seed_session = consort.SeedSession()
         for logical_tie in attack_point_map:
-
-            music_specifier = \
-                consort.SegmentMaker.logical_tie_to_music_specifier(
-                    logical_tie)
-
+            music_specifier = maker.logical_tie_to_music_specifier(logical_tie)
             if not music_specifier or not music_specifier.pitch_handler:
                 continue
-
             pitch_handler = music_specifier.pitch_handler
             attack_point_signature = attack_point_map[logical_tie]
             application_rate = pitch_handler.pitch_application_rate
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
-
+            seed_session(
+                application_rate,
+                attack_point_signature,
+                music_specifier,
+                voice,
+                )
             previous_pitch = pitch_handler._get_previous_pitch(
                 music_specifier,
                 previous_pitch_by_music_specifier,
                 voice,
                 )
-
             pitch_choices = pitch_handler._get_pitch_choices(
                 logical_tie,
                 music_specifier,
                 pitch_choice_timespans_by_music_specifier,
                 segment_duration,
                 )
-
-            timewise_seed = PitchHandler._get_timewise_seed(
-                timewise_seeds_by_music_specifier,
-                music_specifier,
-                )
-            phrase_seed = PitchHandler._get_phrase_seed(
-                attack_point_signature,
-                music_specifier,
-                phrase_seeds,
-                voice,
-                )
-            pitch_seed = PitchHandler._get_pitch_seed(
-                attack_point_signature,
-                music_specifier,
-                pitch_handler.pitch_application_rate,
-                pitch_seeds_by_music_specifier,
-                pitch_seeds_by_voice,
-                voice,
-                )
-
-            instrument = PitchHandler._get_instrument(logical_tie)
-            transposition = PitchHandler._get_transposition(
-                instrument,
-                music_specifier,
-                )
-            pitch_range = PitchHandler._get_pitch_range(
-                instrument,
-                logical_tie,
-                )
-
+#            instrument = PitchHandler._get_instrument(logical_tie)
+#            transposition = PitchHandler._get_transposition(
+#                instrument,
+#                music_specifier,
+#                )
             previous_pitch = pitch_handler(
                 attack_point_signature,
                 logical_tie,
-                phrase_seed,
                 pitch_choices,
-                pitch_range,
                 previous_pitch,
-                pitch_seed,
-                timewise_seed,
-                transposition,
+                seed_session,
                 )
-
             pitch_handler._set_previous_pitch(
                 attack_point_signature,
                 music_specifier,
