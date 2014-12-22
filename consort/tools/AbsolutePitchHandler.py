@@ -50,6 +50,7 @@ class AbsolutePitchHandler(PitchHandler):
         transposition,
         ):
         pitch = self._get_pitch(
+            attack_point_signature,
             pitch_choices,
             previous_pitch,
             seed,
@@ -66,6 +67,7 @@ class AbsolutePitchHandler(PitchHandler):
 
     def _get_pitch(
         self,
+        attack_point_signature,
         pitch_choices,
         previous_pitch,
         seed,
@@ -74,7 +76,18 @@ class AbsolutePitchHandler(PitchHandler):
         if pitch_choices and \
             1 < len(set(pitch_choices)) and \
             self.forbid_repetitions:
-            while pitch == previous_pitch:
-                seed += 1
-                pitch = pitch_choices[seed]
+            if self.pitch_application_rate == 'phrase':
+                if attack_point_signature.is_first_of_phrase:
+                    while pitch == previous_pitch:
+                        seed += 1
+                        pitch = pitch_choices[seed]
+            elif self.pitch_application_rate == 'division':
+                if attack_point_signature.is_first_of_division:
+                    while pitch == previous_pitch:
+                        seed += 1
+                        pitch = pitch_choices[seed]
+            else:
+                while pitch == previous_pitch:
+                    seed += 1
+                    pitch = pitch_choices[seed]
         return pitch
