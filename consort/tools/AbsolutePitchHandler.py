@@ -40,26 +40,31 @@ class AbsolutePitchHandler(PitchHandler):
 
     def __call__(
         self,
+        attack_point_seed,
         attack_point_signature,
         logical_tie,
         phrase_seed,
         pitch_choices,
         pitch_range,
         previous_pitch,
-        seed,
+        pitch_seed,
         transposition,
         ):
         pitch = self._get_pitch(
             attack_point_signature,
             pitch_choices,
             previous_pitch,
-            seed,
+            pitch_seed,
+            )
+        pitch = self._apply_deviation(
+            pitch,
+            attack_point_seed,
             )
         self._process_logical_tie(
             logical_tie,
             pitch,
             pitch_range,
-            seed,
+            attack_point_seed,
             )
         return pitch
 
@@ -70,24 +75,24 @@ class AbsolutePitchHandler(PitchHandler):
         attack_point_signature,
         pitch_choices,
         previous_pitch,
-        seed,
+        pitch_seed,
         ):
-        pitch = pitch_choices[seed]
+        pitch = pitch_choices[pitch_seed]
         if pitch_choices and \
             1 < len(set(pitch_choices)) and \
             self.forbid_repetitions:
             if self.pitch_application_rate == 'phrase':
                 if attack_point_signature.is_first_of_phrase:
                     while pitch == previous_pitch:
-                        seed += 1
-                        pitch = pitch_choices[seed]
+                        pitch_seed += 1
+                        pitch = pitch_choices[pitch_seed]
             elif self.pitch_application_rate == 'division':
                 if attack_point_signature.is_first_of_division:
                     while pitch == previous_pitch:
-                        seed += 1
-                        pitch = pitch_choices[seed]
+                        pitch_seed += 1
+                        pitch = pitch_choices[pitch_seed]
             else:
                 while pitch == previous_pitch:
-                    seed += 1
-                    pitch = pitch_choices[seed]
+                    pitch_seed += 1
+                    pitch = pitch_choices[pitch_seed]
         return pitch

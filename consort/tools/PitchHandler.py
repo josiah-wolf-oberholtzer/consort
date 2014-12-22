@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import abc
+import collections
 from abjad import datastructuretools
 from abjad import durationtools
 from abjad import inspect_
@@ -18,6 +19,7 @@ class PitchHandler(HashCachingObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_deviations',
         '_forbid_repetitions',
         '_grace_expressions',
         '_logical_tie_expressions',
@@ -30,6 +32,7 @@ class PitchHandler(HashCachingObject):
 
     def __init__(
         self,
+        deviations=None,
         forbid_repetitions=None,
         grace_expressions=None,
         logical_tie_expressions=None,
@@ -38,6 +41,7 @@ class PitchHandler(HashCachingObject):
         pitch_operation_specifier=None,
         ):
         HashCachingObject.__init__(self)
+        self._initialize_deviations(deviations)
         self._initialize_forbid_repetitions(forbid_repetitions)
         self._initialize_grace_expressions(grace_expressions)
         self._initialize_logical_tie_expressions(logical_tie_expressions)
@@ -65,8 +69,8 @@ class PitchHandler(HashCachingObject):
     def _apply_logical_tie_expression(
         self,
         logical_tie,
-        pitch_range=None,
-        seed=0,
+        pitch_range,
+        seed,
         ):
         if self.logical_tie_expressions:
             logical_tie_expression = self.logical_tie_expressions[seed]
@@ -74,6 +78,29 @@ class PitchHandler(HashCachingObject):
                 logical_tie,
                 pitch_range=pitch_range,
                 )
+
+    def _apply_deviation(
+        self,
+        pitch,
+        seed,
+        ):
+        if self.deviations:
+            deviation = self.deviations[seed]
+            pitch = pitchtools.NumberedPitch(pitch)
+            pitch = pitch.transpose(deviation)
+            pitch = pitchtools.NamedPitch(pitch)
+        return pitch
+
+    @staticmethod
+    def _get_attack_point_seed(
+        attack_point_seeds_by_music_specifier,
+        music_specifier,
+        ):
+        if music_specifier in attack_point_seeds_by_music_specifier:
+            attack_point_seeds_by_music_specifier[music_specifier] += 1
+        else:
+            attack_point_seeds_by_music_specifier[music_specifier] = 0
+        return attack_point_seeds_by_music_specifier[music_specifier]
 
     @staticmethod
     def _get_grace_logical_ties(logical_tie):
@@ -170,54 +197,35 @@ class PitchHandler(HashCachingObject):
         return previous_pitch
 
     @staticmethod
-    def _set_previous_pitch(
-        attack_point_signature,
-        music_specifier,
-        pitch,
-        pitch_application_rate,
-        previous_pitch_by_music_specifier,
-        voice,
-        ):
-        key = (voice, music_specifier)
-        if pitch_application_rate == 'phrase':
-            if attack_point_signature.is_first_of_phrase:
-                previous_pitch_by_music_specifier[key] = pitch
-        elif pitch_application_rate == 'division':
-            if attack_point_signature.is_first_of_division:
-                previous_pitch_by_music_specifier[key] = pitch
-        else:
-            previous_pitch_by_music_specifier[key] = pitch
-
-    @staticmethod
-    def _get_seed(
+    def _get_pitch_seed(
         attack_point_signature,
         music_specifier,
         pitch_application_rate,
-        seeds_by_music_specifier,
-        seeds_by_voice,
+        pitch_seeds_by_music_specifier,
+        pitch_seeds_by_voice,
         voice,
         ):
-        if music_specifier not in seeds_by_music_specifier:
+        if music_specifier not in pitch_seeds_by_music_specifier:
             seed = (music_specifier.seed or 0) - 1
-            seeds_by_music_specifier[music_specifier] = seed
-            seeds_by_voice[voice] = seed
+            pitch_seeds_by_music_specifier[music_specifier] = seed
+            pitch_seeds_by_voice[voice] = seed
         if pitch_application_rate == 'phrase':
             if attack_point_signature.is_first_of_phrase:
-                seeds_by_music_specifier[music_specifier] += 1
-                seed = seeds_by_music_specifier[music_specifier]
-                seeds_by_voice[voice] = seed
+                pitch_seeds_by_music_specifier[music_specifier] += 1
+                seed = pitch_seeds_by_music_specifier[music_specifier]
+                pitch_seeds_by_voice[voice] = seed
             else:
-                seed = seeds_by_voice[voice]
+                seed = pitch_seeds_by_voice[voice]
         elif pitch_application_rate == 'division':
             if attack_point_signature.is_first_of_division:
-                seeds_by_music_specifier[music_specifier] += 1
-                seed = seeds_by_music_specifier[music_specifier]
-                seeds_by_voice[voice] = seed
+                pitch_seeds_by_music_specifier[music_specifier] += 1
+                seed = pitch_seeds_by_music_specifier[music_specifier]
+                pitch_seeds_by_voice[voice] = seed
             else:
-                seed = seeds_by_voice[voice]
+                seed = pitch_seeds_by_voice[voice]
         else:
-            seeds_by_music_specifier[music_specifier] += 1
-            seed = seeds_by_music_specifier[music_specifier]
+            pitch_seeds_by_music_specifier[music_specifier] += 1
+            seed = pitch_seeds_by_music_specifier[music_specifier]
         return seed
 
     @staticmethod
@@ -232,6 +240,15 @@ class PitchHandler(HashCachingObject):
             transposition = sounding_pitch - pitchtools.NamedPitch("c'")
             transposition = pitchtools.NumberedInterval(transposition)
         return transposition
+
+    def _initialize_deviations(self, deviations):
+        if deviations is not None:
+            if not isinstance(deviations, collections.Sequence):
+                deviations = (deviations,)
+            assert len(deviations)
+            deviations = (pitchtools.NumberedInterval(_) for _ in deviations)
+            deviations = datastructuretools.CyclicTuple(deviations)
+        self._deviations = deviations
 
     def _initialize_forbid_repetitions(self, forbid_repetitions):
         if forbid_repetitions is not None:
@@ -305,13 +322,16 @@ class PitchHandler(HashCachingObject):
     @staticmethod
     def _process_session(segment_session):
         import consort
+
         segment_duration = segment_session.measure_offsets[-1]
         attack_point_map = segment_session.attack_point_map
+        attack_point_seeds_by_music_specifier = {}
         phrase_seeds = {}
         pitch_choice_timespans_by_music_specifier = {}
+        pitch_seeds_by_music_specifier = {}
+        pitch_seeds_by_voice = {}
         previous_pitch_by_music_specifier = {}
-        seeds_by_music_specifier = {}
-        seeds_by_voice = {}
+
         for logical_tie in attack_point_map:
             music_specifier = \
                 consort.SegmentMaker.logical_tie_to_music_specifier(
@@ -336,18 +356,22 @@ class PitchHandler(HashCachingObject):
                 segment_duration,
                 )
 
+            attack_point_seed = PitchHandler._get_attack_point_seed(
+                attack_point_seeds_by_music_specifier,
+                music_specifier,
+                )
             phrase_seed = PitchHandler._get_phrase_seed(
                 attack_point_signature,
                 music_specifier,
                 phrase_seeds,
                 voice,
                 )
-            seed = PitchHandler._get_seed(
+            pitch_seed = PitchHandler._get_pitch_seed(
                 attack_point_signature,
                 music_specifier,
                 pitch_handler.pitch_application_rate,
-                seeds_by_music_specifier,
-                seeds_by_voice,
+                pitch_seeds_by_music_specifier,
+                pitch_seeds_by_voice,
                 voice,
                 )
 
@@ -362,13 +386,14 @@ class PitchHandler(HashCachingObject):
                 )
 
             previous_pitch = pitch_handler(
+                attack_point_seed,
                 attack_point_signature,
                 logical_tie,
                 phrase_seed,
                 pitch_choices,
                 pitch_range,
                 previous_pitch,
-                seed,
+                pitch_seed,
                 transposition,
                 )
 
@@ -380,6 +405,25 @@ class PitchHandler(HashCachingObject):
                 previous_pitch_by_music_specifier,
                 voice,
                 )
+
+    @staticmethod
+    def _set_previous_pitch(
+        attack_point_signature,
+        music_specifier,
+        pitch,
+        pitch_application_rate,
+        previous_pitch_by_music_specifier,
+        voice,
+        ):
+        key = (voice, music_specifier)
+        if pitch_application_rate == 'phrase':
+            if attack_point_signature.is_first_of_phrase:
+                previous_pitch_by_music_specifier[key] = pitch
+        elif pitch_application_rate == 'division':
+            if attack_point_signature.is_first_of_division:
+                previous_pitch_by_music_specifier[key] = pitch
+        else:
+            previous_pitch_by_music_specifier[key] = pitch
 
     ### PUBLIC METHODS ###
 
@@ -520,6 +564,10 @@ class PitchHandler(HashCachingObject):
         return pitch_choice_timespans
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def deviations(self):
+        return self._deviations
 
     @property
     def forbid_repetitions(self):
