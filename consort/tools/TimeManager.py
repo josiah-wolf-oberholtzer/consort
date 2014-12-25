@@ -828,7 +828,7 @@ class TimeManager(abctools.AbjadValueObject):
                 isolated_nib_direction=None,
                 use_stemlets=False,
                 )
-            attach(beam, container)
+            attach(beam, container, name='beam')
             attach(timespan.music_specifier, container, scope=scoretools.Voice)
             inscribed_timespan = new(
                 timespan,

@@ -85,7 +85,6 @@ class PitchHandler(HashCachingObject):
         pitch,
         seed,
         ):
-        print('SEED', seed)
         if self.deviations:
             deviation = self.deviations[seed]
             pitch = pitchtools.NumberedPitch(pitch)

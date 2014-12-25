@@ -3,16 +3,19 @@ from __future__ import print_function
 import collections
 import importlib
 import os
-from abjad.tools import durationtools
-from abjad.tools import indicatortools
-from abjad.tools import lilypondfiletools
-from abjad.tools import markuptools
-from abjad.tools import scoretools
-from abjad.tools import systemtools
-from abjad.tools import templatetools
-from abjad.tools import timespantools
+from abjad import durationtools
+from abjad import indicatortools
+from abjad import inspect_
+from abjad import iterate
+from abjad import lilypondfiletools
+from abjad import markuptools
+from abjad import mutate
+from abjad import scoretools
+from abjad import spannertools
+from abjad import systemtools
+from abjad import templatetools
+from abjad import timespantools
 from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import inspect_
 from experimental.tools import makertools
 
 
@@ -249,12 +252,6 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         self._settings.append(setting)
 
-    def configure_score(self, score):
-        self.attach_tempo(score)
-        self.attach_rehearsal_mark(score)
-        self.attach_final_bar_line(score)
-        return score
-
     def attach_final_bar_line(self, score):
         if self.is_final_segment:
             score.add_final_markup(self.final_markup)
@@ -281,14 +278,63 @@ class SegmentMaker(makertools.SegmentMaker):
         if self.tempo is not None:
             attach(self.tempo, first_leaf)
 
-    @staticmethod
-    def validate_score(score):
-        manager = systemtools.WellformednessManager(expr=score)
-        triples = manager()
-        for current_violators, current_total, current_check in triples:
-            print('\t', current_violators, current_total, current_check)
-        if current_violators:
-            raise AssertionError
+    def configure_score(self, score):
+        self.attach_tempo(score)
+        self.attach_rehearsal_mark(score)
+        self.attach_final_bar_line(score)
+        return score
+
+    def copy_voice(
+        self,
+        voice,
+        attachment_names=None,
+        new_voice_name=None,
+        new_context_name=None,
+        remove_grace_containers=False,
+        remove_ties=False,
+        replace_rests_with_skips=False,
+        ):
+        new_voice = mutate(voice).copy()
+        if new_voice_name:
+            new_voice.name = new_voice_name
+        if new_context_name:
+            new_voice.context_name = new_context_name
+        rests = []
+        for component in iterate(new_voice).depth_first(capped=True):
+            agent = inspect_(component)
+            indicators = agent.get_indicators(unwrap=False)
+            spanners = agent.get_spanners()
+            for x in indicators:
+                if not x.name:
+                    continue
+                if attachment_names and \
+                    not any(x.name.startswith(_) for _ in attachment_names):
+                    x._detach()
+            for x in spanners:
+                if remove_ties and isinstance(x, spannertools.Tie):
+                    x._detach()
+                if not x.name:
+                    continue
+                elif attachment_names and \
+                    not any(x.name.startswith(_) for _ in attachment_names):
+                    x._detach()
+            if replace_rests_with_skips and \
+                isinstance(component, scoretools.Rest):
+                rests.append(component)
+            grace_containers = agent.get_grace_containers()
+            if grace_containers and remove_grace_containers:
+                for grace_container in grace_containers:
+                    grace_container._detach()
+        if replace_rests_with_skips:
+            for rest in rests:
+                indicators = inspect_(rest).get_indicators(
+                    durationtools.Multiplier,
+                    )
+                skip = scoretools.Skip(rest)
+                if indicators:
+                    attach(indicators[0], skip)
+                mutate(rest).replace(skip)
+        return new_voice
 
     @staticmethod
     def logical_tie_to_music_specifier(logical_tie):
@@ -319,6 +365,15 @@ class SegmentMaker(makertools.SegmentMaker):
                 lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         return lilypond_file
+
+    @staticmethod
+    def validate_score(score):
+        manager = systemtools.WellformednessManager(expr=score)
+        triples = manager()
+        for current_violators, current_total, current_check in triples:
+            print('\t', current_violators, current_total, current_check)
+        if current_violators:
+            raise AssertionError
 
     ### PUBLIC PROPERTIES ###
 
