@@ -91,32 +91,32 @@ class DynamicExpression(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, group):
-        if not isinstance(group, selectiontools.SliceSelection):
-            group = selectiontools.SliceSelection(group)
+    def __call__(self, music, name=None):
+        if not isinstance(music, selectiontools.SliceSelection):
+            music = selectiontools.SliceSelection(music)
         is_short_group = False
-        if len(group) < 2:
+        if len(music) < 2:
             is_short_group = True
         elif self.minimum_duration is not None:
-            if group.get_duration() < self.minimum_duration:
+            if music.get_duration() < self.minimum_duration:
                 is_short_group = True
-        instrument = inspect_(group[0]).get_effective(
+        instrument = inspect_(music[0]).get_effective(
             instrumenttools.Instrument,
             )
-        logical_ties = tuple(iterate(group).by_logical_tie(pitched=True))
+        logical_ties = tuple(iterate(music).by_logical_tie(pitched=True))
         if len(logical_ties) < 3:
             if instrument == instrumenttools.Piano() or \
                 instrument == instrumenttools.UntunedPercussion():
                 is_short_group = True
         grace_notes = None
-        previous_leaf = inspect_(group[0]).get_leaf(-1)
+        previous_leaf = inspect_(music[0]).get_leaf(-1)
         if previous_leaf is not None:
             graces = inspect_(previous_leaf).get_grace_containers('after')
             if graces:
                 assert len(graces) == 1
                 grace_notes = list(graces[0].select_leaves())
-                group = selectiontools.ContiguousSelect(
-                    tuple(grace_notes) + tuple(group),
+                music = selectiontools.ContiguousSelect(
+                    tuple(grace_notes) + tuple(music),
                     )
         start_token = self.hairpin_start_token
         stop_token = self.hairpin_stop_token
@@ -126,7 +126,7 @@ class DynamicExpression(abctools.AbjadValueObject):
             if start_token.startswith('fp'):
                 start_token = start_token[1:]
             command = indicatortools.LilyPondCommand(start_token, 'right')
-            attach(command, group[0])
+            attach(command, music[0], name=name)
             return
         start_ordinal = NegativeInfinity
         if start_token != 'o':
@@ -159,7 +159,7 @@ class DynamicExpression(abctools.AbjadValueObject):
             )
         if is_circled:
             override(hairpin).hairpin.circled_tip = True
-        attach(hairpin, group)
+        attach(hairpin, music, name=name)
 
     ### PRIVATE PROPERTIES ###
 

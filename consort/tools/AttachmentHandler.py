@@ -50,13 +50,18 @@ class AttachmentHandler(abctools.AbjadValueObject):
     def __call__(
         self,
         music,
-        music_index=0,
+        seed=0,
         ):
         assert isinstance(music, scoretools.Container)
         if not self.attachment_expressions:
             return
-        for name, attachment_expression in self.attachment_expressions.items():
-            attachment_expression(music, seed=music_index)
+        items = self.attachment_expressions.items()
+        for name, attachment_expression in items:
+            attachment_expression(
+                music,
+                name=name,
+                seed=seed,
+                )
 
     def __getattr__(self, item):
         if item in self.attachment_expressions:
@@ -81,7 +86,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
                     seed = music_specifier.seed or 0
                     counter[music_specifier] = seed
                 seed = counter[music_specifier]
-                maker(container, music_index=seed)
+                maker(container, seed=seed)
                 counter[music_specifier] -= 1
 
     ### PRIVATE PROPERTIES ###

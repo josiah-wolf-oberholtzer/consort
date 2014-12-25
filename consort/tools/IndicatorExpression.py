@@ -27,12 +27,13 @@ class IndicatorExpression(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, component):
+    def __call__(self, component, name=None):
         attach(
             self.indicator,
             component,
             scope=self.scope,
             is_annotation=self.is_annotation,
+            name=name,
             )
 
     ### PUBLIC PROPERTIES ###

@@ -127,6 +127,7 @@ class AttachmentExpression(HashCachingObject):
     def __call__(
         self,
         music,
+        name=None,
         seed=0,
         ):
         if not self.attachments:
@@ -148,26 +149,29 @@ class AttachmentExpression(HashCachingObject):
                 # spanners
                 if isinstance(attachment, spannertools.Spanner):
                     attachment = copy.copy(attachment)
-                    attach(attachment, selection)
+                    attach(attachment, selection, name=name)
                 elif isinstance(attachment, type) and \
                     issubclass(attachment, spannertools.Spanner):
                     attachment = attachment()
-                    attach(attachment, selection)
+                    attach(attachment, selection, name=name)
                 # expressions
                 elif hasattr(attachment, '__call__'):
                     try:
-                        attachment(selection, seed=seed)
+                        attachment(selection, seed=seed, name=name)
                     except TypeError:
-                        attachment(selection)
+                        try:
+                            attachment(selection, name=name)
+                        except TypeError:
+                            raise AttributeError(attachment)
                 # indicators
                 else:
                     if isinstance(selection, scoretools.Leaf):
                         attachment = copy.copy(attachment)
-                        attach(attachment, selection)
+                        attach(attachment, selection, name=name)
                     else:
                         for component in selection:
                             attachment = copy.copy(attachment)
-                            attach(attachment, component)
+                            attach(attachment, component, name=name)
 
     ### PRIVATE PROPERTIES ###
 
