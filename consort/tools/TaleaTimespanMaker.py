@@ -1,13 +1,12 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+import collections
+from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
-from abjad.tools.topleveltools import new
 from consort.tools.TimespanMaker import TimespanMaker
-from ide import idetools
-import collections
 
 
 class TaleaTimespanMaker(TimespanMaker):

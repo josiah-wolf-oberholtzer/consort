@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools.spannertools.Spanner import Spanner
+from abjad.tools import spannertools
 
 
-class ComplexPianoPedalSpanner(Spanner):
+class ComplexPianoPedalSpanner(spannertools.Spanner):
     r'''Complex piano pedal spanner.
 
     ::
@@ -29,7 +29,7 @@ class ComplexPianoPedalSpanner(Spanner):
         include_inner_leaves=False,
         overrides=None,
         ):
-        Spanner.__init__(
+        spannertools.Spanner.__init__(
             self,
             overrides=overrides,
             )

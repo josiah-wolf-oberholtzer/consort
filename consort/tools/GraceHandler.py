@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import collections
+from abjad import attach
+from abjad import new
+from abjad import override
 from abjad.tools import abctools
 from abjad.tools import mathtools
-from abjad.tools import scoretools
 from abjad.tools import schemetools
+from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from abjad.tools import sequencetools
-from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import new
-from abjad.tools.topleveltools import override
 
 
 class GraceHandler(abctools.AbjadValueObject):

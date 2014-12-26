@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
-from abjad import abctools
-from abjad import pitchtools
+from abjad.tools import abctools
+from abjad.tools import pitchtools
 
 
 class PitchOperation(abctools.AbjadValueObject):

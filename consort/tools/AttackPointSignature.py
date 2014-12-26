@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
+from abjad import inspect_
+from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import scoretools
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 
 
 class AttackPointSignature(abctools.AbjadValueObject):

@@ -4,8 +4,8 @@ from abjad import attach
 from abjad import detach
 from abjad import inspect_
 from abjad import mutate
-from abjad import abctools
-from abjad import scoretools
+from abjad.tools import abctools
+from abjad.tools import scoretools
 
 
 class LogicalTieExpression(abctools.AbjadValueObject):

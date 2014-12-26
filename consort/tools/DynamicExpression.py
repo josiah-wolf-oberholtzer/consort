@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 from abjad import attach
-from abjad import abctools
-from abjad import datastructuretools
-from abjad import durationtools
-from abjad import indicatortools
-from abjad import lilypondnametools
-from abjad import schemetools
-from abjad import spannertools
+from abjad.tools import abctools
+from abjad.tools import datastructuretools
+from abjad.tools import durationtools
+from abjad.tools import indicatortools
+from abjad.tools import lilypondnametools
+from abjad.tools import schemetools
+from abjad.tools import spannertools
 
 
 class DynamicExpression(abctools.AbjadValueObject):

@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 from abjad import new
-from abjad import abctools
-from abjad import durationtools
-from abjad import rhythmmakertools
+from abjad.tools import abctools
+from abjad.tools import durationtools
+from abjad.tools import rhythmmakertools
 
 
 class CompositeRhythmMaker(abctools.AbjadValueObject):

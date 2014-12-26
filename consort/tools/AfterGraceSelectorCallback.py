@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
-from abjad import abctools
 from abjad import inspect_
-from abjad import selectiontools
+from abjad.tools import abctools
+from abjad.tools import selectiontools
 
 
 class AfterGraceSelectorCallback(abctools.AbjadValueObject):

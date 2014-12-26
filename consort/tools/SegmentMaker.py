@@ -3,19 +3,19 @@ from __future__ import print_function
 import collections
 import importlib
 import os
-from abjad import durationtools
-from abjad import indicatortools
+from abjad import attach
 from abjad import inspect_
 from abjad import iterate
-from abjad import lilypondfiletools
-from abjad import markuptools
 from abjad import mutate
-from abjad import scoretools
-from abjad import spannertools
-from abjad import systemtools
-from abjad import templatetools
-from abjad import timespantools
-from abjad.tools.topleveltools import attach
+from abjad.tools import durationtools
+from abjad.tools import indicatortools
+from abjad.tools import lilypondfiletools
+from abjad.tools import markuptools
+from abjad.tools import scoretools
+from abjad.tools import spannertools
+from abjad.tools import systemtools
+from abjad.tools import templatetools
+from abjad.tools import timespantools
 from experimental.tools import makertools
 
 

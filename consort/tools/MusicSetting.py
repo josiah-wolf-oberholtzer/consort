@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import collections
+from abjad import inspect_
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
-from abjad.tools.topleveltools import inspect_
 
 
 class MusicSetting(abctools.AbjadValueObject):

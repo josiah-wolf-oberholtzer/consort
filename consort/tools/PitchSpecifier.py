@@ -1,9 +1,8 @@
 # -*- encoding: utf-8 -*-
-from abjad import abctools
-from abjad import mathtools
-from abjad import pitchtools
-from abjad import timespantools
-from supriya import timetools
+from abjad.tools import abctools
+from abjad.tools import mathtools
+from abjad.tools import pitchtools
+from abjad.tools import timespantools
 
 
 class PitchSpecifier(abctools.AbjadValueObject):
@@ -114,7 +113,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
             ...     )
             >>> timespans = pitch_specifier.get_timespans(stop_offset=10)
             >>> print(format(timespans))
-            supriya.tools.timetools.TimespanCollection(
+            consort.tools.TimespanCollection(
                 [
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -153,7 +152,8 @@ class PitchSpecifier(abctools.AbjadValueObject):
                 )
 
         '''
-        timespans = timetools.TimespanCollection()
+        import consort
+        timespans = consort.TimespanCollection()
         target_timespan = timespantools.Timespan(
             start_offset=0,
             stop_offset=stop_offset,

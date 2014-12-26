@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 import bisect
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
 from abjad.tools import sequencetools
-from abjad.tools.topleveltools import new
 
 
 class RegisterInflection(abctools.AbjadValueObject):

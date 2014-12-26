@@ -2,6 +2,11 @@
 from __future__ import print_function
 import collections
 import itertools
+from abjad import attach
+from abjad import inspect_
+from abjad import iterate
+from abjad import mutate
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -13,12 +18,6 @@ from abjad.tools import selectiontools
 from abjad.tools import spannertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
-from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
-from abjad.tools.topleveltools import mutate
-from abjad.tools.topleveltools import new
-from supriya.tools import timetools
 
 
 class TimeManager(abctools.AbjadValueObject):
@@ -932,7 +931,7 @@ class TimeManager(abctools.AbjadValueObject):
 
             >>> timespans = consort.TimeManager.meters_to_timespans(meters)
             >>> print(format(timespans))
-            supriya.tools.timetools.TimespanCollection(
+            consort.tools.TimespanCollection(
                 [
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -967,7 +966,8 @@ class TimeManager(abctools.AbjadValueObject):
 
         Returns timespan collections.
         '''
-        timespans = timetools.TimespanCollection()
+        import consort
+        timespans = consort.TimespanCollection()
         offsets = TimeManager.meters_to_offsets(meters)
         for i, meter in enumerate(meters):
             start_offset = offsets[i]
@@ -1273,7 +1273,7 @@ class TimeManager(abctools.AbjadValueObject):
                 key=lambda item: item[0],
                 )
             ]
-        resolved_inventory = timetools.TimespanCollection()
+        resolved_inventory = consort.TimespanCollection()
         for timespan in timespan_inventories[0]:
             if isinstance(timespan, consort.SilentTimespan):
                 continue
@@ -1535,7 +1535,8 @@ class TimeManager(abctools.AbjadValueObject):
                 )
 
         '''
-        resulting_timespans = timetools.TimespanCollection()
+        import consort
+        resulting_timespans = consort.TimespanCollection()
         if not inventory_two:
             return timespantools.TimespanInventory(inventory_one)
         elif not inventory_one:

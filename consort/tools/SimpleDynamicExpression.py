@@ -1,6 +1,15 @@
 # -*- encoding: utf-8 -*-
-from abjad import *
+from abjad import attach
+from abjad import inspect_
+from abjad import iterate
+from abjad import override
 from abjad.tools import abctools
+from abjad.tools import durationtools
+from abjad.tools import indicatortools
+from abjad.tools import instrumenttools
+from abjad.tools import lilypondparsertools
+from abjad.tools import selectiontools
+from abjad.tools import spannertools
 
 
 class SimpleDynamicExpression(abctools.AbjadValueObject):
@@ -71,7 +80,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         self,
         hairpin_start_token='p',
         hairpin_stop_token=None,
-        minimum_duration=Duration(1, 4),
+        minimum_duration=durationtools.Duration(1, 4),
         ):
         lilypond_parser = lilypondparsertools.LilyPondParser
         known_dynamics = list(lilypond_parser.list_known_dynamics())
@@ -86,7 +95,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         self._hairpin_start_token = hairpin_start_token
         self._hairpin_stop_token = hairpin_stop_token
         if minimum_duration is not None:
-            minimum_duration = Duration(minimum_duration)
+            minimum_duration = durationtools.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
 
     ### SPECIAL METHODS ###
@@ -130,11 +139,11 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
             return
         start_ordinal = NegativeInfinity
         if start_token != 'o':
-            start_ordinal = Dynamic.dynamic_name_to_dynamic_ordinal(
+            start_ordinal = indicatortools.Dynamic.dynamic_name_to_dynamic_ordinal(
                 start_token)
         stop_ordinal = NegativeInfinity
         if stop_token != 'o':
-            stop_ordinal = Dynamic.dynamic_name_to_dynamic_ordinal(stop_token)
+            stop_ordinal = indicatortools.Dynamic.dynamic_name_to_dynamic_ordinal(stop_token)
         items = []
         is_circled = False
         if start_ordinal < stop_ordinal:
@@ -153,39 +162,13 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
                 items.append('!')
                 is_circled = True
         hairpin_descriptor = ' '.join(items)
-        hairpin = Hairpin(
+        hairpin = spannertools.Hairpin(
             descriptor=hairpin_descriptor,
             include_rests=False,
             )
         if is_circled:
             override(hairpin).hairpin.circled_tip = True
         attach(hairpin, music, name=name)
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        from abjad.tools import systemtools
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='hairpin_start_token',
-                display_string='hairpin start token',
-                command='t',
-                editor=idetools.getters.get_hairpin_token,
-                ),
-            systemtools.AttributeDetail(
-                name='hairpin_stop_token',
-                display_string='hairpin stop token',
-                command='p',
-                editor=idetools.getters.get_hairpin_token,
-                ),
-            systemtools.AttributeDetail(
-                name='minimum_duration',
-                display_string='minimum duration',
-                command='m',
-                editor=idetools.getters.get_duration,
-                ),
-            )
 
     ### PUBLIC PROPERTIES ###
 

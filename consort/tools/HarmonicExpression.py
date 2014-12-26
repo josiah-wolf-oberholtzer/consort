@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
-from abjad import pitchtools
-from abjad import scoretools
+from abjad.tools import pitchtools
+from abjad.tools import scoretools
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 

@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
+from abjad import attach
+from abjad import set_
 from abjad.tools import abctools
 from abjad.tools import indicatortools
 from abjad.tools import scoretools
 from abjad.tools import stringtools
-from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import set_
 
 
 class ScoreTemplateManager(abctools.AbjadObject):

@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import abc
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import timespantools
 
 

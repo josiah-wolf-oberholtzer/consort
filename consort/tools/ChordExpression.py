@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 from abjad import attach
-from abjad import indicatortools
-from abjad import pitchtools
-from abjad import scoretools
-from abjad import selectiontools
+from abjad.tools import indicatortools
+from abjad.tools import pitchtools
+from abjad.tools import scoretools
+from abjad.tools import selectiontools
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 

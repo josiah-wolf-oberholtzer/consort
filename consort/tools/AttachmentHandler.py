@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import collections
+from abjad import inspect_
+from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import scoretools
 from abjad.tools import systemtools
-from abjad.tools.topleveltools import inspect_
-from abjad.tools.topleveltools import iterate
 
 
 class AttachmentHandler(abctools.AbjadValueObject):

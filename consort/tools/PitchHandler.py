@@ -2,15 +2,14 @@
 from __future__ import print_function
 import abc
 import collections
-from abjad import datastructuretools
-from abjad import durationtools
 from abjad import inspect_
 from abjad import iterate
-from abjad import instrumenttools
-from abjad import pitchtools
-from abjad import sequencetools
-from abjad import timespantools
-from supriya import timetools
+from abjad.tools import datastructuretools
+from abjad.tools import durationtools
+from abjad.tools import instrumenttools
+from abjad.tools import pitchtools
+from abjad.tools import sequencetools
+from abjad.tools import timespantools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -435,7 +434,7 @@ class PitchHandler(HashCachingObject):
             ...     duration=12,
             ...     )
             >>> print(format(timespans))
-            supriya.tools.timetools.TimespanCollection(
+            consort.tools.TimespanCollection(
                 [
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -500,7 +499,7 @@ class PitchHandler(HashCachingObject):
         pitch_specifier = pitch_specifier or consort.PitchSpecifier()
         operation_specifier = operation_specifier or \
             consort.PitchOperationSpecifier()
-        pitch_choice_timespans = timetools.TimespanCollection()
+        pitch_choice_timespans = consort.TimespanCollection()
         pitch_timespans = pitch_specifier.get_timespans(duration)
         operation_timespans = operation_specifier.get_timespans(duration)
         offsets = set()

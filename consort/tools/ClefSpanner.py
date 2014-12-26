@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
+from abjad import inspect_
 from abjad.tools import indicatortools
 from abjad.tools import spannertools
-from abjad.tools.topleveltools import inspect_
 
 
 class ClefSpanner(spannertools.Spanner):

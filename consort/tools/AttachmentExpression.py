@@ -2,13 +2,13 @@
 from __future__ import print_function
 import collections
 import copy
+from abjad import attach
+from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import scoretools
+from abjad.tools import selectortools
 from abjad.tools import sequencetools
 from abjad.tools import spannertools
-from abjad.tools.topleveltools import attach
-from abjad.tools.topleveltools import new
-from experimental.tools import selectortools
 from consort.tools.HashCachingObject import HashCachingObject
 
 

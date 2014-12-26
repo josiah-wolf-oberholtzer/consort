@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-from abjad import abctools
+from abjad.tools import abctools
+from abjad.tools import timespantools
 
 
 class TimespanCollection(abctools.AbjadObject):
