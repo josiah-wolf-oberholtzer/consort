@@ -10,18 +10,18 @@ from abjad import schemetools
 from abjad import spannertools
 
 
-class DynamicPhrasing(abctools.AbjadValueObject):
+class DynamicExpression(abctools.AbjadValueObject):
     r"""A dynamic phrasing expression.
 
     ::
 
         >>> import consort
-        >>> dynamic_phrasing = consort.DynamicPhrasing(
+        >>> dynamic_expression = consort.DynamicExpression(
         ...     dynamic_tokens='f p pp pp',
         ...     transitions=('flared', None),
         ...     )
-        >>> print(format(dynamic_phrasing))
-        consort.tools.DynamicPhrasing(
+        >>> print(format(dynamic_expression))
+        consort.tools.DynamicExpression(
             dynamic_tokens=datastructuretools.CyclicTuple(
                 ['f', 'p', 'pp', 'pp']
                 ),
@@ -59,7 +59,7 @@ class DynamicPhrasing(abctools.AbjadValueObject):
 
         ::
 
-            >>> dynamic_phrasing(music)
+            >>> dynamic_expression(music)
             >>> print(format(music))
             \new Staff {
                 {
@@ -91,7 +91,7 @@ class DynamicPhrasing(abctools.AbjadValueObject):
 
         ::
 
-            >>> dynamic_phrasing(music, seed=2)
+            >>> dynamic_expression(music, seed=2)
             >>> print(format(music))
             \new Staff {
                 {
@@ -117,7 +117,7 @@ class DynamicPhrasing(abctools.AbjadValueObject):
         ::
 
             >>> music = Staff("{ c'4 }")
-            >>> dynamic_phrasing(music, seed=1)
+            >>> dynamic_expression(music, seed=1)
             >>> print(format(music))
             \new Staff {
                 {
@@ -130,7 +130,7 @@ class DynamicPhrasing(abctools.AbjadValueObject):
         ::
 
             >>> music = Staff("{ c'4 d'4 }")
-            >>> dynamic_phrasing(music, seed=1)
+            >>> dynamic_expression(music, seed=1)
             >>> print(format(music))
             \new Staff {
                 {
