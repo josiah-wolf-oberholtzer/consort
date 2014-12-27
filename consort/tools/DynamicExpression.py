@@ -178,43 +178,6 @@ class DynamicExpression(abctools.AbjadValueObject):
     ### SPECIAL METHODS ###
 
     def __call__(self, music, name=None, seed=0):
-        self._make_attachments(music, name=name, seed=seed)
-
-    ### PRIVATE METHODS ###
-
-    def _get_attachments(self, i):
-        this_dynamic = indicatortools.Dynamic(self.dynamic_tokens[i])
-        next_dynamic = indicatortools.Dynamic(self.dynamic_tokens[i + 1])
-        if this_dynamic.ordinal < next_dynamic.ordinal:
-            hairpin = spannertools.Crescendo(include_rests=True)
-        elif next_dynamic.ordinal < this_dynamic.ordinal:
-            hairpin = spannertools.Decrescendo(include_rests=True)
-        else:
-            hairpin = None
-        transition = self.transitions[i]
-        if transition == 'constante':
-            hairpin = spannertools.Crescendo(include_rests=True)
-        return this_dynamic, hairpin, transition
-
-    def _get_hairpin_override(self, transition):
-        grob_override = None
-        if transition in ('flared', 'constante'):
-            grob_override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='Hairpin',
-                is_once=True,
-                property_path='stencil',
-                value=schemetools.Scheme('{}-hairpin'.format(transition)),
-                )
-        return grob_override
-
-    def _get_selections(self, music):
-        selections = []
-        for division in music:
-            selection = division.select_leaves()
-            selections.append(selection)
-        return selections
-
-    def _make_attachments(self, music, name=None, seed=0):
         current_dynamic = None
         current_hairpin = None
         selections = self._get_selections(music)
@@ -281,6 +244,40 @@ class DynamicExpression(abctools.AbjadValueObject):
             if dynamic != current_dynamic and 1 < len(selection):
                 attach(dynamic, selection[-1], name=name)
         #print()
+
+    ### PRIVATE METHODS ###
+
+    def _get_attachments(self, i):
+        this_dynamic = indicatortools.Dynamic(self.dynamic_tokens[i])
+        next_dynamic = indicatortools.Dynamic(self.dynamic_tokens[i + 1])
+        if this_dynamic.ordinal < next_dynamic.ordinal:
+            hairpin = spannertools.Crescendo(include_rests=True)
+        elif next_dynamic.ordinal < this_dynamic.ordinal:
+            hairpin = spannertools.Decrescendo(include_rests=True)
+        else:
+            hairpin = None
+        transition = self.transitions[i]
+        if transition == 'constante':
+            hairpin = spannertools.Crescendo(include_rests=True)
+        return this_dynamic, hairpin, transition
+
+    def _get_hairpin_override(self, transition):
+        grob_override = None
+        if transition in ('flared', 'constante'):
+            grob_override = lilypondnametools.LilyPondGrobOverride(
+                grob_name='Hairpin',
+                is_once=True,
+                property_path='stencil',
+                value=schemetools.Scheme('{}-hairpin'.format(transition)),
+                )
+        return grob_override
+
+    def _get_selections(self, music):
+        selections = []
+        for division in music:
+            selection = division.select_leaves()
+            selections.append(selection)
+        return selections
 
     ### PUBLIC PROPERTIES ###
 
