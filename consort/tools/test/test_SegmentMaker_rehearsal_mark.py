@@ -37,11 +37,8 @@ def test_SegmentMaker_rehearsal_mark_01():
                                     \override
                                         #'(box-padding . 0.5)
                                         \box
-                                            \concat
-                                                {
-                                                    \vstrut
-                                                    A
-                                                }
+                                            \caps
+                                                A
                                     " "
                                     \fontsize
                                         #-3
@@ -101,11 +98,8 @@ def test_SegmentMaker_rehearsal_mark_02():
                                     \override
                                         #'(box-padding . 0.5)
                                         \box
-                                            \concat
-                                                {
-                                                    \vstrut
-                                                    "A Part 1"
-                                                }
+                                            \caps
+                                                "A Part 1"
                                     " "
                                     \fontsize
                                         #-3
