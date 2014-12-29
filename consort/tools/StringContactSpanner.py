@@ -364,23 +364,22 @@ class StringContactSpanner(spannertools.Spanner):
         current_markup = None
         if current_attached is not None:
             current_markup = current_attached.markup
-        if current_attached == previous_attached == next_attached:
-            current_markup = None
-        elif current_attached == previous_effective and next_attached is None:
+        if current_attached == previous_attached == next_attached and \
+            current_attached != pizzicato:
             current_markup = None
         elif current_attached == previous_effective and \
-            current_attached == pizzicato:
+            next_attached is None and \
+            current_attached != pizzicato:
             current_markup = None
+#        elif current_attached == previous_effective and \
+#            current_attached == pizzicato:
+#            current_markup = None
 
         if current_markup is not None:
             if is_cautionary:
                 current_markup = current_markup.parenthesize()
 
-#        if current_attached:
-#            print(leaf, has_start_markup, has_stop_markup, stops_text_spanner,
-#                next_different, next_next_different)
-
-        return (
+        results = (
             current_attached,
             current_markup,
             has_start_markup,
@@ -392,6 +391,12 @@ class StringContactSpanner(spannertools.Spanner):
             previous_effective,
             stops_text_spanner,
             )
+
+        print(leaf)
+        for _ in results:
+            print('\t', _)
+
+        return results
 
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
@@ -411,6 +416,7 @@ class StringContactSpanner(spannertools.Spanner):
             ) = self._get_annotations(leaf)
 
         if current_markup is None:
+            print('\tRETURNING+++++++++++++++')
             return lilypond_format_bundle
 
         if has_start_markup and has_stop_markup:
@@ -428,13 +434,28 @@ class StringContactSpanner(spannertools.Spanner):
         if stops_text_spanner:
             self._add_segment_stop_contributions(lilypond_format_bundle)
 
+        should_attach_markup = False
         if current_markup and \
             not has_start_markup and \
             next_different is not None:
+            should_attach_markup = True
+        if current_markup and \
+            current_attached == indicatortools.StringContactPoint('pizzicato'):
+            should_attach_markup = True
+
+        if should_attach_markup:
             current_markup = markuptools.Markup(current_markup, Up)
             current_markup = current_markup.italic()
             current_markup = current_markup.vcenter()
             lilypond_format_bundle.right.markup.append(current_markup)
+
+#        pizzicato = indicatortools.StringContactPoint('pizzicato')
+#        if current_attached == pizzicato and not previous_attached:
+#            current_markup = pizzicato.markup
+#            current_markup = markuptools.Markup(current_markup, Up)
+#            current_markup = current_markup.italic()
+#            current_markup = current_markup.vcenter()
+#            lilypond_format_bundle.right.markup.append(current_markup)
 
         return lilypond_format_bundle
 
