@@ -28,39 +28,227 @@ class StringContactSpanner(spannertools.Spanner):
         >>> attach(indicatortools.StringContactPoint('sul ponticello'),
         ...     staff[7], scope=Staff)
         >>> attach(consort.StringContactSpanner(), staff[:])
+
+    ..  doctest::
+
         >>> print(format(staff))
         \new Staff {
             c'8 ^ \markup {
-                \caps
-                    S.T.
+                \vcenter
+                    \italic
+                        \caps
+                            S.T.
                 }
             d'8
-            e'8 ^ \markup {
-                \parenthesize
-                    \caps
-                        S.T.
+            e'8
+            \once \override TextSpanner.arrow-width = 0.25
+            \once \override TextSpanner.bound-details.left-broken.text = ##f
+            \once \override TextSpanner.bound-details.left.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.left.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \parenthesize
+                                    \caps
+                                        S.T.
+                                \hspace
+                                    #1
+                            }
                 }
-            f'8 ^ \markup {
-                \parenthesize
-                    \caps
-                        S.T.
+            \once \override TextSpanner.bound-details.right-broken.padding = 0
+            \once \override TextSpanner.bound-details.right.arrow = ##t
+            \once \override TextSpanner.bound-details.right.padding = 0
+            \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.right.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    Ord.
+                                \hspace
+                                    #1
+                            }
                 }
-            g'8 ^ \markup {
-                \caps
-                    Ord.
+            \once \override TextSpanner.dash-fraction = 0.25
+            \once \override TextSpanner.dash-period = 1
+            f'8 \startTextSpan
+            g'8 \stopTextSpan ^ \markup {
+                \vcenter
+                    \italic
+                        \caps
+                            Ord.
                 }
             a'8 ^ \markup {
-                \caps
-                    Pizz.
+                \vcenter
+                    \italic
+                        \caps
+                            Pizz.
                 }
-            b'8 ^ \markup {
-                \caps
-                    Ord.
+            \once \override TextSpanner.arrow-width = 0.25
+            \once \override TextSpanner.bound-details.left-broken.text = ##f
+            \once \override TextSpanner.bound-details.left.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.left.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    Ord.
+                                \hspace
+                                    #1
+                            }
                 }
-            c''8 ^ \markup {
-                \caps
-                    S.P.
+            \once \override TextSpanner.bound-details.right-broken.padding = 0
+            \once \override TextSpanner.bound-details.right.arrow = ##t
+            \once \override TextSpanner.bound-details.right.padding = 0
+            \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.right.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    S.P.
+                                \hspace
+                                    #1
+                            }
                 }
+            \once \override TextSpanner.dash-fraction = 0.25
+            \once \override TextSpanner.dash-period = 1
+            b'8 \stopTextSpan \startTextSpan
+            c''8 \stopTextSpan
+        }
+
+    ::
+
+        >>> staff = Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
+        >>> attach(indicatortools.StringContactPoint('ordinario'),
+        ...     staff[0], scope=Staff)
+        >>> attach(indicatortools.StringContactPoint('sul tasto'),
+        ...     staff[2], scope=Staff)
+        >>> attach(indicatortools.StringContactPoint('ordinario'),
+        ...     staff[4], scope=Staff)
+        >>> attach(indicatortools.StringContactPoint('sul tasto'),
+        ...     staff[6], scope=Staff)
+        >>> attach(consort.StringContactSpanner(), staff[:])
+
+    ..  doctest::
+
+        >>> print(format(staff))
+        \new Staff {
+            \once \override TextSpanner.arrow-width = 0.25
+            \once \override TextSpanner.bound-details.left-broken.text = ##f
+            \once \override TextSpanner.bound-details.left.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.left.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    Ord.
+                                \hspace
+                                    #1
+                            }
+                }
+            \once \override TextSpanner.bound-details.right-broken.padding = 0
+            \once \override TextSpanner.bound-details.right.arrow = ##t
+            \once \override TextSpanner.bound-details.right.padding = 3.5
+            \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
+            \once \override TextSpanner.dash-fraction = 0.25
+            \once \override TextSpanner.dash-period = 1
+            c'8 \startTextSpan
+            d'8
+            \once \override TextSpanner.arrow-width = 0.25
+            \once \override TextSpanner.bound-details.left-broken.text = ##f
+            \once \override TextSpanner.bound-details.left.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.left.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    S.T.
+                                \hspace
+                                    #1
+                            }
+                }
+            \once \override TextSpanner.bound-details.right-broken.padding = 0
+            \once \override TextSpanner.bound-details.right.arrow = ##t
+            \once \override TextSpanner.bound-details.right.padding = 3.5
+            \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
+            \once \override TextSpanner.dash-fraction = 0.25
+            \once \override TextSpanner.dash-period = 1
+            e'8 \stopTextSpan \startTextSpan
+            f'8
+            \once \override TextSpanner.arrow-width = 0.25
+            \once \override TextSpanner.bound-details.left-broken.text = ##f
+            \once \override TextSpanner.bound-details.left.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.left.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    Ord.
+                                \hspace
+                                    #1
+                            }
+                }
+            \once \override TextSpanner.bound-details.right-broken.padding = 0
+            \once \override TextSpanner.bound-details.right.arrow = ##t
+            \once \override TextSpanner.bound-details.right.padding = 0
+            \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
+            \once \override TextSpanner.bound-details.right.text = \markup {
+                \halign
+                    #0
+                    \halign
+                        #0
+                        \concat
+                            {
+                                \hspace
+                                    #1
+                                \caps
+                                    S.T.
+                                \hspace
+                                    #1
+                            }
+                }
+            \once \override TextSpanner.dash-fraction = 0.25
+            \once \override TextSpanner.dash-period = 1
+            g'8 \stopTextSpan \startTextSpan
+            a'8
+            b'8 \stopTextSpan
+            c''8
         }
 
     '''
@@ -90,17 +278,6 @@ class StringContactSpanner(spannertools.Spanner):
         agent = inspect_(leaf)
         pizzicato = indicatortools.StringContactPoint('pizzicato')
 
-        previous_effective = agent.get_effective(prototype, n=-1)
-        previous_attached = None
-        for i in reversed(range(index)):
-            previous_leaf = leaves[i]
-            indicators = previous_leaf._get_indicators(
-                indicatortools.StringContactPoint,
-                )
-            if indicators:
-                previous_attached = indicators[0]
-                break
-
         next_attached = None
         for i in range(index + 1, len(leaves)):
             next_leaf = leaves[i]
@@ -119,6 +296,7 @@ class StringContactSpanner(spannertools.Spanner):
             current_attached = next_attached
 
         next_different = None
+        next_next_different = None
         for i in range(index + 1, len(leaves)):
             next_leaf = leaves[i]
             indicators = next_leaf._get_indicators(
@@ -126,56 +304,93 @@ class StringContactSpanner(spannertools.Spanner):
                 )
             if indicators:
                 indicator = indicators[0]
-                if indicator is not None and indicator != current_attached:
+                if indicator != current_attached and next_different is None:
                     next_different = indicator
+                if next_different is not None and indicator != next_different:
+                    next_next_different = indicator
                     break
 
-        starts_segment = False
+        previous_effective = agent.get_effective(prototype, n=-1)
+        previous_attached = None
+        for i in reversed(range(index)):
+            previous_leaf = leaves[i]
+            indicators = previous_leaf._get_indicators(
+                indicatortools.StringContactPoint,
+                )
+            if indicators:
+                previous_attached = indicators[0]
+                break
+        if current_attached is not None and \
+            not self._is_my_first_leaf(leaf) and \
+            previous_attached is None:
+            previous_attached = current_attached
+
+        previous_different = None
+        for i in reversed(range(index)):
+            previous_leaf = leaves[i]
+            indicators = previous_leaf._get_indicators(
+                indicatortools.StringContactPoint,
+                )
+            if indicators:
+                indicator = indicators[0]
+                if indicator != current_attached:
+                    previous_different = indicator
+
+        has_start_markup = False
         if current_attached is not None and \
             next_attached is not None and \
             current_attached != pizzicato and \
             next_different != pizzicato and \
             current_attached != next_attached:
-            starts_segment = True
+            has_start_markup = True
 
-        stops_segment = False
+        has_stop_markup = False
         if current_attached is not None and \
             current_attached != pizzicato and \
-            (next_different == pizzicato or next_different is None):
-            stops_segment = True
+            (next_next_different == pizzicato or next_next_different is None):
+            has_stop_markup = True
+
+        stops_text_spanner = False
+        if current_attached is not None and \
+            previous_different is not None and \
+            current_attached != pizzicato and \
+            previous_different != pizzicato:
+            stops_text_spanner = True
 
         is_cautionary = False
-        if current_attached and current_attached == previous_effective:
-            is_cautionary = True
-        if not self._is_my_first_leaf(leaf) and previous_attached is None:
+        if current_attached and current_attached == previous_attached:
             is_cautionary = True
 
         current_markup = None
-        if current_attached is None and self._is_my_first_leaf(leaf):
-            if next_attached is not None:
-                current_markup = next_attached.markup
-        elif current_attached is not None:
+        if current_attached is not None:
             current_markup = current_attached.markup
-        elif current_attached == previous_attached == next_attached:
+        if current_attached == previous_attached == next_attached:
             current_markup = None
         elif current_attached == previous_effective and next_attached is None:
             current_markup = None
+        elif current_attached == previous_effective and \
+            current_attached == pizzicato:
+            current_markup = None
 
         if current_markup is not None:
-            current_markup = markuptools.Markup(current_markup, 'up')
             if is_cautionary:
                 current_markup = current_markup.parenthesize()
+
+#        if current_attached:
+#            print(leaf, has_start_markup, has_stop_markup, stops_text_spanner,
+#                next_different, next_next_different)
 
         return (
             current_attached,
             current_markup,
+            has_start_markup,
+            has_stop_markup,
             is_cautionary,
             next_attached,
             next_different,
             previous_attached,
             previous_effective,
-            starts_segment,
-            stops_segment,
+            stops_text_spanner,
             )
 
     def _get_lilypond_format_bundle(self, leaf):
@@ -185,58 +400,75 @@ class StringContactSpanner(spannertools.Spanner):
         (
             current_attached,
             current_markup,
+            has_start_markup,
+            has_stop_markup,
             is_cautionary,
             next_attached,
             next_different,
             previous_attached,
             previous_effective,
-            starts_segment,
-            stops_segment,
+            stops_text_spanner,
             ) = self._get_annotations(leaf)
 
         if current_markup is None:
             return lilypond_format_bundle
 
-        if starts_segment and stops_segment:
-            lilypond_format_bundle.right.markup.append(current_markup)
-        elif stops_segment:
-            lilypond_format_bundle.right.markup.append(current_markup)
-        else:
+        if has_start_markup and has_stop_markup:
+            self._add_segment_start_contributions(
+                lilypond_format_bundle,
+                start_markup=current_markup,
+                stop_markup=next_different.markup,
+                )
+        elif has_start_markup:
+            self._add_segment_start_contributions(
+                lilypond_format_bundle,
+                start_markup=current_markup,
+                )
+
+        if stops_text_spanner:
+            self._add_segment_stop_contributions(lilypond_format_bundle)
+
+        if current_markup and \
+            not has_start_markup and \
+            next_different is not None:
+            current_markup = markuptools.Markup(current_markup, Up)
+            current_markup = current_markup.italic()
+            current_markup = current_markup.vcenter()
             lilypond_format_bundle.right.markup.append(current_markup)
 
         return lilypond_format_bundle
 
-    def _get_markup(
-        self,
-        leaf,
-        current_attached,
-        next_attached,
-        previous_attached,
-        previous_effective,
-        ):
-        if current_attached is None and self._is_my_first_leaf(leaf):
-            if previous_attached is None:
-                if next_attached is not None:
-                    return next_attached.markup
-        if current_attached == previous_attached == next_attached:
-            return None
-        if current_attached == previous_effective and next_attached is None:
-            return None
-        if current_attached:
-            return current_attached.markup
-        return None
-
     def _add_segment_start_contributions(
+        self,
         lilypond_format_bundle,
         start_markup=None,
         stop_markup=None,
         ):
+        right_padding = 0
+        if stop_markup is None:
+            right_padding = 3.5
         line_segment = indicatortools.Arrow(
             dash_fraction=0.25,
             dash_period=1,
-            left_padding=4,
-            right_padding=4,
+            right_padding=right_padding,
             )
+
+        if start_markup is not None:
+            start_markup = markuptools.Markup.concat([
+                markuptools.Markup.hspace(1),
+                start_markup,
+                markuptools.Markup.hspace(1),
+                ])
+            start_markup = start_markup.halign(0)
+
+        if stop_markup is not None:
+            stop_markup = markuptools.Markup.concat([
+                markuptools.Markup.hspace(1),
+                stop_markup,
+                markuptools.Markup.hspace(1),
+                ])
+            stop_markup = stop_markup.halign(0)
+
         string = r'\startTextSpan'
         lilypond_format_bundle.right.spanner_starts.append(string)
         overrides = line_segment._get_lilypond_grob_overrides()
@@ -252,7 +484,7 @@ class StringContactSpanner(spannertools.Spanner):
                     'left',
                     'text',
                     ),
-                value=start_markup,
+                value=start_markup.halign(0),
                 )
             override_string = '\n'.join(override_._override_format_pieces)
             lilypond_format_bundle.grob_overrides.append(override_string)
@@ -265,12 +497,13 @@ class StringContactSpanner(spannertools.Spanner):
                     'right',
                     'text',
                     ),
-                value=stop_markup,
+                value=stop_markup.halign(0),
                 )
             override_string = '\n'.join(override_._override_format_pieces)
             lilypond_format_bundle.grob_overrides.append(override_string)
 
     def _add_segment_stop_contributions(
+        self,
         lilypond_format_bundle,
         ):
         string = r'\stopTextSpan'
