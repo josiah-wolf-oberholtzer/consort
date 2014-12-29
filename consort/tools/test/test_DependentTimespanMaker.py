@@ -1141,3 +1141,78 @@ def test_DependentTimespanMaker_14():
                 ]
             )
         ''')
+
+
+def test_DependentTimespanMaker_15():
+    music_specifiers = collections.OrderedDict([
+        ('C', None),
+        ])
+    target_timespan = timespantools.Timespan(0, 100)
+    timespan_maker = consort.DependentTimespanMaker(
+        voice_names=(
+            'A',
+            ),
+        )
+    timespan_inventory = _make_timespan_inventory()
+    timespan_inventory.extend([
+        consort.SilentTimespan(40, 50, voice_name='A'),
+        consort.SilentTimespan(55, 60, voice_name='A'),
+        consort.SilentTimespan(80, 90, voice_name='A'),
+        ])
+    timespan_inventory.sort()
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        timespan_inventory=_make_timespan_inventory(),
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(20, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(40, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
+                    music_specifier=consort.tools.MusicSpecifier(
+                        labels=('pedaled',),
+                        ),
+                    start_offset=durationtools.Offset(20, 1),
+                    stop_offset=durationtools.Offset(40, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    music_specifier=consort.tools.MusicSpecifier(
+                        labels=('pedaled',),
+                        ),
+                    start_offset=durationtools.Offset(25, 1),
+                    stop_offset=durationtools.Offset(50, 1),
+                    voice_name='B',
+                    ),
+                consort.tools.PerformedTimespan(
+                    music_specifier=consort.tools.MusicSpecifier(
+                        labels=('pedaled',),
+                        ),
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(60, 1),
+                    stop_offset=durationtools.Offset(80, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(65, 1),
+                    stop_offset=durationtools.Offset(100, 1),
+                    voice_name='B',
+                    ),
+                ]
+            )
+        ''')

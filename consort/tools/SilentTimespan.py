@@ -18,9 +18,9 @@ class SilentTimespan(timespantools.Timespan):
 
     def __init__(
         self,
-        layer=None,
         start_offset=mathtools.NegativeInfinity(),
         stop_offset=mathtools.Infinity(),
+        layer=None,
         voice_name=None,
         ):
         timespantools.Timespan.__init__(
