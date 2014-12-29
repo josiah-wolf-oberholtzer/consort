@@ -20,7 +20,6 @@ class ChordExpression(LogicalTieExpression):
         ...     )
         >>> print(format(chord_expression))
         consort.tools.ChordExpression(
-            arpeggio_direction=Down,
             chord_expr=pitchtools.IntervalSegment(
                 (
                     pitchtools.NumberedInterval(-1),
@@ -29,6 +28,7 @@ class ChordExpression(LogicalTieExpression):
                     ),
                 item_class=pitchtools.NumberedInterval,
                 ),
+            arpeggio_direction=Down,
             )
 
     ::

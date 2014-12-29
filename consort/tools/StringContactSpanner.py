@@ -392,9 +392,9 @@ class StringContactSpanner(spannertools.Spanner):
             stops_text_spanner,
             )
 
-        print(leaf)
-        for _ in results:
-            print('\t', _)
+        #print(leaf)
+        #for _ in results:
+        #    print('\t', _)
 
         return results
 
@@ -416,7 +416,7 @@ class StringContactSpanner(spannertools.Spanner):
             ) = self._get_annotations(leaf)
 
         if current_markup is None:
-            print('\tRETURNING+++++++++++++++')
+            #print('\tRETURNING+++++++++++++++')
             return lilypond_format_bundle
 
         if has_start_markup and has_stop_markup:
