@@ -102,7 +102,9 @@ class AttachmentExpression(HashCachingObject):
 
     __slots__ = (
         '_attachments',
+        '_scope',
         '_selector',
+        '_is_annotation',
         )
 
     ### INITIALIZER ###
@@ -111,6 +113,8 @@ class AttachmentExpression(HashCachingObject):
         self,
         attachments=None,
         selector=None,
+        scope=None,
+        is_annotation=None,
         ):
         HashCachingObject.__init__(self)
         if attachments is not None:
@@ -121,6 +125,15 @@ class AttachmentExpression(HashCachingObject):
         if selector is not None:
             assert isinstance(selector, selectortools.Selector)
         self._selector = selector
+        if scope is not None:
+            if isinstance(scope, type):
+                assert issubclass(scope, scoretools.Component)
+            else:
+                assert isinstance(scope, (scoretools.Component, str))
+        self._scope = scope
+        if is_annotation is not None:
+            is_annotation = bool(is_annotation)
+        self._is_annotation = is_annotation
 
     ### PUBLIC METHODS ###
 
@@ -166,32 +179,16 @@ class AttachmentExpression(HashCachingObject):
                 # indicators
                 else:
                     if isinstance(selection, scoretools.Leaf):
+                        selection = (selection,)
+                    for component in selection:
                         attachment = copy.copy(attachment)
-                        attach(attachment, selection, name=name)
-                    else:
-                        for component in selection:
-                            attachment = copy.copy(attachment)
-                            attach(attachment, component, name=name)
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        from abjad.tools import systemtools
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='attachments',
-                display_string='attachments',
-                command='at',
-                editor=datastructuretools.TypedList,
-                ),
-            systemtools.AttributeDetail(
-                name='selector',
-                display_string='selector',
-                command='se',
-                editor=selectortools.Selector,
-                ),
-            )
+                        attach(
+                            attachment,
+                            component,
+                            name=name,
+                            scope=self.scope,
+                            is_annotation=self.is_annotation,
+                            )
 
     ### PUBLIC METHODS ###
 
@@ -212,6 +209,14 @@ class AttachmentExpression(HashCachingObject):
     @property
     def attachments(self):
         return self._attachments
+
+    @property
+    def is_annotation(self):
+        return self._is_annotation
+
+    @property
+    def scope(self):
+        return self._scope
 
     @property
     def selector(self):
