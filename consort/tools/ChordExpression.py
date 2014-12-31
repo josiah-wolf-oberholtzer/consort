@@ -109,8 +109,8 @@ class ChordExpression(LogicalTieExpression):
         new_chord_expr = chord_expr
         if pitch_range is not None:
             assert base_pitch in pitch_range
-            maximum = max(chord_expr)
-            minimum = min(chord_expr)
+            maximum = max([float(_) for _ in chord_expr])
+            minimum = min([float(_) for _ in chord_expr])
             maximum_pitch = base_pitch.transpose(maximum)
             minimum_pitch = base_pitch.transpose(minimum)
             if maximum_pitch not in pitch_range:
