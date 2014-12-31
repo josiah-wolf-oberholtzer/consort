@@ -123,6 +123,8 @@ class GraceHandler(abctools.AbjadValueObject):
                 if not isinstance(music_specifiers, tuple):
                     music_specifiers = (music_specifiers,)
                 for music_specifier in music_specifiers:
+                    if music_specifier is None:
+                        continue
                     if music_specifier.grace_handler is None:
                         continue
                     counts = max(music_specifier.grace_handler.counts)
