@@ -51,10 +51,12 @@ class FloodedTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
+        padding=None,
         timespan_specifier=None,
         ):
         TimespanMaker.__init__(
             self,
+            padding=padding,
             timespan_specifier=timespan_specifier,
             )
 
@@ -67,6 +69,7 @@ class FloodedTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        import consort
         counter = collections.Counter()
         for voice_name, music_specifier in music_specifiers.items():
             if not isinstance(music_specifier, tuple):
@@ -85,3 +88,16 @@ class FloodedTimespanMaker(TimespanMaker):
                 voice_name=voice_name,
                 )
             timespan_inventory.append(timespan)
+            if self.padding:
+                left_padding = consort.SilentTimespan(
+                    start_offset=timespan.start_offset - self.padding,
+                    stop_offset=timespan.start_offset,
+                    voice_name=voice_name,
+                    )
+                timespan_inventory.append(left_padding)
+                right_padding = consort.SilentTimespan(
+                    start_offset=timespan.stop_offset,
+                    stop_offset=timespan.stop_offset + self.padding,
+                    voice_name=voice_name,
+                    )
+                timespan_inventory.append(right_padding)
