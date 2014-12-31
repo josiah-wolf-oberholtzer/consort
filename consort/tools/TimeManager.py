@@ -1336,6 +1336,12 @@ class TimeManager(abctools.AbjadValueObject):
                 multiplier = durationtools.Multiplier(duration)
                 attach(multiplier, multi_measure_rest)
                 container[:] = [multi_measure_rest]
+                staff_lines_spanner = spannertools.StaffLinesSpanner(1)
+                attach(
+                    staff_lines_spanner,
+                    container,
+                    name='staff_lines_spanner',
+                    )
             else:
                 meter = meter_timespan.annotation
                 meter_offset = meter_timespan.start_offset

@@ -38,7 +38,6 @@ class SeedSession(abctools.AbjadObject):
         music_specifier,
         voice,
         ):
-        # TODO: Clarify names.
         voicewise_logical_tie_seed = self._get_voicewise_logical_tie_seed(
             attack_point_signature,
             music_specifier,
