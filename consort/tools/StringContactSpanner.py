@@ -360,6 +360,8 @@ class StringContactSpanner(spannertools.Spanner):
         is_cautionary = False
         if current_attached and current_attached == previous_attached:
             is_cautionary = True
+        elif current_attached and current_attached == previous_effective:
+            is_cautionary = True
 
         current_markup = None
         if current_attached is not None:
@@ -392,9 +394,9 @@ class StringContactSpanner(spannertools.Spanner):
             stops_text_spanner,
             )
 
-        #print(leaf)
-        #for _ in results:
-        #    print('\t', _)
+#        print(leaf)
+#        for _ in results:
+#            print('\t', _)
 
         return results
 
@@ -417,6 +419,7 @@ class StringContactSpanner(spannertools.Spanner):
 
         if current_markup is None:
             #print('\tRETURNING+++++++++++++++')
+            #print()
             return lilypond_format_bundle
 
         if has_start_markup and has_stop_markup:
@@ -435,14 +438,23 @@ class StringContactSpanner(spannertools.Spanner):
             self._add_segment_stop_contributions(lilypond_format_bundle)
 
         should_attach_markup = False
+#        if current_markup and \
+#            not has_start_markup and \
+#            next_different is not None:
+#            should_attach_markup = True
         if current_markup and \
             not has_start_markup and \
-            next_different is not None:
+            not has_stop_markup:
+            should_attach_markup = True
+        if current_markup and \
+            previous_attached is None and \
+            not has_start_markup:
             should_attach_markup = True
         if current_markup and \
             current_attached == indicatortools.StringContactPoint('pizzicato'):
             should_attach_markup = True
 
+        #print('Attaching???', should_attach_markup)
         if should_attach_markup:
             current_markup = markuptools.Markup(current_markup, Up)
             current_markup = current_markup.italic()
@@ -456,6 +468,9 @@ class StringContactSpanner(spannertools.Spanner):
 #            current_markup = current_markup.italic()
 #            current_markup = current_markup.vcenter()
 #            lilypond_format_bundle.right.markup.append(current_markup)
+
+        #print(format(lilypond_format_bundle))
+        #print()
 
         return lilypond_format_bundle
 
