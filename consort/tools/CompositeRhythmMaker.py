@@ -12,6 +12,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
 
         >>> import consort
         >>> composite_rhythm_maker = consort.CompositeRhythmMaker(
+        ...     default=rhythmmakertools.EvenDivisionRhythmMaker(),
         ...     first=rhythmmakertools.NoteRhythmMaker(),
         ...     last=rhythmmakertools.IncisedRhythmMaker(
         ...         incise_specifier=rhythmmakertools.InciseSpecifier(
@@ -24,10 +25,12 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
         ...     only=rhythmmakertools.EvenDivisionRhythmMaker(
         ...         denominators=[32],
         ...         ),
-        ...     rest=rhythmmakertools.EvenDivisionRhythmMaker(),
         ...     )
         >>> print(format(composite_rhythm_maker))
         consort.tools.CompositeRhythmMaker(
+            default=rhythmmakertools.EvenDivisionRhythmMaker(
+                denominators=(8,),
+                ),
             first=rhythmmakertools.NoteRhythmMaker(),
             last=rhythmmakertools.IncisedRhythmMaker(
                 incise_specifier=rhythmmakertools.InciseSpecifier(
@@ -39,9 +42,6 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
                 ),
             only=rhythmmakertools.EvenDivisionRhythmMaker(
                 denominators=(32,),
-                ),
-            rest=rhythmmakertools.EvenDivisionRhythmMaker(
-                denominators=(8,),
                 ),
             )
 
@@ -116,20 +116,20 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_default',
         '_first',
         '_last',
         '_only',
-        '_rest',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
+        default=None,
         first=None,
         last=None,
         only=None,
-        rest=None,
         ):
         if first is not None:
             assert isinstance(first, rhythmmakertools.RhythmMaker)
@@ -137,13 +137,13 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
             assert isinstance(last, rhythmmakertools.RhythmMaker)
         if only is not None:
             assert isinstance(only, rhythmmakertools.RhythmMaker)
-        if rest is None:
-            rest = rhythmmakertools.NoteRhythmMaker()
-        assert isinstance(rest, rhythmmakertools.RhythmMaker)
+        if default is None:
+            default = rhythmmakertools.NoteRhythmMaker()
+        assert isinstance(default, rhythmmakertools.RhythmMaker)
         self._first = first
         self._last = last
         self._only = only
-        self._rest = rest
+        self._default = default
 
     ### SPECIAL METHODS ###
 
@@ -160,7 +160,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
             elif self.first:
                 result.extend(self.first(divisions, seeds=seeds))
             else:
-                result.extend(self.rest(divisions, seeds=seeds))
+                result.extend(self.default(divisions, seeds=seeds))
         elif len(divisions) == 2:
             if self.first and self.last:
                 first = self.first(divisions=[divisions[0]], seeds=seeds)
@@ -169,38 +169,38 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
                 result.extend(last)
             elif self.first:
                 first = self.first(divisions=[divisions[0]], seeds=seeds)
-                rest = self.rest(divisions=[divisions[1]], seeds=seeds)
+                default = self.default(divisions=[divisions[1]], seeds=seeds)
                 result.extend(first)
-                result.extend(rest)
+                result.extend(default)
             elif self.last:
-                rest = self.rest(divisions=[divisions[0]], seeds=seeds)
+                default = self.default(divisions=[divisions[0]], seeds=seeds)
                 last = self.last(divisions=[divisions[1]], seeds=seeds)
-                result.extend(rest)
+                result.extend(default)
                 result.extend(last)
             else:
-                rest = self.rest(divisions=divisions, seeds=seeds)
-                result.extend(rest)
+                default = self.default(divisions=divisions, seeds=seeds)
+                result.extend(default)
         else:
             if self.first and self.last:
                 first = self.first(divisions=[divisions[0]], seeds=seeds)
-                rest = self.rest(divisions=divisions[1:-1], seeds=seeds)
+                default = self.default(divisions=divisions[1:-1], seeds=seeds)
                 last = self.last(divisions=[divisions[-1]], seeds=seeds)
                 result.extend(first)
-                result.extend(rest)
+                result.extend(default)
                 result.extend(last)
             elif self.first:
                 first = self.first(divisions=[divisions[0]], seeds=seeds)
-                rest = self.rest(divisions=divisions[1:], seeds=seeds)
+                default = self.default(divisions=divisions[1:], seeds=seeds)
                 result.extend(first)
-                result.extend(rest)
+                result.extend(default)
             elif self.last:
-                rest = self.rest(divisions=divisions[:-1], seeds=seeds)
+                default = self.default(divisions=divisions[:-1], seeds=seeds)
                 last = self.last(divisions=[divisions[-1]], seeds=seeds)
-                result.extend(rest)
+                result.extend(default)
                 result.extend(last)
             else:
-                rest = self.rest(divisions=divisions, seeds=seeds)
-                result.extend(rest)
+                default = self.default(divisions=divisions, seeds=seeds)
+                result.extend(default)
         return result
 
     ### PUBLIC METHODS ###
@@ -210,27 +210,27 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
         first=None,
         last=None,
         only=None,
-        rest=None,
+        default=None,
         **kwargs
         ):
         first = first or self.first
         last = last or self.last
         only = only or self.only
-        rest = rest or self.rest
+        default = default or self.default
         if first is not None:
             first = new(first, **kwargs)
         if last is not None:
             last = new(last, **kwargs)
         if only is not None:
             only = new(only, **kwargs)
-        if rest is not None:
-            rest = new(rest, **kwargs)
+        if default is not None:
+            default = new(default, **kwargs)
         result = new(
             self,
             first=first,
             last=last,
             only=only,
-            rest=rest,
+            default=default,
             )
         return result
 
@@ -249,5 +249,5 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
         return self._only
 
     @property
-    def rest(self):
-        return self._rest
+    def default(self):
+        return self._default
