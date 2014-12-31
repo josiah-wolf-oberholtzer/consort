@@ -354,7 +354,8 @@ class StringContactSpanner(spannertools.Spanner):
         if current_attached is not None and \
             previous_different is not None and \
             current_attached != pizzicato and \
-            previous_different != pizzicato:
+            previous_different != pizzicato and \
+            current_attached != previous_attached:
             stops_text_spanner = True
 
         is_cautionary = False
