@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import abc
 from abjad.tools import abctools
+from abjad.tools import durationtools
 from abjad.tools import timespantools
 
 
@@ -11,6 +12,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_padding',
         '_seed',
         '_timespan_specifier',
         )
@@ -20,10 +22,14 @@ class TimespanMaker(abctools.AbjadValueObject):
     @abc.abstractmethod
     def __init__(
         self,
+        padding=None,
         seed=None,
         timespan_specifier=None,
         ):
         import consort
+        if padding is not None:
+            padding = durationtools.Duration(padding)
+        self._padding = padding
         if seed is not None:
             seed = int(seed)
         self._seed = seed
@@ -86,6 +92,10 @@ class TimespanMaker(abctools.AbjadValueObject):
     @property
     def is_dependent(self):
         return False
+
+    @property
+    def padding(self):
+        return self._padding
 
     @property
     def seed(self):

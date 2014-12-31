@@ -198,6 +198,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
+            padding=padding,
             seed=seed,
             timespan_specifier=timespan_specifier,
             )
@@ -211,10 +212,6 @@ class TaleaTimespanMaker(TimespanMaker):
             assert initial_silence_talea.counts
             assert all(0 <= x for x in initial_silence_talea.counts)
         self._initial_silence_talea = initial_silence_talea
-
-        if padding is not None:
-            padding = durationtools.Duration(padding)
-        self._padding = padding
 
         assert isinstance(playing_talea, rhythmmakertools.Talea)
         assert playing_talea.counts
@@ -545,10 +542,6 @@ class TaleaTimespanMaker(TimespanMaker):
     @property
     def initial_silence_talea(self):
         return self._initial_silence_talea
-
-    @property
-    def padding(self):
-        return self._padding
 
     @property
     def playing_groupings(self):

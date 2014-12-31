@@ -119,12 +119,14 @@ class DependentTimespanMaker(TimespanMaker):
         include_inner_starts=None,
         include_inner_stops=None,
         labels=None,
+        padding=None,
         rotation_indices=None,
         timespan_specifier=None,
         voice_names=None,
         ):
         TimespanMaker.__init__(
             self,
+            padding=padding,
             timespan_specifier=timespan_specifier,
             )
         if include_inner_starts is not None:
@@ -217,6 +219,20 @@ class DependentTimespanMaker(TimespanMaker):
                         voice_name=voice_name,
                         )
                     timespan_inventory.append(timespan)
+                    # TODO: Handle padding overlapping smartly.
+                    if self.padding:
+                        left_padding = consort.SilentTimespan(
+                            start_offset=start_offset - self.padding,
+                            stop_offset=start_offset,
+                            voice_name=voice_name,
+                            )
+                        right_padding = consort.SilentTimespan(
+                            start_offset=stop_offset,
+                            stop_offset=stop_offset + self.padding,
+                            voice_name=voice_name,
+                            )
+                        timespan_inventory.append(left_padding)
+                        timespan_inventory.append(right_padding)
                     voice_counter[voice_name] += 1
 
     ### PUBLIC PROPERTIES ###
