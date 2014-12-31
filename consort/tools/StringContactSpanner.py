@@ -52,12 +52,12 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \parenthesize
                                     \caps
                                         S.T.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.bound-details.right-broken.padding = 0
@@ -72,11 +72,11 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     Ord.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.dash-fraction = 0.25
@@ -105,11 +105,11 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     Ord.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.bound-details.right-broken.padding = 0
@@ -124,11 +124,11 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     S.P.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.dash-fraction = 0.25
@@ -165,16 +165,16 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     Ord.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.bound-details.right-broken.padding = 0
             \once \override TextSpanner.bound-details.right.arrow = ##t
-            \once \override TextSpanner.bound-details.right.padding = 3.5
+            \once \override TextSpanner.bound-details.right.padding = 5
             \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
             \once \override TextSpanner.dash-fraction = 0.25
             \once \override TextSpanner.dash-period = 1
@@ -191,16 +191,16 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     S.T.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.bound-details.right-broken.padding = 0
             \once \override TextSpanner.bound-details.right.arrow = ##t
-            \once \override TextSpanner.bound-details.right.padding = 3.5
+            \once \override TextSpanner.bound-details.right.padding = 5
             \once \override TextSpanner.bound-details.right.stencil-align-dir-y = #center
             \once \override TextSpanner.dash-fraction = 0.25
             \once \override TextSpanner.dash-period = 1
@@ -217,11 +217,11 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     Ord.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.bound-details.right-broken.padding = 0
@@ -236,11 +236,11 @@ class StringContactSpanner(spannertools.Spanner):
                         \concat
                             {
                                 \hspace
-                                    #1
+                                    #1.5
                                 \caps
                                     S.T.
                                 \hspace
-                                    #1
+                                    #1.5
                             }
                 }
             \once \override TextSpanner.dash-fraction = 0.25
@@ -465,9 +465,9 @@ class StringContactSpanner(spannertools.Spanner):
         start_markup=None,
         stop_markup=None,
         ):
-        right_padding = 0
-        if stop_markup is None:
-            right_padding = 3.5
+        right_padding = 5
+        if stop_markup is not None:
+            right_padding = 0
         line_segment = indicatortools.Arrow(
             dash_fraction=0.25,
             dash_period=1,
@@ -476,17 +476,17 @@ class StringContactSpanner(spannertools.Spanner):
 
         if start_markup is not None:
             start_markup = markuptools.Markup.concat([
-                markuptools.Markup.hspace(1),
+                markuptools.Markup.hspace(1.5),
                 start_markup,
-                markuptools.Markup.hspace(1),
+                markuptools.Markup.hspace(1.5),
                 ])
             start_markup = start_markup.halign(0)
 
         if stop_markup is not None:
             stop_markup = markuptools.Markup.concat([
-                markuptools.Markup.hspace(1),
+                markuptools.Markup.hspace(1.5),
                 stop_markup,
-                markuptools.Markup.hspace(1),
+                markuptools.Markup.hspace(1.5),
                 ])
             stop_markup = stop_markup.halign(0)
 
