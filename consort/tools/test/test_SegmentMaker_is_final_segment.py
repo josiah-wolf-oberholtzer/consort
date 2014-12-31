@@ -39,6 +39,9 @@ def test_SegmentMaker_is_final_segment_01():
                         \context Voice = "Voice 1" {
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 1
                                         _ \markup {
                                             \italic
@@ -52,6 +55,8 @@ def test_SegmentMaker_is_final_segment_01():
                                                     }
                                             }
                                     \bar "|."
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }

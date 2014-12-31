@@ -53,8 +53,13 @@ def test_SegmentMaker_rehearsal_mark_01():
                         \context Voice = "Voice 1" {
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 1
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -114,8 +119,13 @@ def test_SegmentMaker_rehearsal_mark_02():
                         \context Voice = "Voice 1" {
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 1
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }

@@ -62,14 +62,29 @@ def test_SegmentMaker_discard_final_silence_01():
                                     r2.
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 1
+                                    \stopStaff
+                                    \startStaff
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 1
+                                    \stopStaff
+                                    \startStaff
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 1
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }

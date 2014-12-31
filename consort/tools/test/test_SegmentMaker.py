@@ -44,11 +44,21 @@ def test_SegmentMaker_01():
                         \context Voice = "Voice 1" {
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
+                                    \stopStaff
+                                    \startStaff
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -57,11 +67,21 @@ def test_SegmentMaker_01():
                         \context Voice = "Voice 2" {
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
+                                    \stopStaff
+                                    \startStaff
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -202,8 +222,13 @@ def test_SegmentMaker_03():
                                     r8
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -223,8 +248,13 @@ def test_SegmentMaker_03():
                                     r8
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -498,8 +528,13 @@ def test_SegmentMaker_06():
                             }
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -626,8 +661,13 @@ def test_SegmentMaker_07():
                             }
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }
@@ -636,11 +676,21 @@ def test_SegmentMaker_07():
                         \context Voice = "Voice 3" {
                             {
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
+                                    \stopStaff
+                                    \startStaff
                                 }
                                 {
+                                    \stopStaff
+                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \startStaff
                                     R1 * 7/16
                                     \bar "||"
+                                    \stopStaff
+                                    \startStaff
                                 }
                             }
                         }

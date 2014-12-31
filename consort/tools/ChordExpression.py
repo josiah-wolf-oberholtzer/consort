@@ -66,11 +66,15 @@ class ChordExpression(LogicalTieExpression):
         assert arpeggio_direction in (Up, Down, Center, None)
         if chord_expr is not None:
             assert len(chord_expr)
-            try:
-                result = tuple(sorted(chord_expr))
-                result = pitchtools.IntervalSegment(result)
-            except:
-                result = pitchtools.PitchSegment(chord_expr)
+            prototype = (pitchtools.IntervalSegment, pitchtools.PitchSegment)
+            if isinstance(chord_expr, prototype):
+                result = chord_expr
+            else:
+                try:
+                    result = sorted(chord_expr)
+                    result = pitchtools.IntervalSegment(result)
+                except:
+                    result = pitchtools.PitchSegment(chord_expr)
             chord_expr = result
         self._arpeggio_direction = arpeggio_direction
         self._chord_expr = chord_expr
