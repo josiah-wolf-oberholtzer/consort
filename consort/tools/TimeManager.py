@@ -39,7 +39,7 @@ class TimeManager(abctools.AbjadValueObject):
         if rhythm_maker is None:
             return True
         if isinstance(rhythm_maker, consort.CompositeRhythmMaker):
-            specifier = rhythm_maker.rest.duration_spelling_specifier
+            specifier = rhythm_maker.default.duration_spelling_specifier
         else:
             specifier = rhythm_maker.duration_spelling_specifier
         if specifier is None:
