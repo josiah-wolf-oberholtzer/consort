@@ -46,6 +46,29 @@ class ClefSpanner(spannertools.Spanner):
             c''4
         }
 
+    ::
+
+        >>> staff = Staff("r4 c'4 d'4 r4 e'4 f'4 r4")
+        >>> clef = Clef('treble')
+        >>> attach(clef, staff[0])
+        >>> clef_spanner = consort.ClefSpanner('percussion')
+        >>> attach(clef_spanner, staff[1:3])
+        >>> clef_spanner = consort.ClefSpanner('percussion')
+        >>> attach(clef_spanner, staff[4:6])
+        >>> print(format(staff))
+        \new Staff {
+            \clef "treble"
+            r4
+            \clef "percussion"
+            c'4
+            d'4
+            r4
+            e'4
+            f'4
+            \clef "treble"
+            r4
+        }
+
     '''
 
     ### CLASS VARIABLES ###
@@ -103,12 +126,31 @@ class ClefSpanner(spannertools.Spanner):
                 previous_leaf = inspect_(previous_leaf).get_leaf(-1)
             if previous_leaf is not None:
                 spanners = inspect_(previous_leaf).get_spanners(type(self))
+                spanners = tuple(spanners)
                 if spanners and spanners[0].clef == self.clef:
                     set_clef = False
+
+            next_leaf = inspect_(leaf).get_leaf(1)
+            while not isinstance(next_leaf, prototype):
+                next_leaf = inspect_(next_leaf).get_leaf(1)
+            if next_leaf is not None:
+                spanners = inspect_(next_leaf).get_spanners(type(self))
+                spanners = tuple(spanners)
+                if spanners and spanners[0].clef == self.clef:
+                    reset_clef = False
 
         elif self._is_my_first_leaf(leaf):
             if self.clef != current_clef:
                 set_clef = True
+
+            previous_leaf = inspect_(leaf).get_leaf(-1)
+            while not isinstance(previous_leaf, prototype):
+                previous_leaf = inspect_(previous_leaf).get_leaf(-1)
+            if previous_leaf is not None:
+                spanners = inspect_(previous_leaf).get_spanners(type(self))
+                spanners = tuple(spanners)
+                if spanners and spanners[0].clef == self.clef:
+                    set_clef = False
 
         elif self._is_my_last_leaf(leaf):
             if self.clef != current_clef and current_clef is not None:
@@ -119,6 +161,7 @@ class ClefSpanner(spannertools.Spanner):
                 next_leaf = inspect_(next_leaf).get_leaf(1)
             if next_leaf is not None:
                 spanners = inspect_(next_leaf).get_spanners(type(self))
+                spanners = tuple(spanners)
                 if spanners and spanners[0].clef == self.clef:
                     reset_clef = False
 
