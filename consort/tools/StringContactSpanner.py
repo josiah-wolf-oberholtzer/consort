@@ -296,6 +296,7 @@ class StringContactSpanner(spannertools.Spanner):
             current_attached = next_attached
 
         next_different = None
+        next_after_different = None
         next_next_different = None
         for i in range(index + 1, len(leaves)):
             next_leaf = leaves[i]
@@ -304,11 +305,14 @@ class StringContactSpanner(spannertools.Spanner):
                 )
             if indicators:
                 indicator = indicators[0]
+                if next_different is not None:
+                    if next_after_different is None:
+                        next_after_different = indicator
+                    if indicator != next_different:
+                        next_next_different = indicator
+                        break
                 if indicator != current_attached and next_different is None:
                     next_different = indicator
-                if next_different is not None and indicator != next_different:
-                    next_next_different = indicator
-                    break
 
         previous_effective = agent.get_effective(prototype, n=-1)
         previous_attached = None
@@ -348,6 +352,9 @@ class StringContactSpanner(spannertools.Spanner):
         if current_attached is not None and \
             current_attached != pizzicato and \
             (next_next_different == pizzicato or next_next_different is None):
+            has_stop_markup = True
+        elif current_attached is not None and \
+            next_different == next_after_different:
             has_stop_markup = True
 
         stops_text_spanner = False
@@ -396,8 +403,18 @@ class StringContactSpanner(spannertools.Spanner):
             )
 
 #        print(leaf)
-#        for _ in results:
-#            print('\t', _)
+#        print('\t', 'current_attached', current_attached)
+#        print('\t', 'current_markup', current_markup)
+#        print('\t', 'has_start_markup', has_start_markup)
+#        print('\t', 'has_stop_markup', has_stop_markup)
+#        print('\t', 'is_cautionary', is_cautionary)
+#        print('\t', 'next_attached', next_attached)
+#        print('\t', 'next_different', next_different)
+#        print('\t', 'next_after_different', next_after_different)
+#        print('\t', 'next_next_different', next_next_different)
+#        print('\t', 'previous_attached', previous_attached)
+#        print('\t', 'previous_effective', previous_effective)
+#        print('\t', 'stops_text_spanner', stops_text_spanner)
 
         return results
 
@@ -419,8 +436,8 @@ class StringContactSpanner(spannertools.Spanner):
             ) = self._get_annotations(leaf)
 
         if current_markup is None:
-            #print('\tRETURNING+++++++++++++++')
-            #print()
+#            print('\tRETURNING+++++++++++++++')
+#            print()
             return lilypond_format_bundle
 
         if has_start_markup and has_stop_markup:
@@ -455,7 +472,7 @@ class StringContactSpanner(spannertools.Spanner):
             current_attached == indicatortools.StringContactPoint('pizzicato'):
             should_attach_markup = True
 
-        #print('Attaching???', should_attach_markup)
+#        print('Attaching???', should_attach_markup)
         if should_attach_markup:
             current_markup = markuptools.Markup(current_markup, Up)
             current_markup = current_markup.italic()
@@ -470,8 +487,8 @@ class StringContactSpanner(spannertools.Spanner):
 #            current_markup = current_markup.vcenter()
 #            lilypond_format_bundle.right.markup.append(current_markup)
 
-        #print(format(lilypond_format_bundle))
-        #print()
+#        print(format(lilypond_format_bundle))
+#        print()
 
         return lilypond_format_bundle
 
