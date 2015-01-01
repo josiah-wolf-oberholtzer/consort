@@ -139,6 +139,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_score_template',
         '_settings',
         '_tempo',
+        '_timespan_quantization',
         )
 
     ### INITIALIZER ###
@@ -155,6 +156,7 @@ class SegmentMaker(makertools.SegmentMaker):
         score_template=None,
         settings=None,
         tempo=None,
+        timespan_quantization=None,
         ):
         makertools.SegmentMaker.__init__(
             self,
@@ -168,6 +170,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self.rehearsal_mark = rehearsal_mark
         self.score_template = score_template
         self.tempo = tempo
+        self.timespan_quantization = timespan_quantization
         self.settings = settings
 
     ### SPECIAL METHODS ###
@@ -634,3 +637,28 @@ class SegmentMaker(makertools.SegmentMaker):
             start_offset=0,
             stop_offset=self.desired_duration,
             )
+
+    @property
+    def timespan_quantization(self):
+        r'''Gets and sets segment maker timespan quantization.
+
+        ::
+
+            >>> import consort
+            >>> segment_maker = consort.SegmentMaker()
+            >>> timespan_quantization = (1, 8)
+            >>> segment_maker.timespan_quantization = timespan_quantization
+            >>> print(format(segment_maker))
+            consort.tools.SegmentMaker(
+                timespan_quantization=durationtools.Duration(1, 8),
+                )
+
+        '''
+        return self._timespan_quantization
+
+    @timespan_quantization.setter
+    def timespan_quantization(self, timespan_quantization):
+        if timespan_quantization is not None:
+            timespan_quantization = \
+                durationtools.Duration(timespan_quantization)
+        self._timespan_quantization = timespan_quantization
