@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad import inspect_
 from abjad.tools import indicatortools
+from abjad.tools import scoretools
 from abjad.tools import spannertools
 
 
@@ -85,22 +86,50 @@ class ClefSpanner(spannertools.Spanner):
 
     def _get_lilypond_format_bundle(self, leaf):
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
+        prototype = (scoretools.Note, scoretools.Chord, type(None))
         first_leaf = self._get_leaves()[0]
         current_clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
+
+        set_clef = False
+        reset_clef = False
+
         if self._is_my_only_leaf(leaf):
             if self.clef != current_clef:
-                string = format(self.clef, 'lilypond')
-                lilypond_format_bundle.before.indicators.append(string)
-                string = format(current_clef, 'lilypond')
-                lilypond_format_bundle.after.indicators.append(string)
+                set_clef = True
+                reset_clef = True
+
+            previous_leaf = inspect_(leaf).get_leaf(-1)
+            while not isinstance(previous_leaf, prototype):
+                previous_leaf = inspect_(previous_leaf).get_leaf(-1)
+            if previous_leaf is not None:
+                spanners = inspect_(previous_leaf).get_spanners(type(self))
+                if spanners and spanners[0].clef == self.clef:
+                    set_clef = False
+
         elif self._is_my_first_leaf(leaf):
             if self.clef != current_clef:
-                string = format(self.clef, 'lilypond')
-                lilypond_format_bundle.before.indicators.append(string)
+                set_clef = True
+
         elif self._is_my_last_leaf(leaf):
             if self.clef != current_clef and current_clef is not None:
-                string = format(current_clef, 'lilypond')
-                lilypond_format_bundle.after.indicators.append(string)
+                reset_clef = True
+
+            next_leaf = inspect_(leaf).get_leaf(1)
+            while not isinstance(next_leaf, prototype):
+                next_leaf = inspect_(next_leaf).get_leaf(1)
+            if next_leaf is not None:
+                spanners = inspect_(next_leaf).get_spanners(type(self))
+                if spanners and spanners[0].clef == self.clef:
+                    reset_clef = False
+
+        if set_clef:
+            string = format(self.clef, 'lilypond')
+            lilypond_format_bundle.before.indicators.append(string)
+
+        if reset_clef:
+            string = format(current_clef, 'lilypond')
+            lilypond_format_bundle.after.indicators.append(string)
+
         return lilypond_format_bundle
 
     ### PUBLIC PROPERTIES ###
