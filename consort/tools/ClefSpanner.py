@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import print_function
 from abjad import inspect_
 from abjad.tools import indicatortools
 from abjad.tools import scoretools
@@ -108,8 +109,11 @@ class ClefSpanner(spannertools.Spanner):
         new._clef = self.clef
 
     def _get_lilypond_format_bundle(self, leaf):
+        import consort
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
+
         prototype = (scoretools.Note, scoretools.Chord, type(None))
+
         first_leaf = self._get_leaves()[0]
         current_clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
 
@@ -117,53 +121,72 @@ class ClefSpanner(spannertools.Spanner):
         reset_clef = False
 
         if self._is_my_only_leaf(leaf):
+            consort.debug('ONLY', leaf)
             if self.clef != current_clef:
                 set_clef = True
                 reset_clef = True
 
             previous_leaf = inspect_(leaf).get_leaf(-1)
+            consort.debug('\tP', previous_leaf)
             while not isinstance(previous_leaf, prototype):
                 previous_leaf = inspect_(previous_leaf).get_leaf(-1)
+                consort.debug('\tP', previous_leaf)
             if previous_leaf is not None:
                 spanners = inspect_(previous_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
-                if spanners and spanners[0].clef == self.clef:
-                    set_clef = False
+                if spanners:
+                    consort.debug('\tPREV?', spanners)
+                    if spanners[0].clef == self.clef:
+                        set_clef = False
 
             next_leaf = inspect_(leaf).get_leaf(1)
+            consort.debug('\tN', next_leaf)
             while not isinstance(next_leaf, prototype):
                 next_leaf = inspect_(next_leaf).get_leaf(1)
+                consort.debug('\tN', next_leaf)
             if next_leaf is not None:
                 spanners = inspect_(next_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
-                if spanners and spanners[0].clef == self.clef:
-                    reset_clef = False
+                if spanners:
+                    consort.debug('\tNEXT?', spanners)
+                    if spanners[0].clef == self.clef:
+                        reset_clef = False
 
         elif self._is_my_first_leaf(leaf):
+            consort.debug('FIRST', leaf)
             if self.clef != current_clef:
                 set_clef = True
 
             previous_leaf = inspect_(leaf).get_leaf(-1)
+            consort.debug('\tP', previous_leaf)
             while not isinstance(previous_leaf, prototype):
                 previous_leaf = inspect_(previous_leaf).get_leaf(-1)
+                consort.debug('\tP', previous_leaf)
             if previous_leaf is not None:
                 spanners = inspect_(previous_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
-                if spanners and spanners[0].clef == self.clef:
-                    set_clef = False
+                if spanners:
+                    consort.debug('\tPREV?', spanners)
+                    if spanners[0].clef == self.clef:
+                        set_clef = False
 
         elif self._is_my_last_leaf(leaf):
+            consort.debug('LAST', leaf)
             if self.clef != current_clef and current_clef is not None:
                 reset_clef = True
 
             next_leaf = inspect_(leaf).get_leaf(1)
+            consort.debug('\tN', next_leaf)
             while not isinstance(next_leaf, prototype):
                 next_leaf = inspect_(next_leaf).get_leaf(1)
+                consort.debug('\tN', next_leaf)
             if next_leaf is not None:
                 spanners = inspect_(next_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
-                if spanners and spanners[0].clef == self.clef:
-                    reset_clef = False
+                if spanners:
+                    consort.debug('\tNEXT?', spanners)
+                    if spanners[0].clef == self.clef:
+                        reset_clef = False
 
         if set_clef:
             string = format(self.clef, 'lilypond')
