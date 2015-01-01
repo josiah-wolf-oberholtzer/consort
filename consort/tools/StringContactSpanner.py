@@ -272,6 +272,8 @@ class StringContactSpanner(spannertools.Spanner):
     ### PRIVATE METHODS ###
 
     def _get_annotations(self, leaf):
+        import consort
+
         leaves = self._get_leaves()
         index = leaves.index(leaf)
         prototype = indicatortools.StringContactPoint
@@ -288,10 +290,10 @@ class StringContactSpanner(spannertools.Spanner):
                 next_attached = indicators[0]
                 break
 
-        current_attached = None
+        actually_attached = current_attached = None
         indicators = inspect_(leaf).get_indicators(prototype)
         if indicators:
-            current_attached = indicators[0]
+            actually_attached = current_attached = indicators[0]
         if self._is_my_first_leaf(leaf) and current_attached is None:
             current_attached = next_attached
 
@@ -314,7 +316,10 @@ class StringContactSpanner(spannertools.Spanner):
                 if indicator != current_attached and next_different is None:
                     next_different = indicator
 
-        previous_effective = agent.get_effective(prototype, n=-1)
+        n = -1
+        if actually_attached is None:
+            n = 0
+        previous_effective = agent.get_effective(prototype, n=n)
         previous_attached = None
         for i in reversed(range(index)):
             previous_leaf = leaves[i]
@@ -365,6 +370,11 @@ class StringContactSpanner(spannertools.Spanner):
             current_attached != previous_attached:
             stops_text_spanner = True
 
+        if self._is_my_first_leaf(leaf) and \
+            current_attached is None and \
+            previous_effective is not None:
+            current_attached = previous_effective
+
         is_cautionary = False
         if current_attached and current_attached == previous_attached:
             is_cautionary = True
@@ -379,11 +389,9 @@ class StringContactSpanner(spannertools.Spanner):
             current_markup = None
         elif current_attached == previous_effective and \
             next_attached is None and \
-            current_attached != pizzicato:
+            current_attached != pizzicato and \
+            not self._is_my_first_leaf(leaf):
             current_markup = None
-#        elif current_attached == previous_effective and \
-#            current_attached == pizzicato:
-#            current_markup = None
 
         if current_markup is not None:
             if is_cautionary:
@@ -402,23 +410,26 @@ class StringContactSpanner(spannertools.Spanner):
             stops_text_spanner,
             )
 
-#        print(leaf)
-#        print('\t', 'current_attached', current_attached)
-#        print('\t', 'current_markup', current_markup)
-#        print('\t', 'has_start_markup', has_start_markup)
-#        print('\t', 'has_stop_markup', has_stop_markup)
-#        print('\t', 'is_cautionary', is_cautionary)
-#        print('\t', 'next_attached', next_attached)
-#        print('\t', 'next_different', next_different)
-#        print('\t', 'next_after_different', next_after_different)
-#        print('\t', 'next_next_different', next_next_different)
-#        print('\t', 'previous_attached', previous_attached)
-#        print('\t', 'previous_effective', previous_effective)
-#        print('\t', 'stops_text_spanner', stops_text_spanner)
+        consort.debug(leaf)
+        consort.debug('\t', 'actually_attached', actually_attached)
+        consort.debug('\t', 'current_attached', current_attached)
+        consort.debug('\t', 'current_markup', current_markup)
+        consort.debug('\t', 'has_start_markup', has_start_markup)
+        consort.debug('\t', 'has_stop_markup', has_stop_markup)
+        consort.debug('\t', 'is_cautionary', is_cautionary)
+        consort.debug('\t', 'next_attached', next_attached)
+        consort.debug('\t', 'next_different', next_different)
+        consort.debug('\t', 'next_after_different', next_after_different)
+        consort.debug('\t', 'next_next_different', next_next_different)
+        consort.debug('\t', 'previous_attached', previous_attached)
+        consort.debug('\t', 'previous_effective', previous_effective)
+        consort.debug('\t', 'stops_text_spanner', stops_text_spanner)
 
         return results
 
     def _get_lilypond_format_bundle(self, leaf):
+        import consort
+
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
         if not isinstance(leaf, scoretools.Leaf):
             return lilypond_format_bundle
@@ -436,8 +447,8 @@ class StringContactSpanner(spannertools.Spanner):
             ) = self._get_annotations(leaf)
 
         if current_markup is None:
-#            print('\tRETURNING+++++++++++++++')
-#            print()
+            consort.debug('\tRETURNING+++++++++++++++')
+            consort.debug()
             return lilypond_format_bundle
 
         if has_start_markup and has_stop_markup:
@@ -456,10 +467,6 @@ class StringContactSpanner(spannertools.Spanner):
             self._add_segment_stop_contributions(lilypond_format_bundle)
 
         should_attach_markup = False
-#        if current_markup and \
-#            not has_start_markup and \
-#            next_different is not None:
-#            should_attach_markup = True
         if current_markup and \
             not has_start_markup and \
             not has_stop_markup:
@@ -472,23 +479,15 @@ class StringContactSpanner(spannertools.Spanner):
             current_attached == indicatortools.StringContactPoint('pizzicato'):
             should_attach_markup = True
 
-#        print('Attaching???', should_attach_markup)
+        consort.debug('Attaching???', should_attach_markup)
         if should_attach_markup:
             current_markup = markuptools.Markup(current_markup, Up)
             current_markup = current_markup.italic()
             current_markup = current_markup.vcenter()
             lilypond_format_bundle.right.markup.append(current_markup)
 
-#        pizzicato = indicatortools.StringContactPoint('pizzicato')
-#        if current_attached == pizzicato and not previous_attached:
-#            current_markup = pizzicato.markup
-#            current_markup = markuptools.Markup(current_markup, Up)
-#            current_markup = current_markup.italic()
-#            current_markup = current_markup.vcenter()
-#            lilypond_format_bundle.right.markup.append(current_markup)
-
-#        print(format(lilypond_format_bundle))
-#        print()
+        consort.debug(format(lilypond_format_bundle))
+        consort.debug()
 
         return lilypond_format_bundle
 
