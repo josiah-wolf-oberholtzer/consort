@@ -186,6 +186,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 segment_session=segment_session,
                 settings=self.settings or (),
                 desired_duration=self.desired_duration,
+                timespan_quantization=self.timespan_quantization,
                 )
         with systemtools.ForbidUpdate(segment_session.score):
             with systemtools.Timer(

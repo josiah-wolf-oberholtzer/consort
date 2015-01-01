@@ -463,6 +463,7 @@ class TimeManager(abctools.AbjadValueObject):
         desired_duration=None,
         score_template=None,
         settings=None,
+        timespan_quantization=None,
         ):
         score = score_template()
         multiplexed_timespans = timespantools.TimespanInventory()
@@ -479,6 +480,7 @@ class TimeManager(abctools.AbjadValueObject):
                     score_template,
                     settings,
                     desired_duration,
+                    timespan_quantization,
                     )
         with systemtools.Timer(
             enter_message='\tpopulating dependent timespans:',
@@ -1091,6 +1093,7 @@ class TimeManager(abctools.AbjadValueObject):
         score_template,
         settings,
         desired_duration,
+        timespan_quantization,
         ):
         with systemtools.Timer('\t\tpopulated timespans:'):
             TimeManager.populate_multiplexed_timespans(
@@ -1100,6 +1103,7 @@ class TimeManager(abctools.AbjadValueObject):
                 settings=settings,
                 desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
+                timespan_quantization=timespan_quantization,
                 )
         with systemtools.Timer('\t\tfound meters:'):
             meters = TimeManager.find_meters(
@@ -1147,6 +1151,7 @@ class TimeManager(abctools.AbjadValueObject):
         settings=None,
         desired_duration=None,
         timespan_inventory=None,
+        timespan_quantization=None,
         ):
         target_timespan = timespantools.Timespan(0, desired_duration)
         if timespan_inventory is None:
@@ -1170,6 +1175,7 @@ class TimeManager(abctools.AbjadValueObject):
                 score_template=score_template,
                 target_timespan=target_timespan,
                 timespan_inventory=timespan_inventory,
+                timespan_quantization=timespan_quantization,
                 )
 
     @staticmethod

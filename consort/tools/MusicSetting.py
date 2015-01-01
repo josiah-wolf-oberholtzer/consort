@@ -176,6 +176,7 @@ class MusicSetting(abctools.AbjadValueObject):
         score_template=None,
         target_timespan=None,
         timespan_inventory=None,
+        timespan_quantization=None,
         ):
         if score is None:
             score = score_template()
@@ -184,7 +185,10 @@ class MusicSetting(abctools.AbjadValueObject):
         if not self.music_specifiers:
             return timespan_inventory
         music_specifiers = self._get_music_specifiers(score, score_template)
-        target_timespans = self._get_target_timespans(target_timespan)
+        target_timespans = self._get_target_timespans(
+            target_timespan,
+            timespan_quantization,
+            )
         for target_timespan in target_timespans:
             timespan_inventory = self.timespan_maker(
                 layer=layer,
@@ -227,7 +231,7 @@ class MusicSetting(abctools.AbjadValueObject):
             music_specifiers[voice_name] = music_specifier
         return music_specifiers
 
-    def _get_target_timespans(self, target_timespan):
+    def _get_target_timespans(self, target_timespan, timespan_quantization):
         import consort
         assert isinstance(target_timespan, timespantools.Timespan)
         if self.timespan_identifier is None:
@@ -245,6 +249,11 @@ class MusicSetting(abctools.AbjadValueObject):
             for mask_timespan in mask_timespans:
                 available_timespans = target_timespan & mask_timespan
                 target_timespans.extend(available_timespans)
+        if timespan_quantization:
+            target_timespans.round_offsets(
+                timespan_quantization,
+                must_be_well_formed=True,
+                )
         return target_timespans
 
     ### PRIVATE PROPERTIES ###
