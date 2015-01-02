@@ -353,6 +353,10 @@ class TimeManager(abctools.AbjadValueObject):
             TimeManager.group_timespans(timespans):
             if music_specifier is None and not allow_silences:
                 continue
+            if hasattr(music_specifier, 'minimum_phrase_duration'):
+                duration = music_specifier.minimum_phrase_duration
+                if duration and grouped_timespans.duration < duration:
+                    continue
             divisions = tuple(_.duration for _ in grouped_timespans)
             first_timespan = grouped_timespans[0]
             last_timespan = grouped_timespans[-1]
