@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -33,6 +34,7 @@ class MusicSpecifier(HashCachingObject):
         '_grace_handler',
         '_is_sentinel',
         '_labels',
+        '_minimum_phrase_duration',
         '_pitch_handler',
         '_pitches_are_nonsemantic',
         '_rhythm_maker',
@@ -47,6 +49,7 @@ class MusicSpecifier(HashCachingObject):
         grace_handler=None,
         is_sentinel=None,
         labels=None,
+        minimum_phrase_duration=None,
         pitch_handler=None,
         pitches_are_nonsemantic=None,
         rhythm_maker=None,
@@ -68,6 +71,11 @@ class MusicSpecifier(HashCachingObject):
                 labels = (labels,)
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
+        if minimum_phrase_duration is not None:
+            minimum_phrase_duration = \
+                durationtools.Duration(minimum_phrase_duration)
+            assert 0 <= minimum_phrase_duration
+        self._minimum_phrase_duration = minimum_phrase_duration
         if pitch_handler is not None:
             assert isinstance(pitch_handler, consort.PitchHandler)
         self._pitch_handler = pitch_handler
@@ -84,62 +92,6 @@ class MusicSpecifier(HashCachingObject):
         if seed is not None:
             seed = int(seed)
         self._seed = seed
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        r'''Attribute manifest.
-
-        ::
-            
-            >>> import consort
-            >>> music_specifier = consort.MusicSpecifier()
-            >>> print(format(music_specifier._attribute_manifest))
-            systemtools.AttributeManifest()
-
-        '''
-        from abjad.tools import systemtools
-        from ide import idetools
-        import consort
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='attachment_handler',
-                display_string='attachment maker',
-                command='am',
-                editor=consort.AttachmentHandler,
-                ),
-            systemtools.AttributeDetail(
-                name='grace_handler',
-                display_string='grace maker',
-                command='gm',
-                editor=consort.GraceHandler,
-                ),
-            systemtools.AttributeDetail(
-                name='labels',
-                display_string='labels',
-                command='l',
-                editor=idetools.getters.get_strings,
-                ),
-            systemtools.AttributeDetail(
-                name='pitch_handler',
-                display_string='pitch maker',
-                command='pm',
-                editor=consort.PitchHandler,
-                ),
-            systemtools.AttributeDetail(
-                name='rhythm_maker',
-                display_string='rhythm maker',
-                command='rm',
-                editor=rhythmmakertools.RhythmMaker,
-                ),
-            systemtools.AttributeDetail(
-                name='seed',
-                display_string='seed',
-                command='se',
-                editor=idetools.getters.get_integer,
-                ),
-            )
 
     ### PUBLIC PROPERTIES ###
 
@@ -158,6 +110,10 @@ class MusicSpecifier(HashCachingObject):
     @property
     def labels(self):
         return self._labels
+
+    @property
+    def minimum_phrase_duration(self):
+        return self._minimum_phrase_duration
 
     @property
     def pitch_handler(self):
