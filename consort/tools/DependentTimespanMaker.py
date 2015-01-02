@@ -222,11 +222,13 @@ class DependentTimespanMaker(TimespanMaker):
                     # TODO: Handle padding overlapping smartly.
                     if self.padding:
                         left_padding = consort.SilentTimespan(
+                            layer=layer,
                             start_offset=start_offset - self.padding,
                             stop_offset=start_offset,
                             voice_name=voice_name,
                             )
                         right_padding = consort.SilentTimespan(
+                            layer=layer,
                             start_offset=stop_offset,
                             stop_offset=stop_offset + self.padding,
                             voice_name=voice_name,

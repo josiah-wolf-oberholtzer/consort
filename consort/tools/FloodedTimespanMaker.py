@@ -90,12 +90,14 @@ class FloodedTimespanMaker(TimespanMaker):
             timespan_inventory.append(timespan)
             if self.padding:
                 left_padding = consort.SilentTimespan(
+                    layer=layer,
                     start_offset=timespan.start_offset - self.padding,
                     stop_offset=timespan.start_offset,
                     voice_name=voice_name,
                     )
                 timespan_inventory.append(left_padding)
                 right_padding = consort.SilentTimespan(
+                    layer=layer,
                     start_offset=timespan.stop_offset,
                     stop_offset=timespan.stop_offset + self.padding,
                     voice_name=voice_name,
