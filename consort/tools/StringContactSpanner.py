@@ -387,7 +387,7 @@ class StringContactSpanner(spannertools.Spanner):
         if current_attached == previous_attached == next_attached and \
             current_attached != pizzicato:
             current_markup = None
-        elif current_attached == previous_effective and \
+        if current_attached == previous_effective and \
             next_attached is None and \
             current_attached != pizzicato and \
             not self._is_my_first_leaf(leaf):
@@ -478,6 +478,11 @@ class StringContactSpanner(spannertools.Spanner):
         if current_markup and \
             current_attached == indicatortools.StringContactPoint('pizzicato'):
             should_attach_markup = True
+        if current_attached is not None and \
+            current_attached == next_attached and \
+            previous_attached != current_attached and \
+            previous_attached is not None:
+            should_attach_markup = False
 
         consort.debug('Attaching???', should_attach_markup)
         if should_attach_markup:
