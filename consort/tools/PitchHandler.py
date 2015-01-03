@@ -86,9 +86,10 @@ class PitchHandler(HashCachingObject):
         ):
         if self.deviations:
             deviation = self.deviations[seed]
-            pitch = pitchtools.NumberedPitch(pitch)
-            pitch = pitch.transpose(deviation)
-            pitch = pitchtools.NamedPitch(pitch)
+            if deviation != 0:
+                pitch = pitchtools.NumberedPitch(pitch)
+                pitch = pitch.transpose(deviation)
+                pitch = pitchtools.NamedPitch(pitch)
         return pitch
 
     @staticmethod

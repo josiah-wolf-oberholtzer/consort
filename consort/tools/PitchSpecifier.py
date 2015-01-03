@@ -86,7 +86,10 @@ class PitchSpecifier(abctools.AbjadValueObject):
             pitch_segments = (pitch_segments,)
         coerced_pitch_segments = []
         for pitch_segment in pitch_segments:
-            pitch_segment = pitchtools.PitchSegment(pitch_segment)
+            pitch_segment = pitchtools.PitchSegment(
+                pitch_segment,
+                item_class=pitchtools.NamedPitch,
+                )
             assert len(pitch_segment)
             coerced_pitch_segments.append(pitch_segment)
         pitch_segments = tuple(coerced_pitch_segments)

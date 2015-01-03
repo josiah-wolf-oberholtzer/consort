@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 from abjad import attach
+from abjad import mutate
 from abjad.tools import indicatortools
 from abjad.tools import pitchtools
 from abjad.tools import scoretools
@@ -92,6 +93,17 @@ class ChordExpression(LogicalTieExpression):
                 logical_tie, pitch_range)
         else:
             pitches = self.chord_expr
+        if len(pitches) == 2:
+            interval = pitches[0] - pitches[1]
+            if interval.quality_string in ('augmented', 'diminished'):
+                chord = scoretools.Chord(pitches, 1)
+                mutate(chord).respell_with_sharps()
+                pitches = chord.written_pitches
+                interval = pitches[0] - pitches[1]
+            if interval.quality_string in ('augmented', 'diminished'):
+                chord = scoretools.Chord(pitches, 1)
+                mutate(chord).respell_with_flats()
+                pitches = chord.written_pitches
         for i, leaf in enumerate(logical_tie):
             chord = scoretools.Chord(leaf)
             chord.written_pitches = pitches
