@@ -1274,6 +1274,20 @@ class TimeManager(abctools.AbjadValueObject):
                 timespans.remove(timespan)
 
     @staticmethod
+    def report(timespan_inventory):
+        print('REPORTING')
+        for timespan in timespan_inventory:
+            print(
+                '\t',
+                '{}:'.format(timespan.voice_name),
+                '[{}]'.format(timespan.layer),
+                type(timespan).__name__,
+                float(timespan.start_offset),
+                float(timespan.stop_offset),
+                )
+        print()
+
+    @staticmethod
     def resolve_timespan_inventories(
         timespan_inventories=None,
         ):
@@ -1288,11 +1302,17 @@ class TimeManager(abctools.AbjadValueObject):
             if isinstance(timespan, consort.SilentTimespan):
                 continue
             resolved_inventory.insert(timespan)
+#        print('FIRST')
+#        TimeManager.report(resolved_inventory)
         for timespan_inventory in timespan_inventories[1:]:
+#            print('TO SUBTRACT')
+#            TimeManager.report(timespan_inventory)
             resolved_inventory = TimeManager.subtract_timespan_inventories(
                 resolved_inventory,
                 timespan_inventory,
                 )
+#            print('SUBTRACTED')
+#            TimeManager.report(resolved_inventory)
             for timespan in resolved_inventory[:]:
                 if timespan.minimum_duration and \
                     timespan.duration < timespan.minimum_duration:
@@ -1302,6 +1322,8 @@ class TimeManager(abctools.AbjadValueObject):
                     continue
                 resolved_inventory.append(timespan)
             resolved_inventory.sort()
+#            print('ADDED IN')
+#            TimeManager.report(resolved_inventory)
         resolved_inventory = timespantools.TimespanInventory(
             resolved_inventory[:],
             )

@@ -391,6 +391,14 @@ class TaleaTimespanMaker(TimespanMaker):
                 for i, duration in enumerate(durations):
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
+                        if self.padding:
+                            timespan = consort.SilentTimespan(
+                                layer=layer,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + self.padding,
+                                voice_name=voice_name,
+                                )
+                            new_timespans.append(timespan)
                         break
                     if self.padding:
                         if i == 0:
@@ -427,6 +435,9 @@ class TaleaTimespanMaker(TimespanMaker):
                     current_offset += duration
                 if new_timespans and self.fuse_groups:
                     new_timespans = self._fuse_timespans(new_timespans)
+                if all(isinstance(_, consort.SilentTimespan)
+                    for _ in new_timespans):
+                    new_timespans = []
                 timespan_inventory.extend(new_timespans)
                 counter[voice_name] += 1
             timespan_inventory.sort()
@@ -485,6 +496,14 @@ class TaleaTimespanMaker(TimespanMaker):
                 for i, duration in enumerate(durations):
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
+                        if self.padding:
+                            timespan = consort.SilentTimespan(
+                                layer=layer,
+                                start_offset=current_offset,
+                                stop_offset=current_offset + self.padding,
+                                voice_name=voice_name,
+                                )
+                            new_timespans.append(timespan)
                         break
                     if self.padding:
                         if i == 0:
@@ -521,6 +540,9 @@ class TaleaTimespanMaker(TimespanMaker):
                     current_offset += duration
                 if new_timespans and self.fuse_groups:
                     new_timespans = self._fuse_timespans(new_timespans)
+                if all(isinstance(_, consort.SilentTimespan)
+                    for _ in new_timespans):
+                    new_timespans = []
                 timespan_inventory.extend(new_timespans)
                 if self.step_anchor is Left:
                     start_offset += silence_duration
