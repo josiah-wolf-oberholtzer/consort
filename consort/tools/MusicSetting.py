@@ -150,7 +150,11 @@ class MusicSetting(abctools.AbjadValueObject):
                 )
             assert isinstance(timespan_identifier, prototype)
         self._timespan_identifier = timespan_identifier
-        prototype = (type(None), consort.tools.MusicSpecifier)
+        prototype = (
+            consort.tools.CompositeMusicSpecifier,
+            consort.tools.MusicSpecifier,
+            type(None),
+            )
         for music_specifier in music_specifiers.values():
             if music_specifier is None:
                 continue
