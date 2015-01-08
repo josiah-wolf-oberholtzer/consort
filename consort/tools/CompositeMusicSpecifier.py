@@ -10,20 +10,24 @@ class CompositeMusicSpecifier(HashCachingObject):
     __slots__ = (
         '_include_inner_starts',
         '_include_inner_stops',
-        '_primary',
+        '_primary_music_specifier',
+        '_primary_voice_name',
         '_rotation_indices',
-        '_secondary',
+        '_secondary_music_specifier',
+        '_secondary_voice_name',
         )
 
     ### INITIALIZER ###
 
     def __init__(
         self,
-        primary=None,
-        secondary=None,
         include_inner_starts=None,
         include_inner_stops=None,
+        primary_music_specifier=None,
+        primary_voice_name=None,
         rotation_indices=None,
+        secondary_music_specifier=None,
+        secondary_voice_name=None,
         ):
         import consort
         HashCachingObject.__init__(self)
@@ -33,18 +37,24 @@ class CompositeMusicSpecifier(HashCachingObject):
         if include_inner_stops is not None:
             include_inner_stops = bool(include_inner_stops)
         self._include_inner_stops = include_inner_stops
-        if primary is not None:
-            assert isinstance(primary, consort.MusicSpecifier)
-        self._primary = primary
+        if primary_music_specifier is not None:
+            assert isinstance(primary_music_specifier, consort.MusicSpecifier)
+        self._primary_music_specifier = primary_music_specifier
+        if primary_voice_name is not None:
+            primary_voice_name = str(primary_voice_name)
+        self._primary_voice_name = primary_voice_name
         if rotation_indices is not None:
             if not isinstance(rotation_indices, collections.Sequence):
                 rotation_indices = int(rotation_indices)
                 rotation_indices = (rotation_indices,)
             rotation_indices = tuple(rotation_indices)
         self._rotation_indices = rotation_indices
-        if secondary is not None:
-            assert isinstance(secondary, consort.MusicSpecifier)
-        self._secondary = secondary
+        if secondary_music_specifier is not None:
+            assert isinstance(secondary_music_specifier, consort.MusicSpecifier)
+        self._secondary_music_specifier = secondary_music_specifier
+        if secondary_voice_name is not None:
+            secondary_voice_name = str(secondary_voice_name)
+        self._secondary_voice_name = secondary_voice_name
 
     ### PUBLIC PROPERTIES ###
 
@@ -57,13 +67,21 @@ class CompositeMusicSpecifier(HashCachingObject):
         return self._include_inner_stops
 
     @property
-    def primary(self):
-        return self._primary
+    def primary_music_specifier(self):
+        return self._primary_music_specifier
+
+    @property
+    def primary_voice_name(self):
+        return self._primary_voice_name
 
     @property
     def rotation_indices(self):
         return self._rotation_indices
 
     @property
-    def secondary(self):
-        return self._secondary
+    def secondary_music_specifier(self):
+        return self._secondary_music_specifier
+
+    @property
+    def secondary_voice_name(self):
+        return self._secondary_voice_name
