@@ -2,8 +2,8 @@
 from __future__ import print_function
 import collections
 from abjad import inspect_
+from abjad import new
 from abjad.tools import abctools
-from abjad.tools import datastructuretools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
@@ -212,27 +212,41 @@ class MusicSetting(abctools.AbjadValueObject):
     def _get_music_specifiers(self, score, score_template):
         import consort
         assert score_template is not None
-        voice_triples = []
-        for name, music_specifier in self.music_specifiers.items():
-            if music_specifier is None:
-                music_specifier = (None,)
-            elif isinstance(music_specifier, consort.MusicSpecifier):
-                music_specifier = (music_specifier,)
-            music_specifier = datastructuretools.CyclicTuple(music_specifier)
-            voice_name = score_template.context_name_abbreviations[name]
-            voice = score[voice_name]
-            voice_index = inspect_(voice).get_parentage().score_index
-            voice_name = voice.name
-            voice_triple = (
-                voice_index,
-                voice_name,
+        all_abbreviations = score_template.context_name_abbreviations
+        prototype = (
+            consort.CompositeMusicSpecifier,
+            consort.MusicSpecifierSequence,
+            )
+        triples = []
+        for abbreviation, music_specifier in self.music_specifiers.items():
+            if not isinstance(music_specifier, prototype):
+                music_specifier = consort.MusicSpecifierSequence(
+                    music_specifiers=music_specifier,
+                    )
+            context_name = all_abbreviations[abbreviation]
+            context = score[context_name]
+            context_index = inspect_(context).get_parentage().score_index
+            context_name = context.name
+            if isinstance(music_specifier, consort.CompositeMusicSpecifier):
+                composite_pairs = score_template.composite_context_pairs
+                one, two = composite_pairs[abbreviation]
+                primary_voice_name = all_abbreviations[one]
+                secondary_voice_name = all_abbreviations[two]
+                music_specifier = new(
+                    music_specifier,
+                    primary_voice_name=primary_voice_name,
+                    secondary_voice_name=secondary_voice_name,
+                    )
+            triple = (
+                context_index,
+                context_name,
                 music_specifier,
                 )
-            voice_triples.append(voice_triple)
-        voice_triples.sort(key=lambda x: x[0])
+            triples.append(triple)
+        triples.sort(key=lambda x: x[0])
         music_specifiers = collections.OrderedDict()
-        for voice_index, voice_name, music_specifier in voice_triples:
-            music_specifiers[voice_name] = music_specifier
+        for context_index, context_name, music_specifier in triples:
+            music_specifiers[context_name] = music_specifier
         return music_specifiers
 
     def _get_target_timespans(self, target_timespan, timespan_quantization):
