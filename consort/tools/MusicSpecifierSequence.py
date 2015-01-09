@@ -70,17 +70,26 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         self,
         durations=None,
         layer=None,
+        padding=None,
         seed=None,
         start_offset=None,
-        timespan_specifiers=None,
+        timespan_specifier=None,
         voice_name=None,
         ):
         import consort
         timespans = []
-        timespan_specifier = self.timespan_specifier or \
+        timespan_specifier = timespan_specifier or \
             consort.TimespanSpecifier()
         offsets = mathtools.cumulative_sums(durations, start_offset) 
         seed = seed or 0
+        if padding:
+            timespan = consort.SilentTimespan(
+                layer=layer,
+                start_offset=start_offset - padding,
+                stop_offset=start_offset,
+                voice_name=voice_name,
+                )
+            timespans.append(timespan)
         for start_offset, stop_offset in \
             sequencetools.iterate_sequence_nwise(offsets):
             music_specifier = self[seed]
@@ -97,7 +106,16 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
             timespans.append(timespan)
             if self.application_rate == 'division':
                 seed += 1
-        return tuple(timespans)
+        if padding:
+            timespan = consort.SilentTimespan(
+                layer=layer,
+                start_offset=stop_offset,
+                stop_offset=stop_offset + padding,
+                voice_name=voice_name,
+                )
+            timespans.append(timespan)
+        timespans = tuple(timespans)
+        return timespans
 
     def __getitem__(self, item):
         return self._music_specifiers[item]
