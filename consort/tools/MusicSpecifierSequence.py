@@ -2,6 +2,8 @@
 import collections
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
+from abjad.tools import mathtools
+from abjad.tools import sequencetools
 
 
 class MusicSpecifierSequence(abctools.AbjadValueObject):
@@ -61,6 +63,47 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
             assert len(music_specifiers)
         self._application_rate = application_rate
         self._music_specifiers = music_specifiers
+
+    ### SPECIAL METHODS ###
+
+    def __call__(
+        self,
+        durations=None,
+        layer=None,
+        seed=None,
+        start_offset=None,
+        timespan_specifiers=None,
+        voice_name=None,
+        ):
+        import consort
+        timespans = []
+        timespan_specifier = self.timespan_specifier or \
+            consort.TimespanSpecifier()
+        offsets = mathtools.cumulative_sums(durations, start_offset) 
+        seed = seed or 0
+        for start_offset, stop_offset in \
+            sequencetools.iterate_sequence_nwise(offsets):
+            music_specifier = self[seed]
+            timespan = consort.PerformedTimespan(
+                forbid_fusing=timespan_specifier.forbid_fusing,
+                forbid_splitting=timespan_specifier.forbid_splitting,
+                layer=layer,
+                minimum_duration=timespan_specifier.minimum_duration,
+                music_specifier=music_specifier,
+                start_offset=start_offset,
+                stop_offset=stop_offset,
+                voice_name=voice_name,
+                )
+            timespans.append(timespan)
+            if self.application_rate == 'division':
+                seed += 1
+        return tuple(timespans)
+
+    def __getitem__(self, item):
+        return self._music_specifiers[item]
+
+    def __len__(self):
+        return len(self._music_specifiers)
 
     ### PUBLIC PROPERTIES ###
 
