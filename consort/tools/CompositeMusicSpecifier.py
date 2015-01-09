@@ -1,5 +1,8 @@
 # -*- encoding: utf-8 -*-
 import collections
+from abjad.tools import datastructuretools
+from abjad.tools import sequencetools
+from abjad.tools import timespantools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -37,13 +40,162 @@ class CompositeMusicSpecifier(HashCachingObject):
             secondary_voice_name='Viola 1 LH',
             )
 
+    ::
+
+        >>> durations = [1, 2]
+        >>> timespans = music_specifier(
+        ...     durations=durations,
+        ...     layer=1,
+        ...     )
+        >>> print(format(timespans))
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    layer=1,
+                    music_specifier='two',
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Viola 1 LH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=1,
+                    music_specifier='one',
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=1,
+                    music_specifier='two',
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 1),
+                    voice_name='Viola 1 LH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=1,
+                    music_specifier='one',
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 1),
+                    voice_name='Viola 1 RH',
+                    ),
+                ]
+            )
+
+    ::
+
+        >>> durations = [1, 2]
+        >>> timespans = music_specifier(
+        ...     durations=durations,
+        ...     layer=2,
+        ...     seed=1,
+        ...     )
+        >>> print(format(timespans))
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    layer=2,
+                    music_specifier='one',
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=2,
+                    music_specifier='three',
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(2, 1),
+                    voice_name='Viola 1 LH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=2,
+                    music_specifier='one',
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 1),
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=2,
+                    music_specifier='three',
+                    start_offset=durationtools.Offset(2, 1),
+                    stop_offset=durationtools.Offset(3, 1),
+                    voice_name='Viola 1 LH',
+                    ),
+                ]
+            )
+
+    ::
+
+        >>> durations = [1, 2]
+        >>> timespans = music_specifier(
+        ...     durations=durations,
+        ...     layer=3,
+        ...     padding=1,
+        ...     seed=2,
+        ...     )
+        >>> print(format(timespans))
+        timespantools.TimespanInventory(
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 1),
+                    stop_offset=durationtools.Offset(0, 1),
+                    layer=3,
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 1),
+                    stop_offset=durationtools.Offset(0, 1),
+                    layer=3,
+                    voice_name='Viola 1 LH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=3,
+                    music_specifier='one',
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=3,
+                    music_specifier='four',
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(2, 1),
+                    voice_name='Viola 1 LH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=3,
+                    music_specifier='one',
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 1),
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.PerformedTimespan(
+                    layer=3,
+                    music_specifier='four',
+                    start_offset=durationtools.Offset(2, 1),
+                    stop_offset=durationtools.Offset(3, 1),
+                    voice_name='Viola 1 LH',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 1),
+                    stop_offset=durationtools.Offset(4, 1),
+                    layer=3,
+                    voice_name='Viola 1 RH',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 1),
+                    stop_offset=durationtools.Offset(4, 1),
+                    layer=3,
+                    voice_name='Viola 1 LH',
+                    ),
+                ]
+            )
+
     '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_include_inner_starts',
-        '_include_inner_stops',
+        '_discard_inner_offsets',
         '_primary_music_specifier',
         '_primary_voice_name',
         '_rotation_indices',
@@ -55,8 +207,7 @@ class CompositeMusicSpecifier(HashCachingObject):
 
     def __init__(
         self,
-        include_inner_starts=None,
-        include_inner_stops=None,
+        discard_inner_offsets=None,
         primary_music_specifier=None,
         primary_voice_name=None,
         rotation_indices=None,
@@ -66,12 +217,9 @@ class CompositeMusicSpecifier(HashCachingObject):
         import consort
         HashCachingObject.__init__(self)
         prototype = consort.MusicSpecifierSequence
-        if include_inner_starts is not None:
-            include_inner_starts = bool(include_inner_starts)
-        self._include_inner_starts = include_inner_starts
-        if include_inner_stops is not None:
-            include_inner_stops = bool(include_inner_stops)
-        self._include_inner_stops = include_inner_stops
+        if discard_inner_offsets is not None:
+            discard_inner_offsets = bool(discard_inner_offsets)
+        self._discard_inner_offsets = discard_inner_offsets
         if not isinstance(primary_music_specifier, prototype):
             primary_music_specifier = consort.MusicSpecifierSequence(
                 music_specifiers=primary_music_specifier,
@@ -95,15 +243,58 @@ class CompositeMusicSpecifier(HashCachingObject):
             secondary_voice_name = str(secondary_voice_name)
         self._secondary_voice_name = secondary_voice_name
 
+    ### PUBLIC METHODS ###
+
+    def __call__(
+        self,
+        durations=None,
+        layer=None,
+        padding=None,
+        seed=None,
+        start_offset=None,
+        timespan_specifier=None,
+        voice_name=None,
+        ):
+        seed = seed or 0
+        rotation_indices = self.rotation_indices or (0,)
+        rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
+        primary_durations = durations
+        start_offset = start_offset or 0
+        if self.discard_inner_offsets:
+            secondary_durations = [sum(primary_durations)]
+        else:
+            secondary_durations = sequencetools.rotate_sequence(
+                primary_durations,
+                rotation_indices[seed],
+                )
+        primary_timespans = self.primary_music_specifier(
+            durations=primary_durations,
+            layer=layer,
+            padding=padding,
+            seed=seed,
+            start_offset=start_offset,
+            timespan_specifier=timespan_specifier,
+            voice_name=self.primary_voice_name,
+            )
+        secondary_timespans = self.secondary_music_specifier(
+            durations=secondary_durations,
+            layer=layer,
+            padding=padding,
+            seed=seed,
+            start_offset=start_offset,
+            timespan_specifier=timespan_specifier,
+            voice_name=self.secondary_voice_name,
+            )
+        timespans = primary_timespans + secondary_timespans
+        timespans = timespantools.TimespanInventory(timespans)
+        timespans.sort()
+        return timespans
+
     ### PUBLIC PROPERTIES ###
 
     @property
-    def include_inner_starts(self):
-        return self._include_inner_starts
-
-    @property
-    def include_inner_stops(self):
-        return self._include_inner_stops
+    def discard_inner_offsets(self):
+        return self._discard_inner_offsets
 
     @property
     def primary_music_specifier(self):
