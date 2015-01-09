@@ -4,6 +4,40 @@ from consort.tools.HashCachingObject import HashCachingObject
 
 
 class CompositeMusicSpecifier(HashCachingObject):
+    r'''A composite music specifier.
+
+    ::
+
+        >>> import consort
+        >>> music_specifier = consort.CompositeMusicSpecifier(
+        ...     primary_music_specifier='one',
+        ...     primary_voice_name='Viola 1 RH',
+        ...     rotation_indices=(0, 1, -1),
+        ...     secondary_voice_name='Viola 1 LH',
+        ...     secondary_music_specifier=consort.MusicSpecifierSequence(
+        ...         application_rate='phrase',
+        ...         music_specifiers=['two', 'three', 'four'],
+        ...         ),
+        ...     )
+        >>> print(format(music_specifier))
+        consort.tools.CompositeMusicSpecifier(
+            primary_music_specifier=consort.tools.MusicSpecifierSequence(
+                music_specifiers=datastructuretools.CyclicTuple(
+                    ['one']
+                    ),
+                ),
+            primary_voice_name='Viola 1 RH',
+            rotation_indices=(0, 1, -1),
+            secondary_music_specifier=consort.tools.MusicSpecifierSequence(
+                application_rate='phrase',
+                music_specifiers=datastructuretools.CyclicTuple(
+                    ['two', 'three', 'four']
+                    ),
+                ),
+            secondary_voice_name='Viola 1 LH',
+            )
+
+    '''
 
     ### CLASS VARIABLES ###
 
@@ -31,14 +65,17 @@ class CompositeMusicSpecifier(HashCachingObject):
         ):
         import consort
         HashCachingObject.__init__(self)
+        prototype = consort.MusicSpecifierSequence
         if include_inner_starts is not None:
             include_inner_starts = bool(include_inner_starts)
         self._include_inner_starts = include_inner_starts
         if include_inner_stops is not None:
             include_inner_stops = bool(include_inner_stops)
         self._include_inner_stops = include_inner_stops
-        if primary_music_specifier is not None:
-            assert isinstance(primary_music_specifier, consort.MusicSpecifier)
+        if not isinstance(primary_music_specifier, prototype):
+            primary_music_specifier = consort.MusicSpecifierSequence(
+                music_specifiers=primary_music_specifier,
+                )
         self._primary_music_specifier = primary_music_specifier
         if primary_voice_name is not None:
             primary_voice_name = str(primary_voice_name)
@@ -49,8 +86,10 @@ class CompositeMusicSpecifier(HashCachingObject):
                 rotation_indices = (rotation_indices,)
             rotation_indices = tuple(rotation_indices)
         self._rotation_indices = rotation_indices
-        if secondary_music_specifier is not None:
-            assert isinstance(secondary_music_specifier, consort.MusicSpecifier)
+        if not isinstance(secondary_music_specifier, prototype):
+            secondary_music_specifier = consort.MusicSpecifierSequence(
+                music_specifiers=secondary_music_specifier,
+                )
         self._secondary_music_specifier = secondary_music_specifier
         if secondary_voice_name is not None:
             secondary_voice_name = str(secondary_voice_name)
