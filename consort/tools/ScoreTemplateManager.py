@@ -183,9 +183,15 @@ class ScoreTemplateManager(abctools.AbjadObject):
             right_hand_abbreviation = '{}_rh'.format(abbreviation)
             left_hand_abbreviation = '{}_lh'.format(abbreviation)
             score_template._context_name_abbreviations[
+                abbreviation] = performer_group.name
+            score_template._context_name_abbreviations[
                 right_hand_abbreviation] = right_hand_voice.name
             score_template._context_name_abbreviations[
                 left_hand_abbreviation] = left_hand_voice.name
+            score_template._composite_context_pairs[abbreviation] = (
+                right_hand_abbreviation,
+                left_hand_abbreviation,
+                )
         else:
             voice = scoretools.Voice(
                 name='{} Voice'.format(name),

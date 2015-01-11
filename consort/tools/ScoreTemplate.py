@@ -17,7 +17,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
 
     def __init__(self):
         self._context_name_abbreviations = collections.OrderedDict()
-        self._composite_context_pairs = {}
+        self._composite_context_pairs = collections.OrderedDict()
 
     ### SPECIAL METHODS ###
 
