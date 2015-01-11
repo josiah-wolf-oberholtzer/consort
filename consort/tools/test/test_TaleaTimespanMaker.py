@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
@@ -314,3 +315,395 @@ def test_TaleaTimespanMaker_07():
             )
         '''
         )
+
+
+def test_TaleaTimespanMaker_08():
+    timespan_maker = consort.TaleaTimespanMaker(
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
+                    ),
+                ]
+            )
+        ''')
+
+
+def test_TaleaTimespanMaker_09():
+    timespan_maker = consort.TaleaTimespanMaker(
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
+            ),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='Two',
+                    ),
+                ]
+            )
+        ''')
+
+
+def test_TaleaTimespanMaker_10():
+    timespan_maker = consort.TaleaTimespanMaker(
+        padding=durationtools.Duration(1, 8),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 8),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Two',
+                    ),
+                ]
+            )
+        ''')
+
+
+def test_TaleaTimespanMaker_11():
+    timespan_maker = consort.TaleaTimespanMaker(
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
+            ),
+        padding=durationtools.Duration(1, 8),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
+                    ),
+                ]
+            )
+        ''')
+
+
+def test_TaleaTimespanMaker_12():
+    timespan_maker = consort.TaleaTimespanMaker(
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
+            ),
+        padding=durationtools.Duration(1, 8),
+        playing_groupings=(2,),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 8),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
+                    ),
+                ]
+            )
+        ''')
+
+
+def test_TaleaTimespanMaker_13():
+    timespan_maker = consort.TaleaTimespanMaker(
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
+            ),
+        padding=durationtools.Duration(1, 8),
+        playing_groupings=(2,),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_groupings=True,
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 8),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='Two',
+                    ),
+                ]
+            )
+        ''')
+
+
+def test_TaleaTimespanMaker_14():
+    timespan_maker = consort.TaleaTimespanMaker(
+        initial_silence_talea=rhythmmakertools.Talea(
+            counts=(0, 1),
+            denominator=8,
+            ),
+        padding=durationtools.Duration(1, 8),
+        playing_groupings=(2, 1),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(1, 2),
+            denominator=8,
+            ),
+        synchronize_groupings=False,
+        synchronize_step=True,
+        )
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 4),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 8),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='One',
+                    ),
+                ]
+            )
+        ''')

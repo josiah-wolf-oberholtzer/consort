@@ -134,22 +134,22 @@ class TaleaTimespanMaker(TimespanMaker):
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 4),
-                    voice_name='Viola',
+                    voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
-                    voice_name='Violin',
+                    voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(5, 8),
                     stop_offset=durationtools.Offset(7, 8),
-                    voice_name='Viola',
+                    voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
                     stop_offset=durationtools.Offset(1, 1),
-                    voice_name='Violin',
+                    voice_name='Viola',
                     ),
                 ]
             )
@@ -344,7 +344,7 @@ class TaleaTimespanMaker(TimespanMaker):
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
-        start_offset += next(initial_silence_talea)
+        #start_offset += next(initial_silence_talea)
         can_continue = True
         while start_offset < stop_offset and can_continue:
             silence_duration = next(silence_talea)
@@ -501,6 +501,7 @@ class TaleaTimespanMaker(TimespanMaker):
                 durations = [next(playing_talea) for _ in range(grouping)]
                 if self.padding:
                     start_offset += self.padding
+
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
                 maximum_offset = min(maximum_offset, stop_offset)
@@ -509,8 +510,8 @@ class TaleaTimespanMaker(TimespanMaker):
                         start_offset + silence_duration)
                 if self.padding:
                     maximum_offset -= self.padding
-                current_offset = start_offset
-                group_offset = start_offset
+
+                group_offset = current_offset = start_offset
 
                 valid_durations = []
                 for duration in durations:
