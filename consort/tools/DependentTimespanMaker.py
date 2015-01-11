@@ -180,7 +180,7 @@ class DependentTimespanMaker(TimespanMaker):
         preexisting_timespans & target_timespan
         rotation_indices = self.rotation_indices or (0,)
         rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
-        voice_counter = collections.Counter()
+        context_counter = collections.Counter()
         groups = preexisting_timespans.partition(
             include_tangent_timespans=True,
             )
@@ -198,44 +198,59 @@ class DependentTimespanMaker(TimespanMaker):
             durations = mathtools.difference_series(offsets)
             durations = sequencetools.rotate_sequence(
                 durations, rotation_index)
-            offsets = [_ + offsets[0]
-                for _ in mathtools.cumulative_sums(durations)]
-            for start_offset, stop_offset in \
-                sequencetools.iterate_sequence_nwise(offsets, 2):
-                for voice_name, music_specifier in music_specifiers.items():
-                    if not isinstance(music_specifier, tuple):
-                        music_specifier = datastructuretools.CyclicTuple(
-                            [music_specifier])
-                    if voice_name not in voice_counter:
-                        voice_counter[voice_name] = 0
-                    music_specifier_index = voice_counter[voice_name]
-                    current_music_specifier = \
-                        music_specifier[music_specifier_index]
-                    timespan = self._make_performed_timespan(
-                        layer=layer,
-                        music_specifier=current_music_specifier,
-                        start_offset=start_offset,
-                        stop_offset=stop_offset,
-                        voice_name=voice_name,
-                        )
-                    timespan_inventory.append(timespan)
-                    # TODO: Handle padding overlapping smartly.
-                    if self.padding:
-                        left_padding = consort.SilentTimespan(
-                            layer=layer,
-                            start_offset=start_offset - self.padding,
-                            stop_offset=start_offset,
-                            voice_name=voice_name,
-                            )
-                        right_padding = consort.SilentTimespan(
-                            layer=layer,
-                            start_offset=stop_offset,
-                            stop_offset=stop_offset + self.padding,
-                            voice_name=voice_name,
-                            )
-                        timespan_inventory.append(left_padding)
-                        timespan_inventory.append(right_padding)
-                    voice_counter[voice_name] += 1
+            start_offset = offsets[0]
+            for context_name, music_specifier in music_specifiers.items():
+                context_seed = context_counter[context_name]
+                timespans = music_specifier(
+                    durations=durations,
+                    layer=layer,
+                    padding=self.padding,
+                    seed=context_seed,
+                    start_offset=start_offset,
+                    timespan_specifier=self.timespan_specifier,
+                    voice_name=context_name,
+                    )
+                context_counter[context_name] += 1
+                timespan_inventory.extend(timespans)
+
+#            offsets = [_ + offsets[0]
+#                for _ in mathtools.cumulative_sums(durations)]
+#            for start_offset, stop_offset in \
+#                sequencetools.iterate_sequence_nwise(offsets, 2):
+#                for voice_name, music_specifier in music_specifiers.items():
+#                    if not isinstance(music_specifier, tuple):
+#                        music_specifier = datastructuretools.CyclicTuple(
+#                            [music_specifier])
+#                    if voice_name not in voice_counter:
+#                        voice_counter[voice_name] = 0
+#                    music_specifier_index = voice_counter[voice_name]
+#                    current_music_specifier = \
+#                        music_specifier[music_specifier_index]
+#                    timespan = self._make_performed_timespan(
+#                        layer=layer,
+#                        music_specifier=current_music_specifier,
+#                        start_offset=start_offset,
+#                        stop_offset=stop_offset,
+#                        voice_name=voice_name,
+#                        )
+#                    timespan_inventory.append(timespan)
+#                    # TODO: Handle padding overlapping smartly.
+#                    if self.padding:
+#                        left_padding = consort.SilentTimespan(
+#                            layer=layer,
+#                            start_offset=start_offset - self.padding,
+#                            stop_offset=start_offset,
+#                            voice_name=voice_name,
+#                            )
+#                        right_padding = consort.SilentTimespan(
+#                            layer=layer,
+#                            start_offset=stop_offset,
+#                            stop_offset=stop_offset + self.padding,
+#                            voice_name=voice_name,
+#                            )
+#                        timespan_inventory.append(left_padding)
+#                        timespan_inventory.append(right_padding)
+#                    voice_counter[voice_name] += 1
 
     ### PUBLIC PROPERTIES ###
 

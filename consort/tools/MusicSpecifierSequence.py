@@ -84,12 +84,11 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         if padding:
             timespan = consort.SilentTimespan(
                 layer=layer,
-                start_offset=start_offset,
-                stop_offset=start_offset + padding,
+                start_offset=start_offset - padding,
+                stop_offset=start_offset,
                 voice_name=voice_name,
                 )
             timespans.append(timespan)
-            start_offset += padding
         offsets = mathtools.cumulative_sums(durations, start_offset) 
         for start_offset, stop_offset in \
             sequencetools.iterate_sequence_nwise(offsets):

@@ -47,7 +47,6 @@ class TimespanMaker(abctools.AbjadValueObject):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        import consort
         if target_timespan is None:
             raise TypeError
         if timespan_inventory is None:
@@ -55,16 +54,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         assert isinstance(timespan_inventory, timespantools.TimespanInventory)
         if not music_specifiers:
             return timespan_inventory
-        prototype = (
-            consort.CompositeMusicSpecifier,
-            consort.MusicSpecifierSequence,
-            )
-        for context_name, music_specifier in music_specifiers.items():
-            if not isinstance(music_specifier, prototype):
-                music_specifier = consort.MusicSpecifierSequence(
-                    music_specifiers=music_specifier,
-                    )
-                music_specifiers[context_name] = music_specifier
+        music_specifiers = self._coerce_music_specifiers(music_specifiers)
         self._make_timespans(
             layer=layer,
             music_specifiers=music_specifiers,
@@ -76,7 +66,8 @@ class TimespanMaker(abctools.AbjadValueObject):
 
     ### PRIVATE METHODS ###
 
-    def _coerce_music_specifiers(self, music_specifiers):
+    @staticmethod
+    def _coerce_music_specifiers(music_specifiers):
         import consort
         result = collections.OrderedDict()
         prototype = (
@@ -84,6 +75,8 @@ class TimespanMaker(abctools.AbjadValueObject):
             consort.CompositeMusicSpecifier,
             )
         for context_name, music_specifier in music_specifiers.items():
+            if music_specifier is None:
+                music_specifier = [None]
             if not isinstance(music_specifier, prototype):
                 music_specifier = consort.MusicSpecifierSequence(
                     music_specifiers=music_specifier,

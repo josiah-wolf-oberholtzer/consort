@@ -106,7 +106,6 @@ class FloodedTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        music_specifiers = self._coerce_music_specifiers(music_specifiers)
         start_offset = target_timespan.start_offset
         durations = [target_timespan.duration]
         for context_name, music_specifier in music_specifiers.items():
