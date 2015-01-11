@@ -354,13 +354,13 @@ class TaleaTimespanMaker(TimespanMaker):
                     durations.insert(0, self.padding)
                     durations.append(self.padding)
             silence_duration = next(silence_talea)
-            for voice_name, music_specifier in music_specifiers.items():
+            for context_name, music_specifier in music_specifiers.items():
                 if not isinstance(music_specifier, tuple):
                     music_specifier = datastructuretools.CyclicTuple(
                         [music_specifier])
-                if voice_name not in counter:
-                    counter[voice_name] = 0
-                music_specifier_index = counter[voice_name]
+                if context_name not in counter:
+                    counter[context_name] = 0
+                music_specifier_index = counter[context_name]
                 current_music_specifier = \
                     music_specifier[music_specifier_index]
                 initial_silence_duration = next(initial_silence_talea)
@@ -396,7 +396,7 @@ class TaleaTimespanMaker(TimespanMaker):
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + self.padding,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                             new_timespans.append(timespan)
                         break
@@ -406,14 +406,14 @@ class TaleaTimespanMaker(TimespanMaker):
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                         elif i == len(durations) - 1:
                             timespan = consort.SilentTimespan(
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                         else:
                             timespan = self._make_performed_timespan(
@@ -421,7 +421,7 @@ class TaleaTimespanMaker(TimespanMaker):
                                 music_specifier=current_music_specifier,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                     else:
                         timespan = self._make_performed_timespan(
@@ -429,7 +429,7 @@ class TaleaTimespanMaker(TimespanMaker):
                             music_specifier=current_music_specifier,
                             start_offset=current_offset,
                             stop_offset=current_offset + duration,
-                            voice_name=voice_name,
+                            voice_name=context_name,
                             )
                     new_timespans.append(timespan)
                     current_offset += duration
@@ -439,7 +439,7 @@ class TaleaTimespanMaker(TimespanMaker):
                     for _ in new_timespans):
                     new_timespans = []
                 timespan_inventory.extend(new_timespans)
-                counter[voice_name] += 1
+                counter[context_name] += 1
             timespan_inventory.sort()
             if self.step_anchor is Left:
                 start_offset += silence_duration
@@ -466,17 +466,17 @@ class TaleaTimespanMaker(TimespanMaker):
         stop_offset = target_timespan.stop_offset
         final_offset = durationtools.Offset(0)
         counter = collections.Counter()
-        for voice_name, music_specifier in music_specifiers.items():
+        for context_name, music_specifier in music_specifiers.items():
             if not isinstance(music_specifier, tuple):
                 music_specifier = datastructuretools.CyclicTuple(
                     [music_specifier])
-            if voice_name not in counter:
-                counter[voice_name] = 0
+            if context_name not in counter:
+                counter[context_name] = 0
             start_offset = target_timespan.start_offset
             start_offset += next(initial_silence_talea)
             can_continue = True
             while start_offset < stop_offset and can_continue:
-                music_specifier_index = counter[voice_name]
+                music_specifier_index = counter[context_name]
                 current_music_specifier = \
                     music_specifier[music_specifier_index]
                 silence_duration = next(silence_talea)
@@ -501,7 +501,7 @@ class TaleaTimespanMaker(TimespanMaker):
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + self.padding,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                             new_timespans.append(timespan)
                         break
@@ -511,14 +511,14 @@ class TaleaTimespanMaker(TimespanMaker):
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                         elif i == len(durations) - 1:
                             timespan = consort.SilentTimespan(
                                 layer=layer,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                         else:
                             timespan = self._make_performed_timespan(
@@ -526,7 +526,7 @@ class TaleaTimespanMaker(TimespanMaker):
                                 music_specifier=current_music_specifier,
                                 start_offset=current_offset,
                                 stop_offset=current_offset + duration,
-                                voice_name=voice_name,
+                                voice_name=context_name,
                                 )
                     else:
                         timespan = self._make_performed_timespan(
@@ -534,7 +534,7 @@ class TaleaTimespanMaker(TimespanMaker):
                             music_specifier=current_music_specifier,
                             start_offset=current_offset,
                             stop_offset=current_offset + duration,
-                            voice_name=voice_name,
+                            voice_name=context_name,
                             )
                     new_timespans.append(timespan)
                     current_offset += duration
@@ -550,7 +550,7 @@ class TaleaTimespanMaker(TimespanMaker):
                     start_offset = current_offset + silence_duration
                 if not self.repeat:
                     break
-                counter[voice_name] += 1
+                counter[context_name] += 1
             if final_offset < start_offset:
                 final_offset = start_offset
         return timespan_inventory, final_offset
