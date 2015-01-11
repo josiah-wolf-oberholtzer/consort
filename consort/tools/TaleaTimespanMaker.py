@@ -340,42 +340,34 @@ class TaleaTimespanMaker(TimespanMaker):
         target_timespan=None,
         ):
         import consort
+        counter = collections.Counter()
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         start_offset += next(initial_silence_talea)
         can_continue = True
-        counter = collections.Counter()
         while start_offset < stop_offset and can_continue:
+            silence_duration = next(silence_talea)
+            durations = []
             if self.synchronize_groupings:
                 grouping = next(playing_groupings)
                 durations = [next(playing_talea) for _ in range(grouping)]
-                if self.padding:
-                    durations.insert(0, self.padding)
-                    durations.append(self.padding)
-            silence_duration = next(silence_talea)
             for context_name, music_specifier in music_specifiers.items():
-                if not isinstance(music_specifier, tuple):
-                    music_specifier = datastructuretools.CyclicTuple(
-                        [music_specifier])
                 if context_name not in counter:
                     counter[context_name] = 0
-                music_specifier_index = counter[context_name]
-                current_music_specifier = \
-                    music_specifier[music_specifier_index]
+                seed = counter[context_name]
                 initial_silence_duration = next(initial_silence_talea)
                 if not self.synchronize_groupings:
                     grouping = next(playing_groupings)
                     durations = [next(playing_talea) for _ in range(grouping)]
-                    if self.padding:
-                        durations.insert(0, self.padding)
-                        durations.append(self.padding)
                 maximum_offset = (
                     start_offset +
                     sum(durations) +
                     silence_duration +
                     initial_silence_duration
                     )
+                if self.padding:
+                    maximum_offset += (self.padding * 2)
                 maximum_offset = min(maximum_offset, stop_offset)
                 if self.step_anchor is Left:
                     maximum_offset = min(
@@ -387,57 +379,82 @@ class TaleaTimespanMaker(TimespanMaker):
                             ),
                         )
                 current_offset = start_offset + initial_silence_duration
-                new_timespans = []
-                for i, duration in enumerate(durations):
+                if self.padding:
+                    current_offset += self.padding
+                    maximum_offset -= self.padding
+                group_offset = current_offset
+
+                valid_durations = []
+                for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
-                        if self.padding:
-                            timespan = consort.SilentTimespan(
-                                layer=layer,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + self.padding,
-                                voice_name=context_name,
-                                )
-                            new_timespans.append(timespan)
                         break
-                    if self.padding:
-                        if i == 0:
-                            timespan = consort.SilentTimespan(
-                                layer=layer,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + duration,
-                                voice_name=context_name,
-                                )
-                        elif i == len(durations) - 1:
-                            timespan = consort.SilentTimespan(
-                                layer=layer,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + duration,
-                                voice_name=context_name,
-                                )
-                        else:
-                            timespan = self._make_performed_timespan(
-                                layer=layer,
-                                music_specifier=current_music_specifier,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + duration,
-                                voice_name=context_name,
-                                )
-                    else:
-                        timespan = self._make_performed_timespan(
-                            layer=layer,
-                            music_specifier=current_music_specifier,
-                            start_offset=current_offset,
-                            stop_offset=current_offset + duration,
-                            voice_name=context_name,
-                            )
-                    new_timespans.append(timespan)
-                    current_offset += duration
-                if new_timespans and self.fuse_groups:
-                    new_timespans = self._fuse_timespans(new_timespans)
+                    valid_durations.append(duration)
+                if self.fuse_groups:
+                    valid_durations = [sum(valid_durations)]
+
+                new_timespans = music_specifier(
+                    durations=valid_durations,
+                    layer=layer,
+                    padding=self.padding,
+                    seed=seed,
+                    start_offset=group_offset,
+                    timespan_specifier=self.timespan_specifier,
+                    voice_name=context_name,
+                    )
+
+#                new_timespans = []
+#                for i, duration in enumerate(durations):
+#                    if maximum_offset < (current_offset + duration):
+#                        can_continue = False
+#                        if self.padding:
+#                            timespan = consort.SilentTimespan(
+#                                layer=layer,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + self.padding,
+#                                voice_name=context_name,
+#                                )
+#                            new_timespans.append(timespan)
+#                        break
+#                    if self.padding:
+#                        if i == 0:
+#                            timespan = consort.SilentTimespan(
+#                                layer=layer,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + duration,
+#                                voice_name=context_name,
+#                                )
+#                        elif i == len(durations) - 1:
+#                            timespan = consort.SilentTimespan(
+#                                layer=layer,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + duration,
+#                                voice_name=context_name,
+#                                )
+#                        else:
+#                            timespan = self._make_performed_timespan(
+#                                layer=layer,
+#                                music_specifier=current_music_specifier,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + duration,
+#                                voice_name=context_name,
+#                                )
+#                    else:
+#                        timespan = self._make_performed_timespan(
+#                            layer=layer,
+#                            music_specifier=current_music_specifier,
+#                            start_offset=current_offset,
+#                            stop_offset=current_offset + duration,
+#                            voice_name=context_name,
+#                            )
+#                    new_timespans.append(timespan)
+#                    current_offset += duration
+#                if new_timespans and self.fuse_groups:
+#                    new_timespans = self._fuse_timespans(new_timespans)
+
                 if all(isinstance(_, consort.SilentTimespan)
                     for _ in new_timespans):
-                    new_timespans = []
+                    new_timespans[:] = []
                 timespan_inventory.extend(new_timespans)
                 counter[context_name] += 1
             timespan_inventory.sort()
@@ -461,85 +478,109 @@ class TaleaTimespanMaker(TimespanMaker):
         target_timespan=None,
         ):
         import consort
+        counter = collections.Counter()
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         final_offset = durationtools.Offset(0)
-        counter = collections.Counter()
         for context_name, music_specifier in music_specifiers.items():
-            if not isinstance(music_specifier, tuple):
-                music_specifier = datastructuretools.CyclicTuple(
-                    [music_specifier])
+
             if context_name not in counter:
                 counter[context_name] = 0
+
             start_offset = target_timespan.start_offset
             start_offset += next(initial_silence_talea)
             can_continue = True
+
             while start_offset < stop_offset and can_continue:
-                music_specifier_index = counter[context_name]
-                current_music_specifier = \
-                    music_specifier[music_specifier_index]
+
+                seed = counter[context_name]
+
                 silence_duration = next(silence_talea)
                 grouping = next(playing_groupings)
                 durations = [next(playing_talea) for _ in range(grouping)]
                 if self.padding:
-                    durations.insert(0, self.padding)
-                    durations.append(self.padding)
+                    start_offset += self.padding
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
                 maximum_offset = min(maximum_offset, stop_offset)
                 if self.step_anchor is Left:
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
+                if self.padding:
+                    maximum_offset -= self.padding
                 current_offset = start_offset
-                new_timespans = []
-                for i, duration in enumerate(durations):
+                group_offset = start_offset
+
+                valid_durations = []
+                for duration in durations:
                     if maximum_offset < (current_offset + duration):
                         can_continue = False
-                        if self.padding:
-                            timespan = consort.SilentTimespan(
-                                layer=layer,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + self.padding,
-                                voice_name=context_name,
-                                )
-                            new_timespans.append(timespan)
                         break
-                    if self.padding:
-                        if i == 0:
-                            timespan = consort.SilentTimespan(
-                                layer=layer,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + duration,
-                                voice_name=context_name,
-                                )
-                        elif i == len(durations) - 1:
-                            timespan = consort.SilentTimespan(
-                                layer=layer,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + duration,
-                                voice_name=context_name,
-                                )
-                        else:
-                            timespan = self._make_performed_timespan(
-                                layer=layer,
-                                music_specifier=current_music_specifier,
-                                start_offset=current_offset,
-                                stop_offset=current_offset + duration,
-                                voice_name=context_name,
-                                )
-                    else:
-                        timespan = self._make_performed_timespan(
-                            layer=layer,
-                            music_specifier=current_music_specifier,
-                            start_offset=current_offset,
-                            stop_offset=current_offset + duration,
-                            voice_name=context_name,
-                            )
-                    new_timespans.append(timespan)
+                    valid_durations.append(duration)
                     current_offset += duration
-                if new_timespans and self.fuse_groups:
-                    new_timespans = self._fuse_timespans(new_timespans)
+                if self.fuse_groups:
+                    valid_durations = [sum(valid_durations)]
+
+                new_timespans = music_specifier(
+                    durations=valid_durations,
+                    layer=layer,
+                    padding=self.padding,
+                    seed=seed,
+                    start_offset=group_offset,
+                    timespan_specifier=self.timespan_specifier,
+                    voice_name=context_name,
+                    )
+
+#                new_timespans = []
+#                for i, duration in enumerate(durations):
+#                    if maximum_offset < (current_offset + duration):
+#                        can_continue = False
+#                        if self.padding:
+#                            timespan = consort.SilentTimespan(
+#                                layer=layer,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + self.padding,
+#                                voice_name=context_name,
+#                                )
+#                            new_timespans.append(timespan)
+#                        break
+#                    if self.padding:
+#                        if i == 0:
+#                            timespan = consort.SilentTimespan(
+#                                layer=layer,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + duration,
+#                                voice_name=context_name,
+#                                )
+#                        elif i == len(durations) - 1:
+#                            timespan = consort.SilentTimespan(
+#                                layer=layer,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + duration,
+#                                voice_name=context_name,
+#                                )
+#                        else:
+#                            timespan = self._make_performed_timespan(
+#                                layer=layer,
+#                                music_specifier=current_music_specifier,
+#                                start_offset=current_offset,
+#                                stop_offset=current_offset + duration,
+#                                voice_name=context_name,
+#                                )
+#                    else:
+#                        timespan = self._make_performed_timespan(
+#                            layer=layer,
+#                            music_specifier=current_music_specifier,
+#                            start_offset=current_offset,
+#                            stop_offset=current_offset + duration,
+#                            voice_name=context_name,
+#                            )
+#                    new_timespans.append(timespan)
+#                    current_offset += duration
+#                if new_timespans and self.fuse_groups:
+#                    new_timespans = self._fuse_timespans(new_timespans)
+
                 if all(isinstance(_, consort.SilentTimespan)
                     for _ in new_timespans):
                     new_timespans = []
