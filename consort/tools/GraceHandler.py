@@ -69,7 +69,6 @@ class GraceHandler(abctools.AbjadValueObject):
     def __call__(
         self,
         logical_tie,
-        maximum_grace_count=None,
         seed=0,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
@@ -96,11 +95,6 @@ class GraceHandler(abctools.AbjadValueObject):
         kind = 'after'
         leaf_to_attach_to = previous_leaf
         leaves = []
-        if maximum_grace_count:
-            skip_count = maximum_grace_count - grace_count
-            if 0 < skip_count:
-                skips = [scoretools.Skip((1, 16)) for _ in range(skip_count)]
-                leaves.extend(skips)
         notes = scoretools.make_notes([0], [(1, 16)] * grace_count)
         leaves.extend(notes)
         assert len(leaves)
@@ -116,23 +110,7 @@ class GraceHandler(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     @staticmethod
-    def _find_maximum_grace_count(segment_maker):
-        maximum_grace_count = 0
-        for music_setting in segment_maker._settings:
-            for music_specifiers in music_setting.music_specifiers.values():
-                if not isinstance(music_specifiers, tuple):
-                    music_specifiers = (music_specifiers,)
-                for music_specifier in music_specifiers:
-                    if music_specifier is None:
-                        continue
-                    if music_specifier.grace_handler is None:
-                        continue
-                    counts = max(music_specifier.grace_handler.counts)
-                    maximum_grace_count = max(maximum_grace_count, counts)
-        return maximum_grace_count
-
-    @staticmethod
-    def _process_session(segment_session, maximum_grace_count=None):
+    def _process_session(segment_session):
         import consort
         counter = collections.Counter()
         attack_point_map = segment_session.attack_point_map
@@ -154,7 +132,6 @@ class GraceHandler(abctools.AbjadValueObject):
             seed = counter[music_specifier]
             grace_handler(
                 logical_tie,
-                maximum_grace_count=maximum_grace_count,
                 seed=seed,
                 )
             counter[music_specifier] += 1
