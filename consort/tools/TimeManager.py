@@ -1077,6 +1077,9 @@ class TimeManager(abctools.AbjadValueObject):
         with systemtools.Timer('\t\tpruned short timespans:'):
             for voice_name, timespans in demultiplexed_timespans.items():
                 TimeManager.prune_short_timespans(timespans)
+        with systemtools.Timer('\t\tpruned malformed timespans:'):
+            for voice_name, timespans in demultiplexed_timespans.items():
+                TimeManager.prune_malformed_timespans(timespans)
         with systemtools.Timer('\t\tconsolidated timespans:'):
             TimeManager.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
@@ -1124,6 +1127,9 @@ class TimeManager(abctools.AbjadValueObject):
                 meter_offsets,
                 demultiplexed_timespans,
                 )
+        with systemtools.Timer('\t\tpruned malformed timespans:'):
+            for voice_name, timespans in demultiplexed_timespans.items():
+                TimeManager.prune_malformed_timespans(timespans)
         with systemtools.Timer('\t\tconsolidated timespans:'):
             TimeManager.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
@@ -1274,6 +1280,12 @@ class TimeManager(abctools.AbjadValueObject):
                 timespans.remove(timespan)
 
     @staticmethod
+    def prune_malformed_timespans(timespans):
+        for timespan in timespans[:]:
+            if not timespan.is_well_formed:
+                timespans.remove(timespan)
+
+    @staticmethod
     def report(timespan_inventory):
         print('REPORTING')
         for timespan in timespan_inventory:
@@ -1297,22 +1309,18 @@ class TimeManager(abctools.AbjadValueObject):
                 key=lambda item: item[0],
                 )
             ]
+        for timespan_inventory in timespan_inventories:
+            assert timespan_inventory.all_are_nonoverlapping
         resolved_inventory = consort.TimespanCollection()
         for timespan in timespan_inventories[0]:
             if isinstance(timespan, consort.SilentTimespan):
                 continue
             resolved_inventory.insert(timespan)
-#        print('FIRST')
-#        TimeManager.report(resolved_inventory)
         for timespan_inventory in timespan_inventories[1:]:
-#            print('TO SUBTRACT')
-#            TimeManager.report(timespan_inventory)
             resolved_inventory = TimeManager.subtract_timespan_inventories(
                 resolved_inventory,
                 timespan_inventory,
                 )
-#            print('SUBTRACTED')
-#            TimeManager.report(resolved_inventory)
             for timespan in resolved_inventory[:]:
                 if timespan.minimum_duration and \
                     timespan.duration < timespan.minimum_duration:
@@ -1322,8 +1330,6 @@ class TimeManager(abctools.AbjadValueObject):
                     continue
                 resolved_inventory.append(timespan)
             resolved_inventory.sort()
-#            print('ADDED IN')
-#            TimeManager.report(resolved_inventory)
         resolved_inventory = timespantools.TimespanInventory(
             resolved_inventory[:],
             )
