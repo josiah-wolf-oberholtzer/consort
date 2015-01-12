@@ -1127,6 +1127,7 @@ class TimeManager(abctools.AbjadValueObject):
                 meter_offsets,
                 demultiplexed_timespans,
                 )
+        # TODO: Determine best place for malformed timespan pruning.
         with systemtools.Timer('\t\tpruned malformed timespans:'):
             for voice_name, timespans in demultiplexed_timespans.items():
                 TimeManager.prune_malformed_timespans(timespans)
