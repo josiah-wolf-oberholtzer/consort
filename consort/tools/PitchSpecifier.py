@@ -47,6 +47,8 @@ class PitchSpecifier(abctools.AbjadValueObject):
             ratio=mathtools.Ratio(1, 2, 3),
             )
 
+    Pitch specifiers can be instantiated from a string of pitch names:
+
     ::
 
         >>> pitch_specifier = consort.PitchSpecifier("c' e' g' a'")
@@ -59,6 +61,24 @@ class PitchSpecifier(abctools.AbjadValueObject):
                         pitchtools.NamedPitch("e'"),
                         pitchtools.NamedPitch("g'"),
                         pitchtools.NamedPitch("a'"),
+                        ),
+                    item_class=pitchtools.NamedPitch,
+                    ),
+                ),
+            ratio=mathtools.Ratio(1),
+            )
+
+    Pitch specifiers can be instantiated from a single pitch:
+
+    ::
+
+        >>> pitch_specifier = consort.PitchSpecifier(NamedPitch("ds'"))
+        >>> print(format(pitch_specifier))
+        consort.tools.PitchSpecifier(
+            pitch_segments=(
+                pitchtools.PitchSegment(
+                    (
+                        pitchtools.NamedPitch("ds'"),
                         ),
                     item_class=pitchtools.NamedPitch,
                     ),
@@ -82,6 +102,8 @@ class PitchSpecifier(abctools.AbjadValueObject):
         pitch_segments=("c'",),
         ratio=(1,),
         ):
+        if isinstance(pitch_segments, pitchtools.Pitch):
+            pitch_segments = pitchtools.PitchSegment([pitch_segments])
         if not isinstance(pitch_segments, (list, tuple)):
             pitch_segments = (pitch_segments,)
         coerced_pitch_segments = []
