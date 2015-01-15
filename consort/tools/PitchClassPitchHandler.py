@@ -89,27 +89,32 @@ class PitchClassPitchHandler(PitchHandler):
         self,
         attack_point_signature,
         logical_tie,
-        phrase_seed,
         pitch_choices,
-        pitch_range,
         previous_pitch,
-        seed,
-        transposition,
+        seed_session,
         ):
+        instrument = self._get_instrument(logical_tie)
+        pitch_range = self._get_pitch_range(
+            instrument,
+            logical_tie,
+            )
         registration = self._get_registration(
             attack_point_signature,
             logical_tie,
-            phrase_seed,
+            #phrase_seed,
+            seed_session.current_timewise_phrase_seed,
             )
         pitch_class = self._get_pitch_class(
             pitch_choices,
             previous_pitch,
-            seed,
+            #seed,
+            seed_session.current_voicewise_logical_tie_seed,
             )
         pitch = self._get_pitch(
             pitch_class,
             registration,
-            seed,
+            #seed,
+            seed_session.current_voicewise_logical_tie_seed,
             )
         pitch_range = self.pitch_range or pitch_range
         if pitch_range is not None:
@@ -121,7 +126,8 @@ class PitchClassPitchHandler(PitchHandler):
             logical_tie,
             pitch,
             pitch_range,
-            seed,
+            #seed,
+            seed_session.current_voicewise_logical_tie_seed,
             )
         return pitch
 

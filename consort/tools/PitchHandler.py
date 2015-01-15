@@ -292,7 +292,10 @@ class PitchHandler(HashCachingObject):
         import consort
         if pitch_operation_specifier is not None:
             prototype = consort.PitchOperationSpecifier
-            assert isinstance(pitch_operation_specifier, prototype)
+            if not isinstance(pitch_operation_specifier, prototype):
+                pitch_operation_specifier = consort.PitchOperationSpecifier(
+                    pitch_operations=pitch_operation_specifier,
+                    )
         self._pitch_operation_specifier = pitch_operation_specifier
 
     def _initialize_pitch_specifier(self, pitch_specifier):
