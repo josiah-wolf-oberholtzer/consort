@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
 
@@ -108,6 +109,7 @@ class FloodedTimespanMaker(TimespanMaker):
         ):
         start_offset = target_timespan.start_offset
         durations = [target_timespan.duration]
+        new_timespans = timespantools.TimespanInventory()
         for context_name, music_specifier in music_specifiers.items():
             timespans = music_specifier(
                 durations=durations,
@@ -118,4 +120,5 @@ class FloodedTimespanMaker(TimespanMaker):
                 timespan_specifier=self.timespan_specifier,
                 voice_name=context_name,
                 )
-            timespan_inventory.extend(timespans)
+            new_timespans.extend(timespans)
+        return new_timespans

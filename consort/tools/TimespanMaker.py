@@ -55,12 +55,13 @@ class TimespanMaker(abctools.AbjadValueObject):
         if not music_specifiers:
             return timespan_inventory
         music_specifiers = self._coerce_music_specifiers(music_specifiers)
-        self._make_timespans(
+        new_timespans = self._make_timespans(
             layer=layer,
             music_specifiers=music_specifiers,
             target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
             )
+        timespan_inventory.extend(new_timespans)
         timespan_inventory.sort()
         return timespan_inventory
 
@@ -83,29 +84,6 @@ class TimespanMaker(abctools.AbjadValueObject):
                     )
             result[context_name] = music_specifier
         return result        
-
-    def _make_performed_timespan(
-        self,
-        layer=None,
-        music_specifier=None,
-        start_offset=None,
-        stop_offset=None,
-        voice_name=None,
-        ):
-        import consort
-        timespan_specifier = self.timespan_specifier or \
-            consort.TimespanSpecifier()
-        timespan = consort.PerformedTimespan(
-            forbid_fusing=timespan_specifier.forbid_fusing,
-            forbid_splitting=timespan_specifier.forbid_splitting,
-            layer=layer,
-            minimum_duration=timespan_specifier.minimum_duration,
-            music_specifier=music_specifier,
-            start_offset=start_offset,
-            stop_offset=stop_offset,
-            voice_name=voice_name,
-            )
-        return timespan
 
     ### PUBLIC PROPERTIES ###
 
