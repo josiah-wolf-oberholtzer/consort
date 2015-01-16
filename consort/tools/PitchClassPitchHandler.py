@@ -93,6 +93,7 @@ class PitchClassPitchHandler(PitchHandler):
         previous_pitch,
         seed_session,
         ):
+        previous_pitch_class = pitchtools.NamedPitchClass(previous_pitch)
         instrument = self._get_instrument(logical_tie)
         pitch_range = self._get_pitch_range(
             instrument,
@@ -105,8 +106,9 @@ class PitchClassPitchHandler(PitchHandler):
             seed_session.current_timewise_phrase_seed,
             )
         pitch_class = self._get_pitch_class(
+            attack_point_signature,
             pitch_choices,
-            previous_pitch,
+            previous_pitch_class,
             #seed,
             seed_session.current_voicewise_logical_tie_seed,
             )
@@ -161,26 +163,33 @@ class PitchClassPitchHandler(PitchHandler):
 
     def _get_pitch_class(
         self,
+        attack_point_signature,
         pitch_choices,
-        previous_pitch,
+        previous_pitch_class,
         seed,
         ):
-        pitch_classes = datastructuretools.CyclicTuple([
-            pitchtools.NumberedPitchClass(_) for _ in pitch_choices
-            ])
-        previous_pitch_class = pitchtools.NumberedPitchClass(previous_pitch)
-        pitch_class = pitch_classes[seed]
-        if self.pitch_operation:
-            for transform in self.pitch_operation:
-                pitch_class = transform(pitch_class)
-        if 1 < len(set(pitch_classes)) and self.forbid_repetitions:
-            while pitch_class == previous_pitch_class:
-                seed += 1
-                pitch_class = pitch_classes[seed]
-                if self.pitch_operation:
-                    for transform in self.pitch_operation:
-                        pitch_class = transform(pitch_class)
+        pitch_class = pitch_choices[seed]
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
+        if pitch_choices and \
+            1 < len(set(pitch_choices)) and \
+            self.forbid_repetitions:
+            if self.pitch_application_rate == 'phrase':
+                if attack_point_signature.is_first_of_phrase:
+                    while pitch_class == previous_pitch_class:
+                        seed += 1
+                        pitch_class = pitch_choices[seed]
+                        pitch_class = pitchtools.NamedPitchClass(pitch_class)
+            elif self.pitch_application_rate == 'division':
+                if attack_point_signature.is_first_of_division:
+                    while pitch_class == previous_pitch_class:
+                        seed += 1
+                        pitch_class = pitch_choices[seed]
+                        pitch_class = pitchtools.NamedPitchClass(pitch_class)
+            else:
+                while pitch_class == previous_pitch_class:
+                    seed += 1
+                    pitch_class = pitch_choices[seed]
+                    pitch_class = pitchtools.NamedPitchClass(pitch_class)
         return pitch_class
 
     def _get_registration(
