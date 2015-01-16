@@ -244,35 +244,6 @@ class TaleaTimespanMaker(TimespanMaker):
 
     ### PRIVATE METHODS ###
 
-    def _fuse_timespans(self, timespans):
-        import consort
-        if not timespans:
-            return timespans
-        if not self.padding:
-            fused_timespan = new(
-                timespans[0],
-                stop_offset=timespans[-1].stop_offset,
-                )
-            timespans[:] = [fused_timespan]
-            return timespans
-        if len(timespans) == 1:
-            pass
-        elif len(timespans) == 2:
-            pass
-        elif isinstance(timespans[-1], consort.PerformedTimespan):
-            fused_timespan = new(
-                timespans[1],
-                stop_offset=timespans[-1].stop_offset,
-                )
-            timespans[1:] = [fused_timespan]
-        else:
-            fused_timespan = new(
-                timespans[1],
-                stop_offset=timespans[-2].stop_offset,
-                )
-            timespans[1:-1] = [fused_timespan]
-        return timespans
-
     def _make_infinite_iterator(self, sequence):
         index = 0
         sequence = datastructuretools.CyclicTuple(sequence)
@@ -320,7 +291,8 @@ class TaleaTimespanMaker(TimespanMaker):
             silence_talea=silence_talea,
             target_timespan=target_timespan,
             )
-        
+        assert all(0 < _.duration for _ in new_timespan_inventory)
+
         if self.reflect:
             new_timespan_inventory = new_timespan_inventory.reflect(
                 axis=target_timespan.axis,
@@ -520,7 +492,7 @@ class TaleaTimespanMaker(TimespanMaker):
                         break
                     valid_durations.append(duration)
                     current_offset += duration
-                if self.fuse_groups:
+                if valid_durations and self.fuse_groups:
                     valid_durations = [sum(valid_durations)]
 
                 new_timespans = music_specifier(
