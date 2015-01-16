@@ -315,7 +315,6 @@ class TaleaTimespanMaker(TimespanMaker):
         timespan_inventory = timespantools.TimespanInventory()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
-        #start_offset += next(initial_silence_talea)
         can_continue = True
         while start_offset < stop_offset and can_continue:
             silence_duration = next(silence_talea)
@@ -380,11 +379,9 @@ class TaleaTimespanMaker(TimespanMaker):
                 timespan_inventory.extend(new_timespans)
                 counter[context_name] += 1
             timespan_inventory.sort()
-            if self.step_anchor is Left:
-                start_offset += silence_duration
-            else:
-                start_offset = timespan_inventory.stop_offset + \
-                    silence_duration
+            if self.step_anchor == Right and timespan_inventory:
+                start_offset = timespan_inventory.stop_offset
+            start_offset += silence_duration
             if not self.repeat:
                 break
         return timespan_inventory, start_offset

@@ -707,3 +707,38 @@ def test_TaleaTimespanMaker_14():
                 ]
             )
         ''')
+
+def test_TaleaTimespanMaker_15():
+    target_timespan = timespantools.Timespan(
+        start_offset=durationtools.Offset(7, 2),
+        stop_offset=durationtools.Offset(35, 8),
+        )
+    timespan_maker = consort.TaleaTimespanMaker(
+        padding=durationtools.Duration(1, 4),
+        playing_talea=rhythmmakertools.Talea(
+            counts=(8,),
+            denominator=16,
+            ),
+        repeat=False,
+        silence_talea=rhythmmakertools.Talea(
+            counts=(8, 6, 10, 7, 12),
+            denominator=8,
+            ),
+        synchronize_groupings=True,
+        synchronize_step=True,
+        )
+    music_specifiers = collections.OrderedDict([
+        ('One', None),
+        ('Two', None),
+        ('Three', None),
+        ])
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            []
+            )
+        ''')
