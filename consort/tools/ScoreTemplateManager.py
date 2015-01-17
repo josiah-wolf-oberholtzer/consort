@@ -152,7 +152,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         split=True,
         ):
         performer_group = ScoreTemplateManager.make_performer_group(
-            context_name='StringPerformerGroup',
+            context_name='PerformerGroup',
             instrument=instrument,
             label=stringtools.to_dash_case(instrument.instrument_name),
             )
