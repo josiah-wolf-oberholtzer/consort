@@ -18,7 +18,3 @@ def debug(*message):
         else:
             message = ' '.join(str(_) for _ in message)
         print(RED + str(message) + END)
-
-
-from abjad.tools import lilypondparsertools
-lilypondparsertools.LilyPondParser.register_markup_function('vstrut', [])

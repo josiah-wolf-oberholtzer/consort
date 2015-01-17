@@ -263,9 +263,6 @@ class SegmentMaker(makertools.SegmentMaker):
     def attach_rehearsal_mark(self, score):
         first_leaf = score['TimeSignatureContext'].select_leaves()[0]
         if self.rehearsal_mark is not None:
-            #markup_a = markuptools.Markup(
-            #    r'\concat {{ \vstrut "{}" }}'.format(str(self.rehearsal_mark)),
-            #    )
             markup_a = markuptools.Markup(str(self.rehearsal_mark))
             markup_a = markup_a.caps()
             markup_a = markup_a.box()
