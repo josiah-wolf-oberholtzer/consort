@@ -38,6 +38,8 @@ class PerformedTimespan(timespantools.Timespan):
 
     def __init__(
         self,
+        start_offset=mathtools.NegativeInfinity(),
+        stop_offset=mathtools.Infinity(),
         divisions=None,
         forbid_fusing=None,
         forbid_splitting=None,
@@ -47,8 +49,6 @@ class PerformedTimespan(timespantools.Timespan):
         music_specifier=None,
         original_start_offset=None,
         original_stop_offset=None,
-        start_offset=mathtools.NegativeInfinity(),
-        stop_offset=mathtools.Infinity(),
         voice_name=None,
         ):
         timespantools.Timespan.__init__(

@@ -48,10 +48,13 @@ class TimespanMaker(abctools.AbjadValueObject):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        if target_timespan is None:
-            raise TypeError
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
+        if target_timespan is None:
+            if timespan_inventory:
+                target_timespan = timespan_inventory.timespan
+            else:
+                raise TypeError
         assert isinstance(timespan_inventory, timespantools.TimespanInventory)
         if not music_specifiers:
             return timespan_inventory

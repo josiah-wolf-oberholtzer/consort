@@ -283,29 +283,29 @@ class TimeManager(abctools.AbjadValueObject):
             timespantools.TimespanInventory(
                 [
                     consort.tools.PerformedTimespan(
-                        music_specifier='foo',
                         start_offset=durationtools.Offset(0, 1),
                         stop_offset=durationtools.Offset(10, 1),
+                        music_specifier='foo',
                         ),
                     consort.tools.PerformedTimespan(
-                        music_specifier='foo',
                         start_offset=durationtools.Offset(10, 1),
                         stop_offset=durationtools.Offset(20, 1),
+                        music_specifier='foo',
                         ),
                     consort.tools.PerformedTimespan(
-                        music_specifier='bar',
                         start_offset=durationtools.Offset(20, 1),
                         stop_offset=durationtools.Offset(25, 1),
+                        music_specifier='bar',
                         ),
                     consort.tools.PerformedTimespan(
-                        music_specifier='bar',
                         start_offset=durationtools.Offset(40, 1),
                         stop_offset=durationtools.Offset(50, 1),
+                        music_specifier='bar',
                         ),
                     consort.tools.PerformedTimespan(
-                        music_specifier='bar',
                         start_offset=durationtools.Offset(50, 1),
                         stop_offset=durationtools.Offset(58, 1),
+                        music_specifier='bar',
                         ),
                     ]
                 )
@@ -318,30 +318,30 @@ class TimeManager(abctools.AbjadValueObject):
             timespantools.TimespanInventory(
                 [
                     consort.tools.PerformedTimespan(
+                        start_offset=durationtools.Offset(0, 1),
+                        stop_offset=durationtools.Offset(20, 1),
                         divisions=(
                             durationtools.Duration(10, 1),
                             durationtools.Duration(10, 1),
                             ),
                         music_specifier='foo',
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(20, 1),
                         ),
                     consort.tools.PerformedTimespan(
+                        start_offset=durationtools.Offset(20, 1),
+                        stop_offset=durationtools.Offset(25, 1),
                         divisions=(
                             durationtools.Duration(5, 1),
                             ),
                         music_specifier='bar',
-                        start_offset=durationtools.Offset(20, 1),
-                        stop_offset=durationtools.Offset(25, 1),
                         ),
                     consort.tools.PerformedTimespan(
+                        start_offset=durationtools.Offset(40, 1),
+                        stop_offset=durationtools.Offset(58, 1),
                         divisions=(
                             durationtools.Duration(10, 1),
                             durationtools.Duration(8, 1),
                             ),
                         music_specifier='bar',
-                        start_offset=durationtools.Offset(40, 1),
-                        stop_offset=durationtools.Offset(58, 1),
                         ),
                     ]
                 )
@@ -722,6 +722,8 @@ class TimeManager(abctools.AbjadValueObject):
             ...     )
             >>> print(format(timespan))
             consort.tools.PerformedTimespan(
+                start_offset=durationtools.Offset(0, 1),
+                stop_offset=durationtools.Offset(7, 4),
                 divisions=(
                     durationtools.Duration(1, 4),
                     durationtools.Duration(1, 4),
@@ -745,8 +747,6 @@ class TimeManager(abctools.AbjadValueObject):
                             ),
                         ),
                     ),
-                start_offset=durationtools.Offset(0, 1),
-                stop_offset=durationtools.Offset(7, 4),
                 )
 
         ::
@@ -756,29 +756,8 @@ class TimeManager(abctools.AbjadValueObject):
             timespantools.TimespanInventory(
                 [
                     consort.tools.PerformedTimespan(
-                        music=scoretools.Container(
-                            "{ c'4 } { c'4 }"
-                            ),
-                        music_specifier=consort.tools.MusicSpecifier(
-                            rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                beam_specifier=rhythmmakertools.BeamSpecifier(
-                                    beam_each_division=False,
-                                    beam_divisions_together=False,
-                                    ),
-                                output_masks=(
-                                    rhythmmakertools.BooleanPattern(
-                                        indices=(0,),
-                                        period=3,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        original_start_offset=durationtools.Offset(0, 1),
-                        original_stop_offset=durationtools.Offset(7, 4),
                         start_offset=durationtools.Offset(1, 4),
                         stop_offset=durationtools.Offset(3, 4),
-                        ),
-                    consort.tools.PerformedTimespan(
                         music=scoretools.Container(
                             "{ c'4 } { c'4 }"
                             ),
@@ -798,8 +777,29 @@ class TimeManager(abctools.AbjadValueObject):
                             ),
                         original_start_offset=durationtools.Offset(0, 1),
                         original_stop_offset=durationtools.Offset(7, 4),
+                        ),
+                    consort.tools.PerformedTimespan(
                         start_offset=durationtools.Offset(1, 1),
                         stop_offset=durationtools.Offset(3, 2),
+                        music=scoretools.Container(
+                            "{ c'4 } { c'4 }"
+                            ),
+                        music_specifier=consort.tools.MusicSpecifier(
+                            rhythm_maker=rhythmmakertools.NoteRhythmMaker(
+                                beam_specifier=rhythmmakertools.BeamSpecifier(
+                                    beam_each_division=False,
+                                    beam_divisions_together=False,
+                                    ),
+                                output_masks=(
+                                    rhythmmakertools.BooleanPattern(
+                                        indices=(0,),
+                                        period=3,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        original_start_offset=durationtools.Offset(0, 1),
+                        original_stop_offset=durationtools.Offset(7, 4),
                         ),
                     ]
                 )

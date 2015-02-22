@@ -28,15 +28,15 @@ class FloodedTimespanMaker(TimespanMaker):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    music_specifier='cello music',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
+                    music_specifier='cello music',
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    music_specifier='violin music',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
+                    music_specifier='violin music',
                     voice_name='Violin Voice',
                     ),
                 ]
@@ -65,15 +65,15 @@ class FloodedTimespanMaker(TimespanMaker):
         timespantools.TimespanInventory(
             [
                 consort.tools.PerformedTimespan(
-                    music_specifier='two',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
+                    music_specifier='two',
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.PerformedTimespan(
-                    music_specifier='one',
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(2, 1),
+                    music_specifier='one',
                     voice_name='Viola 1 RH',
                     ),
                 ]
