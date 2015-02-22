@@ -549,7 +549,7 @@ class TimeManager(abctools.AbjadValueObject):
         meters = metertools.Meter.fit_meters_to_expr(
             offset_counter,
             permitted_time_signatures,
-            maximum_repetitions=2,
+            maximum_run_length=2,
             )
         return tuple(meters)
 
