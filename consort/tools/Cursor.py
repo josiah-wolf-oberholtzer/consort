@@ -10,37 +10,37 @@ class Cursor(abctools.AbjadValueObject):
 
         >>> import consort
         >>> cursor = consort.Cursor([1, 2, 3])
-        >>> cursor.next()
+        >>> next(cursor)
         1
 
     ::
 
-        >>> cursor.next()
+        >>> next(cursor)
         2
 
     ::
 
-        >>> cursor.next()
+        >>> next(cursor)
         3
 
     ::
 
-        >>> cursor.next()
+        >>> next(cursor)
         1
 
     ::
 
-        >>> cursor.next()
-        2
-
-    ::
-
-        >>> cursor.backtrack()
+        >>> next(cursor)
         2
 
     ::
 
         >>> cursor.backtrack()
+        2
+
+    ::
+
+        >>> cursor.backtrack()
         1
 
     ::
@@ -50,12 +50,12 @@ class Cursor(abctools.AbjadValueObject):
 
     ::
 
-        >>> cursor.next()
+        >>> next(cursor)
         3
 
     ::
 
-        >>> cursor.next()
+        >>> next(cursor)
         1
 
     '''
@@ -74,6 +74,12 @@ class Cursor(abctools.AbjadValueObject):
         if index is not None:
             index = int(index)
         self._index = index
+
+    ### SPECIAL METHODS ###
+
+    def __iter__(self):
+        while True:
+            yield self.next()
 
     ### PUBLIC METHODS ###
 
