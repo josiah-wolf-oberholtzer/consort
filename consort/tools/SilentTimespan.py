@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad.tools import markuptools
 from abjad.tools import mathtools
 from abjad.tools import timespantools
 
@@ -32,6 +33,32 @@ class SilentTimespan(timespantools.Timespan):
             layer = int(layer)
         self._layer = layer
         self._voice_name = voice_name
+
+    ### PRIVATE METHODS ###
+
+    def _as_postscript(
+        self,
+        postscript_x_offset,
+        postscript_y_offset,
+        postscript_scale,
+        ):
+        start = (float(self.start_offset) * postscript_scale)
+        start -= postscript_x_offset
+        stop = (float(self.stop_offset) * postscript_scale)
+        stop -= postscript_x_offset
+        ps = markuptools.Postscript()
+        ps = ps.moveto(start, postscript_y_offset)
+        ps = ps.setdash([0.5])
+        ps = ps.lineto(stop, postscript_y_offset)
+        ps = ps.stroke()
+        ps = ps.moveto(start, postscript_y_offset + 0.75)
+        ps = ps.setdash()
+        ps = ps.lineto(start, postscript_y_offset - 0.75)
+        ps = ps.stroke()
+        ps = ps.moveto(stop, postscript_y_offset + 0.75)
+        ps = ps.lineto(stop, postscript_y_offset - 0.75)
+        ps = ps.stroke()
+        return ps
 
     ### PUBLIC PROPERTIES ###
 
