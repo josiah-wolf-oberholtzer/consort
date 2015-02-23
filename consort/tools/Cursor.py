@@ -6,57 +6,82 @@ from abjad.tools import datastructuretools
 class Cursor(abctools.AbjadValueObject):
     r'''A cursor.
 
-    ::
+    ..  container:: example
 
-        >>> import consort
-        >>> cursor = consort.Cursor([1, 2, 3])
-        >>> next(cursor)
-        1
+        ::
 
-    ::
+            >>> import consort
+            >>> cursor = consort.Cursor([1, 2, 3])
+            >>> next(cursor)
+            1
 
-        >>> next(cursor)
-        2
+        ::
 
-    ::
+            >>> next(cursor)
+            2
 
-        >>> next(cursor)
-        3
+        ::
 
-    ::
+            >>> next(cursor)
+            3
 
-        >>> next(cursor)
-        1
+        ::
 
-    ::
+            >>> next(cursor)
+            1
 
-        >>> next(cursor)
-        2
+        ::
 
-    ::
+            >>> next(cursor)
+            2
 
-        >>> cursor.backtrack()
-        2
+        ::
 
-    ::
+            >>> cursor.backtrack()
+            2
 
-        >>> cursor.backtrack()
-        1
+        ::
 
-    ::
+            >>> cursor.backtrack()
+            1
 
-        >>> cursor.backtrack()
-        3
+        ::
 
-    ::
+            >>> cursor.backtrack()
+            3
 
-        >>> next(cursor)
-        3
+        ::
 
-    ::
+            >>> next(cursor)
+            3
 
-        >>> next(cursor)
-        1
+        ::
+
+            >>> next(cursor)
+            1
+
+    ..  container:: example
+
+        ::
+
+            >>> talea = rhythmmakertools.Talea(
+            ...    counts=(2, 1, 3, 2, 4, 1, 1),
+            ...    denominator=16,
+            ...    )
+            >>> cursor = consort.Cursor(talea)
+            >>> for _ in range(10):
+            ...     next(cursor)
+            ...
+            Duration(1, 8)
+            Duration(1, 16)
+            Duration(3, 16)
+            Duration(1, 8)
+            Duration(1, 4)
+            Duration(1, 16)
+            Duration(1, 16)
+            Duration(1, 8)
+            Duration(1, 16)
+            Duration(3, 16) 
 
     '''
 
