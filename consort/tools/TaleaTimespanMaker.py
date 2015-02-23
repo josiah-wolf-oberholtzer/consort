@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import collections
-from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
@@ -262,18 +261,12 @@ class TaleaTimespanMaker(TimespanMaker):
         initial_silence_talea = self.initial_silence_talea
         if not initial_silence_talea:
             initial_silence_talea = rhythmmakertools.Talea((0,), 1)
-#        initial_silence_talea = iter(initial_silence_talea)
-#        playing_talea = iter(self.playing_talea)
-#        playing_groupings = self._make_infinite_iterator(
-#            self.playing_groupings,
-#            )
         initial_silence_talea = consort.Cursor(initial_silence_talea)
         playing_talea = consort.Cursor(self.playing_talea)
         playing_groupings = consort.Cursor(self.playing_groupings)
         silence_talea = self.silence_talea
         if silence_talea is None:
             silence_talea = rhythmmakertools.Talea((0,), 1)
-#        silence_talea = iter(silence_talea)
         silence_talea = consort.Cursor(silence_talea)
 
         if self.seed is not None and 0 < self.seed:
@@ -409,6 +402,8 @@ class TaleaTimespanMaker(TimespanMaker):
         final_offset = durationtools.Offset(0)
         for context_name, music_specifier in music_specifiers.items():
 
+#            print('CONTEXT NAME:', context_name)
+
             if context_name not in counter:
                 counter[context_name] = 0
 
@@ -425,6 +420,8 @@ class TaleaTimespanMaker(TimespanMaker):
                 durations = [next(playing_talea) for _ in range(grouping)]
                 if self.padding:
                     start_offset += self.padding
+
+#                print('\tDURATIONS', durations)
 
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
@@ -444,8 +441,13 @@ class TaleaTimespanMaker(TimespanMaker):
                         break
                     valid_durations.append(duration)
                     current_offset += duration
+                if len(durations) != len(valid_durations):
+                    for _ in range(len(durations) - len(valid_durations)):
+                        playing_talea.backtrack()
                 if valid_durations and self.fuse_groups:
                     valid_durations = [sum(valid_durations)]
+
+#                print('\t\tVALID DURATIONS', valid_durations)
 
                 new_timespans = music_specifier(
                     durations=valid_durations,
@@ -457,63 +459,25 @@ class TaleaTimespanMaker(TimespanMaker):
                     voice_name=context_name,
                     )
 
-#                new_timespans = []
-#                for i, duration in enumerate(durations):
-#                    if maximum_offset < (current_offset + duration):
-#                        can_continue = False
-#                        if self.padding:
-#                            timespan = consort.SilentTimespan(
-#                                layer=layer,
-#                                start_offset=current_offset,
-#                                stop_offset=current_offset + self.padding,
-#                                voice_name=context_name,
-#                                )
-#                            new_timespans.append(timespan)
-#                        break
-#                    if self.padding:
-#                        if i == 0:
-#                            timespan = consort.SilentTimespan(
-#                                layer=layer,
-#                                start_offset=current_offset,
-#                                stop_offset=current_offset + duration,
-#                                voice_name=context_name,
-#                                )
-#                        elif i == len(durations) - 1:
-#                            timespan = consort.SilentTimespan(
-#                                layer=layer,
-#                                start_offset=current_offset,
-#                                stop_offset=current_offset + duration,
-#                                voice_name=context_name,
-#                                )
-#                        else:
-#                            timespan = self._make_performed_timespan(
-#                                layer=layer,
-#                                music_specifier=current_music_specifier,
-#                                start_offset=current_offset,
-#                                stop_offset=current_offset + duration,
-#                                voice_name=context_name,
-#                                )
-#                    else:
-#                        timespan = self._make_performed_timespan(
-#                            layer=layer,
-#                            music_specifier=current_music_specifier,
-#                            start_offset=current_offset,
-#                            stop_offset=current_offset + duration,
-#                            voice_name=context_name,
-#                            )
-#                    new_timespans.append(timespan)
-#                    current_offset += duration
-#                if new_timespans and self.fuse_groups:
-#                    new_timespans = self._fuse_timespans(new_timespans)
-
                 if all(isinstance(_, consort.SilentTimespan)
                     for _ in new_timespans):
                     new_timespans = []
                 timespan_inventory.extend(new_timespans)
+
                 if self.step_anchor is Left:
                     start_offset += silence_duration
                 else:
                     start_offset = current_offset + silence_duration
+
+                if stop_offset <= start_offset:
+                    can_continue = False
+
+                if not can_continue:
+                    if not valid_durations:
+                        silence_talea.backtrack()
+                    silence_talea.backtrack()
+                    playing_groupings.backtrack()
+
                 if not self.repeat:
                     break
                 counter[context_name] += 1
