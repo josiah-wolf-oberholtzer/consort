@@ -258,18 +258,23 @@ class TaleaTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        import consort
         initial_silence_talea = self.initial_silence_talea
         if not initial_silence_talea:
             initial_silence_talea = rhythmmakertools.Talea((0,), 1)
-        initial_silence_talea = iter(initial_silence_talea)
-        playing_talea = iter(self.playing_talea)
-        playing_groupings = self._make_infinite_iterator(
-            self.playing_groupings,
-            )
+#        initial_silence_talea = iter(initial_silence_talea)
+#        playing_talea = iter(self.playing_talea)
+#        playing_groupings = self._make_infinite_iterator(
+#            self.playing_groupings,
+#            )
+        initial_silence_talea = consort.Cursor(initial_silence_talea)
+        playing_talea = consort.Cursor(self.playing_talea)
+        playing_groupings = consort.Cursor(self.playing_groupings)
         silence_talea = self.silence_talea
         if silence_talea is None:
             silence_talea = rhythmmakertools.Talea((0,), 1)
-        silence_talea = iter(silence_talea)
+#        silence_talea = iter(silence_talea)
+        silence_talea = consort.Cursor(silence_talea)
 
         if self.seed is not None and 0 < self.seed:
             for _ in range(self.seed):
