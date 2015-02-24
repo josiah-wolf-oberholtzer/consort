@@ -203,6 +203,29 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
                 result.extend(default)
         return result
 
+    def __illustrate__(self, divisions=None):
+        r'''Illustrates composite rhythm-maker.
+
+        Returns LilyPond file.
+        '''
+        divisions = divisions or [
+            (3, 8),
+            (4, 8),
+            (3, 16),
+            (4, 16),
+            (5, 8),
+            (2, 4),
+            (5, 16),
+            (2, 8),
+            (7, 8),
+            ]
+        selections = self(divisions)
+        lilypond_file = rhythmmakertools.make_lilypond_file(
+            selections,
+            divisions,
+            )
+        return lilypond_file
+
     ### PUBLIC METHODS ###
 
     def new(
