@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import durationtools
-from abjad.tools import timespantools
+from abjad.tools import markuptools
 from abjad.tools import mathtools
+from abjad.tools import timespantools
 
 
 class PerformedTimespan(timespantools.Timespan):
@@ -116,6 +117,36 @@ class PerformedTimespan(timespantools.Timespan):
             if hasattr(expr, 'voice_name'):
                 return self.voice_name < expr.voice_name
         return False
+
+    ### PRIVATE METHODS ###
+
+    def _as_postscript(
+        self,
+        postscript_x_offset,
+        postscript_y_offset,
+        postscript_scale,
+        ):
+        start = (float(self.start_offset) * postscript_scale)
+        start -= postscript_x_offset
+        stop = (float(self.stop_offset) * postscript_scale)
+        stop -= postscript_x_offset
+        ps = markuptools.Postscript()
+        ps = ps.moveto(start, postscript_y_offset)
+        ps = ps.lineto(stop, postscript_y_offset)
+        ps = ps.stroke()
+        ps = ps.moveto(start, postscript_y_offset + 0.75)
+        ps = ps.lineto(start, postscript_y_offset - 0.75)
+        ps = ps.stroke()
+        ps = ps.moveto(stop, postscript_y_offset + 0.75)
+        ps = ps.lineto(stop, postscript_y_offset - 0.75)
+        ps = ps.stroke()
+        if self.layer is not None:
+            ps = ps.moveto(start, postscript_y_offset)
+            ps = ps.rmoveto(0.25, 0.5)
+            #ps = ps.scale(0.8, 0.8)
+            ps = ps.show(str(self.layer))
+            #ps = ps.scale(1.25, 1.25)
+        return ps
 
     ### PUBLIC PROPERTIES ###
 

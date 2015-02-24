@@ -58,6 +58,12 @@ class SilentTimespan(timespantools.Timespan):
         ps = ps.moveto(stop, postscript_y_offset + 0.75)
         ps = ps.lineto(stop, postscript_y_offset - 0.75)
         ps = ps.stroke()
+        if self.layer is not None:
+            ps = ps.moveto(start, postscript_y_offset)
+            ps = ps.rmoveto(0.25, 0.5)
+            #ps = ps.scale(0.8, 0.8)
+            ps = ps.show(str(self.layer))
+            #ps = ps.scale(1.25, 1.25)
         return ps
 
     ### PUBLIC PROPERTIES ###
