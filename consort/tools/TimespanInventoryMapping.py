@@ -6,7 +6,7 @@ class TimespanInventoryMapping(dict):
 
     ### SPECIAL METHODS ###
 
-    def __illustration__(self, range_=None, scale=None):
+    def __illustrate__(self, range_=None, scale=None):
         timespan_inventory = timespantools.TimespanInventory()
         for key, value in self.items():
             timespan_inventory.extend(value)
