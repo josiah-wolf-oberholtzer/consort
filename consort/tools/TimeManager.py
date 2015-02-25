@@ -397,7 +397,8 @@ class TimeManager(abctools.AbjadValueObject):
 
     @staticmethod
     def demultiplex_timespans(multiplexed_timespans):
-        demultiplexed_timespans = {}
+        import consort
+        demultiplexed_timespans = consort.TimespanInventoryMapping()
         for timespan in multiplexed_timespans:
             voice_name, layer = timespan.voice_name, timespan.layer
             if voice_name not in demultiplexed_timespans:
