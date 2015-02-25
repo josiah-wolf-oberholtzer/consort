@@ -106,6 +106,9 @@ class Cursor(abctools.AbjadValueObject):
         while True:
             yield self.next()
 
+    def __next__(self):
+        return self.next()
+
     ### PUBLIC METHODS ###
 
     def backtrack(self):
