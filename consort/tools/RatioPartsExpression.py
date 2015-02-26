@@ -79,7 +79,7 @@ class RatioPartsExpression(abctools.AbjadObject):
         if isinstance(parts, int):
             parts = (parts,)
         assert all(0 <= _ < len(ratio) for _ in parts)
-        parts = tuple(parts)
+        parts = tuple(sorted(set(parts)))
         self._parts = parts
         if timespan is not None:
             assert isinstance(timespan, timespantools.Timespan)
