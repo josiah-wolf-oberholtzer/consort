@@ -48,8 +48,10 @@ class TimespanMaker(abctools.AbjadValueObject):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanInventory()
+        if not isinstance(timespan_inventory, timespantools.TimespanInventory):
+            timespan_inventory = timespantools.TimespanInventory(
+                timespan_inventory,
+                )
         if target_timespan is None:
             if timespan_inventory:
                 target_timespan = timespan_inventory.timespan
