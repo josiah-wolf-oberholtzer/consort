@@ -248,11 +248,11 @@ def test_AbsolutePitchHandler_04():
             ),
         pitch_operation_specifier=consort.PitchOperationSpecifier(
             pitch_operations=(
-                consort.PitchOperation(
+                pitchtools.PitchOperation(
                     pitchtools.Transposition(1),
                     ),
                 None,
-                consort.PitchOperation(
+                pitchtools.PitchOperation(
                     pitchtools.Transposition(1),
                     ),
                 ),
@@ -657,7 +657,7 @@ def test_AbsolutePitchHandler_07():
         pitch_operation_specifier=consort.PitchOperationSpecifier(
             pitch_operations=(
                 None,
-                consort.PitchOperation(pitchtools.Transposition(1)),
+                pitchtools.PitchOperation(pitchtools.Transposition(1)),
                 None,
                 ),
             ratio=(1, 2, 1),

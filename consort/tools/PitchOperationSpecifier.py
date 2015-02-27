@@ -2,6 +2,7 @@
 import collections
 from abjad.tools import abctools
 from abjad.tools import mathtools
+from abjad.tools import pitchtools
 from abjad.tools import timespantools
 
 
@@ -13,12 +14,12 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         >>> import consort
         >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
         ...     pitch_operations=(
-        ...         consort.PitchOperation((
+        ...         pitchtools.PitchOperation((
         ...             pitchtools.Rotation(1),
         ...             pitchtools.Transposition(1),
         ...             )),
         ...         None,
-        ...         consort.PitchOperation((
+        ...         pitchtools.PitchOperation((
         ...             pitchtools.Rotation(-1),
         ...             pitchtools.Transposition(-1),
         ...             ))
@@ -28,7 +29,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         >>> print(format(pitch_operation_specifier))
         consort.tools.PitchOperationSpecifier(
             pitch_operations=(
-                consort.tools.PitchOperation(
+                pitchtools.PitchOperation(
                     operators=(
                         pitchtools.Rotation(
                             index=1,
@@ -40,7 +41,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         ),
                     ),
                 None,
-                consort.tools.PitchOperation(
+                pitchtools.PitchOperation(
                     operators=(
                         pitchtools.Rotation(
                             index=-1,
@@ -71,11 +72,10 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         pitch_operations=(None,),
         ratio=(1,),
         ):
-        import consort
         if not isinstance(pitch_operations, collections.Sequence):
                 pitch_operations = (pitch_operations,)
         prototype = (
-            consort.PitchOperation,
+            pitchtools.PitchOperation,
             type(None),
             )
         assert all(isinstance(x, prototype) for x in pitch_operations)
@@ -99,7 +99,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(0, 1),
                         stop_offset=durationtools.Offset(5, 2),
-                        annotation=consort.tools.PitchOperation(
+                        annotation=pitchtools.PitchOperation(
                             operators=(
                                 pitchtools.Rotation(
                                     index=1,
@@ -118,7 +118,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                     timespantools.AnnotatedTimespan(
                         start_offset=durationtools.Offset(15, 2),
                         stop_offset=durationtools.Offset(10, 1),
-                        annotation=consort.tools.PitchOperation(
+                        annotation=pitchtools.PitchOperation(
                             operators=(
                                 pitchtools.Rotation(
                                     index=-1,
