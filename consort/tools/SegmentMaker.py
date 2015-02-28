@@ -175,10 +175,10 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self):
+    def __call__(self, score_context_name=None, verbose=True):
         import consort
         segment_session = consort.SegmentSession(segment_maker=self)
-        with systemtools.Timer('\ttotal:', 'TimeManager:'):
+        with systemtools.Timer('\ttotal:', 'TimeManager:', verbose=verbose):
             segment_session = consort.TimeManager.execute(
                 discard_final_silence=self.discard_final_silence,
                 permitted_time_signatures=self.permitted_time_signatures,
@@ -187,11 +187,13 @@ class SegmentMaker(makertools.SegmentMaker):
                 settings=self.settings or (),
                 desired_duration=self.desired_duration,
                 timespan_quantization=self.timespan_quantization,
+                verbose=verbose,
                 )
         with systemtools.ForbidUpdate(segment_session.score):
             with systemtools.Timer(
                 enter_message='GraceHandler:',
                 exit_message='\ttotal:',
+                verbose=verbose,
                 ):
                 consort.GraceHandler._process_session(
                     segment_session,
@@ -199,15 +201,19 @@ class SegmentMaker(makertools.SegmentMaker):
             with systemtools.Timer(
                 enter_message='PitchHandler:',
                 exit_message='\ttotal:',
+                verbose=verbose,
                 ):
                 consort.PitchHandler._process_session(segment_session)
             with systemtools.Timer(
                 enter_message='AttachmentHandler:',
                 exit_message='\ttotal:',
+                verbose=verbose,
                 ):
                 consort.AttachmentHandler._process_session(segment_session)
         lilypond_file = self.make_lilypond_file()
         score = self.configure_score(segment_session.score)
+        if score_context_name:
+            score.context_name = score_context_name
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
@@ -215,8 +221,9 @@ class SegmentMaker(makertools.SegmentMaker):
         with systemtools.Timer(
             enter_message='Checking for wellformedness violations:',
             exit_message='\ttotal:',
+            verbose=verbose,
             ):
-            self.validate_score(score)
+            self.validate_score(score, verbose=verbose)
         return lilypond_file
 
     def __illustrate__(self):
@@ -367,11 +374,12 @@ class SegmentMaker(makertools.SegmentMaker):
         return lilypond_file
 
     @staticmethod
-    def validate_score(score):
+    def validate_score(score, verbose=True):
         manager = systemtools.WellformednessManager(expr=score)
         triples = manager()
         for current_violators, current_total, current_check in triples:
-            print('\t', current_violators, current_total, current_check)
+            if verbose:
+                print('\t', current_violators, current_total, current_check)
         if current_violators:
             raise AssertionError
 

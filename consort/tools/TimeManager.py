@@ -469,12 +469,14 @@ class TimeManager(abctools.AbjadValueObject):
         score_template=None,
         settings=None,
         timespan_quantization=None,
+        verbose=True,
         ):
         score = score_template()
         multiplexed_timespans = timespantools.TimespanInventory()
         with systemtools.Timer(
             enter_message='\tpopulating independent timespans:',
             exit_message='\t\ttotal:',
+            verbose=verbose,
             ):
             meters, meter_offsets, multiplexed_timespans = \
                 TimeManager.populate_independent_timespans(
@@ -486,10 +488,12 @@ class TimeManager(abctools.AbjadValueObject):
                     settings,
                     desired_duration,
                     timespan_quantization,
+                    verbose=verbose,
                     )
         with systemtools.Timer(
             enter_message='\tpopulating dependent timespans:',
             exit_message='\t\ttotal:',
+            verbose=verbose,
             ):
             demultiplexed_timespans = TimeManager.populate_dependent_timespans(
                 meter_offsets,
@@ -498,8 +502,12 @@ class TimeManager(abctools.AbjadValueObject):
                 score_template,
                 settings,
                 desired_duration,
+                verbose=verbose,
                 )
-        with systemtools.Timer('\tpopulated silent timespans:'):
+        with systemtools.Timer(
+            '\tpopulated silent timespans:',
+            verbose=verbose,
+            ):
             demultiplexed_timespans = TimeManager.populate_silent_timespans(
                 demultiplexed_timespans,
                 meter_offsets,
@@ -507,23 +515,35 @@ class TimeManager(abctools.AbjadValueObject):
                 score_template,
                 )
 
-        with systemtools.Timer('\tvalidated timespans:'):
+        with systemtools.Timer(
+            '\tvalidated timespans:',
+            verbose=verbose,
+            ):
             TimeManager.validate_timespans(demultiplexed_timespans)
 
-        with systemtools.Timer('\trewrote meters:'):
+        with systemtools.Timer(
+            '\trewrote meters:',
+            verbose=verbose,
+            ):
             TimeManager.rewrite_meters(
                 demultiplexed_timespans,
                 meters,
                 )
 
-        with systemtools.Timer('\tpopulated score:'):
+        with systemtools.Timer(
+            '\tpopulated score:',
+            verbose=verbose,
+            ):
             score = TimeManager.populate_score(
                 demultiplexed_timespans,
                 meters,
                 score,
                 )
 
-        with systemtools.Timer('\tcollected attack points: '):
+        with systemtools.Timer(
+            '\tcollected attack points: ',
+            verbose=verbose,
+            ):
             attack_point_map = TimeManager.collect_attack_points(score)
 
         segment_session.attack_point_map = attack_point_map
@@ -1057,8 +1077,12 @@ class TimeManager(abctools.AbjadValueObject):
         score_template,
         settings,
         desired_duration,
+        verbose=True,
         ):
-        with systemtools.Timer('\t\tpopulated timespans:'):
+        with systemtools.Timer(
+            '\t\tpopulated timespans:',
+            verbose=verbose,
+            ):
             TimeManager.populate_multiplexed_timespans(
                 dependent=True,
                 score=score,
@@ -1067,25 +1091,43 @@ class TimeManager(abctools.AbjadValueObject):
                 desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
                 )
-        with systemtools.Timer('\t\tdemultiplexed timespans:'):
+        with systemtools.Timer(
+            '\t\tdemultiplexed timespans:',
+            verbose=verbose,
+            ):
             demultiplexed_timespans = TimeManager.demultiplex_timespans(
                 multiplexed_timespans)
-        with systemtools.Timer('\t\tsplit timespans:'):
+        with systemtools.Timer(
+            '\t\tsplit timespans:',
+            verbose=verbose,
+            ):
             TimeManager.split_demultiplexed_timespans(
                 meter_offsets,
                 demultiplexed_timespans,
                 )
-        with systemtools.Timer('\t\tpruned short timespans:'):
+        with systemtools.Timer(
+            '\t\tpruned short timespans:',
+            verbose=verbose,
+            ):
             for voice_name, timespans in demultiplexed_timespans.items():
                 TimeManager.prune_short_timespans(timespans)
-        with systemtools.Timer('\t\tpruned malformed timespans:'):
+        with systemtools.Timer(
+            '\t\tpruned malformed timespans:',
+            verbose=verbose,
+            ):
             for voice_name, timespans in demultiplexed_timespans.items():
                 TimeManager.prune_malformed_timespans(timespans)
-        with systemtools.Timer('\t\tconsolidated timespans:'):
+        with systemtools.Timer(
+            '\t\tconsolidated timespans:',
+            verbose=verbose,
+            ):
             TimeManager.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
                 )
-        with systemtools.Timer('\t\tinscribed timespans:'):
+        with systemtools.Timer(
+            '\t\tinscribed timespans:',
+            verbose=verbose,
+            ):
             TimeManager.inscribe_demultiplexed_timespans(
                 demultiplexed_timespans,
                 score,
@@ -1102,8 +1144,12 @@ class TimeManager(abctools.AbjadValueObject):
         settings,
         desired_duration,
         timespan_quantization,
+        verbose=True,
         ):
-        with systemtools.Timer('\t\tpopulated timespans:'):
+        with systemtools.Timer(
+            '\t\tpopulated timespans:',
+            verbose=verbose,
+            ):
             TimeManager.populate_multiplexed_timespans(
                 dependent=False,
                 score=score,
@@ -1113,40 +1159,67 @@ class TimeManager(abctools.AbjadValueObject):
                 timespan_inventory=multiplexed_timespans,
                 timespan_quantization=timespan_quantization,
                 )
-        with systemtools.Timer('\t\tfound meters:'):
+        with systemtools.Timer(
+            '\t\tfound meters:',
+            verbose=verbose,
+            ):
             meters = TimeManager.find_meters(
                 permitted_time_signatures=permitted_time_signatures,
                 desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
                 )
         meter_offsets = TimeManager.meters_to_offsets(meters)
-        with systemtools.Timer('\t\tdemultiplexed timespans:'):
+        with systemtools.Timer(
+            '\t\tdemultiplexed timespans:',
+            verbose=verbose,
+            ):
             demultiplexed_timespans = TimeManager.demultiplex_timespans(
                 multiplexed_timespans)
-        with systemtools.Timer('\t\tsplit timespans:'):
+        with systemtools.Timer(
+            '\t\tsplit timespans:',
+            verbose=verbose,
+            ):
             TimeManager.split_demultiplexed_timespans(
                 meter_offsets,
                 demultiplexed_timespans,
                 )
         # TODO: Determine best place for malformed timespan pruning.
-        with systemtools.Timer('\t\tpruned malformed timespans:'):
+        with systemtools.Timer(
+            '\t\tpruned malformed timespans:',
+            verbose=verbose,
+            ):
             for voice_name, timespans in demultiplexed_timespans.items():
                 TimeManager.prune_malformed_timespans(timespans)
-        with systemtools.Timer('\t\tconsolidated timespans:'):
+        with systemtools.Timer(
+            '\t\tconsolidated timespans:',
+            verbose=verbose,
+            ):
             TimeManager.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
                 )
-        with systemtools.Timer('\t\tinscribed timespans:'):
+        with systemtools.Timer(
+            '\t\tinscribed timespans:',
+            verbose=verbose,
+            ):
             TimeManager.inscribe_demultiplexed_timespans(
                 demultiplexed_timespans,
                 score,
                 )
-        with systemtools.Timer('\t\tmultiplexed timespans:'):
+        with systemtools.Timer(
+            '\t\tmultiplexed timespans:',
+            verbose=verbose,
+            ):
             multiplexed_timespans = TimeManager.multiplex_timespans(
                 demultiplexed_timespans)
-        with systemtools.Timer('\t\tpruned short timespans:'):
+        with systemtools.Timer(
+            '\t\tpruned short timespans:',
+            verbose=verbose,
+            ):
             TimeManager.prune_short_timespans(multiplexed_timespans)
-        with systemtools.Timer('\t\tpruned meters:'):
+        with systemtools.Timer(
+            '\t\tpruned meters:',
+            verbose=verbose,
+            ):
             meters = TimeManager.prune_meters(
                 discard_final_silence,
                 meters,
