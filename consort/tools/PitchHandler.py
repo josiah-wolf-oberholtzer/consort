@@ -93,7 +93,7 @@ class PitchHandler(HashCachingObject):
                     pitch = pitch.transpose(deviation)
                     pitch = pitchtools.NamedPitch(pitch)
             elif isinstance(deviation, pitchtools.NamedInterval):
-                pitch = pitchtools.transpose(deviation)
+                pitch = pitch.transpose(deviation)
         return pitch
 
     @staticmethod
