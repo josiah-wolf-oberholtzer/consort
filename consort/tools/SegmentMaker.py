@@ -223,8 +223,8 @@ class SegmentMaker(makertools.SegmentMaker):
             self.validate_score(score, verbose=verbose)
         return lilypond_file
 
-    def __illustrate__(self):
-        return self()
+    def __illustrate__(self, verbose=True):
+        return self(verbose=verbose)
 
     ### PRIVATE PROPERTIES ###
 

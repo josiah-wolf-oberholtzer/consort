@@ -74,10 +74,11 @@ class PitchHandler(HashCachingObject):
         ):
         if self.logical_tie_expressions:
             logical_tie_expression = self.logical_tie_expressions[seed]
-            logical_tie_expression(
-                logical_tie,
-                pitch_range=pitch_range,
-                )
+            if logical_tie_expression is not None:
+                logical_tie_expression(
+                    logical_tie,
+                    pitch_range=pitch_range,
+                    )
 
     def _apply_deviation(
         self,
@@ -272,7 +273,7 @@ class PitchHandler(HashCachingObject):
     def _initialize_logical_tie_expressions(self, logical_tie_expressions):
         import consort
         if logical_tie_expressions is not None:
-            prototype = consort.LogicalTieExpression
+            prototype = (consort.LogicalTieExpression, type(None))
             assert logical_tie_expressions, logical_tie_expressions
             assert all(isinstance(_, prototype)
                 for _ in logical_tie_expressions), \
