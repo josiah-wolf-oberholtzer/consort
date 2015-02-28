@@ -14,7 +14,6 @@ from abjad.tools import markuptools
 from abjad.tools import scoretools
 from abjad.tools import spannertools
 from abjad.tools import systemtools
-from abjad.tools import templatetools
 from abjad.tools import timespantools
 from experimental.tools import makertools
 
@@ -175,7 +174,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, score_context_name=None, verbose=True):
+    def __call__(self, verbose=True):
         import consort
         segment_session = consort.SegmentSession(segment_maker=self)
         with systemtools.Timer('\ttotal:', 'TimeManager:', verbose=verbose):
@@ -212,8 +211,6 @@ class SegmentMaker(makertools.SegmentMaker):
                 consort.AttachmentHandler._process_session(segment_session)
         lilypond_file = self.make_lilypond_file()
         score = self.configure_score(segment_session.score)
-        if score_context_name:
-            score.context_name = score_context_name
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
