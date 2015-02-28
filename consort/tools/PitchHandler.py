@@ -87,10 +87,13 @@ class PitchHandler(HashCachingObject):
         ):
         if self.deviations:
             deviation = self.deviations[seed]
-            if deviation != 0:
-                pitch = pitchtools.NumberedPitch(pitch)
-                pitch = pitch.transpose(deviation)
-                pitch = pitchtools.NamedPitch(pitch)
+            if isinstance(deviation, pitchtools.NumberedInterval):
+                if deviation != 0:
+                    pitch = pitchtools.NumberedPitch(pitch)
+                    pitch = pitch.transpose(deviation)
+                    pitch = pitchtools.NamedPitch(pitch)
+            elif isinstance(deviation, pitchtools.NamedInterval):
+                pitch = pitchtools.transpose(deviation)
         return pitch
 
     @staticmethod
@@ -248,8 +251,18 @@ class PitchHandler(HashCachingObject):
             if not isinstance(deviations, collections.Sequence):
                 deviations = (deviations,)
             assert len(deviations)
-            deviations = (pitchtools.NumberedInterval(_) for _ in deviations)
-            deviations = datastructuretools.CyclicTuple(deviations)
+            intervals = []
+            for interval in deviations:
+                if isinstance(interval, (int, float)):
+                    interval = pitchtools.NumberedInterval(interval)
+                elif isinstance(interval, str):
+                    interval = pitchtools.NamedInterval(interval)
+                elif isinstance(interval, pitchtools.Interval):
+                    pass
+                else:
+                    interval = pitchtools.NumberedInterval(interval)
+                intervals.append(interval)
+            deviations = datastructuretools.CyclicTuple(intervals)
         self._deviations = deviations
 
     def _initialize_forbid_repetitions(self, forbid_repetitions):
