@@ -25,7 +25,7 @@ def make_annotated_division(division):
     if all(isinstance(_, Rest) for _ in leaves):
         manager = override(annotated_division)
         manager.tuplet_bracket.dash_fraction = 0.1
-        manager.tuplet_bracket.dash_period = 2
+        manager.tuplet_bracket.dash_period = 1.5
         manager.tuplet_bracket.style = \
             schemetools.SchemeSymbol('dashed-line')
     return annotated_division
