@@ -2,44 +2,53 @@
 from abjad import *
 
 
+def make_annotated_phrase(phrase):
+    duration = inspect_(phrase).get_duration()
+    if duration != 1:
+        note = Note("c'''1")
+        annotated_phrase = Tuplet(duration, (note,))
+    else:
+        note = scoretools.Note("c'''2")
+        annotated_phrase = Tuplet(2, (note,))
+    return annotated_phrase
+
+
+def make_annotated_division(division):
+    duration = inspect_(division).get_duration()
+    if duration != 1:
+        note = Note("c'''1")
+        annotated_division = Tuplet(duration, (note,))
+    else:
+        note = scoretools.Note("c'''2")
+        annotated_division = Tuplet(2, (note,))
+    leaves = division.select_leaves()
+    if all(isinstance(_, Rest) for _ in leaves):
+        manager = override(annotated_division)
+        manager.tuplet_bracket.dash_fraction = 0.1
+        manager.tuplet_bracket.dash_period = 2
+        manager.tuplet_bracket.style = \
+            schemetools.SchemeSymbol('dashed-line')
+    return annotated_division
+
+
 def annotate(context):
-    annotated_context = mutate(context).copy()
-    annotated_context.is_simultaneous = True
-    annotation_voices = []
+    #annotated_context = mutate(context).copy()
+    annotated_context = context
+    context_mapping = {}
     for voice in iterate(annotated_context).by_class(Voice):
-        override(voice).tuplet_bracket.direction = Down
-        annotation_voice = Voice()
-        manager = override(annotation_voice)
-        manager.dots.stencil = False
-        manager.flag.stencil = False
-        manager.note_column.ignore_collision = True
-        manager.note_head.no_ledgers = True
-        manager.note_head.stencil = False
-        manager.stem.stencil = False
-        manager.tuplet_bracket.direction = Up
-        manager.tuplet_bracket.full_length_to_extent = True
-        manager.tuplet_bracket.positions = schemetools.SchemePair(5, 5)
-        manager.tuplet_number.stencil = False
-        set_(annotation_voice).tuplet_full_length = True
+        division_voice = Voice(context_name='AnnotatedDivisionsVoice')
+        phrase_voice = Voice(context_name='AnnotatedPhrasesVoice')
         for phrase in voice:
-            annotation_phrase = Container()
             for division in phrase:
-                duration = inspect_(division).get_duration()
-                if duration != 1:
-                    note = Note(0, 1)
-                    annotation_division = Tuplet(duration, (note,))
-                else:
-                    note = scoretools.Note(0, (1, 2))
-                    annotation_division = Tuplet(2, (note,))
-                leaves = division.select_leaves()
-                if all(isinstance(_, Rest) for _ in leaves):
-                    manager = override(annotation_division)
-                    manager.tuplet_bracket.dash_fraction = 0.25
-                    manager.tuplet_bracket.dash_period = 1
-                    manager.tuplet_bracket.style = \
-                        schemetools.SchemeSymbol('dashed-line')
-                annotation_phrase.append(annotation_division)
-            annotation_voice.append(annotation_phrase)
-        annotation_voices.append(annotation_voice)
-    annotated_context.extend(annotation_voices)
-    return annotated_context
+                annotation_division = make_annotated_division(division)
+                division_voice.append(annotation_division)
+            annotation_phrase = make_annotated_phrase(phrase)
+            phrase_voice.append(annotation_phrase)
+        parent = inspect_(voice).get_parentage().parent
+        if parent not in context_mapping:
+            context_mapping[parent] = []
+        context_mapping[parent].append(division_voice)
+        context_mapping[parent].append(phrase_voice)
+    for context, annotation_voices in context_mapping.items():
+        context.is_simultaneous = True
+        context.extend(annotation_voices)
