@@ -2331,13 +2331,6 @@ class SegmentMaker(makertools.SegmentMaker):
         self._tempo = tempo
 
     @property
-    def timespan(self):
-        return timespantools.Timespan(
-            start_offset=0,
-            stop_offset=self.desired_duration,
-            )
-
-    @property
     def timespan_quantization(self):
         r'''Gets and sets segment maker timespan quantization.
 
