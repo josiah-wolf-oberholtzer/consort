@@ -12,7 +12,7 @@ score_template = templatetools.StringOrchestraScoreTemplate(
     cello_count=1,
     contrabass_count=0,
     )
-target_timespan = timespantools.Timespan(0, 4)
+segment_timespan = timespantools.Timespan(0, 4)
 timespan_maker = consort.TaleaTimespanMaker(
     playing_talea=rhythmmakertools.Talea(
         counts=(1,),
@@ -32,7 +32,7 @@ def test_MusicSetting_01():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -84,7 +84,7 @@ def test_MusicSetting_02():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -118,7 +118,7 @@ def test_MusicSetting_03():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -166,7 +166,7 @@ def test_MusicSetting_04():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -207,7 +207,7 @@ def test_MusicSetting_05():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -248,7 +248,7 @@ def test_MusicSetting_06():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -282,7 +282,7 @@ def test_MusicSetting_07():
     result = music_setting(
         layer=layer,
         score_template=score_template,
-        target_timespan=target_timespan,
+        segment_timespan=segment_timespan,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(

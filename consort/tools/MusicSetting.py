@@ -4,7 +4,6 @@ import collections
 from abjad import inspect_
 from abjad import new
 from abjad.tools import abctools
-from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
 
@@ -59,7 +58,7 @@ class MusicSetting(abctools.AbjadValueObject):
     ::
 
         >>> layer = 1
-        >>> target_timespan = timespantools.Timespan(1, 2)
+        >>> segment_timespan = timespantools.Timespan(1, 2)
         >>> from abjad.tools import templatetools
         >>> score_template = templatetools.StringOrchestraScoreTemplate(
         ...     violin_count=2,
@@ -70,7 +69,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> timespan_inventory = red_setting(
         ...     layer=layer,
         ...     score_template=score_template,
-        ...     target_timespan=target_timespan,
+        ...     segment_timespan=segment_timespan,
         ...     )
 
     ::
@@ -178,7 +177,7 @@ class MusicSetting(abctools.AbjadValueObject):
         layer=None,
         score=None,
         score_template=None,
-        target_timespan=None,
+        segment_timespan=None,
         timespan_inventory=None,
         timespan_quantization=None,
         ):
@@ -193,7 +192,7 @@ class MusicSetting(abctools.AbjadValueObject):
             score=score,
             )
         target_timespans = self.resolve_target_timespans(
-            target_timespan,
+            segment_timespan,
             timespan_quantization,
             )
         for target_timespan in target_timespans:
@@ -271,23 +270,23 @@ class MusicSetting(abctools.AbjadValueObject):
             music_specifiers[context_name] = music_specifier
         return music_specifiers
 
-    def resolve_target_timespans(self, target_timespan, timespan_quantization):
+    def resolve_target_timespans(self, segment_timespan, timespan_quantization):
         import consort
-        assert isinstance(target_timespan, timespantools.Timespan)
+        assert isinstance(segment_timespan, timespantools.Timespan)
         if self.timespan_identifier is None:
             target_timespans = timespantools.TimespanInventory([
-                target_timespan,
+                segment_timespan,
                 ])
         elif isinstance(self.timespan_identifier, timespantools.Timespan):
-            target_timespans = target_timespan & self.timespan_identifier
+            target_timespans = segment_timespan & self.timespan_identifier
         else:
             if isinstance(self.timespan_identifier, consort.RatioPartsExpression):
-                mask_timespans = self.timespan_identifier(target_timespan)
+                mask_timespans = self.timespan_identifier(segment_timespan)
             else:
                 mask_timespans = self.timespan_identifier
             target_timespans = timespantools.TimespanInventory()
             for mask_timespan in mask_timespans:
-                available_timespans = target_timespan & mask_timespan
+                available_timespans = segment_timespan & mask_timespan
                 target_timespans.extend(available_timespans)
         if timespan_quantization:
             target_timespans.round_offsets(

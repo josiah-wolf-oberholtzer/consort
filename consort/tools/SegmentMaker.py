@@ -1602,7 +1602,7 @@ class SegmentMaker(makertools.SegmentMaker):
         timespan_inventory=None,
         timespan_quantization=None,
         ):
-        target_timespan = timespantools.Timespan(0, desired_duration)
+        segment_timespan = timespantools.Timespan(0, desired_duration)
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         independent_settings = [setting for setting in settings
@@ -1622,7 +1622,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 layer=layer,
                 score=score,
                 score_template=score_template,
-                target_timespan=target_timespan,
+                segment_timespan=segment_timespan,
                 timespan_inventory=timespan_inventory,
                 timespan_quantization=timespan_quantization,
                 )
