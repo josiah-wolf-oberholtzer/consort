@@ -136,16 +136,20 @@ class SegmentMaker(makertools.SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_discard_final_silence',
+        '_attack_point_map',
         '_desired_duration_in_seconds',
-        '_omit_stylesheets',
+        '_discard_final_silence',
         '_is_final_segment',
+        '_meters',
+        '_omit_stylesheets',
         '_permitted_time_signatures',
         '_rehearsal_mark',
+        '_score',
         '_score_template',
         '_settings',
         '_tempo',
         '_timespan_quantization',
+        '_voicewise_timespans',
         )
 
     ### INITIALIZER ###
@@ -178,11 +182,13 @@ class SegmentMaker(makertools.SegmentMaker):
         self.tempo = tempo
         self.timespan_quantization = timespan_quantization
         self.settings = settings
+        self._reset()
 
     ### SPECIAL METHODS ###
 
     def __call__(self, verbose=True):
         import consort
+        self._reset()
         segment_session = consort.SegmentSession(segment_maker=self)
         segment_session.score = self.score_template()
         with systemtools.Timer('\ttotal:', 'SegmentMaker:', verbose=verbose):
@@ -233,6 +239,14 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __illustrate__(self, verbose=True):
         return self(verbose=verbose)
+
+    ### PRIVATE METHODS ###
+
+    def _reset(self):
+        self._attack_point_map = None
+        self._meters = None
+        self._score = None
+        self._voicewise_timespans = None
 
     ### PRIVATE PROPERTIES ###
 
@@ -2082,14 +2096,36 @@ class SegmentMaker(makertools.SegmentMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def discard_final_silence(self):
-        return self._discard_final_silence
+    def attack_point_map(self):
+        return self._attack_point_map
 
-    @discard_final_silence.setter
-    def discard_final_silence(self, discard_final_silence):
-        if discard_final_silence is not None:
-            discard_final_silence = bool(discard_final_silence)
-        self._discard_final_silence = discard_final_silence
+    @property
+    def meters(self):
+        return self._meters
+
+    @property
+    def score(self):
+        return self._score
+
+    @property
+    def voicewise_timespans(self):
+        return self._voicewise_timespans
+
+    @property
+    def desired_duration(self):
+        tempo = self.tempo
+        tempo_desired_duration_in_seconds = durationtools.Duration(
+            tempo.duration_to_milliseconds(tempo.duration),
+            1000,
+            )
+        desired_duration = durationtools.Duration((
+            self.desired_duration_in_seconds / tempo_desired_duration_in_seconds
+            ).limit_denominator(8))
+        desired_duration *= tempo.duration
+        count = desired_duration // durationtools.Duration(1, 8)
+        desired_duration = durationtools.Duration(count, 8)
+        assert 0 < desired_duration
+        return desired_duration
 
     @property
     def desired_duration_in_seconds(self):
@@ -2100,6 +2136,16 @@ class SegmentMaker(makertools.SegmentMaker):
         if desired_duration_in_seconds is not None:
             desired_duration_in_seconds = durationtools.Duration(desired_duration_in_seconds)
         self._desired_duration_in_seconds = desired_duration_in_seconds
+
+    @property
+    def discard_final_silence(self):
+        return self._discard_final_silence
+
+    @discard_final_silence.setter
+    def discard_final_silence(self, discard_final_silence):
+        if discard_final_silence is not None:
+            discard_final_silence = bool(discard_final_silence)
+        self._discard_final_silence = discard_final_silence
 
     @property
     def final_markup(self):
@@ -2146,6 +2192,12 @@ class SegmentMaker(makertools.SegmentMaker):
         if is_final_segment is not None:
             is_final_segment = bool(is_final_segment)
         self._is_final_segment = is_final_segment
+
+    @property
+    def measure_offsets(self):
+        measure_durations = [x.duration for x in self.time_signatures]
+        measure_offsets = mathtools.cumulative_sums(measure_durations)
+        return measure_offsets
 
     @property
     def omit_stylesheets(self):
@@ -2255,6 +2307,10 @@ class SegmentMaker(makertools.SegmentMaker):
         self._score_template = score_template
 
     @property
+    def segment_duration(self):
+        return sum(x.duration for x in self.time_signatures)
+
+    @property
     def settings(self):
         return tuple(self._settings)
 
@@ -2287,22 +2343,6 @@ class SegmentMaker(makertools.SegmentMaker):
         return stylesheet_file_paths
 
     @property
-    def desired_duration(self):
-        tempo = self.tempo
-        tempo_desired_duration_in_seconds = durationtools.Duration(
-            tempo.duration_to_milliseconds(tempo.duration),
-            1000,
-            )
-        desired_duration = durationtools.Duration((
-            self.desired_duration_in_seconds / tempo_desired_duration_in_seconds
-            ).limit_denominator(8))
-        desired_duration *= tempo.duration
-        count = desired_duration // durationtools.Duration(1, 8)
-        desired_duration = durationtools.Duration(count, 8)
-        assert 0 < desired_duration
-        return desired_duration
-
-    @property
     def tempo(self):
         r'''Gets and sets segment maker tempo.
 
@@ -2329,6 +2369,13 @@ class SegmentMaker(makertools.SegmentMaker):
             if not isinstance(tempo, indicatortools.Tempo):
                 tempo = indicatortools.Tempo(tempo)
         self._tempo = tempo
+
+    @property
+    def time_signatures(self):
+        return (
+            meter.implied_time_signature
+            for meter in self.meters
+            )
 
     @property
     def timespan_quantization(self):

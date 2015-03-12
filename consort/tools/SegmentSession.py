@@ -15,7 +15,6 @@ class SegmentSession(abctools.AbjadValueObject):
         'score',
         'segment_maker',
         'voicewise_timespans',
-        'unrewritten_score',
         )
 
     ### INITIALIZER ###
@@ -29,7 +28,6 @@ class SegmentSession(abctools.AbjadValueObject):
         self.score = None
         self.segment_maker = segment_maker
         self.voicewise_timespans = None
-        self.unrewritten_score = None
 
     ### PRIVATE PROPERTIES ###
 
