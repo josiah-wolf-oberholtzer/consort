@@ -188,8 +188,11 @@ class MusicSetting(abctools.AbjadValueObject):
             timespan_inventory = timespantools.TimespanInventory()
         if not self.music_specifiers:
             return timespan_inventory
-        music_specifiers = self._get_music_specifiers(score, score_template)
-        target_timespans = self._get_target_timespans(
+        music_specifiers = self.resolve_music_specifiers(
+            score_template,
+            score=score,
+            )
+        target_timespans = self.resolve_target_timespans(
             target_timespan,
             timespan_quantization,
             )
@@ -207,11 +210,30 @@ class MusicSetting(abctools.AbjadValueObject):
             return self.music_specifiers[item]
         return object.__getattribute__(self, item)
 
-    ### PRIVATE METHODS ###
+    ### PRIVATE PROPERTIES ###
 
-    def _get_music_specifiers(self, score, score_template):
+    @property
+    def _storage_format_specification(self):
+        manager = systemtools.StorageFormatManager
+        keyword_argument_names = manager.get_keyword_argument_names(self)
+        keyword_argument_names = list(keyword_argument_names)
+        keyword_argument_names.extend(sorted(self.music_specifiers))
+        return systemtools.StorageFormatSpecification(
+            self,
+            keyword_argument_names=keyword_argument_names
+            )
+
+    ### PUBLIC METHODS ###
+
+    def resolve_music_specifiers(
+        self,
+        score_template,
+        score=None,
+        ):
         import consort
         assert score_template is not None
+        if score is None:
+            score = score_template()
         all_abbreviations = score_template.context_name_abbreviations
         prototype = (
             consort.CompositeMusicSpecifier,
@@ -249,7 +271,7 @@ class MusicSetting(abctools.AbjadValueObject):
             music_specifiers[context_name] = music_specifier
         return music_specifiers
 
-    def _get_target_timespans(self, target_timespan, timespan_quantization):
+    def resolve_target_timespans(self, target_timespan, timespan_quantization):
         import consort
         assert isinstance(target_timespan, timespantools.Timespan)
         if self.timespan_identifier is None:
@@ -273,19 +295,6 @@ class MusicSetting(abctools.AbjadValueObject):
                 must_be_well_formed=True,
                 )
         return target_timespans
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        manager = systemtools.StorageFormatManager
-        keyword_argument_names = manager.get_keyword_argument_names(self)
-        keyword_argument_names = list(keyword_argument_names)
-        keyword_argument_names.extend(sorted(self.music_specifiers))
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names
-            )
 
     ### PUBLIC PROPERTIES ###
 

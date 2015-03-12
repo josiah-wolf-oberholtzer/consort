@@ -27,7 +27,7 @@ def test_SegmentMaker_discard_final_silence_01():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.15"
+        \version "2.19.16"
         \language "english"
 
         \score {
@@ -116,7 +116,7 @@ def test_SegmentMaker_discard_final_silence_02():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.15"
+        \version "2.19.16"
         \language "english"
 
         \score {
