@@ -915,10 +915,13 @@ class SegmentMaker(makertools.SegmentMaker):
         desired_duration=None,
         timespan_inventory=None,
         ):
+        import consort
         offset_counter = datastructuretools.TypedCounter(
             item_class=durationtools.Offset,
             )
         for timespan in timespan_inventory:
+            if isinstance(timespan, consort.SilentTimespan):
+                continue
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
         offset_counter[desired_duration] += 100
