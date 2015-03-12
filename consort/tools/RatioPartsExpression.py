@@ -42,7 +42,7 @@ class RatioPartsExpression(abctools.AbjadObject):
             >>> expression = consort.RatioPartsExpression(
             ...     ratio=(1, 2, 1),
             ...     parts=(0, 2),
-            ...     timespan=timespantools.Timespan(
+            ...     mask_timespan=timespantools.Timespan(
             ...          start_offset=(1, 4),
             ...          ),
             ...     )
@@ -63,15 +63,16 @@ class RatioPartsExpression(abctools.AbjadObject):
     __slots__ = (
         '_parts',
         '_ratio',
-        '_timespan',
+        '_mask_timespan',
         )
 
     ### INITIALIZER ###
 
-    def __init__(self,
+    def __init__(
+        self,
         parts=0,
         ratio=(1, 1),
-        timespan=None,
+        mask_timespan=None,
         ):
         if not isinstance(ratio, mathtools.Ratio):
             ratio = mathtools.Ratio(ratio)
@@ -81,9 +82,9 @@ class RatioPartsExpression(abctools.AbjadObject):
         assert all(0 <= _ < len(ratio) for _ in parts)
         parts = tuple(sorted(set(parts)))
         self._parts = parts
-        if timespan is not None:
-            assert isinstance(timespan, timespantools.Timespan)
-        self._timespan = timespan
+        if mask_timespan is not None:
+            assert isinstance(mask_timespan, timespantools.Timespan)
+        self._mask_timespan = mask_timespan
 
 
     ### SPECIAL METHODS ###
@@ -94,12 +95,16 @@ class RatioPartsExpression(abctools.AbjadObject):
         timespans = timespantools.TimespanInventory()
         for part in self.parts:
             timespans.append(divided_timespan[part])
-        if self.timespan is not None:
-            timespans & self.timespan
+        if self.mask_timespan is not None:
+            timespans & self.mask_timespan
         timespans.round_offsets((1, 16))
         return timespans
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def mask_timespan(self):
+        return self._mask_timespan
 
     @property
     def parts(self):
@@ -108,7 +113,3 @@ class RatioPartsExpression(abctools.AbjadObject):
     @property
     def ratio(self):
         return self._ratio
-
-    @property
-    def timespan(self):
-        return self._timespan
