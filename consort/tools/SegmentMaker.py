@@ -1569,6 +1569,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             multiplexed_timespans = SegmentMaker.multiplex_timespans(
                 demultiplexed_timespans)
+        # TODO: Why prune after consolidation?
         with systemtools.Timer(
             '\t\tpruned short timespans:',
             verbose=verbose,
