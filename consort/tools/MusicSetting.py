@@ -293,7 +293,7 @@ class MusicSetting(abctools.AbjadValueObject):
             for mask_timespan in mask_timespans:
                 available_timespans = segment_timespan & mask_timespan
                 target_timespans.extend(available_timespans)
-        if timespan_quantization:
+        if timespan_quantization is not None:
             target_timespans.round_offsets(
                 timespan_quantization,
                 must_be_well_formed=True,

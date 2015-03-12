@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
@@ -20,6 +21,7 @@ timespan_maker = consort.TaleaTimespanMaker(
         ),
     silence_talea=None,
     )
+timespan_quantization = durationtools.Duration(1, 16)
 
 
 def test_MusicSetting_01():
@@ -249,6 +251,7 @@ def test_MusicSetting_06():
         layer=layer,
         score_template=score_template,
         segment_timespan=segment_timespan,
+        timespan_quantization=timespan_quantization,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(
@@ -283,6 +286,7 @@ def test_MusicSetting_07():
         layer=layer,
         score_template=score_template,
         segment_timespan=segment_timespan,
+        timespan_quantization=timespan_quantization,
         )
 
     assert format(result) == systemtools.TestManager.clean_string(

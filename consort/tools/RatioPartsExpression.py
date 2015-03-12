@@ -86,7 +86,6 @@ class RatioPartsExpression(abctools.AbjadObject):
             assert isinstance(mask_timespan, timespantools.Timespan)
         self._mask_timespan = mask_timespan
 
-
     ### SPECIAL METHODS ###
 
     def __call__(self, timespan):
@@ -97,7 +96,6 @@ class RatioPartsExpression(abctools.AbjadObject):
             timespans.append(divided_timespan[part])
         if self.mask_timespan is not None:
             timespans & self.mask_timespan
-        timespans.round_offsets((1, 16))
         return timespans
 
     ### PUBLIC PROPERTIES ###

@@ -1597,6 +1597,8 @@ class SegmentMaker(makertools.SegmentMaker):
         timespan_quantization=None,
         ):
         segment_timespan = timespantools.Timespan(0, desired_duration)
+        if timespan_quantization is None:
+            timespan_quantization = durationtools.Duration(1, 16)
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
         independent_settings = [setting for setting in settings
