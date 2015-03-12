@@ -152,6 +152,7 @@ class MusicSetting(abctools.AbjadValueObject):
         prototype = (
             consort.tools.CompositeMusicSpecifier,
             consort.tools.MusicSpecifier,
+            str,
             type(None),
             )
         for music_specifier in music_specifiers.values():
@@ -270,7 +271,11 @@ class MusicSetting(abctools.AbjadValueObject):
             music_specifiers[context_name] = music_specifier
         return music_specifiers
 
-    def resolve_target_timespans(self, segment_timespan, timespan_quantization):
+    def resolve_target_timespans(
+        self,
+        segment_timespan,
+        timespan_quantization=None,
+        ):
         import consort
         assert isinstance(segment_timespan, timespantools.Timespan)
         if self.timespan_identifier is None:
