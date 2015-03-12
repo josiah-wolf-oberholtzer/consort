@@ -110,10 +110,10 @@ class GraceHandler(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     @staticmethod
-    def _process_session(segment_session):
+    def _process_session(segment_maker):
         import consort
         counter = collections.Counter()
-        attack_point_map = segment_session.attack_point_map
+        attack_point_map = segment_maker.attack_point_map
         for logical_tie in attack_point_map:
             music_specifier = \
                 consort.SegmentMaker.logical_tie_to_music_specifier(

@@ -71,9 +71,9 @@ class AttachmentHandler(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     @staticmethod
-    def _process_session(segment_session):
+    def _process_session(segment_maker):
         import consort
-        score = segment_session.score
+        score = segment_maker.score
         counter = collections.Counter()
         for voice in iterate(score).by_class(scoretools.Voice):
             for container in voice:

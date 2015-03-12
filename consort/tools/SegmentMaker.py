@@ -189,42 +189,30 @@ class SegmentMaker(makertools.SegmentMaker):
     def __call__(self, verbose=True):
         import consort
         self._reset()
-        segment_session = consort.SegmentSession(segment_maker=self)
-        segment_session.score = self.score_template()
+        self._score = self.score_template()
         with systemtools.Timer('\ttotal:', 'SegmentMaker:', verbose=verbose):
-            segment_session = consort.SegmentMaker.interpret_rhythms(
-                discard_final_silence=self.discard_final_silence,
-                permitted_time_signatures=self.permitted_time_signatures,
-                score_template=self.score_template,
-                segment_session=segment_session,
-                settings=self.settings or (),
-                desired_duration=self.desired_duration,
-                timespan_quantization=self.timespan_quantization,
-                verbose=verbose,
-                )
-        with systemtools.ForbidUpdate(segment_session.score):
+            self.interpret_rhythms(verbose=verbose)
+        with systemtools.ForbidUpdate(self.score):
             with systemtools.Timer(
                 enter_message='GraceHandler:',
                 exit_message='\ttotal:',
                 verbose=verbose,
                 ):
-                consort.GraceHandler._process_session(
-                    segment_session,
-                    )
+                consort.GraceHandler._process_session(self)
             with systemtools.Timer(
                 enter_message='PitchHandler:',
                 exit_message='\ttotal:',
                 verbose=verbose,
                 ):
-                consort.PitchHandler._process_session(segment_session)
+                consort.PitchHandler._process_session(self)
             with systemtools.Timer(
                 enter_message='AttachmentHandler:',
                 exit_message='\ttotal:',
                 verbose=verbose,
                 ):
-                consort.AttachmentHandler._process_session(segment_session)
+                consort.AttachmentHandler._process_session(self)
         lilypond_file = self.make_lilypond_file()
-        score = self.configure_score(segment_session.score)
+        score = self.configure_score(self.score)
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(score)
         lilypond_file.items.append(score_block)
@@ -838,59 +826,53 @@ class SegmentMaker(makertools.SegmentMaker):
         leaves = division.select_leaves()
         return all(isinstance(leaf, rest_prototype) for leaf in leaves)
 
-    @staticmethod
     def interpret_rhythms(
-        desired_duration=None,
-        discard_final_silence=None,
-        permitted_time_signatures=None,
-        score_template=None,
-        segment_session=None,
-        settings=None,
-        timespan_quantization=None,
+        self,
         verbose=True,
         ):
         multiplexed_timespans = timespantools.TimespanInventory()
-        score = segment_session.score
         with systemtools.Timer(
             enter_message='\tpopulating independent timespans:',
             exit_message='\t\ttotal:',
             verbose=verbose,
             ):
-            meters, meter_offsets, multiplexed_timespans = \
+            meters, measure_offsets, multiplexed_timespans = \
                 SegmentMaker.populate_independent_timespans(
-                    discard_final_silence,
+                    self.discard_final_silence,
                     multiplexed_timespans,
-                    permitted_time_signatures,
-                    score,
-                    score_template,
-                    settings,
-                    desired_duration,
-                    timespan_quantization,
+                    self.permitted_time_signatures,
+                    self.score,
+                    self.score_template,
+                    self.settings or (),
+                    self.desired_duration,
+                    self.timespan_quantization,
                     verbose=verbose,
                     )
+            self._meters = meters
         with systemtools.Timer(
             enter_message='\tpopulating dependent timespans:',
             exit_message='\t\ttotal:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = SegmentMaker.populate_dependent_timespans(
-                meter_offsets,
-                multiplexed_timespans,
-                score,
-                score_template,
-                settings,
-                desired_duration,
-                verbose=verbose,
-                )
+            demultiplexed_timespans = \
+                SegmentMaker.populate_dependent_timespans(
+                    self.measure_offsets,
+                    multiplexed_timespans,
+                    self.score,
+                    self.score_template,
+                    self.settings or (),
+                    self.desired_duration,
+                    verbose=verbose,
+                    )
         with systemtools.Timer(
             '\tpopulated silent timespans:',
             verbose=verbose,
             ):
             demultiplexed_timespans = SegmentMaker.populate_silent_timespans(
                 demultiplexed_timespans,
-                meter_offsets,
-                score,
-                score_template,
+                self.measure_offsets,
+                self.score,
+                self.score_template,
                 )
 
         with systemtools.Timer(
@@ -905,7 +887,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             SegmentMaker.rewrite_meters(
                 demultiplexed_timespans,
-                meters,
+                self.meters,
                 )
 
         with systemtools.Timer(
@@ -914,8 +896,8 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             score = SegmentMaker.populate_score(
                 demultiplexed_timespans,
-                meters,
-                score,
+                self.meters,
+                self.score,
                 )
 
         with systemtools.Timer(
@@ -924,13 +906,8 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             attack_point_map = SegmentMaker.collect_attack_points(score)
 
-        segment_session.attack_point_map = attack_point_map
-        segment_session.meters = meters
-        segment_session.score = score
-        segment_session.voicewise_timespans = demultiplexed_timespans
-        # rewrite meters? (magic)
-        # perform other rhythmic processing
-        return segment_session
+        self._attack_point_map = attack_point_map
+        self._voicewise_timespans = demultiplexed_timespans
 
     @staticmethod
     def find_meters(
@@ -2372,7 +2349,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def time_signatures(self):
-        return (
+        return tuple(
             meter.implied_time_signature
             for meter in self.meters
             )

@@ -338,11 +338,11 @@ class PitchHandler(HashCachingObject):
                 grace_expression(grace_logical_tie)
 
     @staticmethod
-    def _process_session(segment_session):
+    def _process_session(segment_maker):
         import consort
         maker = consort.SegmentMaker
-        segment_duration = segment_session.measure_offsets[-1]
-        attack_point_map = segment_session.attack_point_map
+        segment_duration = segment_maker.measure_offsets[-1]
+        attack_point_map = segment_maker.attack_point_map
         pitch_choice_timespans_by_music_specifier = {}
         previous_pitch_by_music_specifier = {}
         seed_session = consort.SeedSession()
