@@ -184,6 +184,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def __call__(self, verbose=True):
         import consort
         segment_session = consort.SegmentSession(segment_maker=self)
+        segment_session.score = self.score_template()
         with systemtools.Timer('\ttotal:', 'SegmentMaker:', verbose=verbose):
             segment_session = consort.SegmentMaker.interpret_rhythms(
                 discard_final_silence=self.discard_final_silence,
@@ -825,17 +826,17 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @staticmethod
     def interpret_rhythms(
+        desired_duration=None,
         discard_final_silence=None,
         permitted_time_signatures=None,
-        segment_session=None,
-        desired_duration=None,
         score_template=None,
+        segment_session=None,
         settings=None,
         timespan_quantization=None,
         verbose=True,
         ):
-        score = score_template()
         multiplexed_timespans = timespantools.TimespanInventory()
+        score = segment_session.score
         with systemtools.Timer(
             enter_message='\tpopulating independent timespans:',
             exit_message='\t\ttotal:',
