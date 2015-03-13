@@ -9,7 +9,6 @@ from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
 from abjad import new
-from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
@@ -140,6 +139,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_desired_duration_in_seconds',
         '_discard_final_silence',
         '_is_final_segment',
+        '_maximum_meter_run_length',
         '_meters',
         '_omit_stylesheets',
         '_permitted_time_signatures',
@@ -160,6 +160,7 @@ class SegmentMaker(makertools.SegmentMaker):
         desired_duration_in_seconds=None,
         omit_stylesheets=None,
         is_final_segment=None,
+        maximum_meter_run_length=None,
         name=None,
         permitted_time_signatures=None,
         rehearsal_mark=None,
@@ -175,6 +176,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self.discard_final_silence = discard_final_silence
         self.desired_duration_in_seconds = desired_duration_in_seconds
         self.is_final_segment = is_final_segment
+        self.maximum_meter_run_length = maximum_meter_run_length
         self.omit_stylesheets = omit_stylesheets
         self.permitted_time_signatures = permitted_time_signatures
         self.rehearsal_mark = rehearsal_mark
@@ -837,7 +839,7 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             meters, measure_offsets, multiplexed_timespans = \
-                SegmentMaker.populate_independent_timespans(
+                self.populate_independent_timespans(
                     self.discard_final_silence,
                     multiplexed_timespans,
                     self.permitted_time_signatures,
@@ -855,7 +857,7 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             demultiplexed_timespans = \
-                SegmentMaker.populate_dependent_timespans(
+                self.populate_dependent_timespans(
                     self.measure_offsets,
                     multiplexed_timespans,
                     self.score,
@@ -868,7 +870,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '\tpopulated silent timespans:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = SegmentMaker.populate_silent_timespans(
+            demultiplexed_timespans = self.populate_silent_timespans(
                 demultiplexed_timespans,
                 self.measure_offsets,
                 self.score,
@@ -879,13 +881,13 @@ class SegmentMaker(makertools.SegmentMaker):
             '\tvalidated timespans:',
             verbose=verbose,
             ):
-            SegmentMaker.validate_timespans(demultiplexed_timespans)
+            self.validate_timespans(demultiplexed_timespans)
 
         with systemtools.Timer(
             '\trewrote meters:',
             verbose=verbose,
             ):
-            SegmentMaker.rewrite_meters(
+            self.rewrite_meters(
                 demultiplexed_timespans,
                 self.meters,
                 )
@@ -894,7 +896,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '\tpopulated score:',
             verbose=verbose,
             ):
-            score = SegmentMaker.populate_score(
+            score = self.populate_score(
                 demultiplexed_timespans,
                 self.meters,
                 self.score,
@@ -904,31 +906,33 @@ class SegmentMaker(makertools.SegmentMaker):
             '\tcollected attack points: ',
             verbose=verbose,
             ):
-            attack_point_map = SegmentMaker.collect_attack_points(score)
+            attack_point_map = self.collect_attack_points(score)
 
         self._attack_point_map = attack_point_map
         self._voicewise_timespans = demultiplexed_timespans
 
-    @staticmethod
     def find_meters(
+        self,
         permitted_time_signatures=None,
         desired_duration=None,
         timespan_inventory=None,
         ):
         import consort
-        offset_counter = datastructuretools.TypedCounter(
-            item_class=durationtools.Offset,
-            )
+        offset_counter = metertools.OffsetCounter()
         for timespan in timespan_inventory:
             if isinstance(timespan, consort.SilentTimespan):
                 continue
             offset_counter[timespan.start_offset] += 2
             offset_counter[timespan.stop_offset] += 1
-        offset_counter[desired_duration] += 100
+        maximum = 1
+        if offset_counter:
+            maximum = int(max(offset_counter.values()))
+        offset_counter[desired_duration] = maximum * 2
+        maximum_meter_run_length = self.maximum_meter_run_length
         meters = metertools.Meter.fit_meters_to_expr(
-            offset_counter,
-            permitted_time_signatures,
-            maximum_run_length=2,
+            expr=offset_counter,
+            meters=permitted_time_signatures,
+            maximum_run_length=maximum_meter_run_length,
             )
         return tuple(meters)
 
@@ -1427,8 +1431,8 @@ class SegmentMaker(makertools.SegmentMaker):
         multiplexed_timespans.sort()
         return multiplexed_timespans
 
-    @staticmethod
     def populate_dependent_timespans(
+        self,
         meter_offsets,
         multiplexed_timespans,
         score,
@@ -1441,7 +1445,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '\t\tpopulated timespans:',
             verbose=verbose,
             ):
-            SegmentMaker.populate_multiplexed_timespans(
+            self.populate_multiplexed_timespans(
                 dependent=True,
                 score=score,
                 score_template=score_template,
@@ -1453,13 +1457,13 @@ class SegmentMaker(makertools.SegmentMaker):
             '\t\tdemultiplexed timespans:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = SegmentMaker.demultiplex_timespans(
+            demultiplexed_timespans = self.demultiplex_timespans(
                 multiplexed_timespans)
         with systemtools.Timer(
             '\t\tsplit timespans:',
             verbose=verbose,
             ):
-            SegmentMaker.split_demultiplexed_timespans(
+            self.split_demultiplexed_timespans(
                 meter_offsets,
                 demultiplexed_timespans,
                 )
@@ -1468,32 +1472,32 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             for voice_name, timespans in demultiplexed_timespans.items():
-                SegmentMaker.prune_short_timespans(timespans)
+                self.prune_short_timespans(timespans)
         with systemtools.Timer(
             '\t\tpruned malformed timespans:',
             verbose=verbose,
             ):
             for voice_name, timespans in demultiplexed_timespans.items():
-                SegmentMaker.prune_malformed_timespans(timespans)
+                self.prune_malformed_timespans(timespans)
         with systemtools.Timer(
             '\t\tconsolidated timespans:',
             verbose=verbose,
             ):
-            SegmentMaker.consolidate_demultiplexed_timespans(
+            self.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
                 )
         with systemtools.Timer(
             '\t\tinscribed timespans:',
             verbose=verbose,
             ):
-            SegmentMaker.inscribe_demultiplexed_timespans(
+            self.inscribe_demultiplexed_timespans(
                 demultiplexed_timespans,
                 score,
                 )
         return demultiplexed_timespans
 
-    @staticmethod
     def populate_independent_timespans(
+        self,
         discard_final_silence,
         multiplexed_timespans,
         permitted_time_signatures,
@@ -1521,7 +1525,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '\t\tfound meters:',
             verbose=verbose,
             ):
-            meters = SegmentMaker.find_meters(
+            meters = self.find_meters(
                 permitted_time_signatures=permitted_time_signatures,
                 desired_duration=desired_duration,
                 timespan_inventory=multiplexed_timespans,
@@ -1698,7 +1702,7 @@ class SegmentMaker(makertools.SegmentMaker):
         stop_offset,
         ):
         discard_final_silence = bool(discard_final_silence)
-        if discard_final_silence:
+        if discard_final_silence and stop_offset:
             meters = list(meters)
             total_meter_durations = sum(_.duration for _ in meters[:-1])
             while stop_offset <= total_meter_durations:
@@ -2173,6 +2177,17 @@ class SegmentMaker(makertools.SegmentMaker):
         if is_final_segment is not None:
             is_final_segment = bool(is_final_segment)
         self._is_final_segment = is_final_segment
+
+    @property
+    def maximum_meter_run_length(self):
+        return self._maximum_meter_run_length
+
+    @maximum_meter_run_length.setter
+    def maximum_meter_run_length(self, expr):
+        if expr is not None:
+            expr = int(expr)
+            assert 0 < expr
+        self._maximum_meter_run_length = expr
 
     @property
     def measure_offsets(self):
