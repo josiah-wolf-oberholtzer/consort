@@ -213,12 +213,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 verbose=verbose,
                 ):
                 consort.AttachmentHandler._process_session(self)
-        lilypond_file = self.make_lilypond_file()
         score = self.configure_score(self.score)
-        score_block = lilypondfiletools.Block(name='score')
-        score_block.items.append(score)
-        lilypond_file.items.append(score_block)
-        lilypond_file.score = score
+        lilypond_file = self.make_lilypond_file(self.score)
         with systemtools.Timer(
             enter_message='Checking for wellformedness violations:',
             exit_message='\ttotal:',
@@ -373,13 +369,17 @@ class SegmentMaker(makertools.SegmentMaker):
                 voice = parent
         return voice
 
-    def make_lilypond_file(self):
+    def make_lilypond_file(self, score):
         lilypond_file = lilypondfiletools.LilyPondFile()
         if not self.omit_stylesheets:
             lilypond_file.use_relative_includes = True
             for file_path in self.stylesheet_file_paths:
                 lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
+        score_block = lilypondfiletools.Block(name='score')
+        score_block.items.append(score)
+        lilypond_file.items.append(score_block)
+        lilypond_file.score = score
         return lilypond_file
 
     @staticmethod
