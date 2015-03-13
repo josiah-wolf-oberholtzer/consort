@@ -32,7 +32,6 @@ class MusicSpecifier(HashCachingObject):
     __slots__ = (
         '_attachment_handler',
         '_grace_handler',
-        '_is_sentinel',
         '_labels',
         '_minimum_phrase_duration',
         '_pitch_handler',
@@ -47,7 +46,6 @@ class MusicSpecifier(HashCachingObject):
         self,
         attachment_handler=None,
         grace_handler=None,
-        is_sentinel=None,
         labels=None,
         minimum_phrase_duration=None,
         pitch_handler=None,
@@ -63,9 +61,6 @@ class MusicSpecifier(HashCachingObject):
         if grace_handler is not None:
             assert isinstance(grace_handler, consort.GraceHandler)
         self._grace_handler = grace_handler
-        if is_sentinel is not None:
-            is_sentinel = bool(is_sentinel)
-        self._is_sentinel = is_sentinel
         if labels is not None:
             if isinstance(labels, str):
                 labels = (labels,)
@@ -102,10 +97,6 @@ class MusicSpecifier(HashCachingObject):
     @property
     def grace_handler(self):
         return self._grace_handler
-
-    @property
-    def is_sentinel(self):
-        return self._is_sentinel
 
     @property
     def labels(self):

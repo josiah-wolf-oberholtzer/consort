@@ -1654,9 +1654,7 @@ class SegmentMaker(makertools.SegmentMaker):
         score_template,
         ):
         import consort
-        silent_music_specifier = consort.MusicSpecifier(
-            is_sentinel=True,
-            )
+        silent_music_specifier = consort.MusicSpecifier()
         rhythm_maker = SegmentMaker.get_rhythm_maker(None)
         for voice in iterate(score).by_class(scoretools.Voice):
             voice_name = voice.name
@@ -1827,8 +1825,8 @@ class SegmentMaker(makertools.SegmentMaker):
                     maximum_dot_count=1,
                     )
         else:
-            # TODO: handle barline-crossing containers
-            raise AssertionError('Barline-crossing containers not permitted.')
+            # TODO: handle bar-line-crossing containers
+            raise AssertionError('Bar-line-crossing containers not permitted.')
         if is_tied:
             last_leaf = container.select_leaves()[-1]
             next_leaf = inspect_(last_leaf).get_leaf(1)
