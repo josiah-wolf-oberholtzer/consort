@@ -139,6 +139,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_desired_duration_in_seconds',
         '_discard_final_silence',
         '_is_final_segment',
+        '_lilypond_file',
         '_maximum_meter_run_length',
         '_meters',
         '_omit_stylesheets',
@@ -213,15 +214,15 @@ class SegmentMaker(makertools.SegmentMaker):
                 verbose=verbose,
                 ):
                 consort.AttachmentHandler._process_session(self)
-        score = self.configure_score(self.score)
-        lilypond_file = self.make_lilypond_file(self.score)
+        self._score = self.configure_score(self.score)
+        self._lilypond_file = self.configure_lilypond_file(self.score)
         with systemtools.Timer(
             enter_message='Checking for wellformedness violations:',
             exit_message='\ttotal:',
             verbose=verbose,
             ):
-            self.validate_score(score, verbose=verbose)
-        return lilypond_file
+            self.validate_score(self.score, verbose=verbose)
+        return self.lilypond_file
 
     def __illustrate__(self, verbose=True):
         return self(verbose=verbose)
@@ -230,6 +231,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def _reset(self):
         self._attack_point_map = None
+        self._lilypond_file = None
         self._meters = None
         self._score = None
         self._voicewise_timespans = None
@@ -289,6 +291,19 @@ class SegmentMaker(makertools.SegmentMaker):
         first_leaf = score['TimeSignatureContext'].select_leaves()[0]
         if self.tempo is not None:
             attach(self.tempo, first_leaf)
+
+    def configure_lilypond_file(self, score):
+        lilypond_file = lilypondfiletools.LilyPondFile()
+        if not self.omit_stylesheets:
+            lilypond_file.use_relative_includes = True
+            for file_path in self.stylesheet_file_paths:
+                lilypond_file.file_initial_user_includes.append(file_path)
+        lilypond_file.file_initial_system_comments[:] = []
+        score_block = lilypondfiletools.Block(name='score')
+        score_block.items.append(score)
+        lilypond_file.items.append(score_block)
+        lilypond_file.score = score
+        return lilypond_file
 
     def configure_score(self, score):
         self.attach_tempo(score)
@@ -368,19 +383,6 @@ class SegmentMaker(makertools.SegmentMaker):
             if isinstance(parent, scoretools.Voice):
                 voice = parent
         return voice
-
-    def make_lilypond_file(self, score):
-        lilypond_file = lilypondfiletools.LilyPondFile()
-        if not self.omit_stylesheets:
-            lilypond_file.use_relative_includes = True
-            for file_path in self.stylesheet_file_paths:
-                lilypond_file.file_initial_user_includes.append(file_path)
-        lilypond_file.file_initial_system_comments[:] = []
-        score_block = lilypondfiletools.Block(name='score')
-        score_block.items.append(score)
-        lilypond_file.items.append(score_block)
-        lilypond_file.score = score
-        return lilypond_file
 
     @staticmethod
     def validate_score(score, verbose=True):
@@ -2177,6 +2179,10 @@ class SegmentMaker(makertools.SegmentMaker):
         if is_final_segment is not None:
             is_final_segment = bool(is_final_segment)
         self._is_final_segment = is_final_segment
+
+    @property
+    def lilypond_file(self):
+        return self._lilypond_file
 
     @property
     def maximum_meter_run_length(self):
