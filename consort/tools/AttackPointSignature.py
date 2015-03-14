@@ -99,32 +99,25 @@ class AttackPointSignature(abctools.AbjadValueObject):
         logical_tie_start_offset = logical_tie.get_timespan().start_offset
 
         phrase = consort.SegmentMaker.logical_tie_to_phrase(logical_tie)
-        phrase_timespan = inspect_(phrase).get_timespan()
+        phrase_logical_ties = cls._collect_logical_ties(phrase)
         phrase_position = cls._find_position(
             logical_tie_start_offset,
-            phrase_timespan.start_offset,
-            phrase_timespan.stop_offset,
+            phrase_logical_ties[0].get_timespan().start_offset,
+            phrase_logical_ties[-1].get_timespan().start_offset,
             )
 
         division = consort.SegmentMaker.logical_tie_to_division(logical_tie)
         division_index = phrase.index(division)
         total_divisions_in_phrase = len(phrase)
-
-        logical_ties = []
-        for leaf in iterate(division).by_class(scoretools.Note):
-            leaf_logical_tie = inspect_(leaf).get_logical_tie()
-            if leaf is not leaf_logical_tie.head:
-                continue
-            logical_ties.append(leaf_logical_tie)
-
+        division_logical_ties = cls._collect_logical_ties(division)
         division_position = cls._find_position(
             logical_tie_start_offset,
-            logical_ties[0].get_timespan().start_offset,
-            logical_ties[-1].get_timespan().stop_offset,
+            division_logical_ties[0].get_timespan().start_offset,
+            division_logical_ties[-1].get_timespan().start_offset,
             )
 
-        logical_tie_index = logical_ties.index(logical_tie)
-        total_logical_ties_in_division = len(logical_ties)
+        logical_tie_index = division_logical_ties.index(logical_tie)
+        total_logical_ties_in_division = len(division_logical_ties)
 
         voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
         segment_timespan = inspect_(voice).get_timespan()
@@ -144,6 +137,18 @@ class AttackPointSignature(abctools.AbjadValueObject):
             total_logical_ties_in_division=total_logical_ties_in_division,
             )
         return signature
+
+    ### PRIVATE METHODS ###
+
+    @staticmethod
+    def _collect_logical_ties(container):
+        logical_ties = []
+        for leaf in iterate(container).by_class(scoretools.Note):
+            leaf_logical_tie = inspect_(leaf).get_logical_tie()
+            if leaf is not leaf_logical_tie.head:
+                continue
+            logical_ties.append(leaf_logical_tie)
+        return logical_ties
 
     ### PUBLIC PROPERTIES ###
 
@@ -170,10 +175,6 @@ class AttackPointSignature(abctools.AbjadValueObject):
     @property
     def logical_tie_index(self):
         return self._logical_tie_index
-
-    @property
-    def phrase_index(self):
-        return self._phrase_index
 
     @property
     def phrase_position(self):
