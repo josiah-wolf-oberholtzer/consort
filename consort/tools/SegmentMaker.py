@@ -376,6 +376,25 @@ class SegmentMaker(makertools.SegmentMaker):
         return music_specifier
 
     @staticmethod
+    def logical_tie_to_division(logical_tie):
+        import consort
+        parentage = inspect_(logical_tie.head).get_parentage()
+        prototype = consort.MusicSpecifier
+        for i, parent in enumerate(parentage):
+            if inspect_(parent).has_indicator(prototype):
+                break
+        return parentage[i - 1]
+
+    @staticmethod
+    def logical_tie_to_phrase(logical_tie):
+        import consort
+        parentage = inspect_(logical_tie.head).get_parentage()
+        prototype = consort.MusicSpecifier
+        for parent in parentage:
+            if inspect_(parent).has_indicator(prototype):
+                return parent
+
+    @staticmethod
     def logical_tie_to_voice(logical_tie):
         parentage = inspect_(logical_tie.head).get_parentage()
         voice = None

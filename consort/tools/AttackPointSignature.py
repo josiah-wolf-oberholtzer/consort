@@ -97,46 +97,42 @@ class AttackPointSignature(abctools.AbjadValueObject):
     def from_logical_tie(cls, logical_tie):
         import consort
         logical_tie_start_offset = logical_tie.get_timespan().start_offset
-        head = logical_tie.head
-        parentage = inspect_(head).get_parentage(include_self=False)
-        for i, parent in enumerate(parentage):
-            if inspect_(parent).has_indicator(consort.MusicSpecifier):
 
-                phrase = parent
-                phrase_timespan = inspect_(phrase).get_timespan()
-                phrase_position = cls._find_position(
-                    logical_tie_start_offset,
-                    phrase_timespan.start_offset,
-                    phrase_timespan.stop_offset,
-                    )
+        phrase = consort.SegmentMaker.logical_tie_to_phrase(logical_tie)
+        phrase_timespan = inspect_(phrase).get_timespan()
+        phrase_position = cls._find_position(
+            logical_tie_start_offset,
+            phrase_timespan.start_offset,
+            phrase_timespan.stop_offset,
+            )
 
-                division = parentage[i - 1]
-                division_index = phrase.index(division)
-                total_divisions_in_phrase = len(phrase)
+        division = consort.SegmentMaker.logical_tie_to_division(logical_tie)
+        division_index = phrase.index(division)
+        total_divisions_in_phrase = len(phrase)
 
-                logical_ties = []
-                for leaf in iterate(division).by_class(scoretools.Note):
-                    leaf_logical_tie = inspect_(leaf).get_logical_tie()
-                    if leaf is not leaf_logical_tie.head:
-                        continue
-                    logical_ties.append(leaf_logical_tie)
+        logical_ties = []
+        for leaf in iterate(division).by_class(scoretools.Note):
+            leaf_logical_tie = inspect_(leaf).get_logical_tie()
+            if leaf is not leaf_logical_tie.head:
+                continue
+            logical_ties.append(leaf_logical_tie)
 
-                division_position = cls._find_position(
-                    logical_tie_start_offset,
-                    logical_ties[0].get_timespan().start_offset,
-                    logical_ties[-1].get_timespan().stop_offset,
-                    )
+        division_position = cls._find_position(
+            logical_tie_start_offset,
+            logical_ties[0].get_timespan().start_offset,
+            logical_ties[-1].get_timespan().stop_offset,
+            )
 
-                logical_tie_index = logical_ties.index(logical_tie)
-                total_logical_ties_in_division = len(logical_ties)
+        logical_tie_index = logical_ties.index(logical_tie)
+        total_logical_ties_in_division = len(logical_ties)
 
-            elif isinstance(parent, scoretools.Voice):
-                segment_timespan = inspect_(parent).get_timespan()
-                segment_position = cls._find_position(
-                    logical_tie_start_offset,
-                    segment_timespan.start_offset,
-                    segment_timespan.stop_offset,
-                    )
+        voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
+        segment_timespan = inspect_(voice).get_timespan()
+        segment_position = cls._find_position(
+            logical_tie_start_offset,
+            segment_timespan.start_offset,
+            segment_timespan.stop_offset,
+            )
 
         signature = cls(
             division_index=division_index,
