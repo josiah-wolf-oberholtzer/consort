@@ -189,7 +189,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, verbose=True):
+    def __call__(self, annotate=False, verbose=True):
         import consort
         self._reset()
         self._score = self.score_template()
@@ -222,10 +222,19 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.validate_score(self.score, verbose=verbose)
+        if annotate:
+            consort.annotate(self.score)
         return self.lilypond_file
 
-    def __illustrate__(self, verbose=True):
-        return self(verbose=verbose)
+    def __illustrate__(
+        self,
+        annotate=False, 
+        verbose=True,
+        ):
+        return self(
+            annotate=annotate,
+            verbose=verbose,
+            )
 
     ### PRIVATE METHODS ###
 
