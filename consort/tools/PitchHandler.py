@@ -25,6 +25,7 @@ class PitchHandler(HashCachingObject):
         '_pitch_application_rate',
         '_pitch_operation_specifier',
         '_pitch_specifier',
+        '_pitches_are_nonsemantic',
         )
 
     ### INITIALIZER ###
@@ -38,6 +39,7 @@ class PitchHandler(HashCachingObject):
         pitch_application_rate=None,
         pitch_specifier=None,
         pitch_operation_specifier=None,
+        pitches_are_nonsemantic=None,
         ):
         HashCachingObject.__init__(self)
         self._initialize_deviations(deviations)
@@ -47,6 +49,9 @@ class PitchHandler(HashCachingObject):
         self._initialize_pitch_application_rate(pitch_application_rate)
         self._initialize_pitch_specifier(pitch_specifier)
         self._initialize_pitch_operation_specifier(pitch_operation_specifier)
+        if pitches_are_nonsemantic is not None:
+            pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
+        self._pitches_are_nonsemantic = pitches_are_nonsemantic
 
     ### SPECIAL METHODS ###
 
@@ -578,3 +583,7 @@ class PitchHandler(HashCachingObject):
     @property
     def pitch_specifier(self):
         return self._pitch_specifier
+
+    @property
+    def pitches_are_nonsemantic(self):
+        return self._pitches_are_nonsemantic

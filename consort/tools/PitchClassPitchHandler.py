@@ -68,6 +68,7 @@ class PitchClassPitchHandler(PitchHandler):
         register_spread=None,
         pitch_operation_specifier=None,
         pitch_specifier=None,
+        pitches_are_nonsemantic=None,
         ):
         PitchHandler.__init__(
             self,
@@ -77,6 +78,7 @@ class PitchClassPitchHandler(PitchHandler):
             pitch_application_rate=pitch_application_rate,
             pitch_operation_specifier=pitch_operation_specifier,
             pitch_specifier=pitch_specifier,
+            pitches_are_nonsemantic=pitches_are_nonsemantic,
             )
         self._initialize_octavations(octavations)
         self._initialize_pitch_range(pitch_range)

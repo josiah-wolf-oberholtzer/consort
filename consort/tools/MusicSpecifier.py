@@ -35,7 +35,6 @@ class MusicSpecifier(HashCachingObject):
         '_labels',
         '_minimum_phrase_duration',
         '_pitch_handler',
-        '_pitches_are_nonsemantic',
         '_rhythm_maker',
         '_seed',
         )
@@ -49,7 +48,6 @@ class MusicSpecifier(HashCachingObject):
         labels=None,
         minimum_phrase_duration=None,
         pitch_handler=None,
-        pitches_are_nonsemantic=None,
         rhythm_maker=None,
         seed=None,
         ):
@@ -74,9 +72,6 @@ class MusicSpecifier(HashCachingObject):
         if pitch_handler is not None:
             assert isinstance(pitch_handler, consort.PitchHandler)
         self._pitch_handler = pitch_handler
-        if pitches_are_nonsemantic is not None:
-            pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
-        self._pitches_are_nonsemantic = pitches_are_nonsemantic
         if rhythm_maker is not None:
             prototype = (
                 rhythmmakertools.RhythmMaker,
@@ -109,10 +104,6 @@ class MusicSpecifier(HashCachingObject):
     @property
     def pitch_handler(self):
         return self._pitch_handler
-
-    @property
-    def pitches_are_nonsemantic(self):
-        return self._pitches_are_nonsemantic
 
     @property
     def rhythm_maker(self):
