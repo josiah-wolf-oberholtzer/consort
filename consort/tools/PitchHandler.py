@@ -2,11 +2,13 @@
 from __future__ import print_function
 import abc
 import collections
+from abjad import attach
 from abjad import inspect_
 from abjad import iterate
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import instrumenttools
+from abjad.tools import indicatortools
 from abjad.tools import pitchtools
 from abjad.tools import sequencetools
 from abjad.tools import timespantools
@@ -239,17 +241,20 @@ class PitchHandler(HashCachingObject):
         return seed
 
     @staticmethod
-    def _get_transposition(
+    def _get_sounding_pitch(
         instrument,
-        music_specifier,
+        pitch_handler,
         ):
-        transposition = pitchtools.NumberedInterval(0)
-        if not music_specifier.pitches_are_nonsemantic and \
-            instrument is not None:
-            sounding_pitch = instrument.sounding_pitch_of_written_middle_c
-            transposition = sounding_pitch - pitchtools.NamedPitch("c'")
-            transposition = pitchtools.NumberedInterval(transposition)
-        return transposition
+        if not instrument:
+            return None
+        sounding_pitch = instrument.sounding_pitch_of_written_middle_c
+        transposition_is_non_octave = sounding_pitch.named_pitch_class != \
+            pitchtools.NamedPitchClass('c')
+        if transposition_is_non_octave:
+            if pitch_handler.pitches_are_nonsemantic:
+                return pitchtools.NamedPitch("c'")
+            return sounding_pitch
+        return None
 
     def _initialize_deviations(self, deviations):
         if deviations is not None:
@@ -376,11 +381,6 @@ class PitchHandler(HashCachingObject):
                 pitch_choice_timespans_by_music_specifier,
                 segment_duration,
                 )
-#            instrument = PitchHandler._get_instrument(logical_tie)
-#            transposition = PitchHandler._get_transposition(
-#                instrument,
-#                music_specifier,
-#                )
             previous_pitch = pitch_handler(
                 attack_point_signature,
                 logical_tie,
@@ -396,6 +396,19 @@ class PitchHandler(HashCachingObject):
                 previous_pitch_by_music_specifier,
                 voice,
                 )
+            if attack_point_signature.is_first_of_phrase:
+                instrument = PitchHandler._get_instrument(logical_tie)
+                sounding_pitch = PitchHandler._get_sounding_pitch(
+                    instrument, pitch_handler)
+                if sounding_pitch is not None:
+                    phrase = consort.SegmentMaker.logical_tie_to_phrase(
+                        logical_tie)
+                    transposition_command = indicatortools.LilyPondCommand(
+                        r"tag #'transposition \transposition {}".format(
+                            sounding_pitch),
+                        format_slot='before',
+                        )
+                    attach(transposition_command, phrase)
 
     @staticmethod
     def _set_previous_pitch(
