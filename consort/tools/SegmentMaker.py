@@ -442,7 +442,7 @@ class SegmentMaker(makertools.SegmentMaker):
             specifier = rhythm_maker.duration_spelling_specifier
         if specifier is None:
             return True
-        if specifier.permit_meter_rewriting is False:
+        if specifier.forbid_meter_rewriting:
             return False
         return True
 
