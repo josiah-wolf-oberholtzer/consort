@@ -102,32 +102,54 @@ class SegmentMaker(makertools.SegmentMaker):
     ::
 
         >>> lilypond_file = segment_maker()
-        SegmentMaker:
+        Performing rhythmic interpretation:
             populating independent timespans:
                 populated timespans: ...
                 found meters: ...
                 demultiplexed timespans: ...
                 split timespans: ...
+                pruned malformed timespans: ...
                 consolidated timespans: ...
                 inscribed timespans: ...
                 multiplexed timespans: ...
+                pruned short timespans: ...
+                pruned meters: ...
                 total: ...
             populating dependent timespans:
                 populated timespans: ...
                 demultiplexed timespans: ...
                 split timespans: ...
+                pruned short timespans: ...
+                pruned malformed timespans: ...
                 consolidated timespans: ...
                 inscribed timespans: ...
                 total: ...
             populated silent timespans: ...
+            validated timespans: ...
+            rewrote meters: ...
             populated score: ...
+            total: ...
+        Performing non-rhythmic interpretation:
             collected attack points: ...
+            handled graces: ...
+            handled pitches: ...
+            handled attachments: ...
             total: ...
-        GraceHandler:
-            total: ...
-        PitchHandler:
-            total: ...
-        AttachmentHandler:
+        Checking for well-formedness violations:
+            [] 24 check_beamed_quarter_notes
+            [] 18 check_discontiguous_spanners
+            [] 80 check_duplicate_ids
+            [] 0 check_intermarked_hairpins
+            [] 2 check_misdurated_measures
+            [] 2 check_misfilled_measures
+            [] 4 check_mispitched_ties
+            [] 24 check_misrepresented_flags
+            [] 80 check_missing_parents
+            [] 2 check_nested_measures
+            [] 0 check_overlapping_beams
+            [] 0 check_overlapping_glissandi
+            [] 0 check_overlapping_octavation_spanners
+            [] 0 check_short_hairpins
             total: ...
 
     '''
@@ -193,31 +215,43 @@ class SegmentMaker(makertools.SegmentMaker):
         import consort
         self._reset()
         self._score = self.score_template()
-        with systemtools.Timer('\ttotal:', 'SegmentMaker:', verbose=verbose):
-            self.interpret_rhythms(verbose=verbose)
-        with systemtools.ForbidUpdate(self.score):
-            with systemtools.Timer(
-                enter_message='GraceHandler:',
-                exit_message='\ttotal:',
-                verbose=verbose,
-                ):
-                consort.GraceHandler._process_session(self)
-            with systemtools.Timer(
-                enter_message='PitchHandler:',
-                exit_message='\ttotal:',
-                verbose=verbose,
-                ):
-                consort.PitchHandler._process_session(self)
-            with systemtools.Timer(
-                enter_message='AttachmentHandler:',
-                exit_message='\ttotal:',
-                verbose=verbose,
-                ):
-                consort.AttachmentHandler._process_session(self)
-        self._score = self.configure_score(self.score)
-        self._lilypond_file = self.configure_lilypond_file(self.score)
         with systemtools.Timer(
-            enter_message='Checking for wellformedness violations:',
+            '\ttotal:',
+            'Performing rhythmic interpretation:',
+            verbose=verbose,
+            ):
+            self.interpret_rhythms(verbose=verbose)
+        with systemtools.Timer(
+            '\ttotal:',
+            'Performing non-rhythmic interpretation:',
+            verbose=verbose,
+            ):
+            with systemtools.Timer(
+                '\tcollected attack points:',
+                verbose=verbose,
+                ):
+                attack_point_map = self.collect_attack_points(self.score)
+            self._attack_point_map = attack_point_map
+            with systemtools.ForbidUpdate(self.score):
+                with systemtools.Timer(
+                    '\thandled graces:',
+                    verbose=verbose,
+                    ):
+                    consort.GraceHandler._process_session(self)
+                with systemtools.Timer(
+                    '\thandled pitches:',
+                    verbose=verbose,
+                    ):
+                    consort.PitchHandler._process_session(self)
+                with systemtools.Timer(
+                    '\thandled attachments:',
+                    verbose=verbose,
+                    ):
+                    consort.AttachmentHandler._process_session(self)
+            self.configure_score()
+            self.configure_lilypond_file()
+        with systemtools.Timer(
+            enter_message='Checking for well-formedness violations:',
             exit_message='\ttotal:',
             verbose=verbose,
             ):
@@ -228,7 +262,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __illustrate__(
         self,
-        annotate=False, 
+        annotate=False,
         verbose=True,
         ):
         return self(
@@ -262,6 +296,16 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### PUBLIC METHODS ###
 
+    def add_time_signature_context(self):
+        import consort
+        time_signatures = [_.implied_time_signature for _ in self.meters]
+        measures = scoretools.make_spacer_skip_measures(time_signatures)
+        if 'TimeSignatureContext' not in self.score:
+            time_signature_context = \
+                consort.ScoreTemplateManager.make_time_signature_context()
+            self.score.insert(0, time_signature_context)
+        self.score['TimeSignatureContext'].extend(measures)
+
     def add_setting(
         self,
         timespan_identifier=None,
@@ -276,15 +320,15 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         self._settings.append(setting)
 
-    def attach_final_bar_line(self, score):
+    def attach_final_bar_line(self):
         if self.is_final_segment:
-            score.add_final_markup(self.final_markup)
-            score.add_final_bar_line(abbreviation='|.', to_each_voice=True)
+            self.score.add_final_markup(self.final_markup)
+            self.score.add_final_bar_line(abbreviation='|.', to_each_voice=True)
         else:
-            score.add_final_bar_line(abbreviation='||', to_each_voice=True)
+            self.score.add_final_bar_line(abbreviation='||', to_each_voice=True)
 
-    def attach_rehearsal_mark(self, score):
-        first_leaf = score['TimeSignatureContext'].select_leaves()[0]
+    def attach_rehearsal_mark(self):
+        first_leaf = self.score['TimeSignatureContext'].select_leaves()[0]
         if self.rehearsal_mark is not None:
             markup_a = markuptools.Markup(str(self.rehearsal_mark))
             markup_a = markup_a.caps()
@@ -296,12 +340,12 @@ class SegmentMaker(makertools.SegmentMaker):
             rehearsal_mark = indicatortools.RehearsalMark(markup=markup)
             attach(rehearsal_mark, first_leaf)
 
-    def attach_tempo(self, score):
-        first_leaf = score['TimeSignatureContext'].select_leaves()[0]
+    def attach_tempo(self):
+        first_leaf = self.score['TimeSignatureContext'].select_leaves()[0]
         if self.tempo is not None:
             attach(self.tempo, first_leaf)
 
-    def configure_lilypond_file(self, score):
+    def configure_lilypond_file(self):
         lilypond_file = lilypondfiletools.LilyPondFile()
         if not self.omit_stylesheets:
             lilypond_file.use_relative_includes = True
@@ -309,16 +353,16 @@ class SegmentMaker(makertools.SegmentMaker):
                 lilypond_file.file_initial_user_includes.append(file_path)
         lilypond_file.file_initial_system_comments[:] = []
         score_block = lilypondfiletools.Block(name='score')
-        score_block.items.append(score)
+        score_block.items.append(self.score)
         lilypond_file.items.append(score_block)
-        lilypond_file.score = score
-        return lilypond_file
+        lilypond_file.score = self.score
+        self._lilypond_file = lilypond_file
 
-    def configure_score(self, score):
-        self.attach_tempo(score)
-        self.attach_rehearsal_mark(score)
-        self.attach_final_bar_line(score)
-        return score
+    def configure_score(self):
+        self.add_time_signature_context()
+        self.attach_tempo()
+        self.attach_rehearsal_mark()
+        self.attach_final_bar_line()
 
     def copy_voice(
         self,
@@ -928,17 +972,9 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             score = self.populate_score(
                 demultiplexed_timespans,
-                self.meters,
                 self.score,
                 )
 
-        with systemtools.Timer(
-            '\tcollected attack points: ',
-            verbose=verbose,
-            ):
-            attack_point_map = self.collect_attack_points(score)
-
-        self._attack_point_map = attack_point_map
         self._voicewise_timespans = demultiplexed_timespans
 
     def find_meters(
@@ -1661,17 +1697,8 @@ class SegmentMaker(makertools.SegmentMaker):
     @staticmethod
     def populate_score(
         demultiplexed_timespans,
-        meters,
         score,
         ):
-        import consort
-        time_signatures = [_.implied_time_signature for _ in meters]
-        measures = scoretools.make_spacer_skip_measures(time_signatures)
-        if 'TimeSignatureContext' not in score:
-            time_signature_context = \
-                consort.ScoreTemplateManager.make_time_signature_context()
-            score.insert(0, time_signature_context)
-        score['TimeSignatureContext'].extend(measures)
         for voice_name, timespans in demultiplexed_timespans.items():
             voice = score[voice_name]
             for timespan in timespans:
