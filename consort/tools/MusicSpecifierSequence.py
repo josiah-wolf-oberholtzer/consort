@@ -53,7 +53,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         music_specifiers=None,
         ):
         if application_rate is not None:
-            application_rate = application_rate or 'division'
+            application_rate = application_rate or 'phrase'
             assert application_rate in ('division', 'phrase')
         if music_specifiers is not None:
             if not isinstance(music_specifiers, collections.Sequence) or \
@@ -81,6 +81,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         timespan_specifier = timespan_specifier or \
             consort.TimespanSpecifier()
         seed = seed or 0
+        durations = [_ for _ in durations if _]
         offsets = mathtools.cumulative_sums(durations, start_offset)
         if not offsets:
             return timespans

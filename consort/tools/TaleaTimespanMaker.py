@@ -289,7 +289,8 @@ class TaleaTimespanMaker(TimespanMaker):
             silence_talea=silence_talea,
             target_timespan=target_timespan,
             )
-        assert all(0 < _.duration for _ in new_timespan_inventory)
+        assert all(0 < _.duration for _ in new_timespan_inventory), \
+            (format(self), target_timespan)
 
         if self.reflect:
             new_timespan_inventory = new_timespan_inventory.reflect(
