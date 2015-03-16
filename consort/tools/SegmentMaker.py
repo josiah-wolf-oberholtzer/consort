@@ -981,7 +981,11 @@ class SegmentMaker(makertools.SegmentMaker):
             #    global_context=globals(),
             #    local_context=locals(),
             #    )
-            self.rewrite_meters(demultiplexed_timespans, self.meters)
+            self.rewrite_meters(
+                demultiplexed_timespans, 
+                self.meters,
+                self.score,
+                )
 
         with systemtools.Timer(
             '    populated score:',
@@ -1851,6 +1855,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def rewrite_container_meter(
         container,
         meter_timespans,
+        forbid_staff_lines_spanner=None,
         ):
         assert meter_timespans
         assert meter_timespans[0].start_offset <= \
@@ -1886,12 +1891,13 @@ class SegmentMaker(makertools.SegmentMaker):
                 multiplier = durationtools.Multiplier(duration)
                 attach(multiplier, multi_measure_rest)
                 container[:] = [multi_measure_rest]
-                staff_lines_spanner = spannertools.StaffLinesSpanner(1)
-                attach(
-                    staff_lines_spanner,
-                    container,
-                    name='staff_lines_spanner',
-                    )
+                if not forbid_staff_lines_spanner:
+                    staff_lines_spanner = spannertools.StaffLinesSpanner(1)
+                    attach(
+                        staff_lines_spanner,
+                        container,
+                        name='staff_lines_spanner',
+                        )
             else:
                 meter = meter_timespan.annotation
                 meter_offset = meter_timespan.start_offset
@@ -1916,15 +1922,18 @@ class SegmentMaker(makertools.SegmentMaker):
     def rewrite_meters(
         demultiplexed_timespans,
         meters,
+        score,
         ):
         import consort
         meter_timespans = SegmentMaker.meters_to_timespans(meters)
         cache = {}
-        for voice_name in sorted(demultiplexed_timespans):
-            inscribed_timespans = demultiplexed_timespans[voice_name]
-            consort.debug('VOICE: {}'.format(voice_name))
+        for context_name in sorted(demultiplexed_timespans):
+            inscribed_timespans = demultiplexed_timespans[context_name]
+            consort.debug('CONTEXT: {}'.format(context_name))
+            context = score[context_name]
+            forbid_staff_lines_spanner = context.context_name == 'Dynamics'
             progress_indicator = systemtools.ProgressIndicator(
-                message='        rewriting {}'.format(voice_name),
+                message='        rewriting {}'.format(context_name),
                 )
             with progress_indicator:
                 for inscribed_timespan in inscribed_timespans:
@@ -1966,6 +1975,7 @@ class SegmentMaker(makertools.SegmentMaker):
                             SegmentMaker.rewrite_container_meter(
                                 container,
                                 shifted_intersecting_meters,
+                                forbid_staff_lines_spanner,
                                 )
                             SegmentMaker.cleanup_logical_ties(container)
                             progress_indicator.advance()
