@@ -101,7 +101,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ::
 
-        >>> lilypond_file = segment_maker()
+        >>> lilypond_file = segment_maker() # doctest: +SKIP
         Performing rhythmic interpretation:
             populating independent timespans:
                 populated timespans: ...
@@ -126,7 +126,16 @@ class SegmentMaker(makertools.SegmentMaker):
                 total: ...
             populated silent timespans: ...
             validated timespans: ...
-            rewrote meters: ...
+            rewriting meters:
+                rewriting Cello Bowing Voice: 2
+                rewriting Cello Fingering Voice: 2
+                rewriting Viola Bowing Voice: 2
+                rewriting Viola Fingering Voice: 2
+                rewriting Violin 1 Bowing Voice: 3
+                rewriting Violin 1 Fingering Voice: 2
+                rewriting Violin 2 Bowing Voice: 3
+                rewriting Violin 2 Fingering Voice: 2
+                total: 0.169489145279
             populated score: ...
             total: ...
         Performing non-rhythmic interpretation:
@@ -216,35 +225,35 @@ class SegmentMaker(makertools.SegmentMaker):
         self._reset()
         self._score = self.score_template()
         with systemtools.Timer(
-            '\ttotal:',
+            '    total:',
             'Performing rhythmic interpretation:',
             verbose=verbose,
             ):
             self.interpret_rhythms(verbose=verbose)
         with systemtools.Timer(
-            '\ttotal:',
+            '    total:',
             'Performing non-rhythmic interpretation:',
             verbose=verbose,
             ):
             with systemtools.Timer(
-                '\tcollected attack points:',
+                '    collected attack points:',
                 verbose=verbose,
                 ):
                 attack_point_map = self.collect_attack_points(self.score)
             self._attack_point_map = attack_point_map
             with systemtools.ForbidUpdate(self.score):
                 with systemtools.Timer(
-                    '\thandled graces:',
+                    '    handled graces:',
                     verbose=verbose,
                     ):
                     consort.GraceHandler._process_session(self)
                 with systemtools.Timer(
-                    '\thandled pitches:',
+                    '    handled pitches:',
                     verbose=verbose,
                     ):
                     consort.PitchHandler._process_session(self)
                 with systemtools.Timer(
-                    '\thandled attachments:',
+                    '    handled attachments:',
                     verbose=verbose,
                     ):
                     consort.AttachmentHandler._process_session(self)
@@ -252,7 +261,7 @@ class SegmentMaker(makertools.SegmentMaker):
             self.configure_lilypond_file()
         with systemtools.Timer(
             enter_message='Checking for well-formedness violations:',
-            exit_message='\ttotal:',
+            exit_message='    total:',
             verbose=verbose,
             ):
             self.validate_score(self.score, verbose=verbose)
@@ -462,7 +471,11 @@ class SegmentMaker(makertools.SegmentMaker):
         triples = manager()
         for current_violators, current_total, current_check in triples:
             if verbose:
-                print('\t', current_violators, current_total, current_check)
+                print('    {} {} {}'.format(
+                    current_violators,
+                    current_total,
+                    current_check,
+                    ))
         if current_violators:
             raise AssertionError
 
@@ -908,8 +921,8 @@ class SegmentMaker(makertools.SegmentMaker):
         ):
         multiplexed_timespans = timespantools.TimespanInventory()
         with systemtools.Timer(
-            enter_message='\tpopulating independent timespans:',
-            exit_message='\t\ttotal:',
+            enter_message='    populating independent timespans:',
+            exit_message='        total:',
             verbose=verbose,
             ):
             meters, measure_offsets, multiplexed_timespans = \
@@ -926,8 +939,8 @@ class SegmentMaker(makertools.SegmentMaker):
                     )
             self._meters = meters
         with systemtools.Timer(
-            enter_message='\tpopulating dependent timespans:',
-            exit_message='\t\ttotal:',
+            enter_message='    populating dependent timespans:',
+            exit_message='        total:',
             verbose=verbose,
             ):
             demultiplexed_timespans = \
@@ -941,7 +954,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     verbose=verbose,
                     )
         with systemtools.Timer(
-            '\tpopulated silent timespans:',
+            '    populated silent timespans:',
             verbose=verbose,
             ):
             demultiplexed_timespans = self.populate_silent_timespans(
@@ -952,25 +965,29 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
 
         with systemtools.Timer(
-            '\tvalidated timespans:',
+            '    validated timespans:',
             verbose=verbose,
             ):
             self.validate_timespans(demultiplexed_timespans)
 
         with systemtools.Timer(
-            '\trewrote meters:',
+            enter_message='    rewriting meters:',
+            exit_message='        total:',
             verbose=verbose,
             ):
-            self.rewrite_meters(
-                demultiplexed_timespans,
-                self.meters,
-                )
+            #expr = 'self.rewrite_meters(demultiplexed_timespans, self.meters)'
+            #systemtools.IOManager.profile_expr(
+            #    expr,
+            #    global_context=globals(),
+            #    local_context=locals(),
+            #    )
+            self.rewrite_meters(demultiplexed_timespans, self.meters)
 
         with systemtools.Timer(
-            '\tpopulated score:',
+            '    populated score:',
             verbose=verbose,
             ):
-            score = self.populate_score(
+            self.populate_score(
                 demultiplexed_timespans,
                 self.score,
                 )
@@ -1508,7 +1525,7 @@ class SegmentMaker(makertools.SegmentMaker):
         verbose=True,
         ):
         with systemtools.Timer(
-            '\t\tpopulated timespans:',
+            '        populated timespans:',
             verbose=verbose,
             ):
             self.populate_multiplexed_timespans(
@@ -1520,13 +1537,13 @@ class SegmentMaker(makertools.SegmentMaker):
                 timespan_inventory=multiplexed_timespans,
                 )
         with systemtools.Timer(
-            '\t\tdemultiplexed timespans:',
+            '        demultiplexed timespans:',
             verbose=verbose,
             ):
             demultiplexed_timespans = self.demultiplex_timespans(
                 multiplexed_timespans)
         with systemtools.Timer(
-            '\t\tsplit timespans:',
+            '        split timespans:',
             verbose=verbose,
             ):
             self.split_demultiplexed_timespans(
@@ -1534,26 +1551,26 @@ class SegmentMaker(makertools.SegmentMaker):
                 demultiplexed_timespans,
                 )
         with systemtools.Timer(
-            '\t\tpruned short timespans:',
+            '        pruned short timespans:',
             verbose=verbose,
             ):
             for voice_name, timespans in demultiplexed_timespans.items():
                 self.prune_short_timespans(timespans)
         with systemtools.Timer(
-            '\t\tpruned malformed timespans:',
+            '        pruned malformed timespans:',
             verbose=verbose,
             ):
             for voice_name, timespans in demultiplexed_timespans.items():
                 self.prune_malformed_timespans(timespans)
         with systemtools.Timer(
-            '\t\tconsolidated timespans:',
+            '        consolidated timespans:',
             verbose=verbose,
             ):
             self.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
                 )
         with systemtools.Timer(
-            '\t\tinscribed timespans:',
+            '        inscribed timespans:',
             verbose=verbose,
             ):
             self.inscribe_demultiplexed_timespans(
@@ -1575,7 +1592,7 @@ class SegmentMaker(makertools.SegmentMaker):
         verbose=True,
         ):
         with systemtools.Timer(
-            '\t\tpopulated timespans:',
+            '        populated timespans:',
             verbose=verbose,
             ):
             SegmentMaker.populate_multiplexed_timespans(
@@ -1588,7 +1605,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 timespan_quantization=timespan_quantization,
                 )
         with systemtools.Timer(
-            '\t\tfound meters:',
+            '        found meters:',
             verbose=verbose,
             ):
             meters = self.find_meters(
@@ -1598,13 +1615,13 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
         meter_offsets = SegmentMaker.meters_to_offsets(meters)
         with systemtools.Timer(
-            '\t\tdemultiplexed timespans:',
+            '        demultiplexed timespans:',
             verbose=verbose,
             ):
             demultiplexed_timespans = SegmentMaker.demultiplex_timespans(
                 multiplexed_timespans)
         with systemtools.Timer(
-            '\t\tsplit timespans:',
+            '        split timespans:',
             verbose=verbose,
             ):
             SegmentMaker.split_demultiplexed_timespans(
@@ -1613,20 +1630,20 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
         # TODO: Determine best place for malformed timespan pruning.
         with systemtools.Timer(
-            '\t\tpruned malformed timespans:',
+            '        pruned malformed timespans:',
             verbose=verbose,
             ):
             for voice_name, timespans in demultiplexed_timespans.items():
                 SegmentMaker.prune_malformed_timespans(timespans)
         with systemtools.Timer(
-            '\t\tconsolidated timespans:',
+            '        consolidated timespans:',
             verbose=verbose,
             ):
             SegmentMaker.consolidate_demultiplexed_timespans(
                 demultiplexed_timespans,
                 )
         with systemtools.Timer(
-            '\t\tinscribed timespans:',
+            '        inscribed timespans:',
             verbose=verbose,
             ):
             SegmentMaker.inscribe_demultiplexed_timespans(
@@ -1634,19 +1651,19 @@ class SegmentMaker(makertools.SegmentMaker):
                 score,
                 )
         with systemtools.Timer(
-            '\t\tmultiplexed timespans:',
+            '        multiplexed timespans:',
             verbose=verbose,
             ):
             multiplexed_timespans = SegmentMaker.multiplex_timespans(
                 demultiplexed_timespans)
         # TODO: Why prune after consolidation?
         with systemtools.Timer(
-            '\t\tpruned short timespans:',
+            '        pruned short timespans:',
             verbose=verbose,
             ):
             SegmentMaker.prune_short_timespans(multiplexed_timespans)
         with systemtools.Timer(
-            '\t\tpruned meters:',
+            '        pruned meters:',
             verbose=verbose,
             ):
             meters = SegmentMaker.prune_meters(
@@ -1902,45 +1919,56 @@ class SegmentMaker(makertools.SegmentMaker):
         ):
         import consort
         meter_timespans = SegmentMaker.meters_to_timespans(meters)
+        cache = {}
         for voice_name in sorted(demultiplexed_timespans):
-            consort.debug('VOICE: {}'.format(voice_name))
             inscribed_timespans = demultiplexed_timespans[voice_name]
-            for inscribed_timespan in inscribed_timespans:
-                consort.debug('\t{!s} {!s} {!r}'.format(
-                    inscribed_timespan.start_offset,
-                    inscribed_timespan.stop_offset,
-                    inscribed_timespan.music,
-                    ))
-                if not SegmentMaker.can_rewrite_meter(inscribed_timespan):
-                    continue
-                for i, container in enumerate(inscribed_timespan.music):
-                    container_timespan = inspect_(container).get_timespan()
-                    container_timespan = container_timespan.translate(
-                        inscribed_timespan.start_offset)
-                    if i == 0:
-                        assert container_timespan.start_offset == \
-                            inscribed_timespan.start_offset
-                    if i == (len(inscribed_timespan.music) - 1):
-                        assert container_timespan.stop_offset == \
-                            inscribed_timespan.stop_offset
-                    intersecting_meters = \
-                        meter_timespans.find_timespans_intersecting_timespan(
-                            container_timespan)
-                    shifted_intersecting_meters = [
-                        _.translate(-1 * inscribed_timespan.start_offset)
-                        for _ in intersecting_meters
-                        ]
-                    consort.debug('\t\t{!r} {!r}'.format(
-                        container,
-                        container_timespan,
+            consort.debug('VOICE: {}'.format(voice_name))
+            progress_indicator = systemtools.ProgressIndicator(
+                message='        rewriting {}'.format(voice_name),
+                )
+            with progress_indicator:
+                for inscribed_timespan in inscribed_timespans:
+                    consort.debug('\t{!s} {!s} {!r}'.format(
+                        inscribed_timespan.start_offset,
+                        inscribed_timespan.stop_offset,
+                        inscribed_timespan.music,
                         ))
-                    for intersecting_meter in intersecting_meters:
-                        consort.debug('\t\t\t' + repr(intersecting_meter))
-                    SegmentMaker.rewrite_container_meter(
-                        container,
-                        shifted_intersecting_meters,
-                        )
-                    SegmentMaker.cleanup_logical_ties(container)
+                    if not SegmentMaker.can_rewrite_meter(inscribed_timespan):
+                        continue
+                    with systemtools.ForbidUpdate(inscribed_timespan.music):
+                        for i, container in enumerate(inscribed_timespan.music):
+                            container_timespan = inspect_(container).get_timespan()
+                            container_timespan = container_timespan.translate(
+                                inscribed_timespan.start_offset)
+                            if i == 0:
+                                assert container_timespan.start_offset == \
+                                    inscribed_timespan.start_offset
+                            if i == (len(inscribed_timespan.music) - 1):
+                                assert container_timespan.stop_offset == \
+                                    inscribed_timespan.stop_offset
+                            if container_timespan in cache:
+                                intersecting_meters = cache[container_timespan] 
+                            else:
+                                intersecting_meters = \
+                                    meter_timespans.find_timespans_intersecting_timespan(
+                                        container_timespan)
+                                cache[container_timespan] = intersecting_meters
+                            shifted_intersecting_meters = [
+                                _.translate(-1 * inscribed_timespan.start_offset)
+                                for _ in intersecting_meters
+                                ]
+                            consort.debug('\t\t{!r} {!r}'.format(
+                                container,
+                                container_timespan,
+                                ))
+                            for intersecting_meter in intersecting_meters:
+                                consort.debug('\t\t\t' + repr(intersecting_meter))
+                            SegmentMaker.rewrite_container_meter(
+                                container,
+                                shifted_intersecting_meters,
+                                )
+                            SegmentMaker.cleanup_logical_ties(container)
+                            progress_indicator.advance()
 
     @staticmethod
     def sort_voice_names(score, voice_names):
