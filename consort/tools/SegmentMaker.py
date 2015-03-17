@@ -181,6 +181,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_settings',
         '_tempo',
         '_timespan_quantization',
+        '_voice_names',
         '_voicewise_timespans',
         )
 
@@ -224,6 +225,11 @@ class SegmentMaker(makertools.SegmentMaker):
         import consort
         self._reset()
         self._score = self.score_template()
+        self._voice_names = tuple(
+            voice.name for voice in
+            iterate(self.score).by_class(scoretools.Voice)
+            )
+
         with systemtools.Timer(
             '    total:',
             'Performing rhythmic interpretation:',
@@ -286,6 +292,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self._lilypond_file = None
         self._meters = None
         self._score = None
+        self._voice_names = None
         self._voicewise_timespans = None
 
     ### PRIVATE PROPERTIES ###
@@ -533,12 +540,12 @@ class SegmentMaker(makertools.SegmentMaker):
         return attack_point_map
 
     @staticmethod
-    def consolidate_demultiplexed_timespans(demultiplexed_timespans):
-        for voice_name in demultiplexed_timespans:
-            timespans = demultiplexed_timespans[voice_name]
+    def consolidate_demultiplexed_timespans(demultiplexed_maquette):
+        for voice_name in demultiplexed_maquette:
+            timespans = demultiplexed_maquette[voice_name]
             consolidated_timespans = SegmentMaker.consolidate_timespans(
                 timespans)
-            demultiplexed_timespans[voice_name] = consolidated_timespans
+            demultiplexed_maquette[voice_name] = consolidated_timespans
 
     @staticmethod
     def consolidate_rests(music):
@@ -851,26 +858,26 @@ class SegmentMaker(makertools.SegmentMaker):
                     ))
 
     @staticmethod
-    def demultiplex_timespans(multiplexed_timespans):
+    def resolve_maquette(multiplexed_timespans):
         import consort
-        demultiplexed_timespans = consort.TimespanInventoryMapping()
+        demultiplexed_maquette = consort.TimespanInventoryMapping()
         for timespan in multiplexed_timespans:
             voice_name, layer = timespan.voice_name, timespan.layer
-            if voice_name not in demultiplexed_timespans:
-                demultiplexed_timespans[voice_name] = {}
-            if layer not in demultiplexed_timespans[voice_name]:
-                demultiplexed_timespans[voice_name][layer] = \
+            if voice_name not in demultiplexed_maquette:
+                demultiplexed_maquette[voice_name] = {}
+            if layer not in demultiplexed_maquette[voice_name]:
+                demultiplexed_maquette[voice_name][layer] = \
                     timespantools.TimespanInventory()
-            demultiplexed_timespans[voice_name][layer].append(
+            demultiplexed_maquette[voice_name][layer].append(
                 timespan)
-            demultiplexed_timespans[voice_name][layer]
-        for voice_name in demultiplexed_timespans:
-            timespan_inventories = demultiplexed_timespans[voice_name]
+            demultiplexed_maquette[voice_name][layer]
+        for voice_name in demultiplexed_maquette:
+            timespan_inventories = demultiplexed_maquette[voice_name]
             timespan_inventory = \
                 SegmentMaker.resolve_timespan_inventories(
                     timespan_inventories)
-            demultiplexed_timespans[voice_name] = timespan_inventory
-        return demultiplexed_timespans
+            demultiplexed_maquette[voice_name] = timespan_inventory
+        return demultiplexed_maquette
 
     @staticmethod
     def division_is_silent(division):
@@ -920,6 +927,7 @@ class SegmentMaker(makertools.SegmentMaker):
         verbose=True,
         ):
         multiplexed_timespans = timespantools.TimespanInventory()
+
         with systemtools.Timer(
             enter_message='    populating independent timespans:',
             exit_message='        total:',
@@ -938,12 +946,13 @@ class SegmentMaker(makertools.SegmentMaker):
                     verbose=verbose,
                     )
             self._meters = meters
+
         with systemtools.Timer(
             enter_message='    populating dependent timespans:',
             exit_message='        total:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = \
+            demultiplexed_maquette = \
                 self.populate_dependent_timespans(
                     self.measure_offsets,
                     multiplexed_timespans,
@@ -953,36 +962,36 @@ class SegmentMaker(makertools.SegmentMaker):
                     self.desired_duration,
                     verbose=verbose,
                     )
+
         with systemtools.Timer(
             '    populated silent timespans:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = self.populate_silent_timespans(
-                demultiplexed_timespans,
+            demultiplexed_maquette = self.populate_silent_timespans(
+                demultiplexed_maquette,
                 self.measure_offsets,
-                self.score,
-                self.score_template,
+                self.voice_names,
                 )
 
         with systemtools.Timer(
             '    validated timespans:',
             verbose=verbose,
             ):
-            self.validate_timespans(demultiplexed_timespans)
+            self.validate_timespans(demultiplexed_maquette)
 
         with systemtools.Timer(
             enter_message='    rewriting meters:',
             exit_message='        total:',
             verbose=verbose,
             ):
-            #expr = 'self.rewrite_meters(demultiplexed_timespans, self.meters)'
+            #expr = 'self.rewrite_meters(demultiplexed_maquette, self.meters)'
             #systemtools.IOManager.profile_expr(
             #    expr,
             #    global_context=globals(),
             #    local_context=locals(),
             #    )
             self.rewrite_meters(
-                demultiplexed_timespans, 
+                demultiplexed_maquette, 
                 self.meters,
                 self.score,
                 verbose=verbose,
@@ -993,11 +1002,11 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.populate_score(
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 self.score,
                 )
 
-        self._voicewise_timespans = demultiplexed_timespans
+        self._voicewise_timespans = demultiplexed_maquette
 
     def find_meters(
         self,
@@ -1135,15 +1144,15 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @staticmethod
     def inscribe_demultiplexed_timespans(
-        demultiplexed_timespans,
+        demultiplexed_maquette,
         score,
         ):
         counter = collections.Counter()
-        voice_names = demultiplexed_timespans.keys()
+        voice_names = demultiplexed_maquette.keys()
         voice_names = SegmentMaker.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
             inscribed_timespans = timespantools.TimespanInventory()
-            uninscribed_timespans = demultiplexed_timespans[voice_name]
+            uninscribed_timespans = demultiplexed_maquette[voice_name]
             for timespan in uninscribed_timespans:
                 if timespan.music is None:
                     music_specifier = timespan.music_specifier
@@ -1160,7 +1169,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     counter[music_specifier] -= 1
                 else:
                     inscribed_timespans.append(timespan)
-            demultiplexed_timespans[voice_name] = inscribed_timespans
+            demultiplexed_maquette[voice_name] = inscribed_timespans
 
     @staticmethod
     def inscribe_timespan(timespan, seed=None):
@@ -1458,8 +1467,8 @@ class SegmentMaker(makertools.SegmentMaker):
         return timespans
 
     @staticmethod
-    def multiplex_timespans(demultiplexed_timespans):
-        r'''Multiplexes `demultiplexed_timespans` into a single timespan
+    def multiplex_timespans(demultiplexed_maquette):
+        r'''Multiplexes `demultiplexed_maquette` into a single timespan
         inventory.
 
         ::
@@ -1514,7 +1523,7 @@ class SegmentMaker(makertools.SegmentMaker):
         Returns timespan inventory.
         '''
         multiplexed_timespans = timespantools.TimespanInventory()
-        for timespans in demultiplexed_timespans.values():
+        for timespans in demultiplexed_maquette.values():
             multiplexed_timespans.extend(timespans)
         multiplexed_timespans.sort()
         return multiplexed_timespans
@@ -1545,7 +1554,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '        demultiplexed timespans:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = self.demultiplex_timespans(
+            demultiplexed_maquette = self.resolve_maquette(
                 multiplexed_timespans)
         with systemtools.Timer(
             '        split timespans:',
@@ -1553,36 +1562,36 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             self.split_demultiplexed_timespans(
                 meter_offsets,
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 )
         with systemtools.Timer(
             '        pruned short timespans:',
             verbose=verbose,
             ):
-            for voice_name, timespans in demultiplexed_timespans.items():
+            for voice_name, timespans in demultiplexed_maquette.items():
                 self.prune_short_timespans(timespans)
         with systemtools.Timer(
             '        pruned malformed timespans:',
             verbose=verbose,
             ):
-            for voice_name, timespans in demultiplexed_timespans.items():
+            for voice_name, timespans in demultiplexed_maquette.items():
                 self.prune_malformed_timespans(timespans)
         with systemtools.Timer(
             '        consolidated timespans:',
             verbose=verbose,
             ):
             self.consolidate_demultiplexed_timespans(
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 )
         with systemtools.Timer(
             '        inscribed timespans:',
             verbose=verbose,
             ):
             self.inscribe_demultiplexed_timespans(
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 score,
                 )
-        return demultiplexed_timespans
+        return demultiplexed_maquette
 
     def populate_independent_timespans(
         self,
@@ -1623,7 +1632,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '        demultiplexed timespans:',
             verbose=verbose,
             ):
-            demultiplexed_timespans = SegmentMaker.demultiplex_timespans(
+            demultiplexed_maquette = SegmentMaker.resolve_maquette(
                 multiplexed_timespans)
         with systemtools.Timer(
             '        split timespans:',
@@ -1631,28 +1640,28 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             SegmentMaker.split_demultiplexed_timespans(
                 meter_offsets,
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 )
         # TODO: Determine best place for malformed timespan pruning.
         with systemtools.Timer(
             '        pruned malformed timespans:',
             verbose=verbose,
             ):
-            for voice_name, timespans in demultiplexed_timespans.items():
+            for voice_name, timespans in demultiplexed_maquette.items():
                 SegmentMaker.prune_malformed_timespans(timespans)
         with systemtools.Timer(
             '        consolidated timespans:',
             verbose=verbose,
             ):
             SegmentMaker.consolidate_demultiplexed_timespans(
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 )
         with systemtools.Timer(
             '        inscribed timespans:',
             verbose=verbose,
             ):
             SegmentMaker.inscribe_demultiplexed_timespans(
-                demultiplexed_timespans,
+                demultiplexed_maquette,
                 score,
                 )
         with systemtools.Timer(
@@ -1660,7 +1669,7 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             multiplexed_timespans = SegmentMaker.multiplex_timespans(
-                demultiplexed_timespans)
+                demultiplexed_maquette)
         # TODO: Why prune after consolidation?
         with systemtools.Timer(
             '        pruned short timespans:',
@@ -1718,10 +1727,10 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @staticmethod
     def populate_score(
-        demultiplexed_timespans,
+        demultiplexed_maquette,
         score,
         ):
-        for voice_name, timespans in demultiplexed_timespans.items():
+        for voice_name, timespans in demultiplexed_maquette.items():
             voice = score[voice_name]
             for timespan in timespans:
                 assert timespan.duration == \
@@ -1731,20 +1740,20 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @staticmethod
     def populate_silent_timespans(
-        demultiplexed_timespans,
+        demultiplexed_maquette,
         meter_offsets,
-        score,
-        score_template,
+        voice_names,
         ):
         import consort
         silent_music_specifier = consort.MusicSpecifier()
         rhythm_maker = SegmentMaker.get_rhythm_maker(None)
-        for voice in iterate(score).by_class(scoretools.Voice):
-            voice_name = voice.name
-            if voice_name not in demultiplexed_timespans:
-                demultiplexed_timespans[voice_name] = \
+        voice_names = set(voice_names)
+        voice_names.update(demultiplexed_maquette.keys())
+        for voice_name in voice_names:
+            if voice_name not in demultiplexed_maquette:
+                demultiplexed_maquette[voice_name] = \
                     timespantools.TimespanInventory()
-            timespans = demultiplexed_timespans[voice_name]
+            timespans = demultiplexed_maquette[voice_name]
             silences = timespantools.TimespanInventory([
                 consort.SilentTimespan(
                     start_offset=0,
@@ -1772,7 +1781,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     )
                 timespans.append(silent_timespan)
             timespans.sort()
-        return demultiplexed_timespans
+        return demultiplexed_maquette
 
     @staticmethod
     def prune_meters(
@@ -1921,7 +1930,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @staticmethod
     def rewrite_meters(
-        demultiplexed_timespans,
+        demultiplexed_maquette,
         meters,
         score,
         verbose=True,
@@ -1929,8 +1938,8 @@ class SegmentMaker(makertools.SegmentMaker):
         import consort
         meter_timespans = SegmentMaker.meters_to_timespans(meters)
         cache = {}
-        for context_name in sorted(demultiplexed_timespans):
-            inscribed_timespans = demultiplexed_timespans[context_name]
+        for context_name in sorted(demultiplexed_maquette):
+            inscribed_timespans = demultiplexed_maquette[context_name]
             consort.debug('CONTEXT: {}'.format(context_name))
             context = score[context_name]
             forbid_staff_lines_spanner = context.context_name == 'Dynamics'
@@ -1994,15 +2003,15 @@ class SegmentMaker(makertools.SegmentMaker):
     @staticmethod
     def split_demultiplexed_timespans(
         meter_offsets=None,
-        demultiplexed_timespans=None,
+        demultiplexed_maquette=None,
         ):
-        for voice_name in demultiplexed_timespans:
-            timespan_inventory = demultiplexed_timespans[voice_name]
+        for voice_name in demultiplexed_maquette:
+            timespan_inventory = demultiplexed_maquette[voice_name]
             split_inventory = SegmentMaker.split_timespans(
                 meter_offsets,
                 timespan_inventory,
                 )
-            demultiplexed_timespans[voice_name] = split_inventory
+            demultiplexed_maquette[voice_name] = split_inventory
 
     @staticmethod
     def split_timespans(offsets, timespan_inventory):
@@ -2165,9 +2174,9 @@ class SegmentMaker(makertools.SegmentMaker):
         return resulting_timespans
 
     @staticmethod
-    def validate_timespans(demultiplexed_timespans):
+    def validate_timespans(demultiplexed_maquette):
         durations = set()
-        for voice_name, timespans in demultiplexed_timespans.items():
+        for voice_name, timespans in demultiplexed_maquette.items():
             timespans.sort()
             assert timespans.start_offset == 0
             assert timespans.all_are_contiguous
@@ -2499,3 +2508,7 @@ class SegmentMaker(makertools.SegmentMaker):
             timespan_quantization = \
                 durationtools.Duration(timespan_quantization)
         self._timespan_quantization = timespan_quantization
+
+    @property
+    def voice_names(self):
+        return self._voice_names
