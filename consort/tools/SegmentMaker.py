@@ -985,6 +985,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 demultiplexed_timespans, 
                 self.meters,
                 self.score,
+                verbose=verbose,
                 )
 
         with systemtools.Timer(
@@ -1532,7 +1533,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '        populated timespans:',
             verbose=verbose,
             ):
-            self.populate_multiplexed_timespans(
+            self.populate_multiplexed_maquette(
                 dependent=True,
                 score=score,
                 score_template=score_template,
@@ -1599,7 +1600,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '        populated timespans:',
             verbose=verbose,
             ):
-            SegmentMaker.populate_multiplexed_timespans(
+            SegmentMaker.populate_multiplexed_maquette(
                 dependent=False,
                 score=score,
                 score_template=score_template,
@@ -1679,7 +1680,7 @@ class SegmentMaker(makertools.SegmentMaker):
         return meters, meter_offsets, multiplexed_timespans
 
     @staticmethod
-    def populate_multiplexed_timespans(
+    def populate_multiplexed_maquette(
         dependent=False,
         score=None,
         score_template=None,
@@ -1923,6 +1924,7 @@ class SegmentMaker(makertools.SegmentMaker):
         demultiplexed_timespans,
         meters,
         score,
+        verbose=True,
         ):
         import consort
         meter_timespans = SegmentMaker.meters_to_timespans(meters)
@@ -1934,6 +1936,7 @@ class SegmentMaker(makertools.SegmentMaker):
             forbid_staff_lines_spanner = context.context_name == 'Dynamics'
             progress_indicator = systemtools.ProgressIndicator(
                 message='        rewriting {}'.format(context_name),
+                verbose=verbose,
                 )
             with progress_indicator:
                 for inscribed_timespan in inscribed_timespans:
