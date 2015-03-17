@@ -1742,13 +1742,16 @@ class SegmentMaker(makertools.SegmentMaker):
     def populate_silent_timespans(
         demultiplexed_maquette,
         meter_offsets,
-        voice_names,
+        voice_names=None,
         ):
         import consort
         silent_music_specifier = consort.MusicSpecifier()
         rhythm_maker = SegmentMaker.get_rhythm_maker(None)
-        voice_names = set(voice_names)
-        voice_names.update(demultiplexed_maquette.keys())
+        if voice_names is None:
+            voice_names = demultiplexed_maquette.keys()
+        else:
+            voice_names = set(voice_names)
+            voice_names.update(demultiplexed_maquette.keys())
         for voice_name in voice_names:
             if voice_name not in demultiplexed_maquette:
                 demultiplexed_maquette[voice_name] = \
