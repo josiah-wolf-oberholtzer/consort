@@ -1180,9 +1180,6 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> import consort
             >>> music_specifier = consort.MusicSpecifier(
             ...     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-            ...         beam_specifier=rhythmmakertools.BeamSpecifier(
-            ...             beam_each_division=False,
-            ...             ),
             ...         output_masks=[
             ...             rhythmmakertools.BooleanPattern(
             ...                 indices=[0],
@@ -1215,10 +1212,6 @@ class SegmentMaker(makertools.SegmentMaker):
                     ),
                 music_specifier=consort.tools.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                        beam_specifier=rhythmmakertools.BeamSpecifier(
-                            beam_each_division=False,
-                            beam_divisions_together=False,
-                            ),
                         output_masks=(
                             rhythmmakertools.BooleanPattern(
                                 indices=(0,),
@@ -1243,10 +1236,6 @@ class SegmentMaker(makertools.SegmentMaker):
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                beam_specifier=rhythmmakertools.BeamSpecifier(
-                                    beam_each_division=False,
-                                    beam_divisions_together=False,
-                                    ),
                                 output_masks=(
                                     rhythmmakertools.BooleanPattern(
                                         indices=(0,),
@@ -1266,10 +1255,6 @@ class SegmentMaker(makertools.SegmentMaker):
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                beam_specifier=rhythmmakertools.BeamSpecifier(
-                                    beam_each_division=False,
-                                    beam_divisions_together=False,
-                                    ),
                                 output_masks=(
                                     rhythmmakertools.BooleanPattern(
                                         indices=(0,),
