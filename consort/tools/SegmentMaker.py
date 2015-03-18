@@ -1274,7 +1274,7 @@ class SegmentMaker(makertools.SegmentMaker):
         inscribed_timespans = timespantools.TimespanInventory()
         rhythm_maker = SegmentMaker.get_rhythm_maker(timespan.music_specifier)
         durations = timespan.divisions[:]
-        music = SegmentMaker.make_simple_music(
+        music = SegmentMaker.make_music(
             rhythm_maker,
             durations,
             seed,
@@ -1332,17 +1332,17 @@ class SegmentMaker(makertools.SegmentMaker):
         return False
 
     @staticmethod
-    def make_simple_music(rhythm_maker, durations, seed=None):
+    def make_music(rhythm_maker, durations, seed=0):
         music = rhythm_maker(durations, seeds=seed)
-        for i, x in enumerate(music):
-            if len(x) == 1 and isinstance(x[0], scoretools.Tuplet):
-                music[i] = x[0]
+        for i, division in enumerate(music):
+            if len(division) == 1 and isinstance(division[0], scoretools.Tuplet):
+                music[i] = division[0]
             else:
-                music[i] = scoretools.Container(x)
+                music[i] = scoretools.Container(division)
         music = scoretools.Container(music)
-        for x in music[:]:
-            if isinstance(x, scoretools.Tuplet) and x.multiplier == 1:
-                mutate(x).swap(scoretools.Container())
+        for division in music[:]:
+            if isinstance(division, scoretools.Tuplet) and division.multiplier == 1:
+                mutate(division).swap(scoretools.Container())
         return music
 
     @staticmethod
@@ -1756,7 +1756,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 start_offset = group.start_offset,
                 stop_offset = group.stop_offset,
                 durations = [_.duration for _ in group]
-                silence = SegmentMaker.make_simple_music(
+                silence = SegmentMaker.make_music(
                     rhythm_maker,
                     durations,
                     )

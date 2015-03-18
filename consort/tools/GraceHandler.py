@@ -5,11 +5,11 @@ from abjad import attach
 from abjad import new
 from abjad import override
 from abjad.tools import abctools
+from abjad.tools import datastructuretools
 from abjad.tools import mathtools
 from abjad.tools import schemetools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
-from abjad.tools import sequencetools
 
 
 class GraceHandler(abctools.AbjadValueObject):
@@ -23,7 +23,9 @@ class GraceHandler(abctools.AbjadValueObject):
         ...     )
         >>> print(format(grace_handler))
         consort.tools.GraceHandler(
-            counts=(0, 1, 0, 0, 2),
+            counts=datastructuretools.CyclicTuple(
+                [0, 1, 0, 0, 2]
+                ),
             )
 
     '''
@@ -44,14 +46,14 @@ class GraceHandler(abctools.AbjadValueObject):
         only_if_preceded_by_nonsilence=None,
         only_if_preceded_by_silence=None,
         ):
-        if counts is not None:
-            if not isinstance(counts, collections.Sequence):
-                counts = (counts,)
-            assert len(counts)
-            assert mathtools.all_are_nonnegative_integer_equivalent_numbers(
-                counts)
-            counts = tuple(counts)
-        self._counts = counts
+        if not counts:
+            counts = (0,),
+        if not isinstance(counts, collections.Sequence):
+            counts = (counts,)
+        assert len(counts)
+        assert mathtools.all_are_nonnegative_integer_equivalent_numbers(
+            counts)
+        self._counts = datastructuretools.CyclicTuple(counts)
         if only_if_preceded_by_nonsilence is not None:
             only_if_preceded_by_nonsilence = bool(
                 only_if_preceded_by_nonsilence)
@@ -74,7 +76,6 @@ class GraceHandler(abctools.AbjadValueObject):
         assert isinstance(logical_tie, selectiontools.LogicalTie)
         if self.counts is None:
             return
-        counts = sequencetools.Sequence(*self.counts).rotate(seed)
         previous_leaf = logical_tie.head._get_leaf(-1)
         if previous_leaf is None:
             return
@@ -89,7 +90,7 @@ class GraceHandler(abctools.AbjadValueObject):
         if self.only_if_preceded_by_nonsilence:
             if isinstance(previous_leaf, silence_prototype):
                 return
-        grace_count = counts[0]
+        grace_count = self.counts[seed]
         if not grace_count:
             return
         kind = 'after'
