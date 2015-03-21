@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import collections
+from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
+from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
@@ -485,6 +487,82 @@ class TaleaTimespanMaker(TimespanMaker):
             if final_offset < start_offset:
                 final_offset = start_offset
         return timespan_inventory, final_offset
+
+    ### PUBLIC METHODS ###
+
+    def rotate(self, n=0):
+        r'''Rotates talea timespan-maker by `n`.
+
+        ::
+
+            >>> timespan_maker = consort.TaleaTimespanMaker(
+            ...     initial_silence_talea=rhythmmakertools.Talea(
+            ...         counts=(0, 4),
+            ...         denominator=16,
+            ...         ),
+            ...     playing_groupings=(1, 2, 3),
+            ...     playing_talea=rhythmmakertools.Talea(
+            ...         counts=(1, 1, 2, 1, 3),
+            ...         denominator=8,
+            ...         ),
+            ...     )
+            >>> timespan_maker = timespan_maker.rotate(1)
+            >>> print(format(timespan_maker))
+            consort.tools.TaleaTimespanMaker(
+                initial_silence_talea=rhythmmakertools.Talea(
+                    counts=(4, 0),
+                    denominator=16,
+                    ),
+                playing_talea=rhythmmakertools.Talea(
+                    counts=(3, 1, 1, 2, 1),
+                    denominator=8,
+                    ),
+                playing_groupings=(3, 1, 2),
+                repeat=True,
+                silence_talea=rhythmmakertools.Talea(
+                    counts=(4,),
+                    denominator=16,
+                    ),
+                step_anchor=Right,
+                synchronize_groupings=False,
+                synchronize_step=False,
+                )
+
+        Returns new timespan-maker.
+        '''
+
+        initial_silence_talea = self.initial_silence_talea
+        if initial_silence_talea is not None:
+            counts = sequencetools.rotate_sequence(
+                initial_silence_talea.counts, n)
+            initial_silence_talea = new(
+                initial_silence_talea,
+                counts=counts,
+                )
+        playing_groupings = sequencetools.rotate_sequence(
+            self.playing_groupings, n)
+        playing_talea = self.playing_talea
+        counts = sequencetools.rotate_sequence(
+            playing_talea.counts, n)
+        playing_talea = new(
+            playing_talea,
+            counts=counts,
+            )
+        silence_talea = self.silence_talea
+        counts = sequencetools.rotate_sequence(
+            silence_talea.counts, n)
+        silence_talea = new(
+            silence_talea,
+            counts=counts,
+            )
+        timespan_maker = new(
+            self,
+            initial_silence_talea=initial_silence_talea,
+            playing_groupings=playing_groupings,
+            playing_talea=playing_talea,
+            silence_talea=silence_talea,
+            )
+        return timespan_maker
 
     ### PUBLIC PROPERTIES ###
 
