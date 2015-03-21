@@ -22,7 +22,8 @@ def make_annotated_division(division):
         note = scoretools.Note("c'''2")
         annotated_division = Tuplet(2, (note,))
     leaves = division.select_leaves()
-    if all(isinstance(_, Rest) for _ in leaves):
+    prototype = (Rest, scoretools.MultimeasureRest)
+    if all(isinstance(_, prototype) for _ in leaves):
         manager = override(annotated_division)
         manager.tuplet_bracket.dash_fraction = 0.1
         manager.tuplet_bracket.dash_period = 1.5
@@ -36,8 +37,12 @@ def annotate(context):
     annotated_context = context
     context_mapping = {}
     for voice in iterate(annotated_context).by_class(Voice):
-        division_voice = Voice(context_name='AnnotatedDivisionsVoice')
-        phrase_voice = Voice(context_name='AnnotatedPhrasesVoice')
+        division_voice = scoretools.Context(
+            context_name='AnnotatedDivisionsVoice',
+            )
+        phrase_voice = scoretools.Context(
+            context_name='AnnotatedPhrasesVoice',
+            )
         for phrase in voice:
             for division in phrase:
                 annotation_division = make_annotated_division(division)
