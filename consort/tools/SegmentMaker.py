@@ -169,6 +169,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_attack_point_map',
         '_desired_duration_in_seconds',
         '_discard_final_silence',
+        '_is_annotated',
         '_is_final_segment',
         '_lilypond_file',
         '_maximum_meter_run_length',
@@ -192,6 +193,7 @@ class SegmentMaker(makertools.SegmentMaker):
         discard_final_silence=None,
         desired_duration_in_seconds=None,
         omit_stylesheets=None,
+        is_annotated=None,
         is_final_segment=None,
         maximum_meter_run_length=None,
         name=None,
@@ -206,6 +208,7 @@ class SegmentMaker(makertools.SegmentMaker):
             self,
             name=name,
             )
+        self.is_annotated = is_annotated
         self.discard_final_silence = discard_final_silence
         self.desired_duration_in_seconds = desired_duration_in_seconds
         self.is_final_segment = is_final_segment
@@ -221,7 +224,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, annotate=False, verbose=True):
+    def __call__(self, annotate=None, verbose=True):
         import consort
         self._reset()
         self._score = self.score_template()
@@ -271,13 +274,16 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.validate_score(self.score, verbose=verbose)
-        if annotate:
+        is_annotated = self.is_annotated
+        if annotate is not None:
+            is_annotated = annotate
+        if is_annotated:
             consort.annotate(self.score)
         return self.lilypond_file
 
     def __illustrate__(
         self,
-        annotate=False,
+        annotate=None,
         verbose=True,
         ):
         return self(
@@ -2249,6 +2255,16 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         final_markup = markuptools.Markup(italic, 'down')
         return final_markup
+
+    @property
+    def is_annotated(self):
+        return self._is_annotated
+
+    @is_annotated.setter
+    def is_annotated(self, expr):
+        if expr is not None:
+            expr = bool(expr)
+        self._is_annotated = expr
 
     @property
     def is_final_segment(self):
