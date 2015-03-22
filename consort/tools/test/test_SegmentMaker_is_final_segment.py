@@ -21,7 +21,7 @@ def test_SegmentMaker_is_final_segment_01():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.16"
+        \version "2.19.17"
         \language "english"
         
         \score {

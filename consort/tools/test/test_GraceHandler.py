@@ -43,7 +43,7 @@ def test_GraceHandler_01():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.16"
+        \version "2.19.17"
         \language "english"
 
         \score {
@@ -178,7 +178,7 @@ def test_GraceHandler_02():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.16"
+        \version "2.19.17"
         \language "english"
 
         \score {
@@ -331,7 +331,7 @@ def test_GraceHandler_03():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.16"
+        \version "2.19.17"
         \language "english"
 
         \score {
@@ -468,7 +468,7 @@ def test_GraceHandler_04():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.16"
+        \version "2.19.17"
         \language "english"
         
         \score {
@@ -555,7 +555,7 @@ def test_GraceHandler_05():
     lilypond_file = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.16"
+        \version "2.19.17"
         \language "english"
         
         \score {
