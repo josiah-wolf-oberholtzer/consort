@@ -1044,12 +1044,7 @@ class SegmentMaker(makertools.SegmentMaker):
         import consort
         if music_specifier is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
-                output_masks=[
-                    rhythmmakertools.BooleanPattern(
-                        indices=[0],
-                        period=1,
-                        )
-                    ],
+                output_masks=[rhythmmakertools.silence_all()],
                 )
         elif music_specifier.rhythm_maker is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
@@ -1187,7 +1182,7 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> music_specifier = consort.MusicSpecifier(
             ...     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
             ...         output_masks=[
-            ...             rhythmmakertools.BooleanPattern(
+            ...             rhythmmakertools.SilenceMask(
             ...                 indices=[0],
             ...                 period=3,
             ...                 ),
@@ -1219,7 +1214,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 music_specifier=consort.tools.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
                         output_masks=(
-                            rhythmmakertools.BooleanPattern(
+                            rhythmmakertools.SilenceMask(
                                 indices=(0,),
                                 period=3,
                                 ),
@@ -1243,7 +1238,7 @@ class SegmentMaker(makertools.SegmentMaker):
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
                                 output_masks=(
-                                    rhythmmakertools.BooleanPattern(
+                                    rhythmmakertools.SilenceMask(
                                         indices=(0,),
                                         period=3,
                                         ),
@@ -1262,7 +1257,7 @@ class SegmentMaker(makertools.SegmentMaker):
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
                                 output_masks=(
-                                    rhythmmakertools.BooleanPattern(
+                                    rhythmmakertools.SilenceMask(
                                         indices=(0,),
                                         period=3,
                                         ),
