@@ -1213,11 +1213,13 @@ class SegmentMaker(makertools.SegmentMaker):
                     ),
                 music_specifier=consort.tools.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                        output_masks=(
-                            rhythmmakertools.SilenceMask(
-                                indices=(0,),
-                                period=3,
-                                ),
+                        output_masks=rhythmmakertools.BooleanPatternInventory(
+                            (
+                                rhythmmakertools.SilenceMask(
+                                    indices=(0,),
+                                    period=3,
+                                    ),
+                                )
                             ),
                         ),
                     ),
@@ -1233,15 +1235,17 @@ class SegmentMaker(makertools.SegmentMaker):
                         start_offset=durationtools.Offset(1, 4),
                         stop_offset=durationtools.Offset(3, 4),
                         music=scoretools.Container(
-                            "{ c'4 } { c'4 }"
+                            "{   c'4 } {   c'4 }"
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                output_masks=(
-                                    rhythmmakertools.SilenceMask(
-                                        indices=(0,),
-                                        period=3,
-                                        ),
+                                output_masks=rhythmmakertools.BooleanPatternInventory(
+                                    (
+                                        rhythmmakertools.SilenceMask(
+                                            indices=(0,),
+                                            period=3,
+                                            ),
+                                        )
                                     ),
                                 ),
                             ),
@@ -1252,15 +1256,17 @@ class SegmentMaker(makertools.SegmentMaker):
                         start_offset=durationtools.Offset(1, 1),
                         stop_offset=durationtools.Offset(3, 2),
                         music=scoretools.Container(
-                            "{ c'4 } { c'4 }"
+                            "{   c'4 } {   c'4 }"
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                output_masks=(
-                                    rhythmmakertools.SilenceMask(
-                                        indices=(0,),
-                                        period=3,
-                                        ),
+                                output_masks=rhythmmakertools.BooleanPatternInventory(
+                                    (
+                                        rhythmmakertools.SilenceMask(
+                                            indices=(0,),
+                                            period=3,
+                                            ),
+                                        )
                                     ),
                                 ),
                             ),
