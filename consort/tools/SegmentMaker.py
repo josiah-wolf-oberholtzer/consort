@@ -1042,16 +1042,18 @@ class SegmentMaker(makertools.SegmentMaker):
     @staticmethod
     def get_rhythm_maker(music_specifier):
         import consort
+        beam_specifier = rhythmmakertools.BeamSpecifier(
+            beam_each_division=False,
+            beam_divisions_together=False,
+            )
         if music_specifier is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
+                beam_specifier=beam_specifier,
                 output_masks=[rhythmmakertools.silence_all()],
                 )
         elif music_specifier.rhythm_maker is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
-                beam_specifier=rhythmmakertools.BeamSpecifier(
-                    beam_each_division=False,
-                    beam_divisions_together=False,
-                    ),
+                beam_specifier=beam_specifier,
                 tie_specifier=rhythmmakertools.TieSpecifier(
                     tie_across_divisions=True,
                     ),
@@ -1059,20 +1061,17 @@ class SegmentMaker(makertools.SegmentMaker):
         elif isinstance(music_specifier.rhythm_maker,
             consort.CompositeRhythmMaker):
             rhythm_maker = music_specifier.rhythm_maker.new(
-                beam_specifier=rhythmmakertools.BeamSpecifier(
-                    beam_each_division=False,
-                    beam_divisions_together=False,
-                    ),
+                beam_specifier=beam_specifier,
                 )
         else:
             rhythm_maker = music_specifier.rhythm_maker
             rhythm_maker = new(
                 rhythm_maker,
-                beam_specifier=rhythmmakertools.BeamSpecifier(
-                    beam_each_division=False,
-                    beam_divisions_together=False,
-                    ),
+                beam_specifier=beam_specifier,
                 )
+        assert rhythm_maker is not None
+        assert not rhythm_maker.beam_specifier.beam_each_division
+        assert not rhythm_maker.beam_specifier.beam_divisions_together
         return rhythm_maker
 
     @staticmethod
@@ -1383,7 +1382,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
         Returns tuple of offsets.
         '''
-        durations = [_.preprolated_duration for _ in meters]
+        durations = [_.duration for _ in meters]
         offsets = mathtools.cumulative_sums(durations)
         offsets = [durationtools.Offset(_) for _ in offsets]
         return tuple(offsets)
@@ -1436,7 +1435,7 @@ class SegmentMaker(makertools.SegmentMaker):
                         start_offset=durationtools.Offset(2, 1),
                         stop_offset=durationtools.Offset(37, 16),
                         annotation=metertools.Meter(
-                            '(5/16 (1/16 1/16 1/16 1/16 1/16))'
+                            '(5/16 ((3/16 (1/16 1/16 1/16)) (2/16 (1/16 1/16))))'
                             ),
                         ),
                     ]
