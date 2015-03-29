@@ -99,25 +99,35 @@ class PitchSpecifier(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        pitch_segments=("c'",),
-        ratio=(1,),
+        pitch_segments=None,
+        ratio=None,
         ):
-        if isinstance(pitch_segments, pitchtools.Pitch):
-            pitch_segments = pitchtools.PitchSegment([pitch_segments])
-        if not isinstance(pitch_segments, (list, tuple)):
-            pitch_segments = (pitch_segments,)
-        coerced_pitch_segments = []
-        for pitch_segment in pitch_segments:
-            pitch_segment = pitchtools.PitchSegment(
-                pitch_segment,
-                item_class=pitchtools.NamedPitch,
-                )
-            assert len(pitch_segment)
-            coerced_pitch_segments.append(pitch_segment)
-        pitch_segments = tuple(coerced_pitch_segments)
-        assert len(pitch_segments)
-        ratio = mathtools.Ratio([abs(x) for x in ratio])
-        assert len(ratio) == len(pitch_segments)
+        if pitch_segments is not None:
+            if isinstance(pitch_segments, pitchtools.Pitch):
+                pitch_segments = pitchtools.PitchSegment([pitch_segments])
+            elif isinstance(pitch_segments, str):
+                pitch_segments = pitchtools.PitchSegment(pitch_segments)
+            if isinstance(pitch_segments, pitchtools.PitchSegment):
+                pitch_segments = [pitch_segments]
+            coerced_pitch_segments = []
+            for pitch_segment in pitch_segments:
+                pitch_segment = pitchtools.PitchSegment(
+                    pitch_segment,
+                    item_class=pitchtools.NamedPitch,
+                    )
+                if not pitch_segment:
+                    pitch_segment = pitchtools.PitchSegment("c'")
+                coerced_pitch_segments.append(pitch_segment)
+            pitch_segments = tuple(coerced_pitch_segments)
+            assert len(pitch_segments)
+
+        if pitch_segments and not ratio:
+            ratio = [1] * len(pitch_segments)
+
+        if ratio is not None:
+            ratio = mathtools.Ratio([abs(x) for x in ratio])
+            assert len(ratio) == len(pitch_segments)
+
         self._pitch_segments = pitch_segments
         self._ratio = ratio
 
@@ -179,19 +189,28 @@ class PitchSpecifier(abctools.AbjadValueObject):
         '''
         import consort
         timespans = consort.TimespanCollection()
-        target_timespan = timespantools.Timespan(
-            start_offset=0,
-            stop_offset=stop_offset,
-            )
-        divided_timespans = target_timespan.divide_by_ratio(self.ratio)
-        for i, timespan in enumerate(divided_timespans):
-            pitch_segment = self._pitch_segments[i]
+        if not self.ratio or not self.pitch_segments:
+            pitch_segment = pitchtools.PitchSegment("c'")
             annotated_timespan = timespantools.AnnotatedTimespan(
                 annotation=pitch_segment,
-                start_offset=timespan.start_offset,
-                stop_offset=timespan.stop_offset,
-                )
+                start_offset=0,
+                stop_offset=stop_offset,
+                ),
             timespans.insert(annotated_timespan)
+        else:
+            target_timespan = timespantools.Timespan(
+                start_offset=0,
+                stop_offset=stop_offset,
+                )
+            divided_timespans = target_timespan.divide_by_ratio(self.ratio)
+            for i, timespan in enumerate(divided_timespans):
+                pitch_segment = self._pitch_segments[i]
+                annotated_timespan = timespantools.AnnotatedTimespan(
+                    annotation=pitch_segment,
+                    start_offset=timespan.start_offset,
+                    stop_offset=timespan.stop_offset,
+                    )
+                timespans.insert(annotated_timespan)
         return timespans
 
     ### PUBLIC PROPERTIES ###

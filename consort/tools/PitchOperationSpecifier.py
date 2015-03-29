@@ -69,20 +69,32 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        pitch_operations=(None,),
-        ratio=(1,),
+        pitch_operations=None,
+        ratio=None,
         ):
-        if not isinstance(pitch_operations, collections.Sequence):
+        if pitch_operations is not None:
+            if not isinstance(pitch_operations, collections.Sequence):
                 pitch_operations = (pitch_operations,)
-        prototype = (
-            pitchtools.PitchOperation,
-            type(None),
-            )
-        assert all(isinstance(x, prototype) for x in pitch_operations)
-        assert len(pitch_operations)
-        self._pitch_operations = tuple(pitch_operations)
-        ratio = mathtools.Ratio([abs(x) for x in ratio])
-        assert len(ratio) == len(pitch_operations)
+            prototype = (
+                pitchtools.PitchOperation,
+                type(None),
+                )
+            coerced_pitch_operations = []
+            for x in pitch_operations:
+                if not isinstance(x, prototype):
+                    x = pitchtools.PitchOperation(x)
+                coerced_pitch_operations.append(x)
+            pitch_operations = tuple(coerced_pitch_operations)
+            assert len(pitch_operations)
+
+        if pitch_operations and not ratio:
+            ratio = [1] * len(pitch_operations)
+
+        if ratio is not None:
+            ratio = mathtools.Ratio([abs(x) for x in ratio])
+            assert len(ratio) == len(pitch_operations)
+
+        self._pitch_operations = pitch_operations
         self._ratio = ratio
 
     ### PUBLIC METHODS ###
@@ -133,23 +145,30 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                     ]
                 )
 
-        Returns timespan colleciton.
+        Returns timespan collection.
         '''
         import consort
         timespans = consort.TimespanCollection()
-        target_timespan = timespantools.Timespan(
-            start_offset=0,
-            stop_offset=stop_offset,
-            )
-        divided_timespans = target_timespan.divide_by_ratio(self.ratio)
-        for i, timespan in enumerate(divided_timespans):
-            pitch_operation = self._pitch_operations[i]
+        if not self.ratio or not self.pitch_operations:
             annotated_timespan = timespantools.AnnotatedTimespan(
-                annotation=pitch_operation,
-                start_offset=timespan.start_offset,
-                stop_offset=timespan.stop_offset,
-                )
+                start_offset=0,
+                stop_offset=stop_offset,
+                ),
             timespans.insert(annotated_timespan)
+        else:
+            target_timespan = timespantools.Timespan(
+                start_offset=0,
+                stop_offset=stop_offset,
+                )
+            divided_timespans = target_timespan.divide_by_ratio(self.ratio)
+            for i, timespan in enumerate(divided_timespans):
+                pitch_operation = self._pitch_operations[i]
+                annotated_timespan = timespantools.AnnotatedTimespan(
+                    annotation=pitch_operation,
+                    start_offset=timespan.start_offset,
+                    stop_offset=timespan.stop_offset,
+                    )
+                timespans.insert(annotated_timespan)
         return timespans
 
     ### PUBLIC PROPERTIES ###
