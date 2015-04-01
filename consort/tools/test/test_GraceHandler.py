@@ -40,7 +40,7 @@ def test_GraceHandler_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -175,7 +175,7 @@ def test_GraceHandler_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -328,7 +328,7 @@ def test_GraceHandler_03():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -465,7 +465,7 @@ def test_GraceHandler_04():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -552,7 +552,7 @@ def test_GraceHandler_05():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"

@@ -20,7 +20,7 @@ def test_SegmentMaker_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -110,7 +110,7 @@ def test_SegmentMaker_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -187,7 +187,7 @@ def test_SegmentMaker_03():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -283,7 +283,7 @@ def test_SegmentMaker_04():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -383,7 +383,7 @@ def test_SegmentMaker_05():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -466,7 +466,7 @@ def test_SegmentMaker_06():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -589,7 +589,7 @@ def test_SegmentMaker_07():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"

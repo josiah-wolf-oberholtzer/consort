@@ -24,7 +24,7 @@ def test_SegmentMaker_discard_final_silence_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -113,7 +113,7 @@ def test_SegmentMaker_discard_final_silence_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file = segment_maker()
+    lilypond_file, metadata = segment_maker()
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"

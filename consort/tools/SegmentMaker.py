@@ -174,6 +174,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_lilypond_file',
         '_maximum_meter_run_length',
         '_meters',
+        '_name',
         '_omit_stylesheets',
         '_permitted_time_signatures',
         '_rehearsal_mark',
@@ -206,8 +207,8 @@ class SegmentMaker(makertools.SegmentMaker):
         ):
         makertools.SegmentMaker.__init__(
             self,
-            name=name,
             )
+        self.name = name
         self.is_annotated = is_annotated
         self.discard_final_silence = discard_final_silence
         self.desired_duration_in_seconds = desired_duration_in_seconds
@@ -224,7 +225,13 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, annotate=None, verbose=True):
+    def __call__(
+        self,
+        annotate=None,
+        verbose=True,
+        segment_metadata=None,
+        previous_segment_metadata=None,
+        ):
         import consort
         self._reset()
         self._score = self.score_template()
@@ -279,7 +286,7 @@ class SegmentMaker(makertools.SegmentMaker):
             is_annotated = annotate
         if is_annotated:
             consort.annotate(self.score)
-        return self.lilypond_file
+        return self.lilypond_file, segment_metadata
 
     def __illustrate__(
         self,
@@ -345,9 +352,15 @@ class SegmentMaker(makertools.SegmentMaker):
     def attach_final_bar_line(self):
         if self.is_final_segment:
             self.score.add_final_markup(self.final_markup)
-            self.score.add_final_bar_line(abbreviation='|.', to_each_voice=True)
+            self.score.add_final_bar_line(
+                abbreviation='|.',
+                to_each_voice=True,
+                )
         else:
-            self.score.add_final_bar_line(abbreviation='||', to_each_voice=True)
+            self.score.add_final_bar_line(
+                abbreviation='||',
+                to_each_voice=True,
+                )
 
     def attach_rehearsal_mark(self):
         first_leaf = self.score['TimeSignatureContext'].select_leaves()[0]
@@ -997,7 +1010,7 @@ class SegmentMaker(makertools.SegmentMaker):
             #    local_context=locals(),
             #    )
             self.rewrite_meters(
-                demultiplexed_maquette, 
+                demultiplexed_maquette,
                 self.meters,
                 self.score,
                 verbose=verbose,
@@ -1163,7 +1176,10 @@ class SegmentMaker(makertools.SegmentMaker):
                             seed = music_specifier.seed or 0
                         counter[music_specifier] = seed
                     seed = counter[music_specifier]
-                    result = SegmentMaker.inscribe_timespan(timespan, seed=seed)
+                    result = SegmentMaker.inscribe_timespan(
+                        timespan,
+                        seed=seed,
+                        )
                     inscribed_timespans.extend(result)
                     # Negative rotation mimics advancing through a series.
                     counter[music_specifier] -= 1
@@ -1341,13 +1357,19 @@ class SegmentMaker(makertools.SegmentMaker):
     def make_music(rhythm_maker, durations, seed=0):
         music = rhythm_maker(durations, seeds=seed)
         for i, division in enumerate(music):
-            if len(division) == 1 and isinstance(division[0], scoretools.Tuplet):
+            if (
+                len(division) == 1 and
+                isinstance(division[0], scoretools.Tuplet)
+                ):
                 music[i] = division[0]
             else:
                 music[i] = scoretools.Container(division)
         music = scoretools.Container(music)
         for division in music[:]:
-            if isinstance(division, scoretools.Tuplet) and division.multiplier == 1:
+            if (
+                isinstance(division, scoretools.Tuplet) and
+                division.multiplier == 1
+                ):
                 mutate(division).swap(scoretools.Container())
         return music
 
@@ -1962,7 +1984,7 @@ class SegmentMaker(makertools.SegmentMaker):
                                 assert container_timespan.stop_offset == \
                                     inscribed_timespan.stop_offset
                             if container_timespan in cache:
-                                intersecting_meters = cache[container_timespan] 
+                                intersecting_meters = cache[container_timespan]
                             else:
                                 intersecting_meters = \
                                     meter_timespans.find_timespans_intersecting_timespan(
@@ -2205,7 +2227,8 @@ class SegmentMaker(makertools.SegmentMaker):
             1000,
             )
         desired_duration = durationtools.Duration((
-            self.desired_duration_in_seconds / tempo_desired_duration_in_seconds
+            self.desired_duration_in_seconds /
+            tempo_desired_duration_in_seconds
             ).limit_denominator(8))
         desired_duration *= tempo.duration
         count = desired_duration // durationtools.Duration(1, 8)
@@ -2220,7 +2243,9 @@ class SegmentMaker(makertools.SegmentMaker):
     @desired_duration_in_seconds.setter
     def desired_duration_in_seconds(self, desired_duration_in_seconds):
         if desired_duration_in_seconds is not None:
-            desired_duration_in_seconds = durationtools.Duration(desired_duration_in_seconds)
+            desired_duration_in_seconds = durationtools.Duration(
+                desired_duration_in_seconds,
+                )
         self._desired_duration_in_seconds = desired_duration_in_seconds
 
     @property
@@ -2309,6 +2334,16 @@ class SegmentMaker(makertools.SegmentMaker):
         measure_durations = [x.duration for x in self.time_signatures]
         measure_offsets = mathtools.cumulative_sums(measure_durations)
         return measure_offsets
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, expr):
+        if expr is not None:
+            expr = str(expr)
+        self._name = expr
 
     @property
     def omit_stylesheets(self):

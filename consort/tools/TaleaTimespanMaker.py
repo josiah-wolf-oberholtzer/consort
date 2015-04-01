@@ -405,8 +405,6 @@ class TaleaTimespanMaker(TimespanMaker):
         final_offset = durationtools.Offset(0)
         for context_name, music_specifier in music_specifiers.items():
 
-#            print('CONTEXT NAME:', context_name)
-
             if context_name not in counter:
                 counter[context_name] = 0
 
@@ -423,8 +421,6 @@ class TaleaTimespanMaker(TimespanMaker):
                 durations = [next(playing_talea) for _ in range(grouping)]
                 if self.padding:
                     start_offset += self.padding
-
-#                print('\tDURATIONS', durations)
 
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
@@ -449,8 +445,6 @@ class TaleaTimespanMaker(TimespanMaker):
                         playing_talea.backtrack()
                 if valid_durations and self.fuse_groups:
                     valid_durations = [sum(valid_durations)]
-
-#                print('\t\tVALID DURATIONS', valid_durations)
 
                 new_timespans = music_specifier(
                     durations=valid_durations,
