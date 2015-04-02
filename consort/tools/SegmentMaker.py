@@ -288,16 +288,6 @@ class SegmentMaker(makertools.SegmentMaker):
             consort.annotate(self.score)
         return self.lilypond_file, segment_metadata
 
-    def __illustrate__(
-        self,
-        annotate=None,
-        verbose=True,
-        ):
-        return self(
-            annotate=annotate,
-            verbose=verbose,
-            )
-
     ### PRIVATE METHODS ###
 
     def _reset(self):
