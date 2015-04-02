@@ -21,6 +21,35 @@ class ScoreTemplateManager(abctools.AbjadObject):
         attach(tag, context)
 
     @staticmethod
+    def make_auxiliary_staff(
+        primary_instrument=None,
+        secondary_instrument=None,
+        score_template=None,
+        ):
+        name = '{} {}'.format(
+            primary_instrument.instrument_name,
+            secondary_instrument.instrument_name,
+            )
+#        short_name = '{} {}'.format(
+#            primary_instrument.short_instrument_name,
+#            secondary_instrument.short_instrument_name,
+#            )
+        voice = scoretools.Voice(
+            name='{} Voice'.format(name),
+            )
+        context_name = ScoreTemplateManager.make_staff_name(
+            '{} Staff'.format(secondary_instrument.instrument_name)
+            )
+        staff = scoretools.Staff(
+            [voice],
+            name='{} Staff'.format(name),
+            context_name=context_name,
+            )
+        abbreviation = stringtools.to_snake_case(name)
+        score_template._context_name_abbreviations[abbreviation] = voice.name
+        return staff
+
+    @staticmethod
     def make_ensemble_group(
         label=None,
         name=None,
@@ -86,7 +115,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         performer_group.append(staff)
         attach(clef, voice)
-        abbreviation = stringtools.to_accent_free_snake_case(name)
+        abbreviation = stringtools.to_snake_case(name)
         score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
@@ -158,7 +187,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         name = instrument.instrument_name.title()
         abbreviation = abbreviation or \
-            stringtools.to_accent_free_snake_case(name)
+            stringtools.to_snake_case(name)
         if split:
             right_hand_voice = scoretools.Voice(
                 name='{} Bowing Voice'.format(name),
@@ -230,7 +259,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group.append(staff)
         attach(clef, voice)
         abbreviation = abbreviation or \
-            stringtools.to_accent_free_snake_case(name)
+            stringtools.to_snake_case(name)
         score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
@@ -238,6 +267,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
     def make_staff_name(name):
         name = ''.join(x for x in name if x.isalpha())
         name = '{}Staff'.format(name)
+        return name
+
+    @staticmethod
+    def make_voice_name(name):
+        name = ''.join(x for x in name if x.isalpha())
+        name = '{}Voice'.format(name)
         return name
 
     @staticmethod
