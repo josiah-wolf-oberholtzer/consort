@@ -192,7 +192,7 @@ class ClefSpanner(spannertools.Spanner):
             string = format(self.clef, 'lilypond')
             lilypond_format_bundle.before.indicators.append(string)
 
-        if reset_clef:
+        if reset_clef and current_clef is not None:
             string = format(current_clef, 'lilypond')
             lilypond_format_bundle.after.indicators.append(string)
 
