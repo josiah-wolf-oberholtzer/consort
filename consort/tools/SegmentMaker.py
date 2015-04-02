@@ -1073,8 +1073,6 @@ class SegmentMaker(makertools.SegmentMaker):
                 beam_specifier=beam_specifier,
                 )
         assert rhythm_maker is not None
-        assert not rhythm_maker.beam_specifier.beam_each_division
-        assert not rhythm_maker.beam_specifier.beam_divisions_together
         return rhythm_maker
 
     @staticmethod
