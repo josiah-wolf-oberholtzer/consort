@@ -27,8 +27,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
         score_template=None,
         ):
         name = '{} {}'.format(
-            primary_instrument.instrument_name,
-            secondary_instrument.instrument_name,
+            primary_instrument.instrument_name.title(),
+            secondary_instrument.instrument_name.title(),
             )
 #        short_name = '{} {}'.format(
 #            primary_instrument.short_instrument_name,
@@ -38,7 +38,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             name='{} Voice'.format(name),
             )
         context_name = ScoreTemplateManager.make_staff_name(
-            '{} Staff'.format(secondary_instrument.instrument_name)
+            secondary_instrument.instrument_name.title(),
             )
         staff = scoretools.Staff(
             [voice],
