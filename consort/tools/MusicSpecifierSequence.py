@@ -3,7 +3,9 @@ import collections
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import mathtools
+from abjad.tools import rhythmmakertools
 from abjad.tools import sequencetools
+from abjad.tools import timespantools
 
 
 class MusicSpecifierSequence(abctools.AbjadValueObject):
@@ -70,6 +72,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         self,
         durations=None,
         layer=None,
+        output_masks=None,
         padding=None,
         seed=None,
         start_offset=None,
@@ -77,7 +80,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         voice_name=None,
         ):
         import consort
-        timespans = []
+        timespans = timespantools.TimespanInventory()
         timespan_specifier = timespan_specifier or \
             consort.TimespanSpecifier()
         seed = seed or 0
@@ -85,16 +88,15 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         offsets = mathtools.cumulative_sums(durations, start_offset)
         if not offsets:
             return timespans
-        if padding:
-            timespan = consort.SilentTimespan(
-                layer=layer,
-                start_offset=start_offset - padding,
-                stop_offset=start_offset,
-                voice_name=voice_name,
-                )
-            timespans.append(timespan)
-        for start_offset, stop_offset in \
-            sequencetools.iterate_sequence_nwise(offsets):
+
+        offset_pair_count = len(offsets) - 1
+        output_mask_prototype = (
+            type(None),
+            rhythmmakertools.SustainMask,
+            )
+        iterator = sequencetools.iterate_sequence_nwise(offsets)
+        for i, offset_pair in enumerate(iterator):
+            start_offset, stop_offset = offset_pair
             music_specifier = self[seed]
             timespan = consort.PerformedTimespan(
                 forbid_fusing=timespan_specifier.forbid_fusing,
@@ -106,17 +108,39 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
                 stop_offset=stop_offset,
                 voice_name=voice_name,
                 )
-            timespans.append(timespan)
+            if not output_masks:
+                timespans.append(timespan)
+            else:
+                output_mask = output_masks.get_matching_pattern(
+                    i, offset_pair_count)
+                if isinstance(output_mask, output_mask_prototype):
+                    timespans.append(timespan)
             if self.application_rate == 'division':
                 seed += 1
+
         if padding:
-            timespan = consort.SilentTimespan(
-                layer=layer,
-                start_offset=offsets[-1],
-                stop_offset=offsets[-1] + padding,
-                voice_name=voice_name,
-                )
-            timespans.append(timespan)
+            silent_timespans = timespantools.TimespanInventory()
+            for shard in timespans.partition(True):
+                silent_timespan_one = consort.SilentTimespan(
+                    layer=layer,
+                    start_offset=shard.start_offset - padding,
+                    stop_offset=shard.start_offset,
+                    voice_name=voice_name,
+                    )
+                silent_timespans.append(silent_timespan_one)
+                silent_timespan_two = consort.SilentTimespan(
+                    layer=layer,
+                    start_offset=shard.stop_offset,
+                    stop_offset=shard.stop_offset + padding,
+                    voice_name=voice_name,
+                    )
+                silent_timespans.append(silent_timespan_two)
+            silent_timespans.compute_logical_or()
+            for timespan in timespans:
+                silent_timespans - timespan
+            timespans.extend(silent_timespans)
+            timespans.sort()
+
         return timespans
 
     def __getitem__(self, item):

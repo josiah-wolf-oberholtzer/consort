@@ -179,6 +179,7 @@ class TaleaTimespanMaker(TimespanMaker):
         self,
         fuse_groups=None,
         initial_silence_talea=None,
+        output_masks=None,
         padding=None,
         playing_talea=rhythmmakertools.Talea(
             counts=[4],
@@ -199,6 +200,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
+            output_masks=output_masks,
             padding=padding,
             seed=seed,
             timespan_specifier=timespan_specifier,
@@ -367,6 +369,7 @@ class TaleaTimespanMaker(TimespanMaker):
                 new_timespans = music_specifier(
                     durations=valid_durations,
                     layer=layer,
+                    output_masks=self.output_masks,
                     padding=self.padding,
                     seed=seed,
                     start_offset=group_offset,
@@ -449,6 +452,7 @@ class TaleaTimespanMaker(TimespanMaker):
                 new_timespans = music_specifier(
                     durations=valid_durations,
                     layer=layer,
+                    output_masks=self.output_masks,
                     padding=self.padding,
                     seed=seed,
                     start_offset=group_offset,

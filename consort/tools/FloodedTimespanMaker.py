@@ -89,11 +89,13 @@ class FloodedTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
+        output_masks=None,
         padding=None,
         timespan_specifier=None,
         ):
         TimespanMaker.__init__(
             self,
+            output_masks=output_masks,
             padding=padding,
             timespan_specifier=timespan_specifier,
             )
@@ -114,6 +116,7 @@ class FloodedTimespanMaker(TimespanMaker):
             timespans = music_specifier(
                 durations=durations,
                 layer=layer,
+                output_masks=self.output_masks,
                 padding=self.padding,
                 seed=self.seed,
                 start_offset=start_offset,

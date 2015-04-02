@@ -119,6 +119,7 @@ class DependentTimespanMaker(TimespanMaker):
         include_inner_starts=None,
         include_inner_stops=None,
         labels=None,
+        output_masks=None,
         padding=None,
         rotation_indices=None,
         timespan_specifier=None,
@@ -126,6 +127,7 @@ class DependentTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
+            output_masks=output_masks,
             padding=padding,
             timespan_specifier=timespan_specifier,
             )
@@ -205,6 +207,7 @@ class DependentTimespanMaker(TimespanMaker):
                 timespans = music_specifier(
                     durations=durations,
                     layer=layer,
+                    output_masks=self.output_masks,
                     padding=self.padding,
                     seed=context_seed,
                     start_offset=start_offset,

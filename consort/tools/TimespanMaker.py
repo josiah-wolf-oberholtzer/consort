@@ -4,6 +4,7 @@ import abc
 import collections
 from abjad.tools import abctools
 from abjad.tools import durationtools
+from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
 
 
@@ -14,6 +15,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_output_masks',
         '_padding',
         '_seed',
         '_timespan_specifier',
@@ -24,11 +26,19 @@ class TimespanMaker(abctools.AbjadValueObject):
     @abc.abstractmethod
     def __init__(
         self,
+        output_masks=None,
         padding=None,
         seed=None,
         timespan_specifier=None,
         ):
         import consort
+        if output_masks is not None:
+            if isinstance(output_masks, rhythmmakertools.BooleanPattern):
+                output_masks = (output_masks,)
+            output_masks = rhythmmakertools.BooleanPatternInventory(
+                items=output_masks,
+                )
+        self._output_masks = output_masks
         if padding is not None:
             padding = durationtools.Duration(padding)
         self._padding = padding
@@ -89,13 +99,17 @@ class TimespanMaker(abctools.AbjadValueObject):
                     music_specifiers=music_specifier,
                     )
             result[context_name] = music_specifier
-        return result        
+        return result
 
     ### PUBLIC PROPERTIES ###
 
     @property
     def is_dependent(self):
         return False
+
+    @property
+    def output_masks(self):
+        return self._output_masks
 
     @property
     def padding(self):
