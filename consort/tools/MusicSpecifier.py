@@ -87,6 +87,57 @@ class MusicSpecifier(HashCachingObject):
     ### PUBLIC METHODS ###
 
     def transpose(self, expr):
+        r'''Transposes music specifier.
+
+        ::
+
+            >>> music_specifier = consort.MusicSpecifier(
+            ...     pitch_handler=consort.AbsolutePitchHandler(
+            ...         pitch_specifier = consort.PitchSpecifier(
+            ...             pitch_segments=(
+            ...                 "c' e' g'",
+            ...                 "fs' gs'",
+            ...                 "b",
+            ...                 ),
+            ...             ratio=(1, 2, 3),
+            ...             ),
+            ...         ),
+            ...     )
+            >>> transposed_music_specifier = music_specifier.transpose('-M2')
+            >>> print(format(transposed_music_specifier))
+            consort.tools.MusicSpecifier(
+                pitch_handler=consort.tools.AbsolutePitchHandler(
+                    pitch_specifier=consort.tools.PitchSpecifier(
+                        pitch_segments=(
+                            pitchtools.PitchSegment(
+                                (
+                                    pitchtools.NamedPitch('bf'),
+                                    pitchtools.NamedPitch("d'"),
+                                    pitchtools.NamedPitch("f'"),
+                                    ),
+                                item_class=pitchtools.NamedPitch,
+                                ),
+                            pitchtools.PitchSegment(
+                                (
+                                    pitchtools.NamedPitch("e'"),
+                                    pitchtools.NamedPitch("fs'"),
+                                    ),
+                                item_class=pitchtools.NamedPitch,
+                                ),
+                            pitchtools.PitchSegment(
+                                (
+                                    pitchtools.NamedPitch('a'),
+                                    ),
+                                item_class=pitchtools.NamedPitch,
+                                ),
+                            ),
+                        ratio=mathtools.Ratio(1, 2, 3),
+                        ),
+                    ),
+                )
+
+        Returns new music specifier.
+        '''
         pitch_handler = self.pitch_handler
         if pitch_handler is not None:
             pitch_handler = pitch_handler.transpose(expr)

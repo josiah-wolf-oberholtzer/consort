@@ -5,6 +5,7 @@ import collections
 from abjad import attach
 from abjad import inspect_
 from abjad import iterate
+from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import instrumenttools
@@ -566,6 +567,12 @@ class PitchHandler(HashCachingObject):
                 )
             pitch_choice_timespans.insert(pitch_choice_timespan)
         return pitch_choice_timespans
+
+    def transpose(self, expr):
+        return new(
+            self,
+            pitch_specifier=self.pitch_specifier.transpose(expr),
+            )
 
     ### PUBLIC PROPERTIES ###
 

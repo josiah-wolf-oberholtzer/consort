@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
@@ -212,6 +213,53 @@ class PitchSpecifier(abctools.AbjadValueObject):
                     )
                 timespans.insert(annotated_timespan)
         return timespans
+
+    def transpose(self, expr):
+        r'''Transposes pitch specifier.
+
+        ::
+
+            >>> pitch_specifier = consort.PitchSpecifier(
+            ...     pitch_segments=(
+            ...         "c' e' g'",
+            ...         "fs' gs'",
+            ...         "b",
+            ...         ),
+            ...     ratio=(1, 2, 3),
+            ...     )
+            >>> transposed_pitch_specifier = pitch_specifier.transpose('M2')
+            >>> print(format(transposed_pitch_specifier))
+            consort.tools.PitchSpecifier(
+                pitch_segments=(
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("d'"),
+                            pitchtools.NamedPitch("fs'"),
+                            pitchtools.NamedPitch("a'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("gs'"),
+                            pitchtools.NamedPitch("as'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("cs'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                ratio=mathtools.Ratio(1, 2, 3),
+                )
+
+        Returns new pitch specifier.
+        '''
+        pitch_segments = (_.transpose(expr) for _ in self.pitch_segments)
+        return new(self, pitch_segments=pitch_segments)
 
     ### PUBLIC PROPERTIES ###
 
