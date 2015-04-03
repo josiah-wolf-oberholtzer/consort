@@ -40,7 +40,7 @@ def test_SegmentMaker_is_final_segment_01():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
                                         _ \markup {

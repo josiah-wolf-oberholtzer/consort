@@ -54,7 +54,7 @@ def test_SegmentMaker_rehearsal_mark_01():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
                                     \bar "||"
@@ -120,7 +120,7 @@ def test_SegmentMaker_rehearsal_mark_02():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
                                     \bar "||"

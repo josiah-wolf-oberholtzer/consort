@@ -45,7 +45,7 @@ def test_SegmentMaker_01():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \stopStaff
@@ -53,7 +53,7 @@ def test_SegmentMaker_01():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"
@@ -68,7 +68,7 @@ def test_SegmentMaker_01():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \stopStaff
@@ -76,7 +76,7 @@ def test_SegmentMaker_01():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"
@@ -223,7 +223,7 @@ def test_SegmentMaker_03():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"
@@ -249,7 +249,7 @@ def test_SegmentMaker_03():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"
@@ -529,7 +529,7 @@ def test_SegmentMaker_06():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"
@@ -662,7 +662,7 @@ def test_SegmentMaker_07():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"
@@ -677,7 +677,7 @@ def test_SegmentMaker_07():
                             {
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \stopStaff
@@ -685,7 +685,7 @@ def test_SegmentMaker_07():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
                                     \bar "||"

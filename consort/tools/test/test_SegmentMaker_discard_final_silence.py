@@ -63,7 +63,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
                                     \stopStaff
@@ -71,7 +71,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
                                     \stopStaff
@@ -79,7 +79,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                 }
                                 {
                                     \stopStaff
-                                    \once \override Staff.StaffSymbol.line-count = 1
+                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
                                     \bar "||"
