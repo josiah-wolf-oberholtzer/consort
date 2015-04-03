@@ -31,10 +31,6 @@ class ScoreTemplateManager(abctools.AbjadObject):
             primary_instrument.instrument_name.title(),
             secondary_instrument.instrument_name.title(),
             )
-#        short_name = '{} {}'.format(
-#            primary_instrument.short_instrument_name,
-#            secondary_instrument.short_instrument_name,
-#            )
         voice = scoretools.Voice(
             name='{} Voice'.format(name),
             )
@@ -174,14 +170,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
             ))
         attach(indicatortools.Clef('treble'), upper_voice)
         attach(indicatortools.Clef('bass'), lower_voice)
-        score_template._context_name_abbreviations[
-            'piano_rh'] = upper_voice.name
-        score_template._context_name_abbreviations[
-            'piano_dynamics'] = dynamics.name
-        score_template._context_name_abbreviations[
-            'piano_lh'] = lower_voice.name
-        score_template._context_name_abbreviations[
-            'piano_pedals'] = pedals.name
+        score_template._context_name_abbreviations.update(
+            piano_dynamics=dynamics.name,
+            piano_lh=lower_voice.name,
+            piano_pedals=pedals.name,
+            piano_rh=upper_voice.name,
+            )
         return performer_group
 
     @staticmethod
@@ -192,11 +186,6 @@ class ScoreTemplateManager(abctools.AbjadObject):
         score_template=None,
         split=True,
         ):
-        context_name_abbreviations = \
-            score_template._context_name_abbreviations
-        composite_context_pairs = \
-            score_template._composite_context_pairs
-
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
@@ -205,7 +194,6 @@ class ScoreTemplateManager(abctools.AbjadObject):
         name = instrument.instrument_name.title()
         abbreviation = abbreviation or \
             stringtools.to_snake_case(name)
-
         if split:
             right_hand_voice = scoretools.Voice(
                 name='{} Bowing Voice'.format(name),
@@ -229,12 +217,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
             attach(indicatortools.Clef('percussion'), right_hand_staff)
             right_hand_abbreviation = '{}_rh'.format(abbreviation)
             left_hand_abbreviation = '{}_lh'.format(abbreviation)
-            context_name_abbreviations[abbreviation] = performer_group.name
-            context_name_abbreviations[right_hand_abbreviation] = \
-                right_hand_voice.name
-            context_name_abbreviations[left_hand_abbreviation] = \
-                left_hand_voice.name
-            composite_context_pairs[abbreviation] = (
+            score_template._context_name_abbreviations.update({
+                abbreviation: performer_group.name,
+                right_hand_abbreviation: right_hand_voice.name,
+                left_hand_abbreviation: left_hand_voice.name,
+                })
+            score_template._composite_context_pairs[abbreviation] = (
                 right_hand_abbreviation,
                 left_hand_abbreviation,
                 )
@@ -249,7 +237,8 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 )
             performer_group.append(staff)
             attach(clef, voice)
-            context_name_abbreviations[abbreviation] = voice.name
+            score_template._context_name_abbreviations[abbreviation] = \
+                voice.name
         return performer_group
 
     @staticmethod
