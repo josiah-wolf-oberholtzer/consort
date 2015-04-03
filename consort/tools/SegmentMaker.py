@@ -1885,7 +1885,7 @@ class SegmentMaker(makertools.SegmentMaker):
             mutate(container[:]).rewrite_meter(
                 meter,
                 boundary_depth=1,
-                maximum_dot_count=1,
+                maximum_dot_count=2,
                 )
         elif len(meter_timespans) == 1:
             container_timespan = inspect_(container).get_timespan()
@@ -1908,7 +1908,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 attach(multiplier, multi_measure_rest)
                 container[:] = [multi_measure_rest]
                 if not forbid_staff_lines_spanner:
-                    staff_lines_spanner = spannertools.StaffLinesSpanner(1)
+                    staff_lines_spanner = spannertools.StaffLinesSpanner([0])
                     attach(
                         staff_lines_spanner,
                         container,
