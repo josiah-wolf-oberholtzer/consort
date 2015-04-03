@@ -55,6 +55,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         self,
         layer=None,
         music_specifiers=None,
+        silenced_context_names=None,
         target_timespan=None,
         timespan_inventory=None,
         ):
@@ -76,6 +77,11 @@ class TimespanMaker(abctools.AbjadValueObject):
             music_specifiers=music_specifiers,
             target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
+            )
+        self._make_silent_timespans(
+            layer=layer,
+            silenced_context_names=silenced_context_names,
+            timespans=new_timespans,
             )
         timespan_inventory.extend(new_timespans)
         timespan_inventory.sort()
@@ -100,6 +106,31 @@ class TimespanMaker(abctools.AbjadValueObject):
                     )
             result[context_name] = music_specifier
         return result
+
+    def _make_silent_timespans(
+        self,
+        layer,
+        silenced_context_names,
+        timespans,
+        ):
+        import consort
+        if not silenced_context_names:
+            return
+        sounding_timespans = timespantools.TimespanInventory()
+        for timespan in timespans:
+            if isinstance(timespan, consort.PerformedTimespan):
+                sounding_timespans.append(timespan)
+        sounding_timespans.sort()
+        sounding_timespans.compute_logical_or()
+        for shard in sounding_timespans.partition(True):
+            for context_name in silenced_context_names:
+                silent_timespan = consort.SilentTimespan(
+                    layer=layer,
+                    voice_name=context_name,
+                    start_offset=shard.start_offset,
+                    stop_offset=shard.stop_offset,
+                    )
+                timespans.append(silent_timespan)
 
     ### PUBLIC PROPERTIES ###
 

@@ -25,9 +25,9 @@ class MusicSetting(abctools.AbjadValueObject):
         ...             denominator=16,
         ...             ),
         ...         ),
-        ...     viola_bowing_voice=consort.tools.MusicSpecifier(),
-        ...     violin_1_bowing_voice=consort.tools.MusicSpecifier(),
-        ...     violin_2_bowing_voice=consort.tools.MusicSpecifier(),
+        ...     viola_rh=consort.tools.MusicSpecifier(),
+        ...     violin_1_rh=consort.tools.MusicSpecifier(),
+        ...     violin_2_rh=consort.tools.MusicSpecifier(),
         ...     )
         >>> print(format(red_setting))
         consort.tools.MusicSetting(
@@ -50,9 +50,9 @@ class MusicSetting(abctools.AbjadValueObject):
                 synchronize_groupings=False,
                 synchronize_step=False,
                 ),
-            viola_bowing_voice=consort.tools.MusicSpecifier(),
-            violin_1_bowing_voice=consort.tools.MusicSpecifier(),
-            violin_2_bowing_voice=consort.tools.MusicSpecifier(),
+            viola_rh=consort.tools.MusicSpecifier(),
+            violin_1_rh=consort.tools.MusicSpecifier(),
+            violin_2_rh=consort.tools.MusicSpecifier(),
             )
 
     ::
@@ -60,12 +60,7 @@ class MusicSetting(abctools.AbjadValueObject):
         >>> layer = 1
         >>> segment_timespan = timespantools.Timespan(1, 2)
         >>> from abjad.tools import templatetools
-        >>> score_template = templatetools.StringOrchestraScoreTemplate(
-        ...     violin_count=2,
-        ...     viola_count=1,
-        ...     cello_count=1,
-        ...     contrabass_count=1,
-        ...     )
+        >>> score_template = consort.StringQuartetScoreTemplate()
         >>> timespan_inventory = red_setting(
         ...     layer=layer,
         ...     score_template=score_template,
@@ -122,12 +117,93 @@ class MusicSetting(abctools.AbjadValueObject):
                 ]
             )
 
+    ::
+
+        >>> red_setting = new(
+        ...     red_setting,
+        ...     silenced_contexts=[
+        ...         'viola_lh',
+        ...         'cello',
+        ...         ],
+        ...     )
+        >>> timespan_inventory = red_setting(
+        ...     layer=layer,
+        ...     score_template=score_template,
+        ...     segment_timespan=segment_timespan,
+        ...     )
+        >>> print(format(timespan_inventory))
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(5, 4),
+                    layer=1,
+                    music_specifier=consort.tools.MusicSpecifier(),
+                    voice_name='Violin 1 Bowing Voice',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(3, 2),
+                    layer=1,
+                    music_specifier=consort.tools.MusicSpecifier(),
+                    voice_name='Viola Bowing Voice',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(2, 1),
+                    layer=1,
+                    voice_name='Viola Fingering Voice',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(2, 1),
+                    layer=1,
+                    voice_name='Cello Fingering Voice',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(2, 1),
+                    layer=1,
+                    voice_name='Cello Bowing Voice',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(5, 4),
+                    stop_offset=durationtools.Offset(3, 2),
+                    layer=1,
+                    music_specifier=consort.tools.MusicSpecifier(),
+                    voice_name='Violin 2 Bowing Voice',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 2),
+                    stop_offset=durationtools.Offset(2, 1),
+                    layer=1,
+                    music_specifier=consort.tools.MusicSpecifier(),
+                    voice_name='Violin 1 Bowing Voice',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 4),
+                    stop_offset=durationtools.Offset(2, 1),
+                    layer=1,
+                    music_specifier=consort.tools.MusicSpecifier(),
+                    voice_name='Viola Bowing Voice',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 4),
+                    stop_offset=durationtools.Offset(2, 1),
+                    layer=1,
+                    music_specifier=consort.tools.MusicSpecifier(),
+                    voice_name='Violin 2 Bowing Voice',
+                    ),
+                ]
+            )
+
     '''
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
         '_music_specifiers',
+        '_silenced_contexts',
         '_timespan_identifier',
         '_timespan_maker',
         )
@@ -138,17 +214,10 @@ class MusicSetting(abctools.AbjadValueObject):
         self,
         timespan_identifier=None,
         timespan_maker=None,
+        silenced_contexts=None,
         **music_specifiers
         ):
         import consort
-        if timespan_identifier is not None:
-            prototype = (
-                timespantools.Timespan,
-                timespantools.TimespanInventory,
-                consort.RatioPartsExpression,
-                )
-            assert isinstance(timespan_identifier, prototype)
-        self._timespan_identifier = timespan_identifier
         prototype = (
             consort.tools.CompositeMusicSpecifier,
             consort.tools.MusicSpecifier,
@@ -165,6 +234,18 @@ class MusicSetting(abctools.AbjadValueObject):
                 continue
             raise ValueError(music_specifier)
         self._music_specifiers = music_specifiers
+        if silenced_contexts is not None:
+            silenced_contexts = (str(_) for _ in silenced_contexts)
+            silenced_contexts = set(silenced_contexts)
+        self._silenced_contexts = silenced_contexts
+        if timespan_identifier is not None:
+            prototype = (
+                timespantools.Timespan,
+                timespantools.TimespanInventory,
+                consort.RatioPartsExpression,
+                )
+            assert isinstance(timespan_identifier, prototype)
+        self._timespan_identifier = timespan_identifier
         if timespan_maker is not None:
             assert isinstance(timespan_maker,
                 consort.TimespanMaker), \
@@ -192,6 +273,10 @@ class MusicSetting(abctools.AbjadValueObject):
             score_template,
             score=score,
             )
+        silenced_context_names = self.resolve_silenced_contexts(
+            score_template,
+            score=score,
+            )
         target_timespans = self.resolve_target_timespans(
             segment_timespan,
             timespan_quantization,
@@ -200,6 +285,7 @@ class MusicSetting(abctools.AbjadValueObject):
             timespan_inventory = self.timespan_maker(
                 layer=layer,
                 music_specifiers=music_specifiers,
+                silenced_context_names=silenced_context_names,
                 target_timespan=target_timespan,
                 timespan_inventory=timespan_inventory,
                 )
@@ -271,6 +357,34 @@ class MusicSetting(abctools.AbjadValueObject):
             music_specifiers[context_name] = music_specifier
         return music_specifiers
 
+    def resolve_silenced_contexts(
+        self,
+        score_template,
+        score=None,
+        ):
+        assert score_template is not None
+        if score is None:
+            score = score_template()
+        all_abbreviations = score_template.context_name_abbreviations
+        composite_pairs = score_template.composite_context_pairs
+        silenced_context_names = set()
+        silenced_contexts = self.silenced_contexts or ()
+        for abbreviation in silenced_contexts:
+            if abbreviation in composite_pairs:
+                one, two = composite_pairs[abbreviation]
+                primary_voice_name = all_abbreviations[one]
+                secondary_voice_name = all_abbreviations[two]
+                silenced_context_names.add(primary_voice_name)
+                silenced_context_names.add(secondary_voice_name)
+            elif abbreviation in all_abbreviations:
+                context_name = all_abbreviations[abbreviation]
+                silenced_context_names.add(context_name)
+            else:
+                message = 'Unresolvable context abbreviation: {}'
+                message = message.format(abbreviation)
+                raise Exception(message)
+        return silenced_context_names
+
     def resolve_target_timespans(
         self,
         segment_timespan,
@@ -305,6 +419,10 @@ class MusicSetting(abctools.AbjadValueObject):
     @property
     def music_specifiers(self):
         return self._music_specifiers
+
+    @property
+    def silenced_contexts(self):
+        return self._silenced_contexts
 
     @property
     def timespan_identifier(self):
