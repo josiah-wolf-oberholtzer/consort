@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from abjad import new
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from consort.tools.HashCachingObject import HashCachingObject
@@ -82,6 +83,17 @@ class MusicSpecifier(HashCachingObject):
         if seed is not None:
             seed = int(seed)
         self._seed = seed
+
+    ### PUBLIC METHODS ###
+
+    def transpose(self, expr):
+        pitch_handler = self.pitch_handler
+        if pitch_handler is not None:
+            pitch_handler = pitch_handler.transpose(expr)
+        return new(
+            self,
+            pitch_handler=pitch_handler,
+            )
 
     ### PUBLIC PROPERTIES ###
 
