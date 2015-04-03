@@ -3,6 +3,7 @@ from abjad import attach
 from abjad import set_
 from abjad.tools import abctools
 from abjad.tools import indicatortools
+from abjad.tools import markuptools
 from abjad.tools import scoretools
 from abjad.tools import stringtools
 
@@ -48,6 +49,17 @@ class ScoreTemplateManager(abctools.AbjadObject):
         abbreviation = stringtools.to_snake_case(name)
         score_template._context_name_abbreviations[abbreviation] = voice.name
         return staff
+
+    @staticmethod
+    def make_column_markup(string, space):
+        string_parts = string.split()
+        if len(string_parts) == 1:
+            markup = markuptools.Markup(string_parts[0]).hcenter_in(space)
+        else:
+            markups = [markuptools.Markup(_) for _ in string_parts]
+            markup = markuptools.Markup.center_column(markups, direction=None)
+            markup = markup.hcenter_in(space)
+        return markup
 
     @staticmethod
     def make_ensemble_group(
@@ -180,6 +192,11 @@ class ScoreTemplateManager(abctools.AbjadObject):
         score_template=None,
         split=True,
         ):
+        context_name_abbreviations = \
+            score_template._context_name_abbreviations
+        composite_context_pairs = \
+            score_template._composite_context_pairs
+
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
@@ -188,6 +205,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         name = instrument.instrument_name.title()
         abbreviation = abbreviation or \
             stringtools.to_snake_case(name)
+
         if split:
             right_hand_voice = scoretools.Voice(
                 name='{} Bowing Voice'.format(name),
@@ -211,13 +229,12 @@ class ScoreTemplateManager(abctools.AbjadObject):
             attach(indicatortools.Clef('percussion'), right_hand_staff)
             right_hand_abbreviation = '{}_rh'.format(abbreviation)
             left_hand_abbreviation = '{}_lh'.format(abbreviation)
-            score_template._context_name_abbreviations[
-                abbreviation] = performer_group.name
-            score_template._context_name_abbreviations[
-                right_hand_abbreviation] = right_hand_voice.name
-            score_template._context_name_abbreviations[
-                left_hand_abbreviation] = left_hand_voice.name
-            score_template._composite_context_pairs[abbreviation] = (
+            context_name_abbreviations[abbreviation] = performer_group.name
+            context_name_abbreviations[right_hand_abbreviation] = \
+                right_hand_voice.name
+            context_name_abbreviations[left_hand_abbreviation] = \
+                left_hand_voice.name
+            composite_context_pairs[abbreviation] = (
                 right_hand_abbreviation,
                 left_hand_abbreviation,
                 )
@@ -232,7 +249,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 )
             performer_group.append(staff)
             attach(clef, voice)
-            score_template._context_name_abbreviations[abbreviation] = voice.name
+            context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
     @staticmethod
