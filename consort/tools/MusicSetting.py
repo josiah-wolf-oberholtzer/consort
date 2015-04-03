@@ -366,7 +366,11 @@ class MusicSetting(abctools.AbjadValueObject):
         if score is None:
             score = score_template()
         all_abbreviations = score_template.context_name_abbreviations
-        composite_pairs = score_template.composite_context_pairs
+        composite_pairs = getattr(
+            score_template,
+            'composite_context_pairs',
+            {},
+            )
         silenced_context_names = set()
         silenced_contexts = self.silenced_contexts or ()
         for abbreviation in silenced_contexts:
