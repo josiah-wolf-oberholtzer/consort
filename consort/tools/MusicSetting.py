@@ -219,15 +219,14 @@ class MusicSetting(abctools.AbjadValueObject):
         ):
         import consort
         prototype = (
-            consort.tools.CompositeMusicSpecifier,
-            consort.tools.MusicSpecifier,
-            str,
+            consort.CompositeMusicSpecifier,
+            consort.MusicSpecifier,
+            consort.MusicSpecifierSequence,
+            str,  # for demonstration purposes only
             type(None),
             )
         for music_specifier in music_specifiers.values():
-            if music_specifier is None:
-                continue
-            elif isinstance(music_specifier, prototype):
+            if isinstance(music_specifier, prototype):
                 continue
             elif isinstance(music_specifier, tuple) and \
                 all(isinstance(x, prototype) for x in music_specifier):
