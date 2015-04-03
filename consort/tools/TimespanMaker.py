@@ -114,23 +114,45 @@ class TimespanMaker(abctools.AbjadValueObject):
         timespans,
         ):
         import consort
-        if not silenced_context_names:
+        if not silenced_context_names or not timespans:
             return
+
+        sounding_timespans_by_context = {}
         sounding_timespans = timespantools.TimespanInventory()
         for timespan in timespans:
-            if isinstance(timespan, consort.PerformedTimespan):
-                sounding_timespans.append(timespan)
+            if not isinstance(timespan, consort.PerformedTimespan):
+                continue
+            voice_name = timespan.voice_name
+            if voice_name not in sounding_timespans_by_context:
+                sounding_timespans_by_context[voice_name] = \
+                    timespantools.TimespanInventory()
+            sounding_timespans_by_context[voice_name].append(timespan)
+            sounding_timespans.append(timespan)
         sounding_timespans.sort()
         sounding_timespans.compute_logical_or()
+
+        silent_timespans_by_context = {}
+        for context_name in silenced_context_names:
+            silent_timespans_by_context[context_name] = \
+                timespantools.TimespanInventory()
         for shard in sounding_timespans.partition(True):
             for context_name in silenced_context_names:
-                silent_timespan = consort.SilentTimespan(
+                timespan = consort.SilentTimespan(
                     layer=layer,
                     voice_name=context_name,
                     start_offset=shard.start_offset,
                     stop_offset=shard.stop_offset,
                     )
-                timespans.append(silent_timespan)
+                silent_timespans_by_context[context_name].append(timespan)
+
+        # Remove any overlap between performed and silent timespans.
+        # Then add the silent timespans into the original timespan inventory.
+        for context_name, silent_timespans in \
+            sorted(silent_timespans_by_context.items()):
+            if context_name in sounding_timespans_by_context:
+                for timespan in sounding_timespans_by_context[context_name]:
+                    silent_timespans - timespan
+            timespans.extend(silent_timespans)
 
     ### PUBLIC PROPERTIES ###
 

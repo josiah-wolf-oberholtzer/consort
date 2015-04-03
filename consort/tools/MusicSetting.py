@@ -152,7 +152,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
                     layer=1,
-                    voice_name='Viola Fingering Voice',
+                    voice_name='Cello Bowing Voice',
                     ),
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(1, 1),
@@ -164,7 +164,7 @@ class MusicSetting(abctools.AbjadValueObject):
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(2, 1),
                     layer=1,
-                    voice_name='Cello Bowing Voice',
+                    voice_name='Viola Fingering Voice',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(5, 4),
