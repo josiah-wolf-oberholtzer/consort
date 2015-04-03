@@ -119,31 +119,31 @@ class StringQuartetScoreTemplate(ScoreTemplate):
 
     ::
 
-        >>> for item in template.context_name_abbreviations.items():
+        >>> for item in sorted(template.context_name_abbreviations.items()):
         ...     item
         ...
-        ('violin_1', 'Violin 1 Performer Group')
-        ('violin_1_rh', 'Violin 1 Bowing Voice')
-        ('violin_1_lh', 'Violin 1 Fingering Voice')
-        ('violin_2', 'Violin 2 Performer Group')
-        ('violin_2_rh', 'Violin 2 Bowing Voice')
-        ('violin_2_lh', 'Violin 2 Fingering Voice')
-        ('viola', 'Viola Performer Group')
-        ('viola_rh', 'Viola Bowing Voice')
-        ('viola_lh', 'Viola Fingering Voice')
         ('cello', 'Cello Performer Group')
-        ('cello_rh', 'Cello Bowing Voice')
         ('cello_lh', 'Cello Fingering Voice')
+        ('cello_rh', 'Cello Bowing Voice')
+        ('viola', 'Viola Performer Group')
+        ('viola_lh', 'Viola Fingering Voice')
+        ('viola_rh', 'Viola Bowing Voice')
+        ('violin_1', 'Violin 1 Performer Group')
+        ('violin_1_lh', 'Violin 1 Fingering Voice')
+        ('violin_1_rh', 'Violin 1 Bowing Voice')
+        ('violin_2', 'Violin 2 Performer Group')
+        ('violin_2_lh', 'Violin 2 Fingering Voice')
+        ('violin_2_rh', 'Violin 2 Bowing Voice')
 
     ::
 
-        >>> for item in template.composite_context_pairs.items():
+        >>> for item in sorted(template.composite_context_pairs.items()):
         ...     item
         ...
+        ('cello', ('cello_rh', 'cello_lh'))
+        ('viola', ('viola_rh', 'viola_lh'))
         ('violin_1', ('violin_1_rh', 'violin_1_lh'))
         ('violin_2', ('violin_2_rh', 'violin_2_lh'))
-        ('viola', ('viola_rh', 'viola_lh'))
-        ('cello', ('cello_rh', 'cello_lh'))
 
     '''
 
