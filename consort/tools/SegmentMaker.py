@@ -376,8 +376,8 @@ class SegmentMaker(makertools.SegmentMaker):
         lilypond_file = lilypondfiletools.LilyPondFile()
         if not self.omit_stylesheets:
             lilypond_file.use_relative_includes = True
-            for file_path in self.stylesheet_file_paths:
-                lilypond_file.file_initial_user_includes.append(file_path)
+            path = self.stylesheet_file_path
+            lilypond_file.file_initial_user_includes.append(path)
         lilypond_file.file_initial_system_comments[:] = []
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(self.score)
@@ -2461,22 +2461,13 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings = settings or []
 
     @property
-    def stylesheet_file_paths(self):
-        stylesheets_path = os.path.join(
+    def stylesheet_file_path(self):
+        stylesheet_file_path = os.path.join(
             self.score_package_path,
             'stylesheets',
+            'stylesheet.ily',
             )
-        stylesheet_file_names = os.listdir(stylesheets_path)
-        stylesheet_file_paths = []
-        for file_name in stylesheet_file_names:
-            if not file_name.endswith('.ily'):
-                continue
-            full_path = os.path.join(
-                stylesheets_path,
-                file_name,
-                )
-            stylesheet_file_paths.append(full_path)
-        return stylesheet_file_paths
+        return stylesheet_file_path
 
     @property
     def tempo(self):
