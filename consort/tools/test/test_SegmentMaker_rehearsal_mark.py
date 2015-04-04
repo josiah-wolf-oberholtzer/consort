@@ -1,8 +1,15 @@
 # -*- encoding: utf -*-
+import collections
 from abjad.tools import indicatortools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
 import consort
+
+
+segment_metadata = collections.OrderedDict(
+    segment_count=3,
+    segment_number=2,
+    )
 
 
 def test_SegmentMaker_rehearsal_mark_01():
@@ -10,7 +17,6 @@ def test_SegmentMaker_rehearsal_mark_01():
         discard_final_silence=True,
         desired_duration_in_seconds=4,
         omit_stylesheets=True,
-        rehearsal_mark='A',
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=1,
             ),
@@ -18,7 +24,9 @@ def test_SegmentMaker_rehearsal_mark_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(
+        segment_metadata=segment_metadata,
+        )
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -32,18 +40,11 @@ def test_SegmentMaker_rehearsal_mark_01():
                         \time 4/4
                         \tempo 4=60
                         \mark \markup {
-                            \concat
-                                {
-                                    \override
-                                        #'(box-padding . 0.5)
-                                        \box
-                                            \caps
-                                                A
-                                    " "
-                                    \fontsize
-                                        #-3
-                                        " "
-                                }
+                            \box
+                                \pad-around
+                                    #0.5
+                                    \caps
+                                        A
                             }
                         s1 * 1
                     }
@@ -57,7 +58,6 @@ def test_SegmentMaker_rehearsal_mark_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -76,7 +76,6 @@ def test_SegmentMaker_rehearsal_mark_02():
         desired_duration_in_seconds=4,
         name='A transitional segment',
         omit_stylesheets=True,
-        rehearsal_mark='A Part 1',
         score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
             staff_count=1,
             ),
@@ -84,7 +83,9 @@ def test_SegmentMaker_rehearsal_mark_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(
+        segment_metadata=segment_metadata,
+        )
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -100,11 +101,11 @@ def test_SegmentMaker_rehearsal_mark_02():
                         \mark \markup {
                             \concat
                                 {
-                                    \override
-                                        #'(box-padding . 0.5)
-                                        \box
+                                    \box
+                                        \pad-around
+                                            #0.5
                                             \caps
-                                                "A Part 1"
+                                                A
                                     " "
                                     \fontsize
                                         #-3
@@ -123,7 +124,6 @@ def test_SegmentMaker_rehearsal_mark_02():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }

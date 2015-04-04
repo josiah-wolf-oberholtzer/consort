@@ -1,4 +1,5 @@
 # -*- encoding: utf -*-
+import collections
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import rhythmmakertools
@@ -6,6 +7,12 @@ from abjad.tools import systemtools
 from abjad.tools import templatetools
 import consort
 
+
+
+segment_metadata = collections.OrderedDict(
+    segment_count=2,
+    segment_number=1,
+    )
 
 
 def test_SegmentMaker_01():
@@ -20,7 +27,7 @@ def test_SegmentMaker_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -56,7 +63,6 @@ def test_SegmentMaker_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -79,7 +85,6 @@ def test_SegmentMaker_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -110,7 +115,7 @@ def test_SegmentMaker_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -140,7 +145,6 @@ def test_SegmentMaker_02():
                                 {
                                     r16
                                     r8
-                                    \bar "||"
                                 }
                             }
                         }
@@ -158,7 +162,6 @@ def test_SegmentMaker_02():
                                 {
                                     r16
                                     r8
-                                    \bar "||"
                                 }
                             }
                         }
@@ -187,7 +190,7 @@ def test_SegmentMaker_03():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -226,7 +229,6 @@ def test_SegmentMaker_03():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -252,7 +254,6 @@ def test_SegmentMaker_03():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -283,7 +284,7 @@ def test_SegmentMaker_04():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -324,7 +325,6 @@ def test_SegmentMaker_04():
                                 {
                                     r8
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -350,7 +350,6 @@ def test_SegmentMaker_04():
                                 {
                                     r8
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -383,7 +382,7 @@ def test_SegmentMaker_05():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -410,7 +409,6 @@ def test_SegmentMaker_05():
                                     c'8 ~
                                     \set stemLeftBeamCount = 1
                                     c'8 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -425,7 +423,6 @@ def test_SegmentMaker_05():
                                     c'8 ~
                                     \set stemLeftBeamCount = 1
                                     c'8 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -466,7 +463,7 @@ def test_SegmentMaker_06():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -509,7 +506,6 @@ def test_SegmentMaker_06():
                             {
                                 {
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -532,7 +528,6 @@ def test_SegmentMaker_06():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -589,7 +584,7 @@ def test_SegmentMaker_07():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -637,7 +632,6 @@ def test_SegmentMaker_07():
                             {
                                 {
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -665,7 +659,6 @@ def test_SegmentMaker_07():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -688,7 +681,6 @@ def test_SegmentMaker_07():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }

@@ -9,6 +9,7 @@ from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
 from abjad import new
+from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondfiletools
@@ -170,16 +171,16 @@ class SegmentMaker(makertools.SegmentMaker):
         '_desired_duration_in_seconds',
         '_discard_final_silence',
         '_is_annotated',
-        '_is_final_segment',
         '_lilypond_file',
         '_maximum_meter_run_length',
         '_meters',
         '_name',
         '_omit_stylesheets',
         '_permitted_time_signatures',
-        '_rehearsal_mark',
+        '_previous_segment_metadata',
         '_score',
         '_score_template',
+        '_segment_metadata',
         '_settings',
         '_tempo',
         '_timespan_quantization',
@@ -195,11 +196,9 @@ class SegmentMaker(makertools.SegmentMaker):
         desired_duration_in_seconds=None,
         omit_stylesheets=None,
         is_annotated=None,
-        is_final_segment=None,
         maximum_meter_run_length=None,
         name=None,
         permitted_time_signatures=None,
-        rehearsal_mark=None,
         score_template=None,
         settings=None,
         tempo=None,
@@ -212,11 +211,9 @@ class SegmentMaker(makertools.SegmentMaker):
         self.is_annotated = is_annotated
         self.discard_final_silence = discard_final_silence
         self.desired_duration_in_seconds = desired_duration_in_seconds
-        self.is_final_segment = is_final_segment
         self.maximum_meter_run_length = maximum_meter_run_length
         self.omit_stylesheets = omit_stylesheets
         self.permitted_time_signatures = permitted_time_signatures
-        self.rehearsal_mark = rehearsal_mark
         self.score_template = score_template
         self.tempo = tempo
         self.timespan_quantization = timespan_quantization
@@ -233,6 +230,10 @@ class SegmentMaker(makertools.SegmentMaker):
         previous_segment_metadata=None,
         ):
         import consort
+        self._segment_metadata = segment_metadata or \
+            datastructuretools.TypedOrderedDict()
+        self._previous_segment_metadata = previous_segment_metadata or \
+            datastructuretools.TypedOrderedDict()
         self._reset()
         self._score = self.score_template()
         self._voice_names = tuple(
@@ -342,28 +343,39 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def attach_final_bar_line(self):
-        if self.is_final_segment:
+        segment_number = self._segment_metadata.get('segment_number', 1)
+        segment_count = self._segment_metadata.get('segment_count', 1)
+        if segment_number == segment_count:
             self.score.add_final_markup(self.final_markup)
             self.score.add_final_bar_line(
                 abbreviation='|.',
                 to_each_voice=True,
                 )
-        else:
-            self.score.add_final_bar_line(
-                abbreviation='||',
-                to_each_voice=True,
-                )
+
+    def get_rehearsal_letter(self):
+        segment_number = self._segment_metadata.get('segment_number', 1)
+        if segment_number == 1:
+            return ''
+        segment_index = segment_number - 1
+        rehearsal_ordinal = ord('A') - 1 + segment_index
+        rehearsal_letter = chr(rehearsal_ordinal)
+        return rehearsal_letter
 
     def attach_rehearsal_mark(self):
+        markup_a, markup_b = None, None
         first_leaf = self.score['TimeSignatureContext'].select_leaves()[0]
-        if self.rehearsal_mark is not None:
-            markup_a = markuptools.Markup(str(self.rehearsal_mark))
-            markup_a = markup_a.caps()
-            markup_a = markup_a.box()
-            markup_a = markup_a.override(('box-padding', 0.5))
+        rehearsal_letter = self.get_rehearsal_letter()
+        if rehearsal_letter:
+            markup_a = markuptools.Markup(rehearsal_letter)
+            markup_a = markup_a.caps().pad_around(0.5).box()
+        if self.name:
             markup_b = markuptools.Markup('"{}"'.format(self.name or ' '))
             markup_b = markup_b.fontsize(-3)
+        if markup_a and markup_b:
             markup = markuptools.Markup.concat([markup_a, ' ', markup_b])
+        else:
+            markup = markup_a or markup_b
+        if markup:
             rehearsal_mark = indicatortools.RehearsalMark(markup=markup)
             attach(rehearsal_mark, first_leaf)
 
@@ -376,8 +388,21 @@ class SegmentMaker(makertools.SegmentMaker):
         lilypond_file = lilypondfiletools.LilyPondFile()
         if not self.omit_stylesheets:
             lilypond_file.use_relative_includes = True
-            path = self.stylesheet_file_path
+            path = os.path.join(
+                '..',
+                '..',
+                'stylesheets',
+                'stylesheet.ily',
+                )
             lilypond_file.file_initial_user_includes.append(path)
+            if 1 < self._segment_metadata.get('segment_number', 1):
+                path = os.path.join(
+                    '..',
+                    '..',
+                    'stylesheets',
+                    'nonfirst-segment.ily',
+                    )
+                lilypond_file.file_initial_user_includes.append(path)
         lilypond_file.file_initial_system_comments[:] = []
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(self.score)
@@ -2282,29 +2307,6 @@ class SegmentMaker(makertools.SegmentMaker):
         self._is_annotated = expr
 
     @property
-    def is_final_segment(self):
-        r'''Gets and sets if segment maker's segment is final.
-
-        ::
-
-            >>> import consort
-            >>> segment_maker = consort.SegmentMaker()
-            >>> segment_maker.is_final_segment = True
-            >>> print(format(segment_maker))
-            consort.tools.SegmentMaker(
-                is_final_segment=True,
-                )
-
-        '''
-        return self._is_final_segment
-
-    @is_final_segment.setter
-    def is_final_segment(self, is_final_segment):
-        if is_final_segment is not None:
-            is_final_segment = bool(is_final_segment)
-        self._is_final_segment = is_final_segment
-
-    @property
     def lilypond_file(self):
         return self._lilypond_file
 
@@ -2376,14 +2378,6 @@ class SegmentMaker(makertools.SegmentMaker):
                 items=permitted_time_signatures,
                 )
         self._permitted_time_signatures = permitted_time_signatures
-
-    @property
-    def rehearsal_mark(self):
-        return self._rehearsal_mark
-
-    @rehearsal_mark.setter
-    def rehearsal_mark(self, rehearsal_mark):
-        self._rehearsal_mark = rehearsal_mark
 
     @property
     def score_package_metadata(self):

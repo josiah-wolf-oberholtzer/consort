@@ -1,9 +1,16 @@
 # -*- encoding: utf -*-
+import collections
 from abjad.tools import indicatortools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
 import consort
+
+
+segment_metadata = collections.OrderedDict(
+    segment_count=2,
+    segment_number=1,
+    )
 
 
 def test_GraceHandler_01():
@@ -40,7 +47,7 @@ def test_GraceHandler_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -91,7 +98,6 @@ def test_GraceHandler_01():
                             {
                                 {
                                     c'4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -130,7 +136,6 @@ def test_GraceHandler_01():
                             {
                                 {
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -175,7 +180,7 @@ def test_GraceHandler_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -235,7 +240,6 @@ def test_GraceHandler_02():
                                 }
                                 {
                                     c'4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -283,7 +287,6 @@ def test_GraceHandler_02():
                                 }
                                 {
                                     c'4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -328,7 +331,7 @@ def test_GraceHandler_03():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -381,7 +384,6 @@ def test_GraceHandler_03():
                                 }
                                 {
                                     c'4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -422,7 +424,6 @@ def test_GraceHandler_03():
                                 }
                                 {
                                     c'4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -465,7 +466,7 @@ def test_GraceHandler_04():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -508,7 +509,6 @@ def test_GraceHandler_04():
                             {
                                 {
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }
@@ -552,7 +552,7 @@ def test_GraceHandler_05():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -595,7 +595,6 @@ def test_GraceHandler_05():
                             {
                                 {
                                     r4
-                                    \bar "||"
                                 }
                             }
                         }

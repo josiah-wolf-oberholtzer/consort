@@ -1,4 +1,5 @@
 # -*- encoding: utf -*-
+import collections
 from abjad import new
 from abjad.tools import indicatortools
 from abjad.tools import pitchtools
@@ -12,6 +13,11 @@ music_specifier = consort.MusicSpecifier(
     rhythm_maker=rhythmmakertools.EvenDivisionRhythmMaker(
         denominators=[16],
         ),
+    )
+
+segment_metadata = collections.OrderedDict(
+    segment_count=2,
+    segment_number=1,
     )
 
 
@@ -31,7 +37,7 @@ def test_AbsolutePitchHandler_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -61,7 +67,6 @@ def test_AbsolutePitchHandler_01():
                                     c'16
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -95,7 +100,7 @@ def test_AbsolutePitchHandler_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -125,7 +130,6 @@ def test_AbsolutePitchHandler_02():
                                     g'16
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -161,7 +165,7 @@ def test_AbsolutePitchHandler_03():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -225,7 +229,6 @@ def test_AbsolutePitchHandler_03():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -273,7 +276,7 @@ def test_AbsolutePitchHandler_04():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -337,7 +340,6 @@ def test_AbsolutePitchHandler_04():
                                     c'16
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -374,7 +376,7 @@ def test_AbsolutePitchHandler_05():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -438,7 +440,6 @@ def test_AbsolutePitchHandler_05():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -484,7 +485,6 @@ def test_AbsolutePitchHandler_05():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -522,7 +522,7 @@ def test_AbsolutePitchHandler_06():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -586,7 +586,6 @@ def test_AbsolutePitchHandler_06():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -632,7 +631,6 @@ def test_AbsolutePitchHandler_06():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -678,7 +676,7 @@ def test_AbsolutePitchHandler_07():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -742,7 +740,6 @@ def test_AbsolutePitchHandler_07():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -788,7 +785,6 @@ def test_AbsolutePitchHandler_07():
                                     b16
                                     \set stemLeftBeamCount = 2
                                     b16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -822,7 +818,7 @@ def test_AbsolutePitchHandler_08():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -886,7 +882,6 @@ def test_AbsolutePitchHandler_08():
                                     e'16
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -932,7 +927,6 @@ def test_AbsolutePitchHandler_08():
                                     g'16
                                     \set stemLeftBeamCount = 2
                                     g'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -966,7 +960,7 @@ def test_AbsolutePitchHandler_09():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -1030,7 +1024,6 @@ def test_AbsolutePitchHandler_09():
                                     c'16
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -1076,7 +1069,6 @@ def test_AbsolutePitchHandler_09():
                                     e'16
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -1111,7 +1103,7 @@ def test_AbsolutePitchHandler_10():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((1, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -1175,7 +1167,6 @@ def test_AbsolutePitchHandler_10():
                                     eqf'16
                                     \set stemLeftBeamCount = 2
                                     eqs'16 ]
-                                    \bar "||"
                                 }
                             }
                         }
@@ -1221,7 +1212,6 @@ def test_AbsolutePitchHandler_10():
                                     g'16
                                     \set stemLeftBeamCount = 2
                                     gqf'16 ]
-                                    \bar "||"
                                 }
                             }
                         }

@@ -1,9 +1,16 @@
 # -*- encoding: utf -*-
+import collections
 from abjad.tools import indicatortools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
 from abjad.tools import timespantools
 import consort
+
+
+segment_metadata = collections.OrderedDict(
+    segment_count=2,
+    segment_number=1,
+    )
 
 
 def test_SegmentMaker_discard_final_silence_01():
@@ -24,7 +31,7 @@ def test_SegmentMaker_discard_final_silence_01():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -82,7 +89,6 @@ def test_SegmentMaker_discard_final_silence_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
-                                    \bar "||"
                                     \stopStaff
                                     \startStaff
                                 }
@@ -113,7 +119,7 @@ def test_SegmentMaker_discard_final_silence_02():
         tempo=indicatortools.Tempo((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
-    lilypond_file, metadata = segment_maker()
+    lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
         \version "2.19.17"
@@ -140,7 +146,6 @@ def test_SegmentMaker_discard_final_silence_02():
                             {
                                 {
                                     r2.
-                                    \bar "||"
                                 }
                             }
                         }
