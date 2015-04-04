@@ -262,17 +262,19 @@ class SegmentMaker(makertools.SegmentMaker):
                 ):
                 attack_point_map = self.collect_attack_points(self.score)
             self._attack_point_map = attack_point_map
-            with systemtools.ForbidUpdate(self.score):
+            with systemtools.ForbidUpdate(self.score, update_on_exit=True):
                 with systemtools.Timer(
                     '    handled graces:',
                     verbose=verbose,
                     ):
                     consort.GraceHandler._process_session(self)
+            with systemtools.ForbidUpdate(self.score, update_on_exit=True):
                 with systemtools.Timer(
                     '    handled pitches:',
                     verbose=verbose,
                     ):
                     consort.PitchHandler._process_session(self)
+            with systemtools.ForbidUpdate(self.score, update_on_exit=True):
                 with systemtools.Timer(
                     '    handled attachments:',
                     verbose=verbose,
@@ -2032,7 +2034,10 @@ class SegmentMaker(makertools.SegmentMaker):
                         ))
                     if not SegmentMaker.can_rewrite_meter(inscribed_timespan):
                         continue
-                    with systemtools.ForbidUpdate(inscribed_timespan.music):
+                    with systemtools.ForbidUpdate(
+                        inscribed_timespan.music,
+                        update_on_exit=True,
+                        ):
                         for i, container in enumerate(inscribed_timespan.music):
                             container_timespan = inspect_(container).get_timespan()
                             container_timespan = container_timespan.translate(
@@ -2066,7 +2071,7 @@ class SegmentMaker(makertools.SegmentMaker):
                                 forbid_staff_lines_spanner,
                                 )
                             SegmentMaker.cleanup_logical_ties(container)
-                            #progress_indicator.advance()
+                            progress_indicator.advance()
 
     @staticmethod
     def sort_voice_names(score, voice_names):
