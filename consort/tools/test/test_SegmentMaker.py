@@ -282,7 +282,7 @@ def test_SegmentMaker_04():
                 ),
             ),
         tempo=indicatortools.Tempo((1, 4), 60),
-        permitted_time_signatures=((5, 8), (7, 16)),
+        permitted_time_signatures=((5, 8), (9, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
@@ -295,12 +295,9 @@ def test_SegmentMaker_04():
                 \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
-                        \time 7/16
+                        \time 5/8
                         \tempo 4=60
-                        s1 * 7/16
-                    }
-                    {
-                        s1 * 7/16
+                        s1 * 5/8
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
@@ -308,23 +305,14 @@ def test_SegmentMaker_04():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'4. ~
                                     \set stemLeftBeamCount = 1
-                                    \set stemRightBeamCount = 1
-                                    c'8 ~
-                                    \set stemLeftBeamCount = 1
-                                    \set stemRightBeamCount = 1
-                                    c'8 ~
-                                }
-                                {
-                                    \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'8
                                 }
                             }
                             {
                                 {
                                     r8
-                                    r4
                                 }
                             }
                         }
@@ -333,23 +321,14 @@ def test_SegmentMaker_04():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'4. ~
                                     \set stemLeftBeamCount = 1
-                                    \set stemRightBeamCount = 1
-                                    c'8 ~
-                                    \set stemLeftBeamCount = 1
-                                    \set stemRightBeamCount = 1
-                                    c'8 ~
-                                }
-                                {
-                                    \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'8
                                 }
                             }
                             {
                                 {
                                     r8
-                                    r4
                                 }
                             }
                         }
@@ -380,7 +359,7 @@ def test_SegmentMaker_05():
                 ),
             ),
         tempo=indicatortools.Tempo((1, 4), 60),
-        permitted_time_signatures=((5, 8), (7, 16)),
+        permitted_time_signatures=((5, 8), (9, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
@@ -393,9 +372,9 @@ def test_SegmentMaker_05():
                 \tag #'time
                 \context TimeSignatureContext = "TimeSignatureContext" {
                     {
-                        \time 7/16
+                        \time 5/8
                         \tempo 4=60
-                        s1 * 7/16
+                        s1 * 5/8
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
@@ -403,12 +382,14 @@ def test_SegmentMaker_05():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'4. ~
                                     \set stemLeftBeamCount = 1
-                                    \set stemRightBeamCount = 1
-                                    c'8 ~
-                                    \set stemLeftBeamCount = 1
-                                    c'8 ]
+                                    c'8
+                                }
+                            }
+                            {
+                                {
+                                    r8
                                 }
                             }
                         }
@@ -417,12 +398,14 @@ def test_SegmentMaker_05():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'4. ~
                                     \set stemLeftBeamCount = 1
-                                    \set stemRightBeamCount = 1
-                                    c'8 ~
-                                    \set stemLeftBeamCount = 1
-                                    c'8 ]
+                                    c'8
+                                }
+                            }
+                            {
+                                {
+                                    r8
                                 }
                             }
                         }

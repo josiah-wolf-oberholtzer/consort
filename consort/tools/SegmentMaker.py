@@ -9,7 +9,6 @@ from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
 from abjad import new
-from abjad import override
 from abjad import set_
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -180,6 +179,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_omit_stylesheets',
         '_permitted_time_signatures',
         '_previous_segment_metadata',
+        '_repeat',
         '_score',
         '_score_template',
         '_segment_metadata',
@@ -194,13 +194,14 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __init__(
         self,
-        discard_final_silence=None,
         desired_duration_in_seconds=None,
-        omit_stylesheets=None,
+        discard_final_silence=None,
         is_annotated=None,
         maximum_meter_run_length=None,
         name=None,
+        omit_stylesheets=None,
         permitted_time_signatures=None,
+        repeat=None,
         score_template=None,
         settings=None,
         tempo=None,
@@ -220,6 +221,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self.tempo = tempo
         self.timespan_quantization = timespan_quantization
         self.settings = settings
+        self.repeat = repeat
         self._reset()
 
     ### SPECIAL METHODS ###
@@ -351,12 +353,18 @@ class SegmentMaker(makertools.SegmentMaker):
     def attach_final_bar_line(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
         segment_count = self._segment_metadata.get('segment_count', 1)
-        if segment_number == segment_count:
-            self.score.add_final_markup(self.final_markup)
+        if self.repeat:
+            repeat = indicatortools.Repeat()
+            for staff in iterate(self.score).by_class(scoretools.Staff):
+                attach(repeat, staff)
+            attach(repeat, self.score['TimeSignatureContext'])
+        elif segment_number == segment_count:
             self.score.add_final_bar_line(
                 abbreviation='|.',
                 to_each_voice=True,
                 )
+        if segment_number == segment_count:
+            self.score.add_final_markup(self.final_markup)
 
     def get_rehearsal_letter(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
@@ -1938,9 +1946,12 @@ class SegmentMaker(makertools.SegmentMaker):
         if isinstance(container, scoretools.Tuplet):
             contents_duration = container._contents_duration
             meter = metertools.Meter(contents_duration)
+            boundary_depth = 1
+            if meter.numerator in (3, 4):
+                boundary_depth = None
             mutate(container[:]).rewrite_meter(
                 meter,
-                boundary_depth=1,
+                boundary_depth=boundary_depth,
                 maximum_dot_count=2,
                 )
         elif len(meter_timespans) == 1:
@@ -1974,11 +1985,14 @@ class SegmentMaker(makertools.SegmentMaker):
                 meter = meter_timespan.annotation
                 meter_offset = meter_timespan.start_offset
                 initial_offset = container_start_offset - meter_offset
+                boundary_depth = 1
+                if meter.numerator in (3, 4):
+                    boundary_depth = None
                 mutate(container[:]).rewrite_meter(
                     meter,
-                    boundary_depth=1,
+                    boundary_depth=boundary_depth,
                     initial_offset=initial_offset,
-                    maximum_dot_count=1,
+                    maximum_dot_count=2,
                     )
         else:
             # TODO: handle bar-line-crossing containers
@@ -2052,7 +2066,7 @@ class SegmentMaker(makertools.SegmentMaker):
                                 forbid_staff_lines_spanner,
                                 )
                             SegmentMaker.cleanup_logical_ties(container)
-                            progress_indicator.advance()
+                            #progress_indicator.advance()
 
     @staticmethod
     def sort_voice_names(score, voice_names):
@@ -2560,3 +2574,13 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def voice_names(self):
         return self._voice_names
+
+    @property
+    def repeat(self):
+        return self._repeat
+
+    @repeat.setter
+    def repeat(self, repeat):
+        if repeat is not None:
+            repeat = bool(repeat)
+        self._repeat = repeat
