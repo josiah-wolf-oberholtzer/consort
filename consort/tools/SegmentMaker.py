@@ -9,6 +9,8 @@ from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
 from abjad import new
+from abjad import override
+from abjad import set_
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
@@ -282,12 +284,16 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.validate_score(self.score, verbose=verbose)
+
         is_annotated = self.is_annotated
         if annotate is not None:
             is_annotated = annotate
         if is_annotated:
             consort.annotate(self.score)
-        return self.lilypond_file, segment_metadata
+
+        self.update_segment_metadata()
+
+        return self.lilypond_file, self._segment_metadata
 
     ### PRIVATE METHODS ###
 
@@ -415,6 +421,15 @@ class SegmentMaker(makertools.SegmentMaker):
         self.attach_tempo()
         self.attach_rehearsal_mark()
         self.attach_final_bar_line()
+        self.set_bar_number()
+        self.postprocess_grace_containers()
+
+    def set_bar_number(self):
+        first_bar_number = self._segment_metadata.get('first_bar_number')
+        if first_bar_number is not None:
+            set_(self.score).current_bar_number = first_bar_number
+        #else:
+        #    override(self.score).bar_number.transparent = True
 
     def copy_voice(
         self,
@@ -507,6 +522,22 @@ class SegmentMaker(makertools.SegmentMaker):
             if isinstance(parent, scoretools.Voice):
                 voice = parent
         return voice
+
+    def postprocess_grace_containers(self):
+        import consort
+        score = self.score
+        stop_trill_span = consort.StopTrillSpan()
+        for leaf in iterate(score).by_class(scoretools.Leaf):
+            agent = inspect_(leaf)
+            spanners = agent.get_spanners(consort.ConsortTrillSpanner)
+            if not spanners:
+                continue
+            after_graces = agent.get_grace_containers('after')
+            if not after_graces:
+                continue
+            after_grace = after_graces[0]
+            leaf = after_grace[0]
+            attach(stop_trill_span, leaf)
 
     @staticmethod
     def validate_score(score, verbose=True):
@@ -2215,6 +2246,9 @@ class SegmentMaker(makertools.SegmentMaker):
             assert timespans.all_are_nonoverlapping
             durations.add(timespans.stop_offset)
         assert len(tuple(durations)) == 1
+
+    def update_segment_metadata(self):
+        self._segment_metadata['measure_count'] = len(self.meters)
 
     ### PUBLIC PROPERTIES ###
 
