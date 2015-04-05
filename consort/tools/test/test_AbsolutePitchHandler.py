@@ -200,13 +200,10 @@ def test_AbsolutePitchHandler_03():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    fs'16
+                                    fs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     gs'16
@@ -214,13 +211,10 @@ def test_AbsolutePitchHandler_03():
                                     \set stemRightBeamCount = 2
                                     fs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gs'16
+                                    gs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    b16
+                                    b16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     b16
@@ -311,13 +305,10 @@ def test_AbsolutePitchHandler_04():
                                     \set stemRightBeamCount = 2
                                     af'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     g'16
@@ -325,13 +316,10 @@ def test_AbsolutePitchHandler_04():
                                     \set stemRightBeamCount = 2
                                     fs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gs'16
+                                    gs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    fs'16
+                                    fs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     a'16
@@ -411,13 +399,10 @@ def test_AbsolutePitchHandler_05():
                                     \set stemRightBeamCount = 2
                                     e'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
+                                    g'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     e'16
@@ -425,13 +410,10 @@ def test_AbsolutePitchHandler_05():
                                     \set stemRightBeamCount = 2
                                     fs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    fs'16
+                                    fs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    fs'16
+                                    fs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     fs'16
@@ -456,13 +438,10 @@ def test_AbsolutePitchHandler_05():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     g'16
@@ -470,13 +449,10 @@ def test_AbsolutePitchHandler_05():
                                     \set stemRightBeamCount = 2
                                     gs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gs'16
+                                    gs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gs'16
+                                    gs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     gs'16
@@ -557,13 +533,10 @@ def test_AbsolutePitchHandler_06():
                                     \set stemRightBeamCount = 2
                                     e'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
+                                    g'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     e'16
@@ -571,13 +544,10 @@ def test_AbsolutePitchHandler_06():
                                     \set stemRightBeamCount = 2
                                     fs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gs'16
+                                    gs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    fs'16
+                                    fs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     gs'16
@@ -602,13 +572,10 @@ def test_AbsolutePitchHandler_06():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     g'16
@@ -616,13 +583,10 @@ def test_AbsolutePitchHandler_06():
                                     \set stemRightBeamCount = 2
                                     gs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    fs'16
+                                    fs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gs'16
+                                    gs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     fs'16
@@ -711,13 +675,10 @@ def test_AbsolutePitchHandler_07():
                                     \set stemRightBeamCount = 2
                                     e'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    df'16
+                                    df'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    af'16
+                                    af'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     f'16
@@ -725,13 +686,10 @@ def test_AbsolutePitchHandler_07():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    a'16
+                                    a'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
+                                    g'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     fs'16
@@ -756,13 +714,10 @@ def test_AbsolutePitchHandler_07():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    f'16
+                                    f'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    df'16
+                                    df'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     af'16
@@ -770,13 +725,10 @@ def test_AbsolutePitchHandler_07():
                                     \set stemRightBeamCount = 2
                                     a'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
+                                    g'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    a'16
+                                    a'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     gs'16
@@ -853,10 +805,10 @@ def test_AbsolutePitchHandler_08():
                                     \set stemRightBeamCount = 2
                                     c'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
+                                    g'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     g'16
@@ -864,16 +816,10 @@ def test_AbsolutePitchHandler_08():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
+                                    g'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     e'16
@@ -898,10 +844,10 @@ def test_AbsolutePitchHandler_08():
                                     \set stemRightBeamCount = 2
                                     e'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 ]
                                 }
                                 {
+                                    c'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     c'16
@@ -909,16 +855,10 @@ def test_AbsolutePitchHandler_08():
                                     \set stemRightBeamCount = 2
                                     c'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    g'16
+                                    g'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     g'16
@@ -995,10 +935,10 @@ def test_AbsolutePitchHandler_09():
                                     \set stemRightBeamCount = 2
                                     c'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
+                                    c'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     c'16
@@ -1006,16 +946,10 @@ def test_AbsolutePitchHandler_09():
                                     \set stemRightBeamCount = 2
                                     c'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     c'16
@@ -1040,10 +974,10 @@ def test_AbsolutePitchHandler_09():
                                     \set stemRightBeamCount = 2
                                     e'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 ]
                                 }
                                 {
+                                    e'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     e'16
@@ -1051,16 +985,10 @@ def test_AbsolutePitchHandler_09():
                                     \set stemRightBeamCount = 2
                                     e'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    e'16
+                                    e'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     e'16
@@ -1138,13 +1066,10 @@ def test_AbsolutePitchHandler_10():
                                     \set stemRightBeamCount = 2
                                     cqs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gqf'16
+                                    gqf'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     gqs'16
@@ -1152,13 +1077,10 @@ def test_AbsolutePitchHandler_10():
                                     \set stemRightBeamCount = 2
                                     g'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gqf'16
+                                    gqf'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    eqs'16
+                                    eqs'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     e'16
@@ -1183,13 +1105,10 @@ def test_AbsolutePitchHandler_10():
                                     \set stemRightBeamCount = 2
                                     eqf'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    eqs'16
+                                    eqs'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     bqs16
@@ -1197,13 +1116,10 @@ def test_AbsolutePitchHandler_10():
                                     \set stemRightBeamCount = 2
                                     cqs'16
                                     \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    c'16
+                                    c'16 ]
                                 }
                                 {
-                                    \set stemLeftBeamCount = 2
-                                    \set stemRightBeamCount = 2
-                                    gqf'16
+                                    gqf'16 [
                                     \set stemLeftBeamCount = 2
                                     \set stemRightBeamCount = 2
                                     gqs'16

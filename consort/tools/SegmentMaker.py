@@ -1369,14 +1369,24 @@ class SegmentMaker(makertools.SegmentMaker):
             stop_offset += timespan.start_offset
             container = scoretools.Container()
             container.extend(group)
-            beam = spannertools.GeneralizedBeam(
-                durations=[division._get_duration() for division in music],
-                include_long_duration_notes=True,
-                include_long_duration_rests=False,
-                isolated_nib_direction=None,
-                use_stemlets=False,
-                )
-            attach(beam, container, name='beam')
+#            beam = spannertools.GeneralizedBeam(
+#                durations=[division._get_duration() for division in music],
+#                include_long_duration_notes=False,
+#                include_long_duration_rests=False,
+#                isolated_nib_direction=None,
+#                use_stemlets=False,
+#                )
+#            attach(beam, container, name='beam')
+            for division in container:
+                durations = [division._get_duration()]
+                beam = spannertools.GeneralizedBeam(
+                    durations=durations,
+                    include_long_duration_notes=False,
+                    include_long_duration_rests=False,
+                    isolated_nib_direction=None,
+                    use_stemlets=True,
+                    )
+                attach(beam, division)
             attach(timespan.music_specifier, container, scope=scoretools.Voice)
             inscribed_timespan = new(
                 timespan,

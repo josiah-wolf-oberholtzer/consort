@@ -306,7 +306,6 @@ def test_SegmentMaker_04():
                             {
                                 {
                                     c'4. ~
-                                    \set stemLeftBeamCount = 1
                                     c'8
                                 }
                             }
@@ -322,7 +321,6 @@ def test_SegmentMaker_04():
                             {
                                 {
                                     c'4. ~
-                                    \set stemLeftBeamCount = 1
                                     c'8
                                 }
                             }
@@ -383,7 +381,6 @@ def test_SegmentMaker_05():
                             {
                                 {
                                     c'4. ~
-                                    \set stemLeftBeamCount = 1
                                     c'8
                                 }
                             }
@@ -399,7 +396,6 @@ def test_SegmentMaker_05():
                             {
                                 {
                                     c'4. ~
-                                    \set stemLeftBeamCount = 1
                                     c'8
                                 }
                             }
