@@ -154,17 +154,12 @@ class DependentTimespanMaker(TimespanMaker):
 
     ### PRIVATE METHODS ###
 
-    def _make_timespans(
+    def _collect_preexisting_timespans(
         self,
-        layer=None,
-        music_specifiers=None,
         target_timespan=None,
         timespan_inventory=None,
         ):
         import consort
-        if not self.voice_names:
-            return
-        new_timespans = timespantools.TimespanInventory()
         preexisting_timespans = timespantools.TimespanInventory()
         for timespan in timespan_inventory:
             if not isinstance(timespan, consort.PerformedTimespan):
@@ -181,13 +176,28 @@ class DependentTimespanMaker(TimespanMaker):
                 for label in self.labels):
                 preexisting_timespans.append(timespan)
         preexisting_timespans & target_timespan
+        return preexisting_timespans
+
+    def _make_timespans(
+        self,
+        layer=None,
+        music_specifiers=None,
+        target_timespan=None,
+        timespan_inventory=None,
+        ):
+        if not self.voice_names:
+            return
         rotation_indices = self.rotation_indices or (0,)
         rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
         context_counter = collections.Counter()
-        groups = preexisting_timespans.partition(
-            include_tangent_timespans=True,
+        new_timespans = timespantools.TimespanInventory()
+        preexisting_timespans = self._collect_preexisting_timespans(
+            target_timespan=target_timespan,
+            timespan_inventory=timespan_inventory,
             )
-        for group_index, group in enumerate(groups):
+        for group_index, group in enumerate(
+            preexisting_timespans.partition(True)
+            ):
             rotation_index = rotation_indices[group_index]
             offsets = set()
             offsets.add(group.start_offset)
