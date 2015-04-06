@@ -147,59 +147,59 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, seeds=None):
+    def __call__(self, divisions, rotation=None):
         divisions = [durationtools.Division(x) for x in divisions]
         result = []
         if not divisions:
             pass
         elif len(divisions) == 1:
             if self.only:
-                result.extend(self.only(divisions, seeds=seeds))
+                result.extend(self.only(divisions, rotation=rotation))
             elif self.last:
-                result.extend(self.last(divisions, seeds=seeds))
+                result.extend(self.last(divisions, rotation=rotation))
             elif self.first:
-                result.extend(self.first(divisions, seeds=seeds))
+                result.extend(self.first(divisions, rotation=rotation))
             else:
-                result.extend(self.default(divisions, seeds=seeds))
+                result.extend(self.default(divisions, rotation=rotation))
         elif len(divisions) == 2:
             if self.first and self.last:
-                first = self.first(divisions=[divisions[0]], seeds=seeds)
-                last = self.last(divisions=[divisions[1]], seeds=seeds)
+                first = self.first(divisions=[divisions[0]], rotation=rotation)
+                last = self.last(divisions=[divisions[1]], rotation=rotation)
                 result.extend(first)
                 result.extend(last)
             elif self.first:
-                first = self.first(divisions=[divisions[0]], seeds=seeds)
-                default = self.default(divisions=[divisions[1]], seeds=seeds)
+                first = self.first(divisions=[divisions[0]], rotation=rotation)
+                default = self.default(divisions=[divisions[1]], rotation=rotation)
                 result.extend(first)
                 result.extend(default)
             elif self.last:
-                default = self.default(divisions=[divisions[0]], seeds=seeds)
-                last = self.last(divisions=[divisions[1]], seeds=seeds)
+                default = self.default(divisions=[divisions[0]], rotation=rotation)
+                last = self.last(divisions=[divisions[1]], rotation=rotation)
                 result.extend(default)
                 result.extend(last)
             else:
-                default = self.default(divisions=divisions, seeds=seeds)
+                default = self.default(divisions=divisions, rotation=rotation)
                 result.extend(default)
         else:
             if self.first and self.last:
-                first = self.first(divisions=[divisions[0]], seeds=seeds)
-                default = self.default(divisions=divisions[1:-1], seeds=seeds)
-                last = self.last(divisions=[divisions[-1]], seeds=seeds)
+                first = self.first(divisions=[divisions[0]], rotation=rotation)
+                default = self.default(divisions=divisions[1:-1], rotation=rotation)
+                last = self.last(divisions=[divisions[-1]], rotation=rotation)
                 result.extend(first)
                 result.extend(default)
                 result.extend(last)
             elif self.first:
-                first = self.first(divisions=[divisions[0]], seeds=seeds)
-                default = self.default(divisions=divisions[1:], seeds=seeds)
+                first = self.first(divisions=[divisions[0]], rotation=rotation)
+                default = self.default(divisions=divisions[1:], rotation=rotation)
                 result.extend(first)
                 result.extend(default)
             elif self.last:
-                default = self.default(divisions=divisions[:-1], seeds=seeds)
-                last = self.last(divisions=[divisions[-1]], seeds=seeds)
+                default = self.default(divisions=divisions[:-1], rotation=rotation)
+                last = self.last(divisions=[divisions[-1]], rotation=rotation)
                 result.extend(default)
                 result.extend(last)
             else:
-                default = self.default(divisions=divisions, seeds=seeds)
+                default = self.default(divisions=divisions, rotation=rotation)
                 result.extend(default)
         return result
 
