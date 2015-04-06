@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 import abc
-import collections
 from abjad import attach
 from abjad.tools import abctools
 from abjad.tools import indicatortools
@@ -17,11 +16,17 @@ class ScoreTemplate(abctools.AbjadValueObject):
         '_context_name_abbreviations',
         )
 
+    _is_populated = False
+
     ### INITIALIZER ###
 
     def __init__(self):
         self._context_name_abbreviations = {}
         self._composite_context_pairs = {}
+
+        if not type(self)._is_populated:
+            self()
+            type(self)._is_populated = True
 
     ### SPECIAL METHODS ###
 
@@ -78,12 +83,29 @@ class ScoreTemplate(abctools.AbjadValueObject):
             self._attach_tag(tag, staff)
         return staff
 
+    def _populate(self):
+        if not type(self)._is_populated:
+            self()
+            type(self)._is_populated = True
+
     ### PUBLIC PROPERTIES ###
 
     @property
+    def all_voice_names(self):
+        self._populate()
+        result = []
+        for name in self.context_name_abbreviations:
+            if name in self.composite_context_pairs:
+                continue
+            result.append(name)
+        return tuple(result)
+
+    @property
     def composite_context_pairs(self):
+        self._populate()
         return self._composite_context_pairs
 
     @property
     def context_name_abbreviations(self):
+        self._populate()
         return self._context_name_abbreviations
