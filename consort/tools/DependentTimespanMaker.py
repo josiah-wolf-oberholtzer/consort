@@ -8,7 +8,7 @@ from consort.tools.TimespanMaker import TimespanMaker
 
 
 class DependentTimespanMaker(TimespanMaker):
-    r'''A dependent timespan maker.
+    r'''A dependent timespan-maker.
 
     ::
 
@@ -185,12 +185,12 @@ class DependentTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        new_timespans = timespantools.TimespanInventory()
         if not self.voice_names:
-            return
+            return new_timespans
         rotation_indices = self.rotation_indices or (0,)
         rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
         context_counter = collections.Counter()
-        new_timespans = timespantools.TimespanInventory()
         preexisting_timespans = self._collect_preexisting_timespans(
             target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
