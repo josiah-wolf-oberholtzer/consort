@@ -234,11 +234,11 @@ class SegmentMaker(makertools.SegmentMaker):
         previous_segment_metadata=None,
         ):
         import consort
+        self._reset()
         self._segment_metadata = segment_metadata or \
             datastructuretools.TypedOrderedDict()
         self._previous_segment_metadata = previous_segment_metadata or \
             datastructuretools.TypedOrderedDict()
-        self._reset()
         self._score = self.score_template()
         self._voice_names = tuple(
             voice.name for voice in
@@ -308,6 +308,8 @@ class SegmentMaker(makertools.SegmentMaker):
         self._score = None
         self._voice_names = None
         self._voicewise_timespans = None
+        self._segment_metadata = None
+        self._previous_segment_metadata = None
 
     ### PRIVATE PROPERTIES ###
 
@@ -326,15 +328,36 @@ class SegmentMaker(makertools.SegmentMaker):
 
     ### PUBLIC METHODS ###
 
+    def get_end_tempo_indication(self):
+        prototype = indicatortools.Tempo
+        context = self._score['Time Signature Context']
+        last_leaf = inspect_(context).get_leaf(-1)
+        effective_tempo = inspect_(last_leaf).get_effective(prototype)
+        if effective_tempo is not None:
+            duration = effective_tempo.duration.pair
+            units_per_minute = effective_tempo.units_per_minute
+            effective_tempo = (duration, units_per_minute)
+        return effective_tempo
+
+    def get_end_time_signature(self):
+        prototype = indicatortools.TimeSignature
+        context = self._score['Time Signature Context']
+        last_measure = context[-1]
+        time_signature = inspect_(last_measure).get_effective(prototype)
+        if not time_signature:
+            return
+        pair = time_signature.pair
+        return pair
+
     def add_time_signature_context(self):
         import consort
         time_signatures = [_.implied_time_signature for _ in self.meters]
         measures = scoretools.make_spacer_skip_measures(time_signatures)
-        if 'TimeSignatureContext' not in self.score:
+        if 'Time Signature Context' not in self.score:
             time_signature_context = \
                 consort.ScoreTemplateManager.make_time_signature_context()
             self.score.insert(0, time_signature_context)
-        self.score['TimeSignatureContext'].extend(measures)
+        self.score['Time Signature Context'].extend(measures)
 
     def add_setting(
         self,
@@ -359,7 +382,7 @@ class SegmentMaker(makertools.SegmentMaker):
             repeat = indicatortools.Repeat()
             for staff in iterate(self.score).by_class(scoretools.Staff):
                 attach(repeat, staff)
-            attach(repeat, self.score['TimeSignatureContext'])
+            attach(repeat, self.score['Time Signature Context'])
         elif segment_number == segment_count:
             self.score.add_final_bar_line(
                 abbreviation='|.',
@@ -379,7 +402,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def attach_rehearsal_mark(self):
         markup_a, markup_b = None, None
-        first_leaf = self.score['TimeSignatureContext'].select_leaves()[0]
+        first_leaf = self.score['Time Signature Context'].select_leaves()[0]
         rehearsal_letter = self.get_rehearsal_letter()
         if rehearsal_letter:
             markup_a = markuptools.Markup(rehearsal_letter)
@@ -396,7 +419,7 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(rehearsal_mark, first_leaf)
 
     def attach_tempo(self):
-        first_leaf = self.score['TimeSignatureContext'].select_leaves()[0]
+        first_leaf = self.score['Time Signature Context'].select_leaves()[0]
         if self.tempo is not None:
             attach(self.tempo, first_leaf)
 
@@ -2277,7 +2300,11 @@ class SegmentMaker(makertools.SegmentMaker):
         assert len(tuple(durations)) == 1
 
     def update_segment_metadata(self):
-        self._segment_metadata['measure_count'] = len(self.meters)
+        self._segment_metadata.update(
+            measure_count=len(self.meters),
+            end_tempo=self.get_end_tempo_indication(),
+            end_time_signature=self.get_end_time_signature(),
+            )
 
     ### PUBLIC PROPERTIES ###
 
@@ -2518,15 +2545,6 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings = settings or []
 
     @property
-    def stylesheet_file_path(self):
-        stylesheet_file_path = os.path.join(
-            self.score_package_path,
-            'stylesheets',
-            'stylesheet.ily',
-            )
-        return stylesheet_file_path
-
-    @property
     def tempo(self):
         r'''Gets and sets segment maker tempo.
 
@@ -2545,6 +2563,9 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
 
         '''
+        if self._tempo is None:
+            if self._previous_segment_metadata is not None:
+                return self._previous_segment_metadata.get('end_tempo')
         return self._tempo
 
     @tempo.setter
