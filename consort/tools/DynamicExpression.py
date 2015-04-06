@@ -147,6 +147,8 @@ class DynamicExpression(abctools.AbjadValueObject):
     __slots__ = (
         '_dynamic_tokens',
         '_transitions',
+        '_start_dynamic_tokens',
+        '_stop_dynamic_tokens',
         )
 
     _transition_types = (
@@ -160,16 +162,16 @@ class DynamicExpression(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        dynamic_tokens=('f', 'p'),
+        dynamic_tokens=('ppp',),
+        start_dynamic_tokens=None,
+        stop_dynamic_tokens=None,
         transitions=None,
         ):
-        if isinstance(dynamic_tokens, str):
-            dynamic_tokens = dynamic_tokens.split()
-        assert all(_ in indicatortools.Dynamic._dynamic_name_to_dynamic_ordinal
-            for _ in dynamic_tokens)
-        assert len(dynamic_tokens)
-        dynamic_tokens = datastructuretools.CyclicTuple(dynamic_tokens)
-        self._dynamic_tokens = dynamic_tokens
+        self._dynamic_tokens = self._tokens_to_cyclic_tuple(dynamic_tokens)
+        self._start_dynamic_tokens = self._tokens_to_cyclic_tuple(
+            start_dynamic_tokens)
+        self._stop_dynamic_tokens = self._tokens_to_cyclic_tuple(
+            stop_dynamic_tokens)
         if isinstance(transitions, (str, type(None))):
             transitions = [transitions]
         assert all(_ in self._transition_types for _ in transitions)
@@ -204,32 +206,105 @@ class DynamicExpression(abctools.AbjadValueObject):
 
     ### PRIVATE METHODS ###
 
+    def _tokens_to_cyclic_tuple(self, tokens):
+        if tokens is None:
+            return tokens
+        Dynamic = indicatortools.Dynamic
+        if isinstance(tokens, str):
+            tokens = tokens.split()
+        for token in tokens:
+            if token == 'o':
+                continue
+            assert token in Dynamic._dynamic_name_to_dynamic_ordinal
+        assert len(tokens)
+        tokens = datastructuretools.CyclicTuple(tokens)
+        return tokens
+
     def _get_attachments(self, index, length, seed, original_seed):
         dynamic_seed = seed
         if self.start_dynamic_tokens:
             dynamic_seed -= 1
 
-        this_token = self.dynamic_tokens[dynamic_seed]
-        next_token = self.dynamic_tokens[dynamic_seed + 1]
-        this_dynamic = indicatortools.Dynamic(this_token)
-        next_dynamic = indicatortools.Dynamic(next_token)
-
+        this_token = None
+        next_token = None
+        this_dynamic = None
+        next_dynamic = None
         hairpin = None
         hairpin_override = None
-        if this_dynamic.ordinal < next_dynamic.ordinal:
-            hairpin = spannertools.Crescendo(include_rests=True)
-        elif next_dynamic.ordinal < this_dynamic.ordinal:
-            hairpin = spannertools.Decrescendo(include_rests=True)
-        transition = self.transitions[seed]
-        if transition == 'constante':
-            hairpin = spannertools.Crescendo(include_rests=True)
-        if transition in ('flared', 'constante'):
-            hairpin_override = lilypondnametools.LilyPondGrobOverride(
-                grob_name='Hairpin',
-                is_once=True,
-                property_path='stencil',
-                value=schemetools.Scheme('{}-hairpin'.format(transition)),
-                )
+
+        if length == 1:
+            if self.start_dynamic_tokens:
+                this_token = self.start_dynamic_tokens[original_seed]
+            elif self.stop_dynamic_tokens:
+                this_token = self.stop_dynamic_tokens[original_seed]
+            else:
+                this_token = self.dynamic_tokens[seed]
+        elif length == 2:
+            if index == 0:
+                if self.start_dynamic_tokens:
+                    this_token = self.start_dynamic_tokens[original_seed]
+                else:
+                    this_token = self.dynamic_tokens[seed]
+                if self.stop_dynamic_tokens:
+                    next_token = self.stop_dynamic_tokens[original_seed]
+                else:
+                    next_token = self.dynamic_tokens[seed + 1]
+            elif index == 1:
+                if self.stop_dynamic_tokens:
+                    this_token = self.stop_dynamic_tokens[original_seed]
+                else:
+                    this_token = self.dynamic_tokens[seed]
+        else:
+            if index == 0:
+                if self.start_dynamic_tokens:
+                    this_token = self.start_dynamic_tokens[original_seed]
+                    next_token = self.dynamic_tokens[seed]
+                else:
+                    this_token = self.dynamic_tokens[seed]
+                    next_token = self.dynamic_tokens[seed + 1]
+            elif index == length - 1:
+                if self.stop_dynamic_tokens:
+                    this_token = self.stop_dynamic_tokens[original_seed]
+                else:
+                    this_token = self.dynamic_tokens[seed]
+            elif index == length - 2:
+                this_token = self.dynamic_tokens[seed]
+                if self.stop_dynamic_tokens:
+                    next_token = self.stop_dynamic_tokens[original_seed]
+                else:
+                    next_token = self.dynamic_tokens[seed + 1]
+            else:
+                this_token = self.dynamic_tokens[seed]
+                next_token = self.dynamic_tokens[seed + 1]
+
+        this_dynamic = indicatortools.Dynamic(this_token)
+        this_dynamic_ordinal = NegativeInfinity
+        if this_dynamic.name != 'o':
+            this_dynamic_ordinal = this_dynamic.ordinal
+        if next_token is not None:
+            next_dynamic = indicatortools.Dynamic(next_token)
+            next_dynamic_ordinal = NegativeInfinity
+            if next_dynamic.name != 'o':
+                next_dynamic_ordinal = next_dynamic.ordinal
+
+        if next_dynamic is not None:
+            if this_dynamic_ordinal < next_dynamic_ordinal:
+                hairpin = spannertools.Crescendo(include_rests=True)
+            elif next_dynamic_ordinal < this_dynamic_ordinal:
+                hairpin = spannertools.Decrescendo(include_rests=True)
+
+        if hairpin is not None:
+            transition = self.transitions[seed]
+            if transition == 'constante':
+                hairpin = spannertools.Crescendo(include_rests=True)
+            if transition in ('flared', 'constante'):
+                hairpin_override = lilypondnametools.LilyPondGrobOverride(
+                    grob_name='Hairpin',
+                    is_once=True,
+                    property_path='stencil',
+                    value=schemetools.Scheme('{}-hairpin'.format(transition)),
+                    )
+
         return this_dynamic, hairpin, hairpin_override
 
     @staticmethod
@@ -350,6 +425,14 @@ class DynamicExpression(abctools.AbjadValueObject):
     @property
     def dynamic_tokens(self):
         return self._dynamic_tokens
+
+    @property
+    def start_dynamic_tokens(self):
+        return self._start_dynamic_tokens
+
+    @property
+    def stop_dynamic_tokens(self):
+        return self._stop_dynamic_tokens
 
     @property
     def transitions(self):
