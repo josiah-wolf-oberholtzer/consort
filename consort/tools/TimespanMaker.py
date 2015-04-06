@@ -78,7 +78,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
             )
-        self._make_silent_timespans(
+        self._cleanup_silent_timespans(
             layer=layer,
             silenced_context_names=silenced_context_names,
             timespans=new_timespans,
@@ -107,7 +107,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             result[context_name] = music_specifier
         return result
 
-    def _make_silent_timespans(
+    def _cleanup_silent_timespans(
         self,
         layer,
         silenced_context_names,
