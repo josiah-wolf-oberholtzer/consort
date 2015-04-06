@@ -7,7 +7,6 @@ from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondnametools
 from abjad.tools import schemetools
-from abjad.tools import sequencetools
 from abjad.tools import spannertools
 
 
@@ -167,7 +166,9 @@ class DynamicExpression(abctools.AbjadValueObject):
         stop_dynamic_tokens=None,
         transitions=None,
         ):
-        self._dynamic_tokens = self._tokens_to_cyclic_tuple(dynamic_tokens)
+        dynamic_tokens = self._tokens_to_cyclic_tuple(dynamic_tokens)
+        assert dynamic_tokens
+        self._dynamic_tokens = dynamic_tokens
         self._start_dynamic_tokens = self._tokens_to_cyclic_tuple(
             start_dynamic_tokens)
         self._stop_dynamic_tokens = self._tokens_to_cyclic_tuple(
@@ -190,7 +191,6 @@ class DynamicExpression(abctools.AbjadValueObject):
             selection = selections[index]
             dynamic, hairpin, hairpin_override = self._get_attachments(
                 index, length, seed, original_seed)
-            #print(index, dynamic, hairpin)
             if dynamic != current_dynamic:
                 attach(dynamic, component)
                 current_dynamic = dynamic
@@ -202,7 +202,8 @@ class DynamicExpression(abctools.AbjadValueObject):
             seed += 1
         dynamic, _, _ = self._get_attachments(
             length - 1, length, seed, original_seed)
-        attach(dynamic, components[-1])
+        if dynamic != current_dynamic:
+            attach(dynamic, components[-1])
 
     ### PRIVATE METHODS ###
 
@@ -238,44 +239,48 @@ class DynamicExpression(abctools.AbjadValueObject):
             elif self.stop_dynamic_tokens:
                 this_token = self.stop_dynamic_tokens[original_seed]
             else:
-                this_token = self.dynamic_tokens[seed]
+                this_token = self.dynamic_tokens[dynamic_seed]
+            if this_token == 'o':
+                this_token = self.dynamic_tokens[dynamic_seed]
         elif length == 2:
             if index == 0:
                 if self.start_dynamic_tokens:
                     this_token = self.start_dynamic_tokens[original_seed]
                 else:
-                    this_token = self.dynamic_tokens[seed]
+                    this_token = self.dynamic_tokens[dynamic_seed]
                 if self.stop_dynamic_tokens:
                     next_token = self.stop_dynamic_tokens[original_seed]
                 else:
-                    next_token = self.dynamic_tokens[seed + 1]
+                    next_token = self.dynamic_tokens[dynamic_seed + 1]
             elif index == 1:
                 if self.stop_dynamic_tokens:
                     this_token = self.stop_dynamic_tokens[original_seed]
                 else:
-                    this_token = self.dynamic_tokens[seed]
+                    this_token = self.dynamic_tokens[dynamic_seed]
+            if this_token == next_token == 'o':
+                next_token = self.dynamic_tokens[dynamic_seed]
         else:
             if index == 0:
                 if self.start_dynamic_tokens:
                     this_token = self.start_dynamic_tokens[original_seed]
-                    next_token = self.dynamic_tokens[seed]
+                    next_token = self.dynamic_tokens[dynamic_seed]
                 else:
-                    this_token = self.dynamic_tokens[seed]
-                    next_token = self.dynamic_tokens[seed + 1]
+                    this_token = self.dynamic_tokens[dynamic_seed]
+                    next_token = self.dynamic_tokens[dynamic_seed + 1]
             elif index == length - 1:
                 if self.stop_dynamic_tokens:
                     this_token = self.stop_dynamic_tokens[original_seed]
                 else:
-                    this_token = self.dynamic_tokens[seed]
+                    this_token = self.dynamic_tokens[dynamic_seed]
             elif index == length - 2:
-                this_token = self.dynamic_tokens[seed]
+                this_token = self.dynamic_tokens[dynamic_seed]
                 if self.stop_dynamic_tokens:
                     next_token = self.stop_dynamic_tokens[original_seed]
                 else:
-                    next_token = self.dynamic_tokens[seed + 1]
+                    next_token = self.dynamic_tokens[dynamic_seed + 1]
             else:
-                this_token = self.dynamic_tokens[seed]
-                next_token = self.dynamic_tokens[seed + 1]
+                this_token = self.dynamic_tokens[dynamic_seed]
+                next_token = self.dynamic_tokens[dynamic_seed + 1]
 
         this_dynamic = indicatortools.Dynamic(this_token)
         this_dynamic_ordinal = NegativeInfinity
