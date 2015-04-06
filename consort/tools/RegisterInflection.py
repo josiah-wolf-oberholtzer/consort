@@ -115,36 +115,6 @@ class RegisterInflection(abctools.AbjadValueObject):
         result = pitchtools.NumberedInterval(int(result))
         return result
 
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        r'''Attribute manifest.
-
-        ::
-
-            >>> import consort
-            >>> register_inflection = consort.RegisterInflection()
-            >>> attribute_manifest = register_inflection._attribute_manifest
-
-        '''
-        from abjad.tools import systemtools
-        from ide import idetools
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='inflections',
-                display_string='inflections',
-                command='i',
-                editor=idetools.getters.get_integers,
-                ),
-            systemtools.AttributeDetail(
-                name='ratio',
-                display_string='ratio',
-                command='r',
-                editor=idetools.getters.get_nonnegative_integers,
-                ),
-            )
-
     ### PUBLIC METHODS ###
 
     @staticmethod

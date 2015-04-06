@@ -134,49 +134,6 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                 segment_inflections)
         self._segment_inflections = segment_inflections
 
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        r'''Attribute manifest.
-
-        ::
-
-            >>> import consort
-            >>> register_specifier = consort.RegisterSpecifier()
-            >>> attribute_manifest = register_specifier._attribute_manifest
-
-        '''
-        from abjad.tools import systemtools
-        import consort
-        from ide import idetools
-        return systemtools.AttributeManifest(
-            systemtools.AttributeDetail(
-                name='center_pitch',
-                display_string='center pitch',
-                command='c',
-                editor=idetools.getters.get_named_pitch,
-                ),
-            systemtools.AttributeDetail(
-                name='division_inflections',
-                display_string='division inflections',
-                command='di',
-                editor=consort.RegisterInflectionInventory,
-                ),
-            systemtools.AttributeDetail(
-                name='phrase_inflections',
-                display_string='phrase inflections',
-                command='pi',
-                editor=consort.RegisterInflectionInventory,
-                ),
-            systemtools.AttributeDetail(
-                name='segment_inflections',
-                display_string='segment inflections',
-                command='si',
-                editor=consort.RegisterInflectionInventory,
-                ),
-            )
-
     ### PUBLIC METHODS ###
 
     def find_register(
