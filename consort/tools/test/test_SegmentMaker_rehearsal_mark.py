@@ -35,7 +35,7 @@ def test_SegmentMaker_rehearsal_mark_01():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 4/4
                         \tempo 4=60
@@ -94,7 +94,7 @@ def test_SegmentMaker_rehearsal_mark_02():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 4/4
                         \tempo 4=60

@@ -17,7 +17,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
         >>> print(format(score))
         \context Score = "String Quartet Score" <<
             \tag #'time
-            \context TimeSignatureContext = "TimeSignatureContext" {
+            \context TimeSignatureContext = "Time Signature Context" {
             }
             \tag #'violin-1
             \context StringPerformerGroup = "Violin 1 Performer Group" \with {

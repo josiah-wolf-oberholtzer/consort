@@ -46,7 +46,7 @@ def test_AbsolutePitchHandler_01():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -109,7 +109,7 @@ def test_AbsolutePitchHandler_02():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -174,7 +174,7 @@ def test_AbsolutePitchHandler_03():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -279,7 +279,7 @@ def test_AbsolutePitchHandler_04():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -373,7 +373,7 @@ def test_AbsolutePitchHandler_05():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -507,7 +507,7 @@ def test_AbsolutePitchHandler_06():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -649,7 +649,7 @@ def test_AbsolutePitchHandler_07():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -779,7 +779,7 @@ def test_AbsolutePitchHandler_08():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -909,7 +909,7 @@ def test_AbsolutePitchHandler_09():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60
@@ -1040,7 +1040,7 @@ def test_AbsolutePitchHandler_10():
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
-                \context TimeSignatureContext = "TimeSignatureContext" {
+                \context TimeSignatureContext = "Time Signature Context" {
                     {
                         \time 1/4
                         \tempo 4=60

@@ -285,7 +285,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
     def make_time_signature_context():
         time_signature_context = scoretools.Context(
             context_name='TimeSignatureContext',
-            name='TimeSignatureContext',
+            name='Time Signature Context',
             )
         label = 'time'
         ScoreTemplateManager.attach_tag(label, time_signature_context)
