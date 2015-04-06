@@ -141,7 +141,7 @@ class AttachmentExpression(HashCachingObject):
         self,
         music,
         name=None,
-        seed=0,
+        rotation=0,
         ):
         if not self.attachments:
             return
@@ -150,7 +150,7 @@ class AttachmentExpression(HashCachingObject):
         if selector is None:
             selector = selectortools.Selector()
         selections = selector(music)
-        for i, selection in enumerate(selections, seed):
+        for i, selection in enumerate(selections, rotation):
             attachments = all_attachments[i]
             #print(i, selection)
             if attachments is None:
@@ -170,7 +170,7 @@ class AttachmentExpression(HashCachingObject):
                 # expressions
                 elif hasattr(attachment, '__call__'):
                     try:
-                        attachment(selection, seed=seed, name=name)
+                        attachment(selection, rotation=rotation, name=name)
                     except TypeError:
                         try:
                             attachment(selection, name=name)

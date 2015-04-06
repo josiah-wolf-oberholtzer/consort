@@ -60,7 +60,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
             attachment_expression(
                 music,
                 name=name,
-                seed=seed,
+                rotation=seed,
                 )
 
     def __getattr__(self, item):
