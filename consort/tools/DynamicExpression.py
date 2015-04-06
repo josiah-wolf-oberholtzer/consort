@@ -192,18 +192,19 @@ class DynamicExpression(abctools.AbjadValueObject):
             dynamic, hairpin, hairpin_override = self._get_attachments(
                 index, length, seed, original_seed)
             if dynamic != current_dynamic:
-                attach(dynamic, component)
+                if dynamic.name != 'o':
+                    attach(dynamic, component, name=name)
                 current_dynamic = dynamic
             if hairpin is not None:
-                attach(hairpin, selection)
+                attach(hairpin, selection, name=name)
                 current_hairpin = hairpin
             if current_hairpin is not None and hairpin_override is not None:
-                attach(hairpin_override, component)
+                attach(hairpin_override, component, name=name)
             seed += 1
         dynamic, _, _ = self._get_attachments(
             length - 1, length, seed, original_seed)
-        if dynamic != current_dynamic:
-            attach(dynamic, components[-1])
+        if dynamic != current_dynamic and dynamic.name != 'o':
+            attach(dynamic, components[-1], name=name)
 
     ### PRIVATE METHODS ###
 
@@ -308,6 +309,13 @@ class DynamicExpression(abctools.AbjadValueObject):
                     is_once=True,
                     property_path='stencil',
                     value=schemetools.Scheme('{}-hairpin'.format(transition)),
+                    )
+            if this_dynamic.name == 'o' or next_dynamic.name == 'o':
+                hairpin_override = lilypondnametools.LilyPondGrobOverride(
+                    grob_name='Hairpin',
+                    is_once=True,
+                    property_path='circled-tip',
+                    value=True,
                     )
 
         return this_dynamic, hairpin, hairpin_override

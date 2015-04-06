@@ -702,3 +702,33 @@ def test_DynamicExpression_07():
             }
         }
         ''')
+
+def test_DynamicExpression_08():
+
+    dynamic_expression = consort.DynamicExpression(
+        dynamic_tokens="p ppp",
+        start_dynamic_tokens="o",
+        stop_dynamic_tokens="o",
+        )
+
+    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    dynamic_expression(music)
+    assert format(music) == systemtools.TestManager.clean_string(
+        r'''
+        \new Staff {
+            {
+                \once \override Hairpin.circled-tip = ##t
+                c'4 \<
+                d'4
+            }
+            {
+                e'4 \p \>
+                f'4
+            }
+            {
+                \once \override Hairpin.circled-tip = ##t
+                g'4 \ppp \>
+                a'4 \!
+            }
+        }
+        ''')
