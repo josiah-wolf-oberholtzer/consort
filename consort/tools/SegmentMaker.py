@@ -5,6 +5,7 @@ import importlib
 import itertools
 import os
 from abjad import attach
+from abjad import detach
 from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
@@ -375,6 +376,18 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         self._settings.append(setting)
 
+    def attach_initial_bar_line(self):
+        segment_number = self._segment_metadata.get('segment_number', 1)
+        if self.repeat:
+            return
+        elif self._previous_segment_metadata.get('is_repeated'):
+            return
+        elif segment_number == 1:
+            return
+        bar_line = indicatortools.LilyPondCommand('bar "||"', 'before')
+        for staff in iterate(self.score).by_class(scoretools.Staff):
+            attach(bar_line, staff)
+
     def attach_final_bar_line(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
         segment_count = self._segment_metadata.get('segment_count', 1)
@@ -453,9 +466,23 @@ class SegmentMaker(makertools.SegmentMaker):
         self.add_time_signature_context()
         self.attach_tempo()
         self.attach_rehearsal_mark()
+        self.attach_initial_bar_line()
         self.attach_final_bar_line()
         self.set_bar_number()
         self.postprocess_grace_containers()
+        self.postprocess_ties()
+
+    def postprocess_ties(self):
+        for component in iterate(self.score).depth_first():
+            if not inspect_(component).has_spanner(spannertools.Tie):
+                continue
+            tie = inspect_(component).get_spanner(spannertools.Tie)
+            if component != tie[0]:
+                continue
+            components = tie.components
+            detach(tie)
+            tie = spannertools.Tie(use_messiaen_style_ties=True)
+            attach(tie, components)
 
     def set_bar_number(self):
         first_bar_number = self._segment_metadata.get('first_bar_number')
@@ -2304,6 +2331,7 @@ class SegmentMaker(makertools.SegmentMaker):
             measure_count=len(self.meters),
             end_tempo=self.get_end_tempo_indication(),
             end_time_signature=self.get_end_time_signature(),
+            is_repeated=self.repeat,
             )
 
     ### PUBLIC PROPERTIES ###
