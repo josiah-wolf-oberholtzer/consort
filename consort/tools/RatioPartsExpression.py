@@ -98,6 +98,38 @@ class RatioPartsExpression(abctools.AbjadObject):
             timespans & self.mask_timespan
         return timespans
 
+    ### PUBLIC METHODS ###
+
+    @staticmethod
+    def from_sequence(sequence):
+        r'''Creates a ratio parts expression from `sequence`.
+
+        ::
+
+            >>> ratio = [-1, 2, -1, 1, -1]
+            >>> expression = consort.RatioPartsExpression.from_sequence(ratio)
+            >>> print(format(expression))
+            consort.tools.RatioPartsExpression(
+                parts=(1, 3),
+                ratio=mathtools.Ratio(1, 2, 1, 1, 1),
+                )
+
+        Returns new ratio parts expression.
+        '''
+        assert all(sequence)
+        assert len(sequence)
+        ratio = []
+        parts = []
+        for i, x in enumerate(sequence):
+            if 0 < x:
+                parts.append(i)
+            ratio.append(abs(x))
+        result = RatioPartsExpression(
+            parts=parts,
+            ratio=ratio,
+            )
+        return result
+
     ### PUBLIC PROPERTIES ###
 
     @property
