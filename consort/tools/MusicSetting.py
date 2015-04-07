@@ -243,6 +243,10 @@ class MusicSetting(abctools.AbjadValueObject):
                 timespantools.TimespanInventory,
                 consort.RatioPartsExpression,
                 )
+            if not isinstance(timespan_identifier, prototype):
+                timespan_identifier = \
+                    consort.RatioPartsExpression.from_sequence(
+                        timespan_identifier)
             assert isinstance(timespan_identifier, prototype)
         self._timespan_identifier = timespan_identifier
         if timespan_maker is not None:
