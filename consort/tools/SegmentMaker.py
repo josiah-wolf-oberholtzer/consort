@@ -294,7 +294,7 @@ class SegmentMaker(makertools.SegmentMaker):
         if annotate is not None:
             is_annotated = annotate
         if is_annotated:
-            consort.annotate(self.score)
+            consort.annotate(self.score, nonsilence=True)
 
         self.update_segment_metadata()
 
