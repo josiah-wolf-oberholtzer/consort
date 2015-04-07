@@ -2,6 +2,7 @@
 from __future__ import print_function
 import collections
 import copy
+import funcsigs
 from abjad import attach
 from abjad import new
 from abjad.tools import datastructuretools
@@ -169,13 +170,13 @@ class AttachmentExpression(HashCachingObject):
                     attach(attachment, selection, name=name)
                 # expressions
                 elif hasattr(attachment, '__call__'):
-                    try:
+                    signature = funcsigs.signature(attachment.__call__)
+                    if 'seed' in signature.parameters:
+                        attachment(selection, seed=rotation, name=name)
+                    elif 'rotation' in signature.parameters:
                         attachment(selection, rotation=rotation, name=name)
-                    except TypeError:
-                        try:
-                            attachment(selection, name=name)
-                        except TypeError:
-                            raise AttributeError(attachment)
+                    else:
+                        attachment(selection, name=name)
                 # indicators
                 else:
                     if isinstance(selection, scoretools.Leaf):
