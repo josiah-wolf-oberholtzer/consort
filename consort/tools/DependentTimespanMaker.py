@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
+from abjad import inspect_
 from abjad.tools import datastructuretools
 from abjad.tools import mathtools
 from abjad.tools import sequencetools
@@ -107,6 +108,7 @@ class DependentTimespanMaker(TimespanMaker):
     __slots__ = (
         '_include_inner_starts',
         '_include_inner_stops',
+        '_inspect_music',
         '_labels',
         '_rotation_indices',
         '_voice_names',
@@ -118,6 +120,7 @@ class DependentTimespanMaker(TimespanMaker):
         self,
         include_inner_starts=None,
         include_inner_stops=None,
+        inspect_music=None,
         labels=None,
         output_masks=None,
         padding=None,
@@ -137,6 +140,9 @@ class DependentTimespanMaker(TimespanMaker):
         if include_inner_stops is not None:
             include_inner_stops = bool(include_inner_stops)
         self._include_inner_stops = include_inner_stops
+        if inspect_music is not None:
+            inspect_music = bool(inspect_music)
+        self._inspect_music = inspect_music
         if rotation_indices is not None:
             if not isinstance(rotation_indices, collections.Sequence):
                 rotation_indices = int(rotation_indices)
@@ -172,9 +178,20 @@ class DependentTimespanMaker(TimespanMaker):
                 not timespan.music_specifier or \
                 not timespan.music_specifier.labels:
                 continue
-            elif any(label in timespan.music_specifier.labels
+            elif not any(label in timespan.music_specifier.labels
                 for label in self.labels):
-                preexisting_timespans.append(timespan)
+                continue
+            preexisting_timespans.append(timespan)
+            if self.inspect_music and timespan.music:
+                outer_start_offset = timespan.start_offset
+                inner_start_offset = \
+                    inspect_(timespan.music).get_timespan().start_offset
+                assert inner_start_offset == 0
+                for division in timespan.music:
+                    division_timespan = inspect_(division).get_timespan()
+                    division_timespan = division_timespan.translate(
+                        outer_start_offset)
+                    preexisting_timespans.append(division_timespan)
         preexisting_timespans & target_timespan
         return preexisting_timespans
 
@@ -237,6 +254,10 @@ class DependentTimespanMaker(TimespanMaker):
     @property
     def include_inner_stops(self):
         return self._include_inner_stops
+
+    @property
+    def inspect_music(self):
+        return self._inspect_music
 
     @property
     def is_dependent(self):
