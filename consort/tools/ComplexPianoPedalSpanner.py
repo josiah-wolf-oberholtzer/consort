@@ -46,10 +46,10 @@ class ComplexPianoPedalSpanner(spannertools.Spanner):
             string = r'\sustainOn'
             lilypond_format_bundle.right.spanner_starts.append(string)
         elif self.include_inner_leaves and not self._is_my_last_leaf(leaf):
-            string = 'r\sustainOff \sustainOn'
+            string = r'\sustainOff \sustainOn'
             lilypond_format_bundle.right.spanner_starts.append(string)
         if self._is_my_last_leaf(leaf):
-            string = '<> \sustainOff'
+            string = r'<> \sustainOff'
             lilypond_format_bundle.after.indicators.append(string)
         return lilypond_format_bundle
 
