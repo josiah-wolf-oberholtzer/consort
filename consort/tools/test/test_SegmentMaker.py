@@ -136,9 +136,9 @@ def test_SegmentMaker_02():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'8. [
                                     \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'16 \repeatTie ]
                                 }
                             }
                             {
@@ -153,9 +153,9 @@ def test_SegmentMaker_02():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'8. [
                                     \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'16 \repeatTie ]
                                 }
                             }
                             {
@@ -214,9 +214,9 @@ def test_SegmentMaker_03():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'8. [
                                     \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'16 \repeatTie ]
                                 }
                             }
                             {
@@ -239,9 +239,9 @@ def test_SegmentMaker_03():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'8. [
                                     \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'16 \repeatTie ]
                                 }
                             }
                             {
@@ -305,8 +305,8 @@ def test_SegmentMaker_04():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4. ~
-                                    c'8
+                                    c'4.
+                                    c'8 \repeatTie
                                 }
                             }
                             {
@@ -320,8 +320,8 @@ def test_SegmentMaker_04():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'4. ~
-                                    c'8
+                                    c'4.
+                                    c'8 \repeatTie
                                 }
                             }
                             {
@@ -380,8 +380,8 @@ def test_SegmentMaker_05():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'4. ~
-                                    c'8
+                                    c'4.
+                                    c'8 \repeatTie
                                 }
                             }
                             {
@@ -395,8 +395,8 @@ def test_SegmentMaker_05():
                         \context Voice = "Voice 2" {
                             {
                                 {
-                                    c'4. ~
-                                    c'8
+                                    c'4.
+                                    c'8 \repeatTie
                                 }
                             }
                             {
@@ -466,9 +466,9 @@ def test_SegmentMaker_06():
                         \context Voice = "Voice 1" {
                             {
                                 {
-                                    c'8. ~ [
+                                    c'8. [
                                     \set stemLeftBeamCount = 2
-                                    c'16 ]
+                                    c'16 \repeatTie ]
                                 }
                             }
                             {
