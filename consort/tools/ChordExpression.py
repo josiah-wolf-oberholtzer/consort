@@ -70,6 +70,8 @@ class ChordExpression(LogicalTieExpression):
             prototype = (pitchtools.IntervalSegment, pitchtools.PitchSegment)
             if isinstance(chord_expr, prototype):
                 result = chord_expr
+            elif isinstance(chord_expr, str):
+                result = pitchtools.PitchSegment(chord_expr)
             else:
                 try:
                     result = sorted(chord_expr)
