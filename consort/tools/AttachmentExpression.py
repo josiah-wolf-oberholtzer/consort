@@ -97,6 +97,29 @@ class AttachmentExpression(HashCachingObject):
                 f'4 )
             }
 
+    ..  container:: example
+
+        ::
+
+            >>> staff = Staff("c'4 d'4 e'4 f'4")
+            >>> attachment_expression = consort.AttachmentExpression(
+            ...     attachments=[
+            ...         [
+            ...             indicatortools.Articulation('accent'),
+            ...             indicatortools.Articulation('staccato'),
+            ...             ],
+            ...         ],
+            ...     selector=selectortools.Selector().by_logical_tie()[0]
+            ...     )
+            >>> attachment_expression(staff)
+            >>> print(format(staff))
+            \new Staff {
+                c'4 -\accent -\staccato
+                d'4 -\accent -\staccato
+                e'4 -\accent -\staccato
+                f'4 -\accent -\staccato
+            }
+
     '''
 
     ### CLASS VARIABLES ###
@@ -153,13 +176,13 @@ class AttachmentExpression(HashCachingObject):
         selections = selector(music)
         for i, selection in enumerate(selections, rotation):
             attachments = all_attachments[i]
-            #print(i, selection)
+            # print(i, selection, attachments)
             if attachments is None:
                 continue
-            if not isinstance(attachments, tuple):
+            if not isinstance(attachments, collections.Sequence):
                 attachments = (attachments,)
             for attachment in attachments:
-                #print('\t' + repr(attachment))
+                # print('\t' + repr(attachment))
                 # spanners
                 if isinstance(attachment, spannertools.Spanner):
                     attachment = copy.copy(attachment)
