@@ -471,12 +471,13 @@ class SegmentMaker(makertools.SegmentMaker):
         self.set_bar_number()
         self.postprocess_grace_containers()
         self.postprocess_ties()
-        self.attach_measure_number_comments()
+        self.attach_bar_number_comments()
 
-    def attach_measure_number_comments(self):
+    def attach_bar_number_comments(self):
         first_bar_number = self._segment_metadata.get('first_bar_number', 1)
         measure_offsets = self.measure_offsets
         for voice in iterate(self.score).by_class(scoretools.Voice):
+            voice_name = voice.name
             for phrase in voice:
                 for division in phrase:
                     timespan = inspect_(division).get_timespan()
@@ -489,7 +490,10 @@ class SegmentMaker(makertools.SegmentMaker):
                             break
                     if not matched:
                         continue
-                    string = 'Measure {}'.format(bar_number)
+                    string = '[{}] Measure {}'.format(
+                        voice_name,
+                        bar_number,
+                        )
                     comment = indicatortools.LilyPondComment(string)
                     attach(comment, division)
 

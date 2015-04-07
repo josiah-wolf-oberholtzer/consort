@@ -60,6 +60,7 @@ def test_SegmentMaker_discard_final_silence_01():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'4
                                 }
@@ -68,6 +69,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                 {
                                     r2.
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -76,6 +78,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                     \stopStaff
                                     \startStaff
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -84,6 +87,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                     \stopStaff
                                     \startStaff
                                 }
+                                % [Voice 1] Measure 4
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -139,6 +143,7 @@ def test_SegmentMaker_discard_final_silence_02():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'4
                                 }

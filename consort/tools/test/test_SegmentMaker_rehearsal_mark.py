@@ -54,6 +54,7 @@ def test_SegmentMaker_rehearsal_mark_01():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -121,6 +122,7 @@ def test_SegmentMaker_rehearsal_mark_02():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)

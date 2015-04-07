@@ -46,6 +46,7 @@ def test_SegmentMaker_is_final_segment_01():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)

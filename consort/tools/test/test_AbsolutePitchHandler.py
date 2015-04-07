@@ -57,6 +57,7 @@ def test_AbsolutePitchHandler_01():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -120,6 +121,7 @@ def test_AbsolutePitchHandler_02():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -191,6 +193,7 @@ def test_AbsolutePitchHandler_03():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -202,6 +205,7 @@ def test_AbsolutePitchHandler_03():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     fs'16 [
                                     \set stemLeftBeamCount = 2
@@ -213,6 +217,7 @@ def test_AbsolutePitchHandler_03():
                                     \set stemLeftBeamCount = 2
                                     gs'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     b16 [
                                     \set stemLeftBeamCount = 2
@@ -296,6 +301,7 @@ def test_AbsolutePitchHandler_04():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     df'16 [
                                     \set stemLeftBeamCount = 2
@@ -307,6 +313,7 @@ def test_AbsolutePitchHandler_04():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -318,6 +325,7 @@ def test_AbsolutePitchHandler_04():
                                     \set stemLeftBeamCount = 2
                                     gs'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     fs'16 [
                                     \set stemLeftBeamCount = 2
@@ -390,6 +398,7 @@ def test_AbsolutePitchHandler_05():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -401,6 +410,7 @@ def test_AbsolutePitchHandler_05():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     g'16 [
                                     \set stemLeftBeamCount = 2
@@ -412,6 +422,7 @@ def test_AbsolutePitchHandler_05():
                                     \set stemLeftBeamCount = 2
                                     fs'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     fs'16 [
                                     \set stemLeftBeamCount = 2
@@ -429,6 +440,7 @@ def test_AbsolutePitchHandler_05():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -440,6 +452,7 @@ def test_AbsolutePitchHandler_05():
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -451,6 +464,7 @@ def test_AbsolutePitchHandler_05():
                                     \set stemLeftBeamCount = 2
                                     gs'16 ]
                                 }
+                                % [Voice 2] Measure 3
                                 {
                                     gs'16 [
                                     \set stemLeftBeamCount = 2
@@ -524,6 +538,7 @@ def test_AbsolutePitchHandler_06():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -535,6 +550,7 @@ def test_AbsolutePitchHandler_06():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     g'16 [
                                     \set stemLeftBeamCount = 2
@@ -546,6 +562,7 @@ def test_AbsolutePitchHandler_06():
                                     \set stemLeftBeamCount = 2
                                     gs'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     fs'16 [
                                     \set stemLeftBeamCount = 2
@@ -563,6 +580,7 @@ def test_AbsolutePitchHandler_06():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -574,6 +592,7 @@ def test_AbsolutePitchHandler_06():
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -585,6 +604,7 @@ def test_AbsolutePitchHandler_06():
                                     \set stemLeftBeamCount = 2
                                     fs'16 ]
                                 }
+                                % [Voice 2] Measure 3
                                 {
                                     gs'16 [
                                     \set stemLeftBeamCount = 2
@@ -666,6 +686,7 @@ def test_AbsolutePitchHandler_07():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -677,6 +698,7 @@ def test_AbsolutePitchHandler_07():
                                     \set stemLeftBeamCount = 2
                                     df'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     af'16 [
                                     \set stemLeftBeamCount = 2
@@ -688,6 +710,7 @@ def test_AbsolutePitchHandler_07():
                                     \set stemLeftBeamCount = 2
                                     a'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     g'16 [
                                     \set stemLeftBeamCount = 2
@@ -705,6 +728,7 @@ def test_AbsolutePitchHandler_07():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -716,6 +740,7 @@ def test_AbsolutePitchHandler_07():
                                     \set stemLeftBeamCount = 2
                                     f'16 ]
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     df'16 [
                                     \set stemLeftBeamCount = 2
@@ -727,6 +752,7 @@ def test_AbsolutePitchHandler_07():
                                     \set stemLeftBeamCount = 2
                                     g'16 ]
                                 }
+                                % [Voice 2] Measure 3
                                 {
                                     a'16 [
                                     \set stemLeftBeamCount = 2
@@ -796,6 +822,7 @@ def test_AbsolutePitchHandler_08():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -807,6 +834,7 @@ def test_AbsolutePitchHandler_08():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     g'16 [
                                     \set stemLeftBeamCount = 2
@@ -818,6 +846,7 @@ def test_AbsolutePitchHandler_08():
                                     \set stemLeftBeamCount = 2
                                     g'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -835,6 +864,7 @@ def test_AbsolutePitchHandler_08():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -846,6 +876,7 @@ def test_AbsolutePitchHandler_08():
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -857,6 +888,7 @@ def test_AbsolutePitchHandler_08():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 2] Measure 3
                                 {
                                     g'16 [
                                     \set stemLeftBeamCount = 2
@@ -926,6 +958,7 @@ def test_AbsolutePitchHandler_09():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -937,6 +970,7 @@ def test_AbsolutePitchHandler_09():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -948,6 +982,7 @@ def test_AbsolutePitchHandler_09():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -965,6 +1000,7 @@ def test_AbsolutePitchHandler_09():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -976,6 +1012,7 @@ def test_AbsolutePitchHandler_09():
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -987,6 +1024,7 @@ def test_AbsolutePitchHandler_09():
                                     \set stemLeftBeamCount = 2
                                     e'16 ]
                                 }
+                                % [Voice 2] Measure 3
                                 {
                                     e'16 [
                                     \set stemLeftBeamCount = 2
@@ -1057,6 +1095,7 @@ def test_AbsolutePitchHandler_10():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -1068,6 +1107,7 @@ def test_AbsolutePitchHandler_10():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     gqf'16 [
                                     \set stemLeftBeamCount = 2
@@ -1079,6 +1119,7 @@ def test_AbsolutePitchHandler_10():
                                     \set stemLeftBeamCount = 2
                                     gqf'16 ]
                                 }
+                                % [Voice 1] Measure 3
                                 {
                                     eqs'16 [
                                     \set stemLeftBeamCount = 2
@@ -1096,6 +1137,7 @@ def test_AbsolutePitchHandler_10():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     eqs'16 [
                                     \set stemLeftBeamCount = 2
@@ -1107,6 +1149,7 @@ def test_AbsolutePitchHandler_10():
                                     \set stemLeftBeamCount = 2
                                     eqs'16 ]
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 2
@@ -1118,6 +1161,7 @@ def test_AbsolutePitchHandler_10():
                                     \set stemLeftBeamCount = 2
                                     c'16 ]
                                 }
+                                % [Voice 2] Measure 3
                                 {
                                     gqf'16 [
                                     \set stemLeftBeamCount = 2

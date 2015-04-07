@@ -50,6 +50,7 @@ def test_SegmentMaker_01():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -58,6 +59,7 @@ def test_SegmentMaker_01():
                                     \stopStaff
                                     \startStaff
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -72,6 +74,7 @@ def test_SegmentMaker_01():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -80,6 +83,7 @@ def test_SegmentMaker_01():
                                     \stopStaff
                                     \startStaff
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -135,6 +139,7 @@ def test_SegmentMaker_02():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'8. [
                                     \set stemLeftBeamCount = 2
@@ -152,6 +157,7 @@ def test_SegmentMaker_02():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     c'8. [
                                     \set stemLeftBeamCount = 2
@@ -213,6 +219,7 @@ def test_SegmentMaker_03():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'8. [
                                     \set stemLeftBeamCount = 2
@@ -224,6 +231,7 @@ def test_SegmentMaker_03():
                                     r16
                                     r8
                                 }
+                                % [Voice 1] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -238,6 +246,7 @@ def test_SegmentMaker_03():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     c'8. [
                                     \set stemLeftBeamCount = 2
@@ -249,6 +258,7 @@ def test_SegmentMaker_03():
                                     r16
                                     r8
                                 }
+                                % [Voice 2] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -304,6 +314,7 @@ def test_SegmentMaker_04():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'4.
                                     c'8 \repeatTie
@@ -319,6 +330,7 @@ def test_SegmentMaker_04():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     c'4.
                                     c'8 \repeatTie
@@ -379,6 +391,7 @@ def test_SegmentMaker_05():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'4.
                                     c'8 \repeatTie
@@ -394,6 +407,7 @@ def test_SegmentMaker_05():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     c'4.
                                     c'8 \repeatTie
@@ -465,6 +479,7 @@ def test_SegmentMaker_06():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'8. [
                                     \set stemLeftBeamCount = 2
@@ -478,6 +493,7 @@ def test_SegmentMaker_06():
                                 }
                             }
                             {
+                                % [Voice 1] Measure 2
                                 {
                                     c'8.
                                 }
@@ -492,6 +508,7 @@ def test_SegmentMaker_06():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     r8.
                                 }
@@ -502,6 +519,7 @@ def test_SegmentMaker_06():
                                 }
                             }
                             {
+                                % [Voice 2] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -586,6 +604,7 @@ def test_SegmentMaker_07():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     c'16 [
                                     \set stemLeftBeamCount = 1
@@ -602,6 +621,7 @@ def test_SegmentMaker_07():
                                 }
                             }
                             {
+                                % [Voice 1] Measure 2
                                 {
                                     c'8 [
                                     \set stemLeftBeamCount = 2
@@ -618,6 +638,7 @@ def test_SegmentMaker_07():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     r8.
                                 }
@@ -633,6 +654,7 @@ def test_SegmentMaker_07():
                                 }
                             }
                             {
+                                % [Voice 2] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -647,6 +669,7 @@ def test_SegmentMaker_07():
                     \context RhythmicStaff = "Staff 3" {
                         \context Voice = "Voice 3" {
                             {
+                                % [Voice 3] Measure 1
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
@@ -655,6 +678,7 @@ def test_SegmentMaker_07():
                                     \stopStaff
                                     \startStaff
                                 }
+                                % [Voice 3] Measure 2
                                 {
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)

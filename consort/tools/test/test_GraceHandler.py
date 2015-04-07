@@ -67,6 +67,7 @@ def test_GraceHandler_01():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \afterGrace
                                     c'4
@@ -105,6 +106,7 @@ def test_GraceHandler_01():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     \afterGrace
                                     r4
@@ -200,6 +202,7 @@ def test_GraceHandler_02():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \afterGrace
                                     r4
@@ -247,6 +250,7 @@ def test_GraceHandler_02():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     \afterGrace
                                     r4
@@ -351,6 +355,7 @@ def test_GraceHandler_03():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     r4
                                 }
@@ -391,6 +396,7 @@ def test_GraceHandler_03():
                     \context RhythmicStaff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
+                                % [Voice 2] Measure 1
                                 {
                                     \afterGrace
                                     r4
@@ -486,6 +492,7 @@ def test_GraceHandler_04():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     \afterGrace
                                     r4
@@ -572,6 +579,7 @@ def test_GraceHandler_05():
                     \context RhythmicStaff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
+                                % [Voice 1] Measure 1
                                 {
                                     r4
                                 }
