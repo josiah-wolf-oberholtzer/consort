@@ -145,6 +145,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
     __slots__ = (
         '_dynamic_tokens',
+        '_only_first',
         '_transitions',
         '_start_dynamic_tokens',
         '_stop_dynamic_tokens',
@@ -162,6 +163,7 @@ class DynamicExpression(abctools.AbjadValueObject):
     def __init__(
         self,
         dynamic_tokens=('ppp',),
+        only_first=None,
         start_dynamic_tokens=None,
         stop_dynamic_tokens=None,
         transitions=None,
@@ -178,6 +180,9 @@ class DynamicExpression(abctools.AbjadValueObject):
         assert all(_ in self._transition_types for _ in transitions)
         transitions = datastructuretools.CyclicTuple(transitions)
         self._transitions = transitions
+        if only_first is not None:
+            only_first = bool(only_first)
+        self._only_first = only_first
 
     ### SPECIAL METHODS ###
 
@@ -187,6 +192,9 @@ class DynamicExpression(abctools.AbjadValueObject):
         current_hairpin = None
         selections, components = self._get_selections(music)
         length = len(components)
+        if self.only_first:
+            length = 1
+            components = components[:1]
         for index, component in enumerate(components[:-1]):
             selection = selections[index]
             dynamic, hairpin, hairpin_override = self._get_attachments(
@@ -211,13 +219,13 @@ class DynamicExpression(abctools.AbjadValueObject):
     def _tokens_to_cyclic_tuple(self, tokens):
         if tokens is None:
             return tokens
-        Dynamic = indicatortools.Dynamic
         if isinstance(tokens, str):
             tokens = tokens.split()
         for token in tokens:
             if token == 'o':
                 continue
-            assert token in Dynamic._dynamic_name_to_dynamic_ordinal
+            assert token in \
+                indicatortools.Dynamic._dynamic_name_to_dynamic_ordinal
         assert len(tokens)
         tokens = datastructuretools.CyclicTuple(tokens)
         return tokens
@@ -438,6 +446,10 @@ class DynamicExpression(abctools.AbjadValueObject):
     @property
     def dynamic_tokens(self):
         return self._dynamic_tokens
+
+    @property
+    def only_first(self):
+        return self._only_first
 
     @property
     def start_dynamic_tokens(self):
