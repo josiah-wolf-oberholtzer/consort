@@ -14,7 +14,7 @@ before_install:
     - pip install coverage
 
 install:
-    - pip install --allow-external abjad --allow-unverified abjad -e git://github.com/Abjad/abjad.git#egg=abjad
+    - pip install -r requirements.txt
     - pip install -e . 
 
 script:
