@@ -9,7 +9,7 @@ from abjad.tools import scoretools
 from abjad.tools import schemetools
 
 
-def make_annotated_phrase(phrase):
+def make_annotated_phrase(phrase, color=None):
     duration = inspect_(phrase).get_duration()
     if duration != 1:
         note = scoretools.Note("c'''1")
@@ -17,10 +17,12 @@ def make_annotated_phrase(phrase):
     else:
         note = scoretools.Note("c'''2")
         annotated_phrase = scoretools.Tuplet(2, (note,))
+    if color:
+        override(annotated_phrase).tuplet_bracket.color = color
     return annotated_phrase
 
 
-def make_annotated_division(division):
+def make_annotated_division(division, color=None):
     duration = inspect_(division).get_duration()
     if duration != 1:
         note = scoretools.Note("c'''1")
@@ -36,16 +38,24 @@ def make_annotated_division(division):
         manager.tuplet_bracket.dash_period = 1.5
         manager.tuplet_bracket.style = \
             schemetools.SchemeSymbol('dashed-line')
+    if color:
+        override(annotated_division).tuplet_bracket.color = color
     return annotated_division
 
 
-def make_empty_phrase(phrase):
-    skip = scoretools.Skip(1)
-    duration = inspect_(phrase).get_duration()
-    multiplier = durationtools.Multiplier(duration)
-    attach(multiplier, skip)
-    container = scoretools.Container([skip])
-    return container
+def make_empty_phrase_divisions(phrase):
+    inner_container = scoretools.Container()
+    outer_container = scoretools.Container()
+    for division in phrase:
+        duration = inspect_(division).get_duration()
+        multiplier = durationtools.Multiplier(duration)
+        inner_skip = scoretools.Skip(1)
+        outer_skip = scoretools.Skip(1)
+        attach(multiplier, inner_skip)
+        attach(multiplier, outer_skip)
+        inner_container.append(inner_skip)
+        outer_container.append(outer_skip)
+    return inner_container, outer_container
 
 
 def annotate(context, nonsilence=None):
@@ -63,18 +73,21 @@ def annotate(context, nonsilence=None):
             context_name='AnnotatedPhrasesVoice',
             )
         for phrase in voice:
+            color = None
+            music_specifier = inspect_(phrase).get_indicator(prototype)
             if nonsilence:
-                music_specifier = inspect_(phrase).get_indicator(prototype)
                 if music_specifier == silence_specifier:
-                    annotated_divisions = make_empty_phrase(phrase)
-                    division_voice.append(annotated_divisions)
-                    annotated_phrase = make_empty_phrase(phrase)
-                    phrase_voice.append(annotated_phrase)
+                    inner_container, outer_container = \
+                        make_empty_phrase_divisions(phrase)
+                    division_voice.append(inner_container)
+                    phrase_voice.append(outer_container)
                     continue
+            if music_specifier:
+                color = music_specifier.color
             for division in phrase:
-                annotation_division = make_annotated_division(division)
+                annotation_division = make_annotated_division(division, color)
                 division_voice.append(annotation_division)
-            annotation_phrase = make_annotated_phrase(phrase)
+            annotation_phrase = make_annotated_phrase(phrase, color)
             phrase_voice.append(annotation_phrase)
         parent = inspect_(voice).get_parentage().parent
         if parent not in context_mapping:
