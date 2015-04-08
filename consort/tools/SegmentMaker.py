@@ -995,14 +995,19 @@ class SegmentMaker(makertools.SegmentMaker):
             for voice_name in timespans:
                 consort.debug('\t' + voice_name)
                 for timespan in timespans[voice_name]:
-                    consort.debug('\t\t{}: {} to {}'.format(
+                    divisions = timespan.divisions or []
+                    divisions = ' '.join(str(_) for _ in divisions)
+                    consort.debug('\t\t{}: [{!s} ... {!s}] [{!s}] [{}] {}'.format(
                         type(timespan).__name__,
                         timespan.start_offset,
                         timespan.stop_offset,
+                        timespan.duration,
+                        divisions,
+                        timespan.music,
                         ))
         else:
             for timespan in timespans:
-                consort.debug('\t({}) {}: {} to {}'.format(
+                consort.debug('\t({}) {}: [{!s} to {!s}]'.format(
                     timespan.voice_name,
                     type(timespan).__name__,
                     timespan.start_offset,
@@ -1705,7 +1710,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '        populated timespans:',
             verbose=verbose,
             ):
-            self.populate_multiplexed_maquette(
+            populated = self.populate_multiplexed_maquette(
                 dependent=True,
                 score=score,
                 score_template=score_template,
@@ -1719,6 +1724,7 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             demultiplexed_maquette = self.resolve_maquette(
                 multiplexed_timespans)
+        self.debug_timespans(demultiplexed_maquette)
         with systemtools.Timer(
             '        split timespans:',
             verbose=verbose,
@@ -1878,6 +1884,8 @@ class SegmentMaker(makertools.SegmentMaker):
         else:
             settings = independent_settings
             start_index = 0
+        if not settings:
+            return False
         for layer, music_setting in enumerate(settings, start_index):
             music_setting(
                 layer=layer,
@@ -1887,6 +1895,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 timespan_inventory=timespan_inventory,
                 timespan_quantization=timespan_quantization,
                 )
+        SegmentMaker.debug_timespans(timespan_inventory)
+        return True
 
     @staticmethod
     def populate_score(
