@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
+import os
 from abjad import new
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
@@ -93,12 +94,52 @@ class MusicSpecifier(HashCachingObject):
 
     ### SPECIAL METHODS ###
 
-    def __illustrate__(self, **kwargs):
+    def __illustrate__(self, annotate=False, verbose=True, **kwargs):
+        r"""Illustrates music specifier.
+
+        ::
+
+            >>> piano_glissando_music_specifier = consort.MusicSpecifier(
+            ...     attachment_handler=consort.AttachmentHandler(
+            ...         glissando=spannertools.Glissando(),
+            ...         ),
+            ...     color=None,
+            ...     labels=[],
+            ...     pitch_handler=consort.AbsolutePitchHandler(
+            ...         pitch_specifier="c' f' c'' f'' c''' c'' c' c'''",
+            ...         ),
+            ...     rhythm_maker=consort.CompositeRhythmMaker(
+            ...         last=rhythmmakertools.IncisedRhythmMaker(
+            ...             incise_specifier=rhythmmakertools.InciseSpecifier(
+            ...                 prefix_counts=[0],
+            ...                 suffix_talea=[1],
+            ...                 suffix_counts=[1],
+            ...                 talea_denominator=16,
+            ...                 ),
+            ...             ),
+            ...         default=rhythmmakertools.EvenDivisionRhythmMaker(
+            ...             denominators=(4,),
+            ...             duration_spelling_specifier=rhythmmakertools.DurationSpellingSpecifier(
+            ...                 decrease_durations_monotonically=True,
+            ...                 forbidden_written_duration=(1, 4),
+            ...                 forbid_meter_rewriting=True,
+            ...                 ),
+            ...             ),
+            ...         ),
+            ...     )
+            >>> illustration = piano_glissando_music_specifier.__illustrate__(
+            ...     annotate=True,
+            ...     verbose=False,
+            ...     )
+
+        Returns LilyPond file.
+        """
         import consort
-        score_template = consort.StringQuartetScoreTemplate()
+        score_template = consort.StringQuartetScoreTemplate(split=False)
         segment_maker = consort.SegmentMaker(
             desired_duration_in_seconds=10,
-            is_annotated=True,
+            discard_final_silence=True,
+            is_annotated=annotate,
             permitted_time_signatures=[
                 (3, 8),
                 (4, 8),
@@ -145,7 +186,16 @@ class MusicSpecifier(HashCachingObject):
             )
         lilypond_file, segment_metadata = segment_maker(
             segment_metadata=segment_metadata,
+            verbose=verbose,
             )
+        consort_stylesheet_path = os.path.join(
+            consort.__path__[0],
+            'stylesheets',
+            'stylesheet.ily',
+            )
+        consort_stylesheet_path = os.path.abspath(consort_stylesheet_path)
+        lilypond_file.file_initial_user_includes[:] = [consort_stylesheet_path]
+        lilypond_file.use_relative_includes = False
         # TODO: fix stylesheet path
         return lilypond_file
 
