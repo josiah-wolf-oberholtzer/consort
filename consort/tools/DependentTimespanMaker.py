@@ -2,6 +2,7 @@
 import collections
 from abjad import inspect_
 from abjad.tools import datastructuretools
+from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import sequencetools
 from abjad.tools import timespantools
@@ -106,6 +107,7 @@ class DependentTimespanMaker(TimespanMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_hysteresis',
         '_include_inner_starts',
         '_include_inner_stops',
         '_inspect_music',
@@ -118,6 +120,7 @@ class DependentTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
+        hysteresis=None,
         include_inner_starts=None,
         include_inner_stops=None,
         inspect_music=None,
@@ -134,6 +137,10 @@ class DependentTimespanMaker(TimespanMaker):
             padding=padding,
             timespan_specifier=timespan_specifier,
             )
+        if hysteresis is not None:
+            hysteresis = durationtools.Duration(hysteresis)
+            assert 0 < hysteresis
+        self._hysteresis = hysteresis
         if include_inner_starts is not None:
             include_inner_starts = bool(include_inner_starts)
         self._include_inner_starts = include_inner_starts
@@ -195,6 +202,22 @@ class DependentTimespanMaker(TimespanMaker):
         preexisting_timespans & target_timespan
         return preexisting_timespans
 
+    def _partition_preexisting_timespans(self, timespans):
+        shards = timespans.partition(include_tangent_timespans=True)
+        if not self.hysteresis:
+            return shards
+        coalesced_shards = [shards[0]]
+        for shard in shards[1:]:
+            last_stop = coalesced_shards[-1].stop_offset
+            this_start = shard.start_offset
+            gap = this_start - last_stop
+            if self.hysteresis < gap:
+                coalesced_shards.append(shard)
+            else:
+                coalesced_shards[-1].extend(shard)
+                coalesced_shards[-1].sort()
+        return coalesced_shards
+
     def _make_timespans(
         self,
         layer=None,
@@ -212,9 +235,9 @@ class DependentTimespanMaker(TimespanMaker):
             target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
             )
-        for group_index, group in enumerate(
-            preexisting_timespans.partition(True)
-            ):
+        partitioned_timespans = self._partition_preexisting_timespans(
+            preexisting_timespans)
+        for group_index, group in enumerate(partitioned_timespans):
             rotation_index = rotation_indices[group_index]
             offsets = set()
             offsets.add(group.start_offset)
@@ -246,6 +269,10 @@ class DependentTimespanMaker(TimespanMaker):
         return new_timespans
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def hysteresis(self):
+        return self._hysteresis
 
     @property
     def include_inner_starts(self):

@@ -1398,3 +1398,79 @@ def test_DependentTimespanMaker_16():
                 ]
             )
         ''')
+
+
+def test_DependentTimespanMaker_17():
+    music_specifiers = collections.OrderedDict([
+        ('C', None),
+        ])
+    target_timespan = timespantools.Timespan(0, 100)
+    timespan_maker = consort.DependentTimespanMaker(
+        hysteresis=10,
+        voice_names=['A'],
+        )
+    timespan_inventory = timespantools.TimespanInventory([
+        consort.PerformedTimespan(0, 10, voice_name='A'),
+        consort.PerformedTimespan(5, 15, voice_name='A'),
+        consort.PerformedTimespan(20, 30, voice_name='A'),
+        consort.PerformedTimespan(40, 50, voice_name='A'),
+        consort.PerformedTimespan(65, 75, voice_name='A'),
+        consort.PerformedTimespan(95, 100, voice_name='A'),
+        ])
+    timespan_inventory = timespan_maker(
+        target_timespan=target_timespan,
+        music_specifiers=music_specifiers,
+        timespan_inventory=timespan_inventory,
+        )
+    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+        r'''
+        timespantools.TimespanInventory(
+            [
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(10, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(50, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(5, 1),
+                    stop_offset=durationtools.Offset(15, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(20, 1),
+                    stop_offset=durationtools.Offset(30, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(40, 1),
+                    stop_offset=durationtools.Offset(50, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(65, 1),
+                    stop_offset=durationtools.Offset(75, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(65, 1),
+                    stop_offset=durationtools.Offset(75, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(95, 1),
+                    stop_offset=durationtools.Offset(100, 1),
+                    voice_name='A',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(95, 1),
+                    stop_offset=durationtools.Offset(100, 1),
+                    voice_name='C',
+                    ),
+                ]
+            )
+        ''')
