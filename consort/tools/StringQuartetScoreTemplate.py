@@ -149,7 +149,17 @@ class StringQuartetScoreTemplate(ScoreTemplate):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ()
+    __slots__ = (
+        '_split',
+        )
+
+    ### INITIALIZER ###
+
+    def __init__(self, split=True):
+        if split is not None:
+            split = bool(split)
+        self._split = split
+        ScoreTemplate.__init__(self)
 
     ### SPECIAL METHODS ###
 
@@ -170,7 +180,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                 short_instrument_name_markup=markuptools.Markup(
                     'Vln. 1').hcenter_in(10)
                 ),
-            split=True,
+            split=self.split,
             score_template=self,
             )
 
@@ -184,7 +194,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                 short_instrument_name_markup=markuptools.Markup(
                     'Vln. 2').hcenter_in(10)
                 ),
-            split=True,
+            split=self.split,
             score_template=self,
             )
 
@@ -198,7 +208,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                 short_instrument_name_markup=markuptools.Markup(
                     'Va.').hcenter_in(10)
                 ),
-            split=True,
+            split=self.split,
             score_template=self,
             )
 
@@ -212,7 +222,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                 short_instrument_name_markup=markuptools.Markup(
                     'Vc.').hcenter_in(10)
                 ),
-            split=True,
+            split=self.split,
             score_template=self,
             )
 
@@ -228,3 +238,9 @@ class StringQuartetScoreTemplate(ScoreTemplate):
             )
 
         return score
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def split(self):
+        return self._split
