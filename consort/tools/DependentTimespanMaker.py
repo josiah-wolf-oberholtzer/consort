@@ -204,7 +204,7 @@ class DependentTimespanMaker(TimespanMaker):
 
     def _partition_preexisting_timespans(self, timespans):
         shards = timespans.partition(include_tangent_timespans=True)
-        if not self.hysteresis:
+        if not self.hysteresis or not shards:
             return shards
         coalesced_shards = [shards[0]]
         for shard in shards[1:]:
