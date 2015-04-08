@@ -1415,7 +1415,7 @@ def test_DependentTimespanMaker_17():
         consort.PerformedTimespan(20, 30, voice_name='A'),
         consort.PerformedTimespan(40, 50, voice_name='A'),
         consort.PerformedTimespan(65, 75, voice_name='A'),
-        consort.PerformedTimespan(95, 100, voice_name='A'),
+        consort.PerformedTimespan(80, 100, voice_name='A'),
         ])
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
@@ -1433,7 +1433,7 @@ def test_DependentTimespanMaker_17():
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(50, 1),
+                    stop_offset=durationtools.Offset(30, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
@@ -1452,24 +1452,24 @@ def test_DependentTimespanMaker_17():
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(40, 1),
+                    stop_offset=durationtools.Offset(50, 1),
+                    voice_name='C',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(65, 1),
                     stop_offset=durationtools.Offset(75, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(75, 1),
+                    stop_offset=durationtools.Offset(100, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(95, 1),
+                    start_offset=durationtools.Offset(80, 1),
                     stop_offset=durationtools.Offset(100, 1),
                     voice_name='A',
-                    ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(95, 1),
-                    stop_offset=durationtools.Offset(100, 1),
-                    voice_name='C',
                     ),
                 ]
             )

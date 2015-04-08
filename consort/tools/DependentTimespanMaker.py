@@ -211,7 +211,7 @@ class DependentTimespanMaker(TimespanMaker):
             last_stop = coalesced_shards[-1].stop_offset
             this_start = shard.start_offset
             gap = this_start - last_stop
-            if self.hysteresis < gap:
+            if self.hysteresis <= gap:
                 coalesced_shards.append(shard)
             else:
                 coalesced_shards[-1].extend(shard)
