@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad import new
 from abjad.tools import durationtools
+from abjad.tools import indicatortools
 from abjad.tools import rhythmmakertools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -88,6 +90,64 @@ class MusicSpecifier(HashCachingObject):
         if seed is not None:
             seed = int(seed)
         self._seed = seed
+
+    ### SPECIAL METHODS ###
+
+    def __illustrate__(self, **kwargs):
+        import consort
+        score_template = consort.StringQuartetScoreTemplate()
+        segment_maker = consort.SegmentMaker(
+            desired_duration_in_seconds=10,
+            is_annotated=True,
+            permitted_time_signatures=[
+                (3, 8),
+                (4, 8),
+                (5, 8),
+                (6, 8),
+                (7, 8),
+                ],
+            score_template=score_template,
+            tempo=indicatortools.Tempo((1, 4), 72),
+            timespan_quantization=(1, 8),
+            )
+        timespan_maker = consort.TaleaTimespanMaker(
+            initial_silence_talea=rhythmmakertools.Talea(
+                counts=(0, 3, 4, 2, 5),
+                denominator=16,
+                ),
+            playing_talea=rhythmmakertools.Talea(
+                counts=(6, 8, 4, 5, 6, 6, 4),
+                denominator=16,
+                ),
+            playing_groupings=(2, 1, 2, 3, 1, 1, 2, 2),
+            repeat=True,
+            silence_talea=rhythmmakertools.Talea(
+                counts=(2, 4, 6, 3, 4, 10),
+                denominator=16,
+                ),
+            step_anchor=Right,
+            synchronize_groupings=False,
+            synchronize_step=False,
+            timespan_specifier=consort.TimespanSpecifier(
+                minimum_duration=durationtools.Duration(1, 8),
+                ),
+            )
+        segment_maker.add_setting(
+            timespan_maker=timespan_maker,
+            violin_1=self,
+            violin_2=self,
+            viola=self,
+            cello=self,
+            )
+        segment_metadata = collections.OrderedDict(
+            segment_count=1,
+            segment_number=1,
+            )
+        lilypond_file, segment_metadata = segment_maker(
+            segment_metadata=segment_metadata,
+            )
+        # TODO: fix stylesheet path
+        return lilypond_file
 
     ### PUBLIC METHODS ###
 

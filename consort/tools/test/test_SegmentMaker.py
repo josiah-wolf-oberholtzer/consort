@@ -8,7 +8,6 @@ from abjad.tools import templatetools
 import consort
 
 
-
 segment_metadata = collections.OrderedDict(
     segment_count=2,
     segment_number=1,
