@@ -1207,10 +1207,17 @@ class SegmentMaker(makertools.SegmentMaker):
         elif isinstance(music_specifier.rhythm_maker,
             consort.CompositeRhythmMaker):
             rhythm_maker = music_specifier.rhythm_maker.new(
-                beam_specifier=beam_specifier,
+                beam_specifier__beam_each_division=False,
+                beam_specifier__beam_divisions_together=False,
                 )
         else:
             rhythm_maker = music_specifier.rhythm_maker
+            beam_specifier = rhythm_maker.beam_specifier or beam_specifier
+            beam_specifier = new(
+                beam_specifier,
+                beam_each_division=False,
+                beam_divisions_together=False,
+                )
             rhythm_maker = new(
                 rhythm_maker,
                 beam_specifier=beam_specifier,
@@ -1506,12 +1513,14 @@ class SegmentMaker(makertools.SegmentMaker):
             else:
                 music[i] = scoretools.Container(division)
         music = scoretools.Container(music)
-        for division in music[:]:
-            if (
-                isinstance(division, scoretools.Tuplet) and
-                division.multiplier == 1
-                ):
-                mutate(division).swap(scoretools.Container())
+        prototype = rhythmmakertools.AccelerandoRhythmMaker
+        if not isinstance(rhythm_maker, prototype):
+            for division in music[:]:
+                if (
+                    isinstance(division, scoretools.Tuplet) and
+                    division.multiplier == 1
+                    ):
+                    mutate(division).swap(scoretools.Container())
         return music
 
     @staticmethod
