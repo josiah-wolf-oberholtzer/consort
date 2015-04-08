@@ -6,7 +6,10 @@ from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import lilypondnametools
+from abjad.tools import mathtools
 from abjad.tools import schemetools
+from abjad.tools import scoretools
+from abjad.tools import sequencetools
 from abjad.tools import spannertools
 
 
@@ -139,11 +142,38 @@ class DynamicExpression(abctools.AbjadValueObject):
                 }
             }
 
+    ..  container:: example
+
+        ::
+
+            >>> music = Staff("{ r4 c'4 r4 } { r4 d'4 r4 } { r4 e' r4 } ")
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    r4
+                    \once \override Hairpin.stencil = #flared-hairpin
+                    c'4 \f \>
+                    r4
+                }
+                {
+                    r4
+                    d'4 \p \>
+                    r4
+                }
+                {
+                    r4
+                    e'4 \pp
+                    r4
+                }
+            }
+
     """
 
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_division_period',
         '_dynamic_tokens',
         '_only_first',
         '_transitions',
@@ -163,6 +193,7 @@ class DynamicExpression(abctools.AbjadValueObject):
     def __init__(
         self,
         dynamic_tokens=('ppp',),
+        division_period=None,
         only_first=None,
         start_dynamic_tokens=None,
         stop_dynamic_tokens=None,
@@ -171,6 +202,10 @@ class DynamicExpression(abctools.AbjadValueObject):
         dynamic_tokens = self._tokens_to_cyclic_tuple(dynamic_tokens)
         assert dynamic_tokens
         self._dynamic_tokens = dynamic_tokens
+        if division_period is not None:
+            division_period = int(division_period)
+            assert 0 < division_period
+        self._division_period = division_period
         self._start_dynamic_tokens = self._tokens_to_cyclic_tuple(
             start_dynamic_tokens)
         self._stop_dynamic_tokens = self._tokens_to_cyclic_tuple(
@@ -215,19 +250,6 @@ class DynamicExpression(abctools.AbjadValueObject):
             attach(dynamic, components[-1], name=name)
 
     ### PRIVATE METHODS ###
-
-    def _tokens_to_cyclic_tuple(self, tokens):
-        if tokens is None:
-            return tokens
-        if isinstance(tokens, str):
-            tokens = tokens.split()
-        for token in tokens:
-            if token == 'o':
-                continue
-            assert token in indicatortools.Dynamic._dynamic_names
-        assert len(tokens)
-        tokens = datastructuretools.CyclicTuple(tokens)
-        return tokens
 
     def _get_attachments(self, index, length, seed, original_seed):
         dynamic_seed = seed
@@ -291,12 +313,12 @@ class DynamicExpression(abctools.AbjadValueObject):
                 next_token = self.dynamic_tokens[dynamic_seed + 1]
 
         this_dynamic = indicatortools.Dynamic(this_token)
-        this_dynamic_ordinal = NegativeInfinity
+        this_dynamic_ordinal = mathtools.NegativeInfinity()
         if this_dynamic.name != 'o':
             this_dynamic_ordinal = this_dynamic.ordinal
         if next_token is not None:
             next_dynamic = indicatortools.Dynamic(next_token)
-            next_dynamic_ordinal = NegativeInfinity
+            next_dynamic_ordinal = mathtools.NegativeInfinity()
             if next_dynamic.name != 'o':
                 next_dynamic_ordinal = next_dynamic.ordinal
 
@@ -327,8 +349,52 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         return this_dynamic, hairpin, hairpin_override
 
-    @staticmethod
-    def _get_selections(music):
+    def _partition_selections(self, music):
+        period = self.division_period or 1
+        selections = [_.select_leaves() for _ in music]
+        parts = sequencetools.partition_sequence_by_counts(
+            selections, [period], cyclic=True, overhang=True)
+        if len(parts[-1]) < period:
+            part = parts.pop()
+            parts[-1].extend(part)
+        selections = []
+        for part in parts:
+            selection = part[0]
+            for next_selection in part[1:]:
+                selection = selection + next_selection
+            selections.append(selection)
+        return selections
+
+    def _reorganize_selections(self, selections):
+        prototype = (scoretools.Note, scoretools.Chord)
+        for i, leaf in enumerate(selections[0]):
+            if isinstance(leaf, prototype):
+                break
+        selections[0] = selections[0][i:]
+        for i, leaf in enumerate(reversed(selections[-1])):
+            if isinstance(leaf, prototype):
+                break
+        if i == 0:
+            i = None
+        else:
+            i = -i
+        selections[-1] = selections[-1][:i]
+        if len(selections) == 1:
+            return selections
+        for i in range(len(selections) - 1):
+            selection_one, selection_two = selections[i], selections[i + 1]
+            for j, leaf in enumerate(selection_two):
+                if isinstance(leaf, prototype):
+                    break
+            if 0 < j:
+                left, right = selection_two[:j], selection_two[j:]
+                selection_one = selection_one + left
+                selection_two = right
+                selections[i] = selection_one
+                selections[i + 1] = selection_two
+        return selections
+
+    def _get_selections(self, music):
         r"""Gets selections and attach components from `music`.
 
         ..  container:: example
@@ -340,7 +406,8 @@ class DynamicExpression(abctools.AbjadValueObject):
                 ...     { g'4 a'4 b'4 }
                 ...     { c''4 }
                 ... ''')
-                >>> result = consort.DynamicExpression._get_selections(music)
+                >>> dynamic_expression = consort.DynamicExpression("f")
+                >>> result = dynamic_expression._get_selections(music)
                 >>> selections, attach_components = result
                 >>> for _ in selections:
                 ...     _
@@ -366,7 +433,8 @@ class DynamicExpression(abctools.AbjadValueObject):
                 ...     { f'4 g'4 a'4 }
                 ...     { b'4 c''4 }
                 ... ''')
-                >>> result = consort.DynamicExpression._get_selections(music)
+                >>> dynamic_expression = consort.DynamicExpression("f")
+                >>> result = dynamic_expression._get_selections(music)
                 >>> selections, attach_components = result
                 >>> for _ in selections:
                 ...     _
@@ -394,7 +462,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                 ...     { f'8 g'8 a'8 }
                 ...     { b'32 c''16. }
                 ... ''')
-                >>> result = consort.DynamicExpression._get_selections(music)
+                >>> result = dynamic_expression._get_selections(music)
                 >>> selections, attach_components = result
                 >>> for _ in selections:
                 ...     _
@@ -411,13 +479,36 @@ class DynamicExpression(abctools.AbjadValueObject):
                 Note("f'8")
                 Note("c''16.")
 
+        ..  container:: example
+
+            ::
+
+                >>> music = Staff("{ r4 c'4 r4 } { r4 d'4 r4 } { r4 e' r4 } ")
+                >>> result = dynamic_expression._get_selections(music)
+                >>> selections, attach_components = result
+                >>> for _ in selections:
+                ...     _
+                ...
+                ContiguousSelection(Note("c'4"), Rest('r4'), Rest('r4'), Note("d'4"))
+                ContiguousSelection(Note("d'4"), Rest('r4'), Rest('r4'), Note("e'4"))
+
+            ::
+
+                >>> for _ in attach_components:
+                ...     _
+                ...
+                Note("c'4")
+                Note("d'4")
+                Note("e'4")
+
         """
+        initial_selections = self._partition_selections(music)
+        initial_selections = self._reorganize_selections(initial_selections)
         attach_components = []
         selections = []
-        for i, division in enumerate(music):
-            selection = division.select_leaves()
+        for i, selection in enumerate(initial_selections):
             if i < len(music) - 1:
-                selection = selection + music[i + 1].select_leaves()[:1]
+                selection = selection + (initial_selections[i + 1][0],)
                 selections.append(selection)
                 attach_components.append(selection[0])
             elif (
@@ -440,7 +531,24 @@ class DynamicExpression(abctools.AbjadValueObject):
                 attach_components.append(selection[0])
         return selections, attach_components
 
+    def _tokens_to_cyclic_tuple(self, tokens):
+        if tokens is None:
+            return tokens
+        if isinstance(tokens, str):
+            tokens = tokens.split()
+        for token in tokens:
+            if token == 'o':
+                continue
+            assert token in indicatortools.Dynamic._dynamic_names
+        assert len(tokens)
+        tokens = datastructuretools.CyclicTuple(tokens)
+        return tokens
+
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def division_period(self):
+        return self._division_period
 
     @property
     def dynamic_tokens(self):
@@ -449,6 +557,10 @@ class DynamicExpression(abctools.AbjadValueObject):
     @property
     def only_first(self):
         return self._only_first
+
+    @property
+    def period(self):
+        return self._period
 
     @property
     def start_dynamic_tokens(self):
