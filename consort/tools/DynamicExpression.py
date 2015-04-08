@@ -224,8 +224,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         for token in tokens:
             if token == 'o':
                 continue
-            assert token in \
-                indicatortools.Dynamic._dynamic_name_to_dynamic_ordinal
+            assert token in indicatortools.Dynamic._dynamic_names
         assert len(tokens)
         tokens = datastructuretools.CyclicTuple(tokens)
         return tokens
