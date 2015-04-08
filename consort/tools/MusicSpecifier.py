@@ -32,6 +32,7 @@ class MusicSpecifier(HashCachingObject):
 
     __slots__ = (
         '_attachment_handler',
+        '_color',
         '_grace_handler',
         '_labels',
         '_minimum_phrase_duration',
@@ -45,6 +46,7 @@ class MusicSpecifier(HashCachingObject):
     def __init__(
         self,
         attachment_handler=None,
+        color=None,
         grace_handler=None,
         labels=None,
         minimum_phrase_duration=None,
@@ -57,6 +59,9 @@ class MusicSpecifier(HashCachingObject):
         if attachment_handler is not None:
             assert isinstance(attachment_handler, consort.AttachmentHandler)
         self._attachment_handler = attachment_handler
+        if color is not None:
+            color = str(color)
+        self._color = color
         if grace_handler is not None:
             assert isinstance(grace_handler, consort.GraceHandler)
         self._grace_handler = grace_handler
@@ -151,6 +156,10 @@ class MusicSpecifier(HashCachingObject):
     @property
     def attachment_handler(self):
         return self._attachment_handler
+
+    @property
+    def color(self):
+        return self._color
 
     @property
     def grace_handler(self):
