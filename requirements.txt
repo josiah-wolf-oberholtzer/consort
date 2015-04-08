@@ -1,4 +1,2 @@
 -e git://github.com/Abjad/abjad.git#egg=abjad
--e git://github.com/Abjad/ide.git#egg=ide
--e git://github.com/Pulgama/supriya.git#egg=supriya
 -e git://github.com/josiah-wolf-oberholtzer/consort.git#egg=consort
