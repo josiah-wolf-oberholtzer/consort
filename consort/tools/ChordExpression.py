@@ -263,6 +263,10 @@ class ChordExpression(LogicalTieExpression):
         if pitch_range is not None:
             assert all(pitch in pitch_range for pitch in pitches), \
                 (pitch_range, base_pitch, chord_expr, pitches)
+
+        pitch_set = self._respell_pitch_set(pitchtools.PitchSet(pitches))
+        pitches = pitchtools.PitchSegment(sorted(pitch_set))
+
         return pitches
 
     ### PUBLIC PROPERTIES ###
