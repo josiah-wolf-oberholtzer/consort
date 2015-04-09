@@ -92,7 +92,9 @@ class ChordExpression(LogicalTieExpression):
         assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
         if isinstance(self.chord_expr, pitchtools.IntervalSegment):
             pitches = self._get_pitches_from_intervals(
-                logical_tie, pitch_range)
+                logical_tie.head.written_pitch,
+                pitch_range,
+                )
         else:
             pitches = self.chord_expr
         if len(pitches) == 2:
@@ -116,21 +118,22 @@ class ChordExpression(LogicalTieExpression):
 
     ### PRIVATE METHODS ###
 
-    def _get_pitches_from_intervals(self, logical_tie, pitch_range):
+    def _get_pitches_from_intervals(self, base_pitch, pitch_range):
         chord_expr = self.chord_expr or ()
-        head = logical_tie.head
-        base_pitch = head.written_pitch
         new_chord_expr = chord_expr
         if pitch_range is not None:
             assert base_pitch in pitch_range
-            maximum = max([float(_) for _ in chord_expr])
-            minimum = min([float(_) for _ in chord_expr])
+
+            sorted_intervals = sorted(chord_expr, key=lambda x: x.semitones)
+            maximum = sorted_intervals[-1]
             maximum_pitch = base_pitch.transpose(maximum)
+            minimum = sorted_intervals[0]
             minimum_pitch = base_pitch.transpose(minimum)
             if maximum_pitch not in pitch_range:
                 new_chord_expr = [x - maximum for x in chord_expr]
             elif minimum_pitch not in pitch_range:
                 new_chord_expr = [x - minimum for x in chord_expr]
+
         pitches = [base_pitch.transpose(x) for x in new_chord_expr]
         pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]
         if pitch_range is not None:
