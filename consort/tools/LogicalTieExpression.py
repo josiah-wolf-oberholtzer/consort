@@ -35,3 +35,6 @@ class LogicalTieExpression(abctools.AbjadValueObject):
                 kind='after',
                 )
             attach(new_grace_container, new_leaf)
+        indicators = inspect_(old_leaf).get_indicators()
+        for indicator in indicators:
+            attach(indicator, new_leaf)
