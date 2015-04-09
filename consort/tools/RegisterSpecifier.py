@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import collections
 from abjad.tools import abctools
 from abjad.tools import pitchtools
 
@@ -122,14 +123,20 @@ class RegisterSpecifier(abctools.AbjadValueObject):
             center_pitch = pitchtools.NumberedPitch(center_pitch)
         self._center_pitch = center_pitch
         if division_inflections is not None:
+            if not isinstance(division_inflections, collections.Sequence):
+                division_inflections = [division_inflections]
             division_inflections = RegisterInflectionInventory(
                 division_inflections)
         self._division_inflections = division_inflections
         if phrase_inflections is not None:
+            if not isinstance(phrase_inflections, collections.Sequence):
+                phrase_inflections = [phrase_inflections]
             phrase_inflections = RegisterInflectionInventory(
                 phrase_inflections)
         self._phrase_inflections = phrase_inflections
         if segment_inflections is not None:
+            if not isinstance(segment_inflections, collections.Sequence):
+                segment_inflections = [segment_inflections]
             segment_inflections = RegisterInflectionInventory(
                 segment_inflections)
         self._segment_inflections = segment_inflections
