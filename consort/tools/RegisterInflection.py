@@ -117,8 +117,37 @@ class RegisterInflection(abctools.AbjadValueObject):
 
     ### PUBLIC METHODS ###
 
+    def align(self):
+        r'''Aligns all inflections to a minimum interval of zero.
+
+        ::
+
+            >>> import consort
+            >>> inflection = consort.RegisterInflection.zigzag().align()
+            >>> print(format(inflection))
+            consort.tools.RegisterInflection(
+                inflections=pitchtools.IntervalSegment(
+                    (
+                        pitchtools.NumberedInterval(0),
+                        pitchtools.NumberedInterval(18),
+                        pitchtools.NumberedInterval(6),
+                        pitchtools.NumberedInterval(24),
+                        ),
+                    item_class=pitchtools.NumberedInterval,
+                    ),
+                ratio=mathtools.Ratio(1, 1, 1),
+                )
+
+        Emits new register inflection.
+        '''
+        minimum = sorted(self.inflections, key=lambda x: x.semitones)[0]
+        inflections = (_ - minimum for _ in self.inflections)
+        return new(self,
+            inflections=inflections,
+            )
+
     @staticmethod
-    def ascending():
+    def ascending(width=12):
         r'''Creates an ascending register inflection.
 
         ::
@@ -140,13 +169,14 @@ class RegisterInflection(abctools.AbjadValueObject):
         Emits new register inflection.
         '''
         import consort
+        half_width = abs(int(width / 2))
         return consort.RegisterInflection(
-            inflections=(-6, 6),
+            inflections=(0 - half_width, half_width),
             ratio=(1,),
             )
 
     @staticmethod
-    def descending():
+    def descending(width=12):
         r'''Creates a descending register inflection.
 
         ::
@@ -168,7 +198,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         Emits new register inflection.
         '''
         import consort
-        return consort.RegisterInflection.ascending().invert()
+        return consort.RegisterInflection.ascending(width=width).invert()
 
     def invert(self):
         r'''Inverts register inflection
