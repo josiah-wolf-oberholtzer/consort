@@ -198,8 +198,10 @@ class AttachmentExpression(HashCachingObject):
                         attachment(selection, seed=rotation, name=name)
                     elif 'rotation' in signature.parameters:
                         attachment(selection, rotation=rotation, name=name)
-                    else:
+                    elif 'name' in signature.parameters:
                         attachment(selection, name=name)
+                    else:
+                        attachment(selection)
                 # indicators
                 else:
                     if isinstance(selection, scoretools.Leaf):
