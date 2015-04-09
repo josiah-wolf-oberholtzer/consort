@@ -139,7 +139,8 @@ class MusicSpecifier(HashCachingObject):
         segment_maker = consort.SegmentMaker(
             desired_duration_in_seconds=10,
             discard_final_silence=True,
-            is_annotated=annotate,
+            is_annotated=True,
+            #is_annotated=annotate,
             permitted_time_signatures=[
                 (3, 8),
                 (4, 8),
