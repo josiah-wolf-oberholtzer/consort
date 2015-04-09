@@ -168,6 +168,20 @@ class DynamicExpression(abctools.AbjadValueObject):
                 }
             }
 
+    ..  container:: example
+
+        ::
+
+            >>> music = Staff("{ c'16 c'16 }")
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    c'16 \f
+                    c'16
+                }
+            }
+
     """
 
     ### CLASS VARIABLES ###
@@ -511,9 +525,8 @@ class DynamicExpression(abctools.AbjadValueObject):
                 selection = selection + (initial_selections[i + 1][0],)
                 selections.append(selection)
                 attach_components.append(selection[0])
-            elif (
-                selection.get_duration() <= durationtools.Duration(1, 8) or
-                len(selection) == 1
+            elif ((selection.get_duration() <= durationtools.Duration(1, 8) and
+                1 < len(selections)) or len(selection) == 1
                 ):
                 attach_components.append(selection[-1])
                 if selections:
