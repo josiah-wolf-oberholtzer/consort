@@ -1212,8 +1212,7 @@ class SegmentMaker(makertools.SegmentMaker):
         elif isinstance(music_specifier.rhythm_maker,
             consort.CompositeRhythmMaker):
             rhythm_maker = music_specifier.rhythm_maker.new(
-                beam_specifier__beam_each_division=False,
-                beam_specifier__beam_divisions_together=False,
+                beam_specifier=beam_specifier,
                 )
         else:
             rhythm_maker = music_specifier.rhythm_maker
