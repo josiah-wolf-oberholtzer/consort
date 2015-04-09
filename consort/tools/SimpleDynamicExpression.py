@@ -115,7 +115,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         logical_ties = tuple(iterate(music).by_logical_tie(pitched=True))
         if len(logical_ties) < 3:
             if instrument == instrumenttools.Piano() or \
-                instrument == instrumenttools.UntunedPercussion():
+                instrument == instrumenttools.Percussion():
                 is_short_group = True
         grace_notes = None
         previous_leaf = inspect_(music[0]).get_leaf(-1)
