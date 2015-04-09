@@ -37,6 +37,7 @@ class PitchClassPitchHandler(PitchHandler):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_leap_constraint',
         '_octavations',
         '_pitch_range',
         '_register_specifier',
@@ -60,6 +61,7 @@ class PitchClassPitchHandler(PitchHandler):
         self,
         forbid_repetitions=None,
         grace_expressions=None,
+        leap_constraint=None,
         logical_tie_expressions=None,
         octavations=None,
         pitch_application_rate=None,
@@ -80,6 +82,7 @@ class PitchClassPitchHandler(PitchHandler):
             pitch_specifier=pitch_specifier,
             pitches_are_nonsemantic=pitches_are_nonsemantic,
             )
+        self._initialize_leap_constraint(leap_constraint)
         self._initialize_octavations(octavations)
         self._initialize_pitch_range(pitch_range)
         self._initialize_register_specifier(register_specifier)
@@ -120,6 +123,10 @@ class PitchClassPitchHandler(PitchHandler):
             #seed,
             seed_session.current_voicewise_logical_tie_seed,
             )
+        pitch = self._constrain_interval(
+            pitch,
+            previous_pitch,
+            )
         pitch_range = self.pitch_range or pitch_range
         if pitch_range is not None:
             pitch = self._fit_pitch_to_pitch_range(
@@ -136,6 +143,17 @@ class PitchClassPitchHandler(PitchHandler):
         return pitch
 
     ### PRIVATE METHODS ###
+
+    def _constrain_interval(self, current_pitch, previous_pitch):
+        if previous_pitch is None or not self.leap_constraint:
+            return current_pitch
+        maximum_leap = self.leap_constraint.semitones
+        semitones = (current_pitch - previous_pitch).semitones
+        if maximum_leap < semitones:  # descent
+            current_pitch = current_pitch.transpose(12)
+        elif semitones < -maximum_leap:  # ascent
+            current_pitch = current_pitch.transpose(-12)
+        return current_pitch
 
     def _fit_pitch_to_pitch_range(self, pitch, pitch_range):
         while pitch <= pitch_range.start_pitch and \
@@ -218,6 +236,12 @@ class PitchClassPitchHandler(PitchHandler):
                 ])
         return registration
 
+    def _initialize_leap_constraint(self, leap_constraint):
+        if leap_constraint is not None:
+            leap_constraint = pitchtools.NumberedInterval(leap_constraint)
+            leap_constraint = abs(leap_constraint)
+        self._leap_constraint = leap_constraint
+
     def _initialize_octavations(self, octavations):
         if octavations is not None:
             assert octavations
@@ -251,6 +275,10 @@ class PitchClassPitchHandler(PitchHandler):
         self._register_spread = register_spread
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def leap_constraint(self):
+        return self._leap_constraint
 
     @property
     def octavations(self):
