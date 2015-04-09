@@ -219,6 +219,9 @@ afterGraceFraction = #(cons 127 128)
         \name StringStaff
         \type Engraver_group
         \alias Staff
+        \override Beam.positions = #'(-9 . -9)
+        \override DynamicLineSpanner.staff-padding = 11
+        \override TupletBracket.staff-padding = 6
     }
 
     \context {
