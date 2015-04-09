@@ -1,6 +1,13 @@
 #(set-default-paper-size "letter" 'landscape)
 #(set-global-staff-size 11)
 
+#(define-markup-command (vstrut layout props) ()
+    (let ((ref-mrkp (interpret-markup layout props "fp")))
+    (ly:make-stencil 
+        (ly:stencil-expr empty-stencil)
+        empty-interval
+        (ly:stencil-extent ref-mrkp Y))))
+
 \paper {
 
     %%% MARGINS %%%
