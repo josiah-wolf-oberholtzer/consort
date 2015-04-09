@@ -182,6 +182,39 @@ class DynamicExpression(abctools.AbjadValueObject):
                 }
             }
 
+    ..  container:: example
+
+        ::
+
+            >>> music = Staff("{ c'1 }")
+            >>> dynamic_expression = consort.DynamicExpression(
+            ...     dynamic_tokens='fp',
+            ...     )
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    c'1 \fp
+                }
+            }
+
+    ..  container:: example
+
+        ::
+
+            >>> music = Staff("{ c'1 }")
+            >>> dynamic_expression = consort.DynamicExpression(
+            ...     dynamic_tokens='fp',
+            ...     unsustained=True,
+            ...     )
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    c'1 \p
+                }
+            }
+
     """
 
     ### CLASS VARIABLES ###
@@ -190,9 +223,10 @@ class DynamicExpression(abctools.AbjadValueObject):
         '_division_period',
         '_dynamic_tokens',
         '_only_first',
-        '_transitions',
         '_start_dynamic_tokens',
         '_stop_dynamic_tokens',
+        '_transitions',
+        '_unsustained',
         )
 
     _transition_types = (
@@ -212,6 +246,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         start_dynamic_tokens=None,
         stop_dynamic_tokens=None,
         transitions=None,
+        unsustained=None,
         ):
         dynamic_tokens = self._tokens_to_cyclic_tuple(dynamic_tokens)
         assert dynamic_tokens
@@ -232,6 +267,9 @@ class DynamicExpression(abctools.AbjadValueObject):
         if only_first is not None:
             only_first = bool(only_first)
         self._only_first = only_first
+        if unsustained is not None:
+            unsustained = bool(unsustained)
+        self._unsustained = unsustained
 
     ### SPECIAL METHODS ###
 
@@ -252,6 +290,14 @@ class DynamicExpression(abctools.AbjadValueObject):
                 if dynamic.name != 'o':
                     attach(dynamic, component, name=name)
                 current_dynamic = dynamic
+            if self.unsustained:
+                inner_leaves = selection[1:-1]
+                prototype = scoretools.Rest
+                if (
+                    len(inner_leaves) and
+                    all(isinstance(_, prototype) for _ in inner_leaves)
+                    ):
+                    hairpin = None
             if hairpin is not None:
                 attach(hairpin, selection, name=name)
                 current_hairpin = hairpin
@@ -260,6 +306,13 @@ class DynamicExpression(abctools.AbjadValueObject):
             seed += 1
         dynamic, _, _ = self._get_attachments(
             length - 1, length, seed, original_seed)
+        if self.unsustained:
+            if dynamic is not None:
+                if length == 1:
+                    if not selections or len(selections[0]) < 4:
+                        if dynamic.name in dynamic._composite_dynamic_name_to_steady_state_dynamic_name:
+                            dynamic_name = dynamic._composite_dynamic_name_to_steady_state_dynamic_name[dynamic.name]
+                            dynamic = indicatortools.Dynamic(dynamic_name)
         if dynamic != current_dynamic and dynamic.name != 'o':
             attach(dynamic, components[-1], name=name)
 
@@ -586,3 +639,7 @@ class DynamicExpression(abctools.AbjadValueObject):
     @property
     def transitions(self):
         return self._transitions
+
+    @property
+    def unsustained(self):
+        return self._unsustained
