@@ -42,6 +42,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
                 ),
             only=rhythmmakertools.EvenDivisionRhythmMaker(
                 denominators=(32,),
+                preferred_denominator='from_counts',
                 ),
             )
 
