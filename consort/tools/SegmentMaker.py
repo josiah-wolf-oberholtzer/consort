@@ -275,12 +275,12 @@ class SegmentMaker(makertools.SegmentMaker):
                     verbose=verbose,
                     ):
                     consort.PitchHandler._process_session(self)
-            with systemtools.ForbidUpdate(self.score, update_on_exit=True):
-                with systemtools.Timer(
-                    '    handled attachments:',
-                    verbose=verbose,
-                    ):
-                    consort.AttachmentHandler._process_session(self)
+            #with systemtools.ForbidUpdate(self.score, update_on_exit=True):
+            with systemtools.Timer(
+                '    handled attachments:',
+                verbose=verbose,
+                ):
+                consort.AttachmentHandler._process_session(self)
             self.configure_score()
             self.configure_lilypond_file()
         with systemtools.Timer(
