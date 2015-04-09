@@ -34,7 +34,7 @@ class ChordExpression(LogicalTieExpression):
 
     ::
 
-        >>> staff = Staff("c'4 d'4 ~ d'4 e'4")
+        >>> staff = Staff(r"c'4 d'4 \p -\accent ~ d'4 e'4")
         >>> pitch_range = pitchtools.PitchRange.from_pitches('C3', 'C6')
         >>> attach(pitch_range, staff, scope=Staff)
         >>> logical_tie = inspect_(staff[1]).get_logical_tie()
@@ -43,7 +43,7 @@ class ChordExpression(LogicalTieExpression):
         \new Staff {
             c'4
             \arpeggioArrowDown
-            <cs' f' a'>4 \arpeggio ~
+            <cs' f' a'>4 -\accent \arpeggio \p ~
             <cs' f' a'>4
             e'4
         }
