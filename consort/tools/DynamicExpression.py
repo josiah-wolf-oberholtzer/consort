@@ -264,6 +264,32 @@ class DynamicExpression(abctools.AbjadValueObject):
                 }
             }
 
+    ..  container:: exmaple
+
+        ::
+
+            >>> music = Staff("{ c'8. } { e'8. } { g'8. }")
+            >>> dynamic_expression = consort.DynamicExpression(
+            ...     division_period=2,
+            ...     dynamic_tokens='p ppp',
+            ...     start_dynamic_tokens='o',
+            ...     stop_dynamic_tokens='o',
+            ...     )
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    \once \override Hairpin.circled-tip = ##t
+                    c'8. \<
+                }
+                {
+                    e'8.
+                }
+                {
+                    g'8. \p
+                }
+            }
+
     """
 
     ### CLASS VARIABLES ###
@@ -401,6 +427,12 @@ class DynamicExpression(abctools.AbjadValueObject):
             elif index == 1:
                 if self.stop_dynamic_tokens:
                     this_token = self.stop_dynamic_tokens[original_seed]
+                    if (
+                        this_token == 'o' and
+                        self.start_dynamic_tokens and
+                        self.start_dynamic_tokens[original_seed] == 'o'
+                        ):
+                        this_token = self.dynamic_tokens[dynamic_seed]
                 else:
                     this_token = self.dynamic_tokens[dynamic_seed]
             if this_token == next_token == 'o':
@@ -470,7 +502,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         selections = [_.select_leaves() for _ in music]
         parts = sequencetools.partition_sequence_by_counts(
             selections, [period], cyclic=True, overhang=True)
-        if len(parts[-1]) < period:
+        if len(parts[-1]) < period and 1 < len(parts):
             part = parts.pop()
             parts[-1].extend(part)
         selections = []
@@ -617,9 +649,37 @@ class DynamicExpression(abctools.AbjadValueObject):
                 Note("d'4")
                 Note("e'4")
 
+        ..  container:: example
+
+            ::
+
+                >>> music = Staff("{ c'8. } { e'8. } { g'8. }")
+                >>> dynamic_expression = consort.DynamicExpression(
+                ...     division_period=2,
+                ...     dynamic_tokens='p ppp',
+                ...     start_dynamic_tokens='o',
+                ...     stop_dynamic_tokens='o',
+                ...     )
+                >>> result = dynamic_expression._get_selections(music)
+                >>> selections, attach_components = result
+                >>> for _ in selections:
+                ...     _
+                ...
+                ContiguousSelection(Note("c'8."), Note("e'8."), Note("g'8."))
+
+            ::
+
+                >>> for _ in attach_components:
+                ...     _
+                ...
+                Note("c'8.")
+                Note("g'8.")
+
         """
+        #print('---', music)
         initial_selections = self._partition_selections(music)
         initial_selections = self._reorganize_selections(initial_selections)
+        #print('   ', initial_selections)
         attach_components = []
         selections = []
         assert len(initial_selections)
@@ -645,6 +705,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                 attach_components.append(selection[-1])
             else:
                 attach_components.append(selection[0])
+        #print('   ', attach_components)
         return selections, attach_components
 
     def _tokens_to_cyclic_tuple(self, tokens):
