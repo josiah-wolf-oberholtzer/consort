@@ -30,6 +30,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
         consort.tools.CompositeRhythmMaker(
             default=rhythmmakertools.EvenDivisionRhythmMaker(
                 denominators=(8,),
+                preferred_denominator='from_counts',
                 ),
             first=rhythmmakertools.NoteRhythmMaker(),
             last=rhythmmakertools.IncisedRhythmMaker(
