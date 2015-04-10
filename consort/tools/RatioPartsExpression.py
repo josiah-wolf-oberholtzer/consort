@@ -20,7 +20,7 @@ class RatioPartsExpression(abctools.AbjadObject):
             >>> print(format(expression))
             consort.tools.RatioPartsExpression(
                 parts=(0, 2),
-                ratio=mathtools.Ratio(1, 2, 1),
+                ratio=mathtools.Ratio((1, 2, 1)),
                 )
 
         ::
@@ -111,7 +111,7 @@ class RatioPartsExpression(abctools.AbjadObject):
             >>> print(format(expression))
             consort.tools.RatioPartsExpression(
                 parts=(1, 3),
-                ratio=mathtools.Ratio(1, 2, 1, 1, 1),
+                ratio=mathtools.Ratio((1, 2, 1, 1, 1)),
                 )
 
         Returns new ratio parts expression.

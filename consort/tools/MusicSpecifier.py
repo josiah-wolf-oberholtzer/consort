@@ -247,7 +247,7 @@ class MusicSpecifier(HashCachingObject):
                                 item_class=pitchtools.NamedPitch,
                                 ),
                             ),
-                        ratio=mathtools.Ratio(1, 2, 3),
+                        ratio=mathtools.Ratio((1, 2, 3)),
                         ),
                     ),
                 )

@@ -45,7 +45,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
                     item_class=pitchtools.NamedPitch,
                     ),
                 ),
-            ratio=mathtools.Ratio(1, 2, 3),
+            ratio=mathtools.Ratio((1, 2, 3)),
             )
 
     Pitch specifiers can be instantiated from a string of pitch names:
@@ -66,7 +66,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
                     item_class=pitchtools.NamedPitch,
                     ),
                 ),
-            ratio=mathtools.Ratio(1),
+            ratio=mathtools.Ratio((1,)),
             )
 
     Pitch specifiers can be instantiated from a single pitch:
@@ -84,7 +84,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
                     item_class=pitchtools.NamedPitch,
                     ),
                 ),
-            ratio=mathtools.Ratio(1),
+            ratio=mathtools.Ratio((1,)),
             )
 
     '''
@@ -253,7 +253,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
                         item_class=pitchtools.NamedPitch,
                         ),
                     ),
-                ratio=mathtools.Ratio(1, 2, 3),
+                ratio=mathtools.Ratio((1, 2, 3)),
                 )
 
         Returns new pitch specifier.

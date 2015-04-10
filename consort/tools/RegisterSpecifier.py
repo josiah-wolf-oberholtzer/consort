@@ -45,7 +45,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                                 ),
                             item_class=pitchtools.NumberedInterval,
                             ),
-                        ratio=mathtools.Ratio(1, 1),
+                        ratio=mathtools.Ratio((1, 1)),
                         ),
                     ]
                 ),
@@ -59,7 +59,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                                 ),
                             item_class=pitchtools.NumberedInterval,
                             ),
-                        ratio=mathtools.Ratio(1),
+                        ratio=mathtools.Ratio((1,)),
                         ),
                     ]
                 ),
@@ -75,7 +75,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                                 ),
                             item_class=pitchtools.NumberedInterval,
                             ),
-                        ratio=mathtools.Ratio(3, 2, 1),
+                        ratio=mathtools.Ratio((3, 2, 1)),
                         ),
                     ]
                 ),

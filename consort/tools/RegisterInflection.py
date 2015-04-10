@@ -28,7 +28,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                     ),
                 item_class=pitchtools.NumberedInterval,
                 ),
-            ratio=mathtools.Ratio(2, 1),
+            ratio=mathtools.Ratio((2, 1)),
             )
 
     ::
@@ -135,7 +135,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1, 1),
+                ratio=mathtools.Ratio((1, 1, 1)),
                 )
 
         Emits new register inflection.
@@ -163,7 +163,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1),
+                ratio=mathtools.Ratio((1,)),
                 )
 
         Emits new register inflection.
@@ -192,7 +192,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1),
+                ratio=mathtools.Ratio((1,)),
                 )
 
         Emits new register inflection.
@@ -217,7 +217,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1),
+                ratio=mathtools.Ratio((1, 1)),
                 )
 
         Emits new register inflection.
@@ -244,7 +244,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1, 1),
+                ratio=mathtools.Ratio((1, 1, 1)),
                 )
 
         Emits new register inflection.
@@ -260,7 +260,7 @@ class RegisterInflection(abctools.AbjadValueObject):
         ::
 
             >>> import consort
-            >>> inflection = consort.RegisterInflection.zigzag().rotate()
+            >>> inflection = consort.RegisterInflection.zigzag().rotate(1)
             >>> print(format(inflection))
             consort.tools.RegisterInflection(
                 inflections=pitchtools.IntervalSegment(
@@ -272,7 +272,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1, 1),
+                ratio=mathtools.Ratio((1, 1, 1)),
                 )
 
         Emits new register inflection.
@@ -300,7 +300,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1),
+                ratio=mathtools.Ratio((1, 1)),
                 )
 
         ::
@@ -317,7 +317,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1),
+                ratio=mathtools.Ratio((1, 1)),
                 )
 
         Emits new register inflection.
@@ -348,7 +348,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1, 1),
+                ratio=mathtools.Ratio((1, 1, 1)),
                 )
 
         ::
@@ -366,7 +366,7 @@ class RegisterInflection(abctools.AbjadValueObject):
                         ),
                     item_class=pitchtools.NumberedInterval,
                     ),
-                ratio=mathtools.Ratio(1, 1, 1),
+                ratio=mathtools.Ratio((1, 1, 1)),
                 )
 
         Emits new register inflection.

@@ -55,7 +55,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                             ),
                         ),
                     ),
-                ratio=mathtools.Ratio(1, 2, 1),
+                ratio=mathtools.Ratio((1, 2, 1)),
                 )
 
     '''

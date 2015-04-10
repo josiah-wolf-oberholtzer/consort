@@ -26,7 +26,7 @@ class AbsolutePitchHandler(PitchHandler):
                         item_class=pitchtools.NamedPitch,
                         ),
                     ),
-                ratio=mathtools.Ratio(1),
+                ratio=mathtools.Ratio((1,)),
                 ),
             )
 
