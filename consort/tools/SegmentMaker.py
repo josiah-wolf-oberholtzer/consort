@@ -1812,6 +1812,11 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
         # TODO: Determine best place for malformed timespan pruning.
         with systemtools.Timer(
+            '        pruned short timespans:',
+            verbose=verbose,
+            ):
+            SegmentMaker.prune_short_timespans(multiplexed_timespans)
+        with systemtools.Timer(
             '        pruned malformed timespans:',
             verbose=verbose,
             ):
@@ -1839,11 +1844,6 @@ class SegmentMaker(makertools.SegmentMaker):
             multiplexed_timespans = SegmentMaker.multiplex_timespans(
                 demultiplexed_maquette)
         # TODO: Why prune after consolidation?
-        with systemtools.Timer(
-            '        pruned short timespans:',
-            verbose=verbose,
-            ):
-            SegmentMaker.prune_short_timespans(multiplexed_timespans)
         with systemtools.Timer(
             '        pruned meters:',
             verbose=verbose,
@@ -1977,13 +1977,15 @@ class SegmentMaker(makertools.SegmentMaker):
     def prune_short_timespans(timespans):
         for timespan in timespans[:]:
             if timespan.minimum_duration and \
-                timespan.duration < timespan.minimum_duration:
+                timespan.duration < timespan.minimum_duration and \
+                timespan.music is None:
                 timespans.remove(timespan)
 
     @staticmethod
     def prune_malformed_timespans(timespans):
         for timespan in timespans[:]:
             if not timespan.is_well_formed:
+                assert timespan.music is None
                 timespans.remove(timespan)
 
     @staticmethod
