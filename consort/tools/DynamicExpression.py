@@ -215,6 +215,55 @@ class DynamicExpression(abctools.AbjadValueObject):
                 }
             }
 
+    ..  container:: example
+
+        ::
+
+            >>> music = Staff(r'''
+            ...     { c'4 d'4 e'4 }
+            ...     { c'4 d'4 e'4 }
+            ...     { c'4 d'4 e'4 }
+            ...     { c'4 d'4 e'4 }
+            ...     { c'4 d'4 e'4 }
+            ... ''')
+            >>> dynamic_expression = consort.DynamicExpression(
+            ...     division_period=2,
+            ...     dynamic_tokens='p ppp',
+            ...     start_dynamic_tokens='o',
+            ...     stop_dynamic_tokens='o',
+            ...     )
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    \once \override Hairpin.circled-tip = ##t
+                    c'4 \<
+                    d'4
+                    e'4
+                }
+                {
+                    c'4
+                    d'4
+                    e'4
+                }
+                {
+                    \once \override Hairpin.circled-tip = ##t
+                    c'4 \p \>
+                    d'4
+                    e'4
+                }
+                {
+                    c'4
+                    d'4
+                    e'4
+                }
+                {
+                    c'4
+                    d'4
+                    e'4 \!
+                }
+            }
+
     """
 
     ### CLASS VARIABLES ###
@@ -573,8 +622,9 @@ class DynamicExpression(abctools.AbjadValueObject):
         initial_selections = self._reorganize_selections(initial_selections)
         attach_components = []
         selections = []
+        assert len(initial_selections)
         for i, selection in enumerate(initial_selections):
-            if i < len(music) - 1:
+            if i < len(initial_selections) - 1:
                 selection = selection + (initial_selections[i + 1][0],)
                 selections.append(selection)
                 attach_components.append(selection[0])
