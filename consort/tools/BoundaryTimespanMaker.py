@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
+from abjad import inspect_
 from abjad.tools import durationtools
 from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
@@ -151,7 +152,10 @@ class BoundaryTimespanMaker(TimespanMaker):
         for timespan in timespan_inventory:
             if not isinstance(timespan, consort.PerformedTimespan):
                 continue
-            if timespan.voice_name not in self.voice_names:
+            if (
+                self.voice_names and
+                timespan.voice_name not in self.voice_names
+                ):
                 continue
             if not self.labels:
                 preexisting_timespans.append(timespan)
