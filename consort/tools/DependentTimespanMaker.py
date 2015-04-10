@@ -177,10 +177,13 @@ class DependentTimespanMaker(TimespanMaker):
         for timespan in timespan_inventory:
             if not isinstance(timespan, consort.PerformedTimespan):
                 continue
-            if timespan.voice_name not in self.voice_names:
+            if (
+                self.voice_names and
+                timespan.voice_name not in self.voice_names
+                ):
                 continue
             if not self.labels:
-                preexisting_timespans.append(timespan)
+                pass
             elif not hasattr(timespan, 'music_specifier') or \
                 not timespan.music_specifier or \
                 not timespan.music_specifier.labels:
@@ -226,7 +229,7 @@ class DependentTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         new_timespans = timespantools.TimespanInventory()
-        if not self.voice_names:
+        if not self.voice_names and not self.labels:
             return new_timespans
         rotation_indices = self.rotation_indices or (0,)
         rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
