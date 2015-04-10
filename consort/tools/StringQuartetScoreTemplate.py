@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+from abjad import detach
+from abjad import iterate
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import markuptools
@@ -255,14 +257,16 @@ class StringQuartetScoreTemplate(ScoreTemplate):
 
     __slots__ = (
         '_split',
+        '_without_instruments',
         )
 
     ### INITIALIZER ###
 
-    def __init__(self, split=True):
+    def __init__(self, split=True, without_instruments=None):
         if split is not None:
             split = bool(split)
         self._split = split
+        self._without_instruments = without_instruments
         ScoreTemplate.__init__(self)
 
     ### SPECIAL METHODS ###
@@ -341,6 +345,10 @@ class StringQuartetScoreTemplate(ScoreTemplate):
             name='String Quartet Score',
             )
 
+        if self.without_instruments:
+            for staff in iterate(score).by_class(scoretools.Context):
+                detach(instrumenttools.Instrument, staff)
+
         return score
 
     ### PUBLIC PROPERTIES ###
@@ -348,3 +356,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
     @property
     def split(self):
         return self._split
+
+    @property
+    def without_instruments(self):
+        return self._without_instruments

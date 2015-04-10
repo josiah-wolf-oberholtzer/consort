@@ -246,7 +246,10 @@ class ChordExpression(LogicalTieExpression):
         chord_expr = self.chord_expr or ()
         new_chord_expr = chord_expr
         if pitch_range is not None:
-            assert base_pitch in pitch_range
+            assert base_pitch in pitch_range, (
+                pitch_range,
+                base_pitch.pitch_class_octave_label,
+                )
 
             sorted_intervals = sorted(chord_expr, key=lambda x: x.semitones)
             maximum = sorted_intervals[-1]

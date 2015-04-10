@@ -135,7 +135,10 @@ class MusicSpecifier(HashCachingObject):
         Returns LilyPond file.
         """
         import consort
-        score_template = consort.StringQuartetScoreTemplate(split=False)
+        score_template = consort.StringQuartetScoreTemplate(
+            split=False,
+            without_instruments=True,
+            )
         segment_maker = consort.SegmentMaker(
             desired_duration_in_seconds=10,
             discard_final_silence=True,
