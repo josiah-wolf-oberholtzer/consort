@@ -4,6 +4,7 @@ import os
 from abjad import new
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
+from abjad.tools import instrumenttools
 from abjad.tools import rhythmmakertools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -37,6 +38,7 @@ class MusicSpecifier(HashCachingObject):
         '_attachment_handler',
         '_color',
         '_grace_handler',
+        '_instrument',
         '_labels',
         '_minimum_phrase_duration',
         '_pitch_handler',
@@ -51,6 +53,7 @@ class MusicSpecifier(HashCachingObject):
         attachment_handler=None,
         color=None,
         grace_handler=None,
+        instrument=None,
         labels=None,
         minimum_phrase_duration=None,
         pitch_handler=None,
@@ -68,6 +71,9 @@ class MusicSpecifier(HashCachingObject):
         if grace_handler is not None:
             assert isinstance(grace_handler, consort.GraceHandler)
         self._grace_handler = grace_handler
+        if instrument is not None:
+            assert isinstance(instrument, instrumenttools.Instrument)
+        self._instrument = instrument
         if labels is not None:
             if isinstance(labels, str):
                 labels = (labels,)
@@ -205,6 +211,10 @@ class MusicSpecifier(HashCachingObject):
 
     ### PUBLIC METHODS ###
 
+    #def rotate(self, **kwargs):
+    #    # like new, but rotating instead of assigning
+    #    pass
+
     def transpose(self, expr):
         r'''Transposes music specifier.
 
@@ -278,6 +288,10 @@ class MusicSpecifier(HashCachingObject):
     @property
     def grace_handler(self):
         return self._grace_handler
+
+    @property
+    def instrument(self):
+        return self._instrument
 
     @property
     def labels(self):
