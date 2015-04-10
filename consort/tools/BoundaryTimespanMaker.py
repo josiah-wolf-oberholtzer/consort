@@ -177,17 +177,21 @@ class BoundaryTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         new_timespans = timespantools.TimespanInventory()
-        if not self.voice_names:
+        if not self.voice_names and not self.labels:
             return new_timespans
         context_counter = collections.Counter()
         preexisting_timespans = self._collect_preexisting_timespans(
             target_timespan=target_timespan,
             timespan_inventory=timespan_inventory,
             )
+        new_timespan_mapping = {}
         for group_index, group in enumerate(
             preexisting_timespans.partition(True)
             ):
             for context_name, music_specifier in music_specifiers.items():
+                if context_name not in new_timespan_mapping:
+                    new_timespan_mapping[context_name] = \
+                        timespantools.TimespanInventory()
                 context_seed = context_counter[context_name]
                 if self.start_duration:
                     timespans = music_specifier(
@@ -201,7 +205,7 @@ class BoundaryTimespanMaker(TimespanMaker):
                         voice_name=context_name,
                         )
                     context_counter[context_name] += 1
-                    new_timespans.extend(timespans)
+                    new_timespan_mapping[context_name].extend(timespans)
                 if self.stop_duration:
                     timespans = music_specifier(
                         durations=[self.stop_duration],
@@ -214,7 +218,10 @@ class BoundaryTimespanMaker(TimespanMaker):
                         voice_name=context_name,
                         )
                     context_counter[context_name] += 1
-                    new_timespans.extend(timespans)
+                    new_timespan_mapping[context_name].extend(timespans)
+        for context_name, timespans in new_timespan_mapping.items():
+            timespans.compute_logical_or()
+            new_timespans.extend(timespans)
         return new_timespans
 
     ### PUBLIC PROPERTIES ###
