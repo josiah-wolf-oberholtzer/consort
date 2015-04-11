@@ -59,14 +59,16 @@ class AbsolutePitchHandler(PitchHandler):
             )
         pitch = self._apply_deviation(
             pitch,
-            seed_session.current_timewise_music_specifier_seed,
+            #seed_session.current_timewise_music_specifier_seed,
             #seed_session.current_phrased_voicewise_logical_tie_seed,
+            seed_session.current_unphrased_voicewise_logical_tie_seed,
             )
         self._process_logical_tie(
             logical_tie,
             pitch,
             pitch_range,
-            seed_session.current_timewise_music_specifier_seed,
+            #seed_session.current_timewise_music_specifier_seed,
+            seed_session.current_unphrased_voicewise_logical_tie_seed,
             )
         return pitch
 

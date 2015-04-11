@@ -154,4 +154,4 @@ class SeedSession(abctools.AbjadObject):
 
     @property
     def current_unphrased_voicewise_logical_tie_seed(self):
-        return self._current_phrased_voicewise_logical_tie_seed
+        return self._current_unphrased_voicewise_logical_tie_seed

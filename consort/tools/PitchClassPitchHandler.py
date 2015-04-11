@@ -59,6 +59,7 @@ class PitchClassPitchHandler(PitchHandler):
 
     def __init__(
         self,
+        deviations=None,
         forbid_repetitions=None,
         grace_expressions=None,
         leap_constraint=None,
@@ -74,6 +75,7 @@ class PitchClassPitchHandler(PitchHandler):
         ):
         PitchHandler.__init__(
             self,
+            deviations=deviations,
             forbid_repetitions=forbid_repetitions,
             grace_expressions=grace_expressions,
             logical_tie_expressions=logical_tie_expressions,
@@ -124,6 +126,12 @@ class PitchClassPitchHandler(PitchHandler):
             pitch,
             previous_pitch,
             )
+        pitch = self._apply_deviation(
+            pitch,
+            #seed_session.current_timewise_music_specifier_seed,
+            #seed_session.current_phrased_voicewise_logical_tie_seed,
+            seed_session.current_unphrased_voicewise_logical_tie_seed,
+            )
         pitch_range = self.pitch_range or pitch_range
         if pitch_range is not None:
             pitch = self._fit_pitch_to_pitch_range(
@@ -134,7 +142,8 @@ class PitchClassPitchHandler(PitchHandler):
             logical_tie,
             pitch,
             pitch_range,
-            seed_session.current_phrased_voicewise_logical_tie_seed,
+            #seed_session.current_phrased_voicewise_logical_tie_seed,
+            seed_session.current_unphrased_voicewise_logical_tie_seed,
             )
         return pitch
 
