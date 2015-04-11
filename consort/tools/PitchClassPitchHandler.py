@@ -107,21 +107,18 @@ class PitchClassPitchHandler(PitchHandler):
         registration = self._get_registration(
             attack_point_signature,
             logical_tie,
-            #phrase_seed,
             seed_session.current_timewise_phrase_seed,
             )
         pitch_class = self._get_pitch_class(
             attack_point_signature,
             pitch_choices,
             previous_pitch_class,
-            #seed,
-            seed_session.current_voicewise_logical_tie_seed,
+            seed_session.current_phrased_voicewise_logical_tie_seed,
             )
         pitch = self._get_pitch(
             pitch_class,
             registration,
-            #seed,
-            seed_session.current_voicewise_logical_tie_seed,
+            seed_session.current_phrased_voicewise_logical_tie_seed,
             )
         pitch = self._constrain_interval(
             pitch,
@@ -137,8 +134,7 @@ class PitchClassPitchHandler(PitchHandler):
             logical_tie,
             pitch,
             pitch_range,
-            #seed,
-            seed_session.current_voicewise_logical_tie_seed,
+            seed_session.current_phrased_voicewise_logical_tie_seed,
             )
         return pitch
 

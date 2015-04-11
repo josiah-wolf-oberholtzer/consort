@@ -55,11 +55,12 @@ class AbsolutePitchHandler(PitchHandler):
             attack_point_signature,
             pitch_choices,
             previous_pitch,
-            seed_session.current_voicewise_logical_tie_seed,
+            seed_session.current_phrased_voicewise_logical_tie_seed,
             )
         pitch = self._apply_deviation(
             pitch,
             seed_session.current_timewise_music_specifier_seed,
+            #seed_session.current_phrased_voicewise_logical_tie_seed,
             )
         self._process_logical_tie(
             logical_tie,
