@@ -27,7 +27,7 @@ def test_AbsolutePitchHandler_01():
         discard_final_silence=True,
         desired_duration_in_seconds=1,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=1,
             ),
         settings=consort.MusicSetting(
@@ -44,7 +44,7 @@ def test_AbsolutePitchHandler_01():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -53,8 +53,8 @@ def test_AbsolutePitchHandler_01():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -91,7 +91,7 @@ def test_AbsolutePitchHandler_02():
         discard_final_silence=True,
         desired_duration_in_seconds=1,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=1,
             ),
         settings=consort.MusicSetting(
@@ -108,7 +108,7 @@ def test_AbsolutePitchHandler_02():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -117,8 +117,8 @@ def test_AbsolutePitchHandler_02():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -157,7 +157,7 @@ def test_AbsolutePitchHandler_03():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=1,
             ),
         settings=consort.MusicSetting(
@@ -174,7 +174,7 @@ def test_AbsolutePitchHandler_03():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -189,8 +189,8 @@ def test_AbsolutePitchHandler_03():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -265,7 +265,7 @@ def test_AbsolutePitchHandler_04():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=1,
             ),
         settings=consort.MusicSetting(
@@ -282,7 +282,7 @@ def test_AbsolutePitchHandler_04():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -297,8 +297,8 @@ def test_AbsolutePitchHandler_04():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -361,7 +361,7 @@ def test_AbsolutePitchHandler_05():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=2,
             ),
         settings=consort.MusicSetting(
@@ -379,7 +379,7 @@ def test_AbsolutePitchHandler_05():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -394,8 +394,8 @@ def test_AbsolutePitchHandler_05():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -437,7 +437,7 @@ def test_AbsolutePitchHandler_05():
                             }
                         }
                     }
-                    \context RhythmicStaff = "Staff 2" {
+                    \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
                                 % [Voice 2] Measure 1
@@ -501,7 +501,7 @@ def test_AbsolutePitchHandler_06():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=2,
             ),
         settings=consort.MusicSetting(
@@ -519,7 +519,7 @@ def test_AbsolutePitchHandler_06():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -534,8 +534,8 @@ def test_AbsolutePitchHandler_06():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -577,7 +577,7 @@ def test_AbsolutePitchHandler_06():
                             }
                         }
                     }
-                    \context RhythmicStaff = "Staff 2" {
+                    \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
                                 % [Voice 2] Measure 1
@@ -649,7 +649,7 @@ def test_AbsolutePitchHandler_07():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=2,
             ),
         settings=consort.MusicSetting(
@@ -667,7 +667,7 @@ def test_AbsolutePitchHandler_07():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -682,8 +682,8 @@ def test_AbsolutePitchHandler_07():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -725,7 +725,7 @@ def test_AbsolutePitchHandler_07():
                             }
                         }
                     }
-                    \context RhythmicStaff = "Staff 2" {
+                    \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
                                 % [Voice 2] Measure 1
@@ -785,7 +785,7 @@ def test_AbsolutePitchHandler_08():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=2,
             ),
         settings=consort.MusicSetting(
@@ -803,7 +803,7 @@ def test_AbsolutePitchHandler_08():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -818,8 +818,8 @@ def test_AbsolutePitchHandler_08():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -861,7 +861,7 @@ def test_AbsolutePitchHandler_08():
                             }
                         }
                     }
-                    \context RhythmicStaff = "Staff 2" {
+                    \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
                                 % [Voice 2] Measure 1
@@ -921,7 +921,7 @@ def test_AbsolutePitchHandler_09():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=2,
             ),
         settings=consort.MusicSetting(
@@ -939,7 +939,7 @@ def test_AbsolutePitchHandler_09():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -954,8 +954,8 @@ def test_AbsolutePitchHandler_09():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -997,7 +997,7 @@ def test_AbsolutePitchHandler_09():
                             }
                         }
                     }
-                    \context RhythmicStaff = "Staff 2" {
+                    \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
                                 % [Voice 2] Measure 1
@@ -1058,7 +1058,7 @@ def test_AbsolutePitchHandler_10():
         discard_final_silence=True,
         desired_duration_in_seconds=3,
         omit_stylesheets=True,
-        score_template=templatetools.GroupedRhythmicStavesScoreTemplate(
+        score_template=templatetools.GroupedStavesScoreTemplate(
             staff_count=2,
             ),
         settings=consort.MusicSetting(
@@ -1076,7 +1076,7 @@ def test_AbsolutePitchHandler_10():
         \language "english"
 
         \score {
-            \context Score = "Grouped Rhythmic Staves Score" <<
+            \context Score = "Grouped  Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -1091,8 +1091,8 @@ def test_AbsolutePitchHandler_10():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \context RhythmicStaff = "Staff 1" {
+                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                    \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -1134,7 +1134,7 @@ def test_AbsolutePitchHandler_10():
                             }
                         }
                     }
-                    \context RhythmicStaff = "Staff 2" {
+                    \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
                             {
                                 % [Voice 2] Measure 1
