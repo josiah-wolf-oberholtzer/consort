@@ -52,22 +52,23 @@
 
     markup-system-spacing = #'(
         (basic-distance . 0)
-        (minimum-distance . 12)
-        (padding . 0)
+        (minimum-distance . 0)
+        (padding . 2)
         (stretchability . 0)
         )
 
     system-system-spacing = #'(
         (basic-distance . 0)
-        (padding . 4)
-        (stretchability . 100)
+        (minimum-distance . 0)
+        (padding . 2)
+        (stretchability . 0)
         )
 
     top-markup-spacing = #'(
         (basic-distance . 0)
         (minimum-distance . 0)
-        (padding . 4)
-        (stretchability . 100)
+        (padding . 0)
+        (stretchability . 0)
         )
 }
 
