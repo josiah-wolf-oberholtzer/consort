@@ -25,15 +25,11 @@ class HarmonicExpression(LogicalTieExpression):
         \new Staff {
             c'4
             <
-                \parenthesize
-                \tweak #'font-size #-4
                 d'
                 \tweak #'style #'harmonic
                 g'
             >4 ~
             <
-                \parenthesize
-                \tweak #'font-size #-4
                 d'
                 \tweak #'style #'harmonic
                 g'
@@ -70,8 +66,8 @@ class HarmonicExpression(LogicalTieExpression):
             touched_pitch = stopped_pitch.transpose(self.touch_interval)
             chord = scoretools.Chord(leaf)
             chord.written_pitches = [stopped_pitch, touched_pitch]
-            chord.note_heads[0].is_parenthesized = True
-            chord.note_heads[0].tweak.font_size = -4
+            #chord.note_heads[0].is_parenthesized = True
+            #chord.note_heads[0].tweak.font_size = -4
             chord.note_heads[1].tweak.style = 'harmonic'
             self._replace(leaf, chord)
 
