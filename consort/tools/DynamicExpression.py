@@ -720,24 +720,52 @@ class DynamicExpression(abctools.AbjadValueObject):
                 Note("c'8.")
                 Note("g'8.")
 
+        ..  container:: example
+
+            ::
+
+                >>> music = Staff(r'''
+                ... { c'16 d'16 e'16 }
+                ... \times 2/3 { f'8 g'8 r8 }
+                ... ''')
+                >>> dynamic_expression = consort.DynamicExpression(
+                ...     dynamic_tokens='p mf mp pp f',
+                ...     )
+                >>> result = dynamic_expression._get_selections(music)
+                >>> selections, attach_components = result
+                >>> for _ in selections:
+                ...     _
+                ...
+
+            ::
+
+                >>> for _ in attach_components:
+                ...     _
+                ...
+
         """
         #print('---', music)
         initial_selections = self._partition_selections(music)
+        #print('   ', initial_selections)
         initial_selections = self._reorganize_selections(initial_selections)
         #print('   ', initial_selections)
         attach_components = []
         selections = []
         assert len(initial_selections)
         for i, selection in enumerate(initial_selections):
+            #print('   ', i, selection)
             if i < len(initial_selections) - 1:
+                #print('   ', 'A')
                 selection = selection + (initial_selections[i + 1][0],)
                 selections.append(selection)
                 attach_components.append(selection[0])
             elif ((selection.get_duration() <= durationtools.Duration(1, 8) and
                 1 < len(selections)) or len(selection) == 1
                 ):
+                #print('   ', 'B')
                 attach_components.append(selection[-1])
                 if selections:
+                    #print('   ', 'B1')
                     selections[-1] = selections[-1] + selection[1:]
             elif (
                     durationtools.Duration(1, 8) < (
@@ -745,11 +773,14 @@ class DynamicExpression(abctools.AbjadValueObject):
                     selection[0]._get_timespan().start_offset
                         )
                     ):
+                #print('   ', 'C')
                 selections.append(selection)
                 attach_components.append(selection[0])
                 attach_components.append(selection[-1])
             else:
+                #print('   ', 'D')
                 attach_components.append(selection[0])
+        #print('   ', initial_selections)
         #print('   ', attach_components)
         return selections, attach_components
 
