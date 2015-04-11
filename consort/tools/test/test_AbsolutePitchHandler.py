@@ -44,7 +44,7 @@ def test_AbsolutePitchHandler_01():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -53,7 +53,7 @@ def test_AbsolutePitchHandler_01():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -108,7 +108,7 @@ def test_AbsolutePitchHandler_02():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -117,7 +117,7 @@ def test_AbsolutePitchHandler_02():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -174,7 +174,7 @@ def test_AbsolutePitchHandler_03():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -189,7 +189,7 @@ def test_AbsolutePitchHandler_03():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -282,7 +282,7 @@ def test_AbsolutePitchHandler_04():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -297,7 +297,7 @@ def test_AbsolutePitchHandler_04():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -379,7 +379,7 @@ def test_AbsolutePitchHandler_05():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -394,7 +394,7 @@ def test_AbsolutePitchHandler_05():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -519,7 +519,7 @@ def test_AbsolutePitchHandler_06():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -534,7 +534,7 @@ def test_AbsolutePitchHandler_06():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -667,7 +667,7 @@ def test_AbsolutePitchHandler_07():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -682,7 +682,7 @@ def test_AbsolutePitchHandler_07():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -803,7 +803,7 @@ def test_AbsolutePitchHandler_08():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -818,7 +818,7 @@ def test_AbsolutePitchHandler_08():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -939,7 +939,7 @@ def test_AbsolutePitchHandler_09():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -954,7 +954,7 @@ def test_AbsolutePitchHandler_09():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
@@ -1076,7 +1076,7 @@ def test_AbsolutePitchHandler_10():
         \language "english"
 
         \score {
-            \context Score = "Grouped  Staves Score" <<
+            \context Score = "Grouped Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
@@ -1091,7 +1091,7 @@ def test_AbsolutePitchHandler_10():
                         s1 * 1/4
                     }
                 }
-                \context StaffGroup = "Grouped  Staves Staff Group" <<
+                \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
                             {
