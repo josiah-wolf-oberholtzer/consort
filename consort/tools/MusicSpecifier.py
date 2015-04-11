@@ -5,7 +5,10 @@ from abjad import new
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
+from abjad.tools import lilypondfiletools
+from abjad.tools import markuptools
 from abjad.tools import rhythmmakertools
+from abjad.tools import stringtools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -100,7 +103,13 @@ class MusicSpecifier(HashCachingObject):
 
     ### SPECIAL METHODS ###
 
-    def __illustrate__(self, annotate=False, verbose=True, **kwargs):
+    def __illustrate__(
+        self,
+        annotate=False,
+        verbose=True,
+        package_name=None,
+        **kwargs
+        ):
         r"""Illustrates music specifier.
 
         ::
@@ -206,7 +215,12 @@ class MusicSpecifier(HashCachingObject):
         consort_stylesheet_path = os.path.abspath(consort_stylesheet_path)
         lilypond_file.file_initial_user_includes[:] = [consort_stylesheet_path]
         lilypond_file.use_relative_includes = False
-        # TODO: fix stylesheet path
+        if package_name is not None:
+            header = lilypondfiletools.Block('header')
+            header.title = stringtools.to_space_delimited_lowercase(
+                package_name).title()
+            header.tagline = markuptools.Markup('""')
+            lilypond_file.items.insert(0, header)
         return lilypond_file
 
     ### PUBLIC METHODS ###
