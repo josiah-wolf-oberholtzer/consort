@@ -720,29 +720,6 @@ class DynamicExpression(abctools.AbjadValueObject):
                 Note("c'8.")
                 Note("g'8.")
 
-        ..  container:: example
-
-            ::
-
-                >>> music = Staff(r'''
-                ... { c'16 d'16 e'16 }
-                ... \times 2/3 { f'8 g'8 r8 }
-                ... ''')
-                >>> dynamic_expression = consort.DynamicExpression(
-                ...     dynamic_tokens='p mf mp pp f',
-                ...     )
-                >>> result = dynamic_expression._get_selections(music)
-                >>> selections, attach_components = result
-                >>> for _ in selections:
-                ...     _
-                ...
-
-            ::
-
-                >>> for _ in attach_components:
-                ...     _
-                ...
-
         """
         #print('---', music)
         initial_selections = self._partition_selections(music)
