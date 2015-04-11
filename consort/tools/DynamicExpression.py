@@ -290,6 +290,39 @@ class DynamicExpression(abctools.AbjadValueObject):
                 }
             }
 
+    ..  container:: example
+
+        ::
+
+            >>> music = Staff(r'''
+            ... { c'8 ~ c'4 }
+            ... \times 3/4 { d'16 d' d' d' r d' d' r }
+            ... ''')
+            >>> dynamic_expression = consort.DynamicExpression(
+            ...     dynamic_tokens='mf mp fff',
+            ...     start_dynamic_tokens='f',
+            ...     stop_dynamic_tokens='mf',
+            ...     )
+            >>> dynamic_expression(music)
+            >>> print(format(music))
+            \new Staff {
+                {
+                    c'8 \f ~ \>
+                    c'4
+                }
+                \tweak #'text #tuplet-number::calc-fraction-text
+                \times 3/4 {
+                    d'16 \mf
+                    d'16
+                    d'16
+                    d'16
+                    r16
+                    d'16
+                    d'16
+                    r16
+                }
+            }
+
     """
 
     ### CLASS VARIABLES ###
@@ -353,6 +386,8 @@ class DynamicExpression(abctools.AbjadValueObject):
         current_dynamic = None
         current_hairpin = None
         selections, components = self._get_selections(music)
+        #print(selections)
+        #print(components)
         length = len(components)
         if self.only_first:
             length = 1
@@ -438,27 +473,35 @@ class DynamicExpression(abctools.AbjadValueObject):
             if this_token == next_token == 'o':
                 next_token = self.dynamic_tokens[dynamic_seed]
         else:
+            #print('!!!', index)
             if index == 0:
                 if self.start_dynamic_tokens:
                     this_token = self.start_dynamic_tokens[original_seed]
-                    next_token = self.dynamic_tokens[dynamic_seed]
+                    next_token = self.dynamic_tokens[dynamic_seed + 1]
+                    #print('A1', this_token, next_token)
                 else:
                     this_token = self.dynamic_tokens[dynamic_seed]
                     next_token = self.dynamic_tokens[dynamic_seed + 1]
-            elif index == length - 1:
+                    #print('A2', this_token, next_token)
+            elif index == length - 1:  # Last component.
                 if self.stop_dynamic_tokens:
                     this_token = self.stop_dynamic_tokens[original_seed]
+                    #print('B1', this_token, next_token)
                 else:
                     this_token = self.dynamic_tokens[dynamic_seed]
-            elif index == length - 2:
+                    #print('B2', this_token, next_token)
+            elif index == length - 2:  # Next to last component.
                 this_token = self.dynamic_tokens[dynamic_seed]
                 if self.stop_dynamic_tokens:
                     next_token = self.stop_dynamic_tokens[original_seed]
+                    #print('C1', this_token, next_token)
                 else:
                     next_token = self.dynamic_tokens[dynamic_seed + 1]
+                    #print('C2', this_token, next_token)
             else:
                 this_token = self.dynamic_tokens[dynamic_seed]
                 next_token = self.dynamic_tokens[dynamic_seed + 1]
+                #print('D1', this_token, next_token)
 
         this_dynamic = indicatortools.Dynamic(this_token)
         this_dynamic_ordinal = mathtools.NegativeInfinity()
@@ -494,6 +537,8 @@ class DynamicExpression(abctools.AbjadValueObject):
                     property_path='circled-tip',
                     value=True,
                     )
+
+        #print(index, this_dynamic, next_dynamic, hairpin)
 
         return this_dynamic, hairpin, hairpin_override
 
