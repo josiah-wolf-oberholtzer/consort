@@ -307,6 +307,10 @@ afterGraceFraction = #(cons 127 128)
         \override SustainPedalLineSpanner.outside-staff-padding = 2
         \override SustainPedalLineSpanner.to-barline = ##t
         \override SystemStartSquare.thickness = 2
+
+        \override TextScript.parent-alignment-X = #center
+        \override TextScript.self-alignment-X = #center
+
         \override TextSpanner.padding = 1
         \override TupletBracket.breakable = ##t
         \override TupletBracket.direction = #down
