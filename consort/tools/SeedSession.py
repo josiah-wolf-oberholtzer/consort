@@ -10,11 +10,13 @@ class SeedSession(abctools.AbjadObject):
         '_current_timewise_logical_tie_seed',
         '_current_timewise_phrase_seed',
         '_current_phrased_voicewise_logical_tie_seed',
+        '_current_unphrased_voicewise_logical_tie_seed',
         '_current_timewise_music_specifier_seed',
         '_timewise_logical_tie_seeds',
         '_timewise_music_specifier_seeds',
         '_timewise_phrase_seeds',
         '_phrased_voicewise_logical_tie_seeds',
+        '_unphrased_voicewise_logical_tie_seeds',
         )
 
     ### INITIALIZER ###
@@ -28,6 +30,7 @@ class SeedSession(abctools.AbjadObject):
         self._timewise_logical_tie_seeds = {}
         self._timewise_phrase_seeds = {}
         self._phrased_voicewise_logical_tie_seeds = {}
+        self._unphrased_voicewise_logical_tie_seeds = {}
 
     ### SPECIAL METHODS ###
 
@@ -44,6 +47,10 @@ class SeedSession(abctools.AbjadObject):
             application_rate,
             voice,
             )
+        unphrased_voicewise_logical_tie_seed = self._get_unphrased_voicewise_logical_tie_seed(
+            music_specifier,
+            voice,
+            )
         timewise_phrase_seed = self._get_timewise_phrase_seed(
             attack_point_signature,
             music_specifier,
@@ -56,6 +63,8 @@ class SeedSession(abctools.AbjadObject):
         self._current_timewise_phrase_seed = timewise_phrase_seed
         self._current_phrased_voicewise_logical_tie_seed = \
             phrased_voicewise_logical_tie_seed
+        self._current_unphrased_voicewise_logical_tie_seed = \
+            unphrased_voicewise_logical_tie_seed
         self._current_timewise_music_specifier_seed = \
             timewise_music_specifier_seed
 
@@ -116,6 +125,19 @@ class SeedSession(abctools.AbjadObject):
             seed = self._timewise_logical_tie_seeds[music_specifier]
         return seed
 
+    def _get_unphrased_voicewise_logical_tie_seed(
+        self,
+        music_specifier,
+        voice,
+        ):
+        if voice not in self._unphrased_voicewise_logical_tie_seeds:
+            self._unphrased_voicewise_logical_tie_seeds[voice] = {}
+        if music_specifier not in self._unphrased_voicewise_logical_tie_seeds[voice]:
+            self._unphrased_voicewise_logical_tie_seeds[voice][music_specifier] = \
+                (music_specifier.seed or 0) - 1
+        self._unphrased_voicewise_logical_tie_seeds[voice][music_specifier] += 1
+        return self._unphrased_voicewise_logical_tie_seeds[voice][music_specifier]
+
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -128,4 +150,8 @@ class SeedSession(abctools.AbjadObject):
 
     @property
     def current_phrased_voicewise_logical_tie_seed(self):
+        return self._current_phrased_voicewise_logical_tie_seed
+
+    @property
+    def current_unphrased_voicewise_logical_tie_seed(self):
         return self._current_phrased_voicewise_logical_tie_seed
