@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import pitchtools
 from consort.tools.PitchHandler import PitchHandler
@@ -278,6 +279,21 @@ class PitchClassPitchHandler(PitchHandler):
             register_spread = int(register_spread)
             assert 0 <= register_spread < 12
         self._register_spread = register_spread
+
+    ### PUBLIC METHODS ###
+
+    def transpose(self, expr):
+        pitch_specifier = self.pitch_specifier
+        if pitch_specifier is not None:
+            pitch_specifier = pitch_specifier.transpose(expr)
+        register_specifier = self.register_specifier
+        if register_specifier is not None:
+            register_specifier = register_specifier.transpose(expr)
+        return new(
+            self,
+            pitch_specifier=pitch_specifier,
+            register_specifier=register_specifier,
+            )
 
     ### PUBLIC PROPERTIES ###
 
