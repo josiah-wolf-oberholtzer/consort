@@ -14,6 +14,7 @@ from abjad import set_
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
+from abjad.tools import instrumenttools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
 from abjad.tools import mathtools
@@ -328,6 +329,21 @@ class SegmentMaker(makertools.SegmentMaker):
             )
 
     ### PUBLIC METHODS ###
+
+    def get_end_instruments(self):
+        result = datastructuretools.TypedOrderedDict()
+        staves = iterate(self._score).by_class(scoretools.Staff)
+        staves = list(staves)
+        staves.sort(key=lambda x: x.name)
+        prototype = (instrumenttools.Instrument,)
+        for staff in staves:
+            last_leaf = inspect_(staff).get_leaf(-1)
+            instrument = inspect_(last_leaf).get_effective(prototype)
+            if instrument:
+                result[staff.name] = instrument.instrument_name
+            else:
+                result[staff.name] = None
+        return result
 
     def get_end_tempo_indication(self):
         prototype = indicatortools.Tempo
@@ -2373,10 +2389,11 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def update_segment_metadata(self):
         self._segment_metadata.update(
-            measure_count=len(self.meters),
+            end_instruments_by_staff=self.get_end_instruments(),
             end_tempo=self.get_end_tempo_indication(),
             end_time_signature=self.get_end_time_signature(),
             is_repeated=self.repeat,
+            measure_count=len(self.meters),
             )
 
     ### PUBLIC PROPERTIES ###
