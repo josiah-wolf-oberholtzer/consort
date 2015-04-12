@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import pitchtools
 
@@ -171,6 +172,88 @@ class RegisterSpecifier(abctools.AbjadValueObject):
             deviation = inflection(segment_position)
             register = register.transpose(deviation)
         return register
+
+    def transpose(self, transposition):
+        r'''Transposes register specifier.
+
+        ::
+
+            >>> register_specifier = consort.RegisterSpecifier(
+            ...     base_pitch=12,
+            ...     division_inflections=(
+            ...         consort.RegisterInflection(
+            ...             inflections=(-6, 3, 6),
+            ...             ratio=(1, 1),
+            ...             ),
+            ...         ),
+            ...     phrase_inflections=(
+            ...         consort.RegisterInflection(
+            ...             inflections=(3, -3),
+            ...             ratio=(1,),
+            ...             ),
+            ...         ),
+            ...     segment_inflections=(
+            ...         consort.RegisterInflection(
+            ...             inflections=(-12, -9, 0, 12),
+            ...             ratio=(3, 2, 1),
+            ...             ),
+            ...         ),
+            ...     )
+            >>> transposed_specifier = register_specifier.transpose(-6)
+            >>> print(format(transposed_specifier))
+            consort.tools.RegisterSpecifier(
+                base_pitch=pitchtools.NumberedPitch(6),
+                division_inflections=consort.tools.RegisterInflectionInventory(
+                    [
+                        consort.tools.RegisterInflection(
+                            inflections=pitchtools.IntervalSegment(
+                                (
+                                    pitchtools.NumberedInterval(-6),
+                                    pitchtools.NumberedInterval(3),
+                                    pitchtools.NumberedInterval(6),
+                                    ),
+                                item_class=pitchtools.NumberedInterval,
+                                ),
+                            ratio=mathtools.Ratio((1, 1)),
+                            ),
+                        ]
+                    ),
+                phrase_inflections=consort.tools.RegisterInflectionInventory(
+                    [
+                        consort.tools.RegisterInflection(
+                            inflections=pitchtools.IntervalSegment(
+                                (
+                                    pitchtools.NumberedInterval(3),
+                                    pitchtools.NumberedInterval(-3),
+                                    ),
+                                item_class=pitchtools.NumberedInterval,
+                                ),
+                            ratio=mathtools.Ratio((1,)),
+                            ),
+                        ]
+                    ),
+                segment_inflections=consort.tools.RegisterInflectionInventory(
+                    [
+                        consort.tools.RegisterInflection(
+                            inflections=pitchtools.IntervalSegment(
+                                (
+                                    pitchtools.NumberedInterval(-12),
+                                    pitchtools.NumberedInterval(-9),
+                                    pitchtools.NumberedInterval(0),
+                                    pitchtools.NumberedInterval(12),
+                                    ),
+                                item_class=pitchtools.NumberedInterval,
+                                ),
+                            ratio=mathtools.Ratio((3, 2, 1)),
+                            ),
+                        ]
+                    ),
+                )
+
+        '''
+        base_pitch = self.base_pitch or pitchtools.NamedPitch('C4')
+        base_pitch = base_pitch.transpose(transposition)
+        return new(self, base_pitch=base_pitch)
 
     ### PUBLIC PROPERTIES ###
 
