@@ -11,7 +11,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
         >>> import consort
         >>> register_specifier = consort.RegisterSpecifier(
-        ...     center_pitch=12,
+        ...     base_pitch=12,
         ...     division_inflections=(
         ...         consort.RegisterInflection(
         ...             inflections=(-6, 3, 6),
@@ -33,7 +33,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         ...     )
         >>> print(format(register_specifier))
         consort.tools.RegisterSpecifier(
-            center_pitch=pitchtools.NumberedPitch(12),
+            base_pitch=pitchtools.NumberedPitch(12),
             division_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
@@ -96,7 +96,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
-        '_center_pitch',
+        '_base_pitch',
         '_division_inflections',
         '_phrase_inflections',
         '_segment_inflections',
@@ -106,22 +106,22 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     def __init__(
         self,
-        center_pitch=None,
+        base_pitch=None,
         division_inflections=None,
         phrase_inflections=None,
         segment_inflections=None,
         ):
         from consort.tools import RegisterInflectionInventory
-        if isinstance(center_pitch, type(self)):
-            expr = center_pitch
-            self._center_pitch = expr.center_pitch
+        if isinstance(base_pitch, type(self)):
+            expr = base_pitch
+            self._base_pitch = expr.base_pitch
             self._division_inflections = expr.division_inflections
             self._phrase_inflections = expr.phrase_inflections
             self._segment_inflections = expr.segment_inflections
             return
-        if center_pitch is not None:
-            center_pitch = pitchtools.NumberedPitch(center_pitch)
-        self._center_pitch = center_pitch
+        if base_pitch is not None:
+            base_pitch = pitchtools.NumberedPitch(base_pitch)
+        self._base_pitch = base_pitch
         if division_inflections is not None:
             if not isinstance(division_inflections, collections.Sequence):
                 division_inflections = [division_inflections]
@@ -152,7 +152,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         phrase_position = attack_point_signature.phrase_position
         segment_position = attack_point_signature.segment_position
         seed = int(seed)
-        register = self.center_pitch
+        register = self.base_pitch
         if register is None:
             register = pitchtools.NumberedPitch(0)
         if self.division_inflections:
@@ -175,8 +175,8 @@ class RegisterSpecifier(abctools.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def center_pitch(self):
-        return self._center_pitch
+    def base_pitch(self):
+        return self._base_pitch
 
     @property
     def division_inflections(self):
