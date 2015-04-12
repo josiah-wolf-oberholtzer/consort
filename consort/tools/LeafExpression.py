@@ -3,13 +3,13 @@ from abjad import attach
 from abjad import inspect_
 from abjad import mutate
 from abjad import select
-from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
+from consort.tools.HashCachingObject import HashCachingObject
 
 
-class LeafExpression(abctools.AbjadValueObject):
+class LeafExpression(HashCachingObject):
 
     ### CLASS VARIABLES ###
 
@@ -25,13 +25,16 @@ class LeafExpression(abctools.AbjadValueObject):
         leaf=None,
         attachments=None,
         ):
+        HashCachingObject.__init__(self)
         prototype = scoretools.Leaf
-        if isinstance(leaf, prototype):
-            self._leaf = mutate(leaf).copy()
-        elif issubclass(leaf, prototype):
-            self._leaf = leaf()
-        else:
-            raise ValueError(leaf)
+        if leaf is not None:
+            if isinstance(leaf, prototype):
+                leaf = mutate(leaf).copy()
+            elif issubclass(leaf, prototype):
+                leaf = leaf()
+            else:
+                raise ValueError(leaf)
+        self._leaf = leaf
         if attachments is not None:
             attachments = tuple(attachments)
         self._attachments = attachments
