@@ -3,6 +3,7 @@ from abjad import new
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
+from abjad.tools import sequencetools
 from abjad.tools import timespantools
 
 
@@ -214,7 +215,65 @@ class PitchSpecifier(abctools.AbjadValueObject):
                 timespans.insert(annotated_timespan)
         return timespans
 
-    def transpose(self, expr):
+    def rotate(self, rotation):
+        r'''Rotates pitch specifier.
+
+        ::
+
+            >>> pitch_specifier = consort.PitchSpecifier(
+            ...     pitch_segments=(
+            ...         "c' e' g'",
+            ...         "fs' gs'",
+            ...         "b",
+            ...         ),
+            ...     ratio=(1, 2, 3),
+            ...     )
+            >>> rotated_pitch_specifier = pitch_specifier.rotate(1)
+            >>> print(format(rotated_pitch_specifier))
+            consort.tools.PitchSpecifier(
+                pitch_segments=(
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch('b'),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("c'"),
+                            pitchtools.NamedPitch('f'),
+                            pitchtools.NamedPitch('a'),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    pitchtools.PitchSegment(
+                        (
+                            pitchtools.NamedPitch("fs'"),
+                            pitchtools.NamedPitch("e'"),
+                            ),
+                        item_class=pitchtools.NamedPitch,
+                        ),
+                    ),
+                ratio=mathtools.Ratio((3, 1, 2)),
+                )
+
+        Returns new pitch specifier.
+        '''
+        rotation = int(rotation)
+        pitch_segments = tuple(
+            _.rotate(rotation, transpose=True)
+            for _ in self.pitch_segments
+            )
+        pitch_segments = sequencetools.rotate_sequence(
+            pitch_segments, rotation)
+        ratio = sequencetools.rotate_sequence(self.ratio, rotation)
+        return new(
+            self,
+            pitch_segments=pitch_segments,
+            ratio=ratio,
+            )
+
+    def transpose(self, expr=0):
         r'''Transposes pitch specifier.
 
         ::

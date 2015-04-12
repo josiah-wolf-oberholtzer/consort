@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 import collections
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
+from abjad.tools import sequencetools
 from abjad.tools import timespantools
 
 
@@ -269,6 +271,68 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                     )
                 timespans.insert(annotated_timespan)
         return timespans
+
+    def rotate(self, rotation):
+        r'''Rotates pitch operation specifier.
+
+        ::
+
+            >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
+            ...     pitch_operations=(
+            ...         pitchtools.PitchOperation((
+            ...             pitchtools.Rotation(1),
+            ...             pitchtools.Transposition(1),
+            ...             )),
+            ...         None,
+            ...         pitchtools.PitchOperation((
+            ...             pitchtools.Rotation(-1),
+            ...             pitchtools.Transposition(-1),
+            ...             ))
+            ...         ),
+            ...     ratio=(1, 2, 1),
+            ...     )
+            >>> rotated_specifier = pitch_operation_specifier.rotate(1)
+            >>> print(format(rotated_specifier))
+            consort.tools.PitchOperationSpecifier(
+                pitch_operations=(
+                    pitchtools.PitchOperation(
+                        operators=(
+                            pitchtools.Rotation(
+                                index=-1,
+                                transpose=True,
+                                ),
+                            pitchtools.Transposition(
+                                index=-1,
+                                ),
+                            ),
+                        ),
+                    pitchtools.PitchOperation(
+                        operators=(
+                            pitchtools.Rotation(
+                                index=1,
+                                transpose=True,
+                                ),
+                            pitchtools.Transposition(
+                                index=1,
+                                ),
+                            ),
+                        ),
+                    None,
+                    ),
+                ratio=mathtools.Ratio((1, 1, 2)),
+                )
+
+        Returns new pitch specifier.
+        '''
+        rotation = int(rotation)
+        pitch_operations = sequencetools.rotate_sequence(
+            self.pitch_operations, rotation)
+        ratio = sequencetools.rotate_sequence(self.ratio, rotation)
+        return new(
+            self,
+            pitch_operations=pitch_operations,
+            ratio=ratio,
+            )
 
     ### PUBLIC PROPERTIES ###
 
