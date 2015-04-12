@@ -173,7 +173,7 @@ class AttachmentExpression(HashCachingObject):
         selector = self.selector
         if selector is None:
             selector = selectortools.Selector()
-        selections = selector(music)
+        selections = selector(music, rotation=rotation)
         for i, selection in enumerate(selections, rotation):
             attachments = all_attachments[i]
             # print(i, selection, attachments)
