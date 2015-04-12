@@ -9,7 +9,7 @@ from abjad.tools import scoretools
 from abjad.tools import selectiontools
 
 
-class LeafExpression(abctools.AbjadObject):
+class LeafExpression(abctools.AbjadValueObject):
 
     ### CLASS VARIABLES ###
 
