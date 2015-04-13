@@ -64,8 +64,6 @@ def test_SegmentMaker_is_final_segment_01():
                                                     }
                                             }
                                     \bar "|."
-                                    \stopStaff
-                                    \startStaff
                                 }
                             }
                         }

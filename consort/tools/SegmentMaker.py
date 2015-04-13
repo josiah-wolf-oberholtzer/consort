@@ -487,7 +487,33 @@ class SegmentMaker(makertools.SegmentMaker):
         self.set_bar_number()
         self.postprocess_grace_containers()
         self.postprocess_ties()
+        self.postprocess_staff_lines_spanners()
         self.attach_bar_number_comments()
+
+    def postprocess_staff_lines_spanners(self):
+        segment_number = self._segment_metadata.get('segment_number', 1)
+        segment_count = self._segment_metadata.get('segment_count', 1)
+        if segment_number != segment_count:
+            return
+        for voice in iterate(self.score).by_class(scoretools.Voice):
+            for leaf in iterate(voice).by_class(scoretools.Leaf, reverse=True):
+                if not isinstance(leaf, scoretools.MultimeasureRest):
+                    continue
+                prototype = spannertools.StaffLinesSpanner
+                if not inspect_(leaf).has_spanner(prototype):
+                    continue
+                staff_lines_spanner = inspect_(leaf).get_spanner(prototype)
+                components = staff_lines_spanner.components
+                detach(staff_lines_spanner)
+                staff_lines_spanner = new(
+                    staff_lines_spanner,
+                    forbid_restarting=True,
+                    )
+                attach(
+                    staff_lines_spanner,
+                    components,
+                    name='staff_lines_spanner',
+                    )
 
     def attach_bar_number_comments(self):
         first_bar_number = self._segment_metadata.get('first_bar_number', 1)
