@@ -170,10 +170,11 @@ class SegmentMaker(makertools.SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_annotate_phrasing',
+        '_annotate_timespans',
         '_attack_point_map',
         '_desired_duration_in_seconds',
         '_discard_final_silence',
-        '_annotate_phrasing',
         '_lilypond_file',
         '_maximum_meter_run_length',
         '_meters',
@@ -196,9 +197,10 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __init__(
         self,
+        annotate_phrasing=None,
+        annotate_timespans=None,
         desired_duration_in_seconds=None,
         discard_final_silence=None,
-        annotate_phrasing=None,
         maximum_meter_run_length=None,
         name=None,
         omit_stylesheets=None,
@@ -214,6 +216,7 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         self.name = name
         self.annotate_phrasing = annotate_phrasing
+        self.annotate_timespans = annotate_timespans
         self.discard_final_silence = discard_final_silence
         self.desired_duration_in_seconds = desired_duration_in_seconds
         self.maximum_meter_run_length = maximum_meter_run_length
@@ -237,6 +240,8 @@ class SegmentMaker(makertools.SegmentMaker):
         ):
         import consort
         self._reset()
+
+        self._annotate_phrasing = self._annotate_phrasing or annotate
         self._segment_metadata = segment_metadata or \
             datastructuretools.TypedOrderedDict()
         self._previous_segment_metadata = previous_segment_metadata or \
@@ -290,12 +295,6 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.validate_score(self.score, verbose=verbose)
-
-        annotate_phrasing = self.annotate_phrasing
-        if annotate is not None:
-            annotate_phrasing = annotate
-        if annotate_phrasing:
-            consort.annotate(self.score, nonsilence=True)
 
         self.update_segment_metadata()
 
@@ -489,6 +488,28 @@ class SegmentMaker(makertools.SegmentMaker):
         self.postprocess_ties()
         self.postprocess_staff_lines_spanners()
         self.attach_bar_number_comments()
+        self.apply_annotations()
+
+    def apply_annotations(self):
+        import consort
+        if self.annotate_phrasing:
+            consort.annotate(self.score, nonsilence=True)
+        if self.annotate_timespans:
+            context = self.score['Time Signature Context']
+            for leaf in iterate(context).by_class(scoretools.Leaf):
+                timespan = inspect_(leaf).get_timespan()
+                start_fraction = markuptools.Markup.fraction(
+                    timespan.start_offset)
+                stop_fraction = markuptools.Markup.fraction(
+                    timespan.stop_offset)
+                markup_contents = [
+                    start_fraction,
+                    ':',
+                    stop_fraction,
+                    ]
+                markup = markuptools.Markup(markup_contents, Up)
+                markup = markup.pad_around(0.5).box()
+                attach(markup, leaf)
 
     def postprocess_staff_lines_spanners(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
@@ -2555,6 +2576,16 @@ class SegmentMaker(makertools.SegmentMaker):
         if expr is not None:
             expr = bool(expr)
         self._annotate_phrasing = expr
+
+    @property
+    def annotate_timespans(self):
+        return self._annotate_timespans
+
+    @annotate_timespans.setter
+    def annotate_timespans(self, expr):
+        if expr is not None:
+            expr = bool(expr)
+        self._annotate_timespans = expr
 
     @property
     def lilypond_file(self):
