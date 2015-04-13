@@ -225,13 +225,17 @@ class MusicSetting(abctools.AbjadValueObject):
             str,  # for demonstration purposes only
             type(None),
             )
-        for music_specifier in music_specifiers.values():
+        for abbreviation, music_specifier in sorted(music_specifiers.items()):
             if isinstance(music_specifier, prototype):
                 continue
-            elif isinstance(music_specifier, tuple) and \
+            elif isinstance(music_specifier, collections.Sequence) and \
                 all(isinstance(x, prototype) for x in music_specifier):
-                continue
-            raise ValueError(music_specifier)
+                music_specifier = consort.MusicSpecifierSequence(
+                    music_specifiers=music_specifier,
+                    )
+                music_specifiers[abbreviation] = music_specifier
+            else:
+                raise ValueError(music_specifier)
         self._music_specifiers = music_specifiers
         if silenced_contexts is not None:
             silenced_contexts = (str(_) for _ in silenced_contexts)
