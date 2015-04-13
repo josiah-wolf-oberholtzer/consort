@@ -133,7 +133,9 @@ class PitchHandler(HashCachingObject):
         return logical_ties
 
     @staticmethod
-    def _get_instrument(logical_tie):
+    def _get_instrument(logical_tie, music_specifier):
+        if music_specifier.instrument is not None:
+            return music_specifier.instrument
         component = logical_tie.head
         prototype = instrumenttools.Instrument
         instrument = inspect_(component).get_effective(prototype)
@@ -247,7 +249,7 @@ class PitchHandler(HashCachingObject):
         pitch_handler,
         ):
         if not instrument:
-            return None
+            return pitchtools.NamedPitch("c'")
         sounding_pitch = instrument.sounding_pitch_of_written_middle_c
         transposition_is_non_octave = sounding_pitch.named_pitch_class != \
             pitchtools.NamedPitchClass('c')
@@ -382,9 +384,10 @@ class PitchHandler(HashCachingObject):
                 pitch_choice_timespans_by_music_specifier,
                 segment_duration,
                 )
-            previous_pitch = pitch_handler(
+            pitch = pitch_handler(
                 attack_point_signature,
                 logical_tie,
+                music_specifier,
                 pitch_choices,
                 previous_pitch,
                 seed_session,
@@ -392,24 +395,62 @@ class PitchHandler(HashCachingObject):
             pitch_handler._set_previous_pitch(
                 attack_point_signature,
                 music_specifier,
-                previous_pitch,
+                pitch,
                 pitch_handler.pitch_application_rate,
                 previous_pitch_by_music_specifier,
                 voice,
                 )
-            if attack_point_signature.is_first_of_phrase:
-                instrument = PitchHandler._get_instrument(logical_tie)
-                sounding_pitch = PitchHandler._get_sounding_pitch(
-                    instrument, pitch_handler)
-                if sounding_pitch is not None:
-                    phrase = consort.SegmentMaker.logical_tie_to_phrase(
-                        logical_tie)
-                    transposition_command = indicatortools.LilyPondCommand(
-                        r"tag #'transposition \transposition {}".format(
-                            sounding_pitch),
-                        format_slot='before',
-                        )
-                    attach(transposition_command, phrase)
+            pitch_handler._apply_transposition(
+                attack_point_signature,
+                logical_tie,
+                music_specifier,
+                pitch_handler,
+                )
+            instrument = pitch_handler._get_instrument(
+                logical_tie,
+                music_specifier,
+                )
+            pitch_range = pitch_handler._get_pitch_range(
+                instrument,
+                logical_tie,
+                )
+            pitch_handler._process_logical_tie(
+                logical_tie,
+                pitch,
+                pitch_range,
+                seed_session.current_unphrased_voicewise_logical_tie_seed,
+                )
+
+    @staticmethod
+    def _apply_transposition(
+        attack_point_signature,
+        logical_tie,
+        music_specifier,
+        pitch_handler,
+        ):
+        import consort
+        if not attack_point_signature.is_first_of_phrase:
+            return
+        voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
+        instrument = PitchHandler._get_instrument(
+            logical_tie, music_specifier)
+        sounding_pitch = PitchHandler._get_sounding_pitch(
+            instrument, pitch_handler)
+        if pitch_handler and pitch_handler.pitches_are_nonsemantic:
+            sounding_pitch = pitchtools.NamedPitch('C4')
+        phrase = consort.SegmentMaker.logical_tie_to_phrase(logical_tie)
+        transposition_command = indicatortools.LilyPondCommand(
+            r"tag #'transposition \transposition {}".format(
+                sounding_pitch),
+            format_slot='before',
+            )
+        print(
+            'Transposing',
+            voice.name,
+            voice.index(phrase),
+            sounding_pitch,
+            )
+        attach(transposition_command, phrase)
 
     @staticmethod
     def _set_previous_pitch(

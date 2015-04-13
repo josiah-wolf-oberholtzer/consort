@@ -97,12 +97,13 @@ class PitchClassPitchHandler(PitchHandler):
         self,
         attack_point_signature,
         logical_tie,
+        music_specifier,
         pitch_choices,
         previous_pitch,
         seed_session,
         ):
         previous_pitch_class = pitchtools.NamedPitchClass(previous_pitch)
-        instrument = self._get_instrument(logical_tie)
+        instrument = self._get_instrument(logical_tie, music_specifier)
         pitch_range = self._get_pitch_range(
             instrument,
             logical_tie,
@@ -129,8 +130,6 @@ class PitchClassPitchHandler(PitchHandler):
             )
         pitch = self._apply_deviation(
             pitch,
-            #seed_session.current_timewise_music_specifier_seed,
-            #seed_session.current_phrased_voicewise_logical_tie_seed,
             seed_session.current_unphrased_voicewise_logical_tie_seed,
             )
         pitch_range = self.pitch_range or pitch_range
@@ -139,13 +138,6 @@ class PitchClassPitchHandler(PitchHandler):
                 pitch,
                 pitch_range,
                 )
-        self._process_logical_tie(
-            logical_tie,
-            pitch,
-            pitch_range,
-            #seed_session.current_phrased_voicewise_logical_tie_seed,
-            seed_session.current_unphrased_voicewise_logical_tie_seed,
-            )
         return pitch
 
     ### PRIVATE METHODS ###
