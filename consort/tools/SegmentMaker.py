@@ -622,7 +622,18 @@ class SegmentMaker(makertools.SegmentMaker):
         for parent in parentage:
             if isinstance(parent, scoretools.Voice):
                 voice = parent
+                break
         return voice
+
+    @staticmethod
+    def logical_tie_to_staff(logical_tie):
+        parentage = inspect_(logical_tie.head).get_parentage()
+        staff = None
+        for parent in parentage:
+            if isinstance(parent, scoretools.Staff):
+                staff = parent
+                break
+        return staff
 
     def postprocess_grace_containers(self):
         import consort
