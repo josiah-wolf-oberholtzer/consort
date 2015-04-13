@@ -55,14 +55,9 @@ def test_SegmentMaker_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \stopStaff
-                                    \startStaff
                                 }
                                 % [Voice 1] Measure 2
                                 {
-                                    \stopStaff
-                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
-                                    \startStaff
                                     R1 * 7/16
                                     \stopStaff
                                     \startStaff
@@ -79,14 +74,9 @@ def test_SegmentMaker_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \stopStaff
-                                    \startStaff
                                 }
                                 % [Voice 2] Measure 2
                                 {
-                                    \stopStaff
-                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
-                                    \startStaff
                                     R1 * 7/16
                                     \stopStaff
                                     \startStaff
@@ -674,14 +664,9 @@ def test_SegmentMaker_07():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 7/16
-                                    \stopStaff
-                                    \startStaff
                                 }
                                 % [Voice 3] Measure 2
                                 {
-                                    \stopStaff
-                                    \once \override Staff.StaffSymbol.line-positions = #'(0)
-                                    \startStaff
                                     R1 * 7/16
                                     \stopStaff
                                     \startStaff

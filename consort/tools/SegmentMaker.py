@@ -2126,16 +2126,26 @@ class SegmentMaker(makertools.SegmentMaker):
             assert container_stop_offset <= absolute_meter_stop_offset
             if meter_timespan.is_congruent_to_timespan(container_timespan) \
                 and SegmentMaker.division_is_silent(container):
-                multi_measure_rest = scoretools.MultimeasureRest(1)
+                multimeasure_rest = scoretools.MultimeasureRest(1)
                 duration = inspect_(container).get_duration()
                 multiplier = durationtools.Multiplier(duration)
-                attach(multiplier, multi_measure_rest)
-                container[:] = [multi_measure_rest]
+                attach(multiplier, multimeasure_rest)
+                container[:] = [multimeasure_rest]
                 if not forbid_staff_lines_spanner:
-                    staff_lines_spanner = spannertools.StaffLinesSpanner([0])
+                    previous_leaf = multimeasure_rest._get_leaf(-1)
+                    if isinstance(previous_leaf, scoretools.MultimeasureRest):
+                        staff_lines_spanner = \
+                            inspect_(previous_leaf).get_spanner(
+                                spannertools.StaffLinesSpanner)
+                        components = staff_lines_spanner.components
+                        components = components + [multimeasure_rest]
+                        detach(staff_lines_spanner)
+                    else:
+                        staff_lines_spanner = spannertools.StaffLinesSpanner([0])
+                        components = [multimeasure_rest]
                     attach(
                         staff_lines_spanner,
-                        container,
+                        components,
                         name='staff_lines_spanner',
                         )
             else:
