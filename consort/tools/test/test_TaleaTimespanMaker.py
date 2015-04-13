@@ -421,33 +421,63 @@ def test_TaleaTimespanMaker_10():
         timespantools.TimespanInventory(
             [
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 8),
+                    stop_offset=durationtools.Offset(0, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 8),
+                    stop_offset=durationtools.Offset(0, 1),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
-                consort.tools.SilentTimespan(
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
-                consort.tools.PerformedTimespan(
+                consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='One',
                     ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(7, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(7, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(7, 8),
+                    stop_offset=durationtools.Offset(1, 1),
                     voice_name='Two',
                     ),
                 ]
@@ -477,34 +507,49 @@ def test_TaleaTimespanMaker_11():
         timespantools.TimespanInventory(
             [
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 8),
+                    stop_offset=durationtools.Offset(0, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
-                    voice_name='One',
-                    ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(1, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 8),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
-                    voice_name='Two',
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(7, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(7, 8),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='One',
                     ),
                 ]
             )
@@ -534,44 +579,59 @@ def test_TaleaTimespanMaker_12():
         timespantools.TimespanInventory(
             [
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 8),
+                    stop_offset=durationtools.Offset(0, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
-                    voice_name='One',
-                    ),
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
+                    start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
-                    voice_name='Two',
+                    voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
-                    voice_name='One',
-                    ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(5, 8),
                     voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 8),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(7, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 8),
+                    stop_offset=durationtools.Offset(1, 1),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
-                    voice_name='Two',
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(9, 8),
+                    voice_name='One',
                     ),
                 ]
             )
@@ -602,44 +662,59 @@ def test_TaleaTimespanMaker_13():
         timespantools.TimespanInventory(
             [
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 8),
+                    stop_offset=durationtools.Offset(0, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
-                    voice_name='One',
-                    ),
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
+                    start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(3, 8),
-                    voice_name='Two',
+                    voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(1, 2),
-                    voice_name='One',
-                    ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(5, 8),
                     voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 8),
+                    stop_offset=durationtools.Offset(1, 2),
+                    voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(1, 2),
                     stop_offset=durationtools.Offset(5, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(7, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 8),
+                    stop_offset=durationtools.Offset(1, 1),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
-                    voice_name='Two',
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(9, 8),
+                    voice_name='One',
                     ),
                 ]
             )
@@ -670,38 +745,58 @@ def test_TaleaTimespanMaker_14():
         timespantools.TimespanInventory(
             [
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(-1, 8),
+                    stop_offset=durationtools.Offset(0, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
                     stop_offset=durationtools.Offset(1, 8),
                     voice_name='One',
                     ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
-                    voice_name='One',
-                    ),
                 consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(0, 1),
+                    stop_offset=durationtools.Offset(1, 8),
+                    voice_name='Two',
+                    ),
+                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 8),
                     stop_offset=durationtools.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 8),
+                    stop_offset=durationtools.Offset(3, 8),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(1, 4),
                     stop_offset=durationtools.Offset(3, 8),
                     voice_name='Two',
                     ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(3, 8),
                     stop_offset=durationtools.Offset(1, 2),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(1, 2),
-                    voice_name='Two',
+                    start_offset=durationtools.Offset(5, 8),
+                    stop_offset=durationtools.Offset(3, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(3, 4),
+                    stop_offset=durationtools.Offset(1, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(9, 8),
+                    voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=durationtools.Offset(9, 8),
+                    stop_offset=durationtools.Offset(5, 4),
                     voice_name='One',
                     ),
                 ]
@@ -739,6 +834,52 @@ def test_TaleaTimespanMaker_15():
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
         timespantools.TimespanInventory(
-            []
+            [
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(13, 4),
+                    stop_offset=durationtools.Offset(7, 2),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(13, 4),
+                    stop_offset=durationtools.Offset(7, 2),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(13, 4),
+                    stop_offset=durationtools.Offset(7, 2),
+                    voice_name='Three',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 2),
+                    stop_offset=durationtools.Offset(4, 1),
+                    voice_name='One',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 2),
+                    stop_offset=durationtools.Offset(4, 1),
+                    voice_name='Three',
+                    ),
+                consort.tools.PerformedTimespan(
+                    start_offset=durationtools.Offset(7, 2),
+                    stop_offset=durationtools.Offset(4, 1),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(4, 1),
+                    stop_offset=durationtools.Offset(17, 4),
+                    voice_name='One',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(4, 1),
+                    stop_offset=durationtools.Offset(17, 4),
+                    voice_name='Two',
+                    ),
+                consort.tools.SilentTimespan(
+                    start_offset=durationtools.Offset(4, 1),
+                    stop_offset=durationtools.Offset(17, 4),
+                    voice_name='Three',
+                    ),
+                ]
             )
         ''')
