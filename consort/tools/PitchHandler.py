@@ -569,10 +569,12 @@ class PitchHandler(HashCachingObject):
         return pitch_choice_timespans
 
     def transpose(self, expr):
-        return new(
-            self,
-            pitch_specifier=self.pitch_specifier.transpose(expr),
+        import consort
+        pitch_specifier = self.pitch_specifier or consort.PitchSpecifier(
+            pitch_segments='C4',
             )
+        pitch_specifier = pitch_specifier.transpose(expr)
+        return new(self, pitch_specifier=pitch_specifier)
 
     ### PUBLIC PROPERTIES ###
 
