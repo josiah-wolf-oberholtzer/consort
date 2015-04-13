@@ -339,8 +339,8 @@ class TaleaTimespanMaker(TimespanMaker):
                     silence_duration +
                     initial_silence_duration
                     )
-                if self.padding:
-                    maximum_offset += (self.padding * 2)
+                #if self.padding:
+                #    maximum_offset += (self.padding * 2)
                 maximum_offset = min(maximum_offset, stop_offset)
                 if self.step_anchor is Left:
                     maximum_offset = min(
@@ -352,9 +352,9 @@ class TaleaTimespanMaker(TimespanMaker):
                             ),
                         )
                 current_offset = start_offset + initial_silence_duration
-                if self.padding:
-                    current_offset += self.padding
-                    maximum_offset -= self.padding
+                #if self.padding:
+                #    current_offset += self.padding
+                #    maximum_offset -= self.padding
                 group_offset = current_offset
 
                 valid_durations = []
@@ -422,8 +422,8 @@ class TaleaTimespanMaker(TimespanMaker):
                 silence_duration = next(silence_talea)
                 grouping = next(playing_groupings)
                 durations = [next(playing_talea) for _ in range(grouping)]
-                if self.padding:
-                    start_offset += self.padding
+                #if self.padding:
+                #    start_offset += self.padding
 
                 maximum_offset = start_offset + sum(durations) + \
                     silence_duration
@@ -431,8 +431,8 @@ class TaleaTimespanMaker(TimespanMaker):
                 if self.step_anchor is Left:
                     maximum_offset = min(maximum_offset,
                         start_offset + silence_duration)
-                if self.padding:
-                    maximum_offset -= self.padding
+                #if self.padding:
+                #    maximum_offset -= self.padding
 
                 group_offset = current_offset = start_offset
 
