@@ -1045,12 +1045,35 @@ class SegmentMaker(makertools.SegmentMaker):
                 timespan)
             demultiplexed_maquette[voice_name][layer]
         for voice_name in demultiplexed_maquette:
+            for layer, timespans in demultiplexed_maquette[voice_name].items():
+                cleaned_layer = SegmentMaker.cleanup_maquette_layer(timespans)
+                demultiplexed_maquette[voice_name][layer] = cleaned_layer
+        for voice_name in demultiplexed_maquette:
             timespan_inventories = demultiplexed_maquette[voice_name]
             timespan_inventory = \
                 SegmentMaker.resolve_timespan_inventories(
                     timespan_inventories)
             demultiplexed_maquette[voice_name] = timespan_inventory
         return demultiplexed_maquette
+
+    @staticmethod
+    def cleanup_maquette_layer(timespans):
+        import consort
+        performed_timespans = timespantools.TimespanInventory()
+        silent_timespans = timespantools.TimespanInventory()
+        for timespan in timespans:
+            if isinstance(timespan, consort.PerformedTimespan):
+                performed_timespans.append(timespan)
+            elif isinstance(timespan, consort.SilentTimespan):
+                silent_timespans.append(timespan)
+            else:
+                raise ValueError(timespan)
+        silent_timespans.compute_logical_or()
+        for performed_timespan in performed_timespans:
+            silent_timespans - performed_timespan
+        performed_timespans.extend(silent_timespans)
+        performed_timespans.sort()
+        return performed_timespans
 
     @staticmethod
     def division_is_silent(division):
