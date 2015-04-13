@@ -173,7 +173,7 @@ class SegmentMaker(makertools.SegmentMaker):
         '_attack_point_map',
         '_desired_duration_in_seconds',
         '_discard_final_silence',
-        '_is_annotated',
+        '_annotate_phrasing',
         '_lilypond_file',
         '_maximum_meter_run_length',
         '_meters',
@@ -198,7 +198,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self,
         desired_duration_in_seconds=None,
         discard_final_silence=None,
-        is_annotated=None,
+        annotate_phrasing=None,
         maximum_meter_run_length=None,
         name=None,
         omit_stylesheets=None,
@@ -213,7 +213,7 @@ class SegmentMaker(makertools.SegmentMaker):
             self,
             )
         self.name = name
-        self.is_annotated = is_annotated
+        self.annotate_phrasing = annotate_phrasing
         self.discard_final_silence = discard_final_silence
         self.desired_duration_in_seconds = desired_duration_in_seconds
         self.maximum_meter_run_length = maximum_meter_run_length
@@ -291,10 +291,10 @@ class SegmentMaker(makertools.SegmentMaker):
             ):
             self.validate_score(self.score, verbose=verbose)
 
-        is_annotated = self.is_annotated
+        annotate_phrasing = self.annotate_phrasing
         if annotate is not None:
-            is_annotated = annotate
-        if is_annotated:
+            annotate_phrasing = annotate
+        if annotate_phrasing:
             consort.annotate(self.score, nonsilence=True)
 
         self.update_segment_metadata()
@@ -2547,14 +2547,14 @@ class SegmentMaker(makertools.SegmentMaker):
         return final_markup
 
     @property
-    def is_annotated(self):
-        return self._is_annotated
+    def annotate_phrasing(self):
+        return self._annotate_phrasing
 
-    @is_annotated.setter
-    def is_annotated(self, expr):
+    @annotate_phrasing.setter
+    def annotate_phrasing(self, expr):
         if expr is not None:
             expr = bool(expr)
-        self._is_annotated = expr
+        self._annotate_phrasing = expr
 
     @property
     def lilypond_file(self):
