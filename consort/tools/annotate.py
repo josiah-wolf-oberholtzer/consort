@@ -11,12 +11,10 @@ from abjad.tools import schemetools
 
 def make_annotated_phrase(phrase, color=None):
     duration = inspect_(phrase).get_duration()
-    if duration != 1:
-        note = scoretools.Note("c'''1")
-        annotated_phrase = scoretools.Tuplet(duration, (note,))
-    else:
-        note = scoretools.Note("c'''2")
-        annotated_phrase = scoretools.Tuplet(2, (note,))
+    annotated_phrase = scoretools.FixedDurationTuplet(duration)
+    durations = [inspect_(_).get_duration() for _ in phrase]
+    leaves = scoretools.make_leaves([0], durations)
+    annotated_phrase.extend(leaves)
     if color:
         override(annotated_phrase).tuplet_bracket.color = color
     return annotated_phrase
