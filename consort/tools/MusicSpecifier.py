@@ -7,6 +7,7 @@ from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
+from abjad.tools import pitchtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import stringtools
 from consort.tools.HashCachingObject import HashCachingObject
@@ -282,8 +283,11 @@ class MusicSpecifier(HashCachingObject):
         Returns new music specifier.
         '''
         if isinstance(expr, str):
-            pitch = pitchtools.NamedPitch(str)
-            expr = pitchtools.NamedPitch('C4') - pitch
+            try:
+                pitch = pitchtools.NamedPitch(str)
+                expr = pitchtools.NamedPitch('C4') - pitch
+            except:
+                expr = pitchtools.NamedInterval(expr)
         pitch_handler = self.pitch_handler
         if pitch_handler is not None:
             pitch_handler = pitch_handler.transpose(expr)
