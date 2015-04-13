@@ -281,6 +281,9 @@ class MusicSpecifier(HashCachingObject):
 
         Returns new music specifier.
         '''
+        if isinstance(expr, str):
+            pitch = pitchtools.NamedPitch(str)
+            expr = pitchtools.NamedPitch('C4') - pitch
         pitch_handler = self.pitch_handler
         if pitch_handler is not None:
             pitch_handler = pitch_handler.transpose(expr)

@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import mathtools
@@ -148,6 +149,15 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
 
     def __len__(self):
         return len(self._music_specifiers)
+
+    ### PUBLIC METHODS ###
+
+    def transpose(self, expr):
+        music_specifiers = (_.transpose(expr) for _ in self.music_specifiers)
+        return new(
+            self,
+            music_specifiers=music_specifiers,
+            )
 
     ### PUBLIC PROPERTIES ###
 
