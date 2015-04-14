@@ -438,10 +438,13 @@ class PitchHandler(HashCachingObject):
             instrument, pitch_handler)
         if pitch_handler and pitch_handler.pitches_are_nonsemantic:
             sounding_pitch = pitchtools.NamedPitch('C4')
+        if sounding_pitch is None:
+            sounding_pitch = pitchtools.NamedPitch('C4')
+        if sounding_pitch == pitchtools.NamedPitch('C4'):
+            return
         phrase = consort.SegmentMaker.logical_tie_to_phrase(logical_tie)
         transposition_command = indicatortools.LilyPondCommand(
-            r"tag #'transposition \transposition {}".format(
-                sounding_pitch),
+            "transpose {!s} c'".format(sounding_pitch),
             format_slot='before',
             )
         print(
