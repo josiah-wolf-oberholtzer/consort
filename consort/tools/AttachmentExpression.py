@@ -129,6 +129,7 @@ class AttachmentExpression(HashCachingObject):
         '_scope',
         '_selector',
         '_is_annotation',
+        '_is_destructive',
         )
 
     ### INITIALIZER ###
@@ -139,6 +140,7 @@ class AttachmentExpression(HashCachingObject):
         selector=None,
         scope=None,
         is_annotation=None,
+        is_destructive=None,
         ):
         HashCachingObject.__init__(self)
         if attachments is not None:
@@ -158,6 +160,9 @@ class AttachmentExpression(HashCachingObject):
         if is_annotation is not None:
             is_annotation = bool(is_annotation)
         self._is_annotation = is_annotation
+        if is_destructive is not None:
+            is_destructive = bool(is_destructive)
+        self._is_destructive = is_destructive
 
     ### PUBLIC METHODS ###
 
@@ -167,13 +172,22 @@ class AttachmentExpression(HashCachingObject):
         name=None,
         rotation=0,
         ):
-        if not self.attachments:
-            return
-        all_attachments = datastructuretools.CyclicTuple(self.attachments)
         selector = self.selector
         if selector is None:
             selector = selectortools.Selector()
         selections = selector(music, rotation=rotation)
+        self._apply_attachments(
+            selections,
+            name=name,
+            rotation=rotation,
+            )
+
+    ### PRIVATE METHODS ###
+
+    def _apply_attachments(self, selections, name=None, rotation=None):
+        if not self.attachments:
+            return
+        all_attachments = datastructuretools.CyclicTuple(self.attachments)
         for i, selection in enumerate(selections, rotation):
             attachments = all_attachments[i]
             # print(i, selection, attachments)
@@ -239,6 +253,10 @@ class AttachmentExpression(HashCachingObject):
     @property
     def is_annotation(self):
         return self._is_annotation
+
+    @property
+    def is_destructive(self):
+        return self._is_destructive
 
     @property
     def scope(self):

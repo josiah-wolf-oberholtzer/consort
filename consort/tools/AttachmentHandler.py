@@ -5,6 +5,7 @@ from abjad import inspect_
 from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import scoretools
+from abjad.tools import selectortools
 from abjad.tools import systemtools
 
 
@@ -56,12 +57,48 @@ class AttachmentHandler(abctools.AbjadValueObject):
         if not self.attachment_expressions:
             return
         items = self.attachment_expressions.items()
-        for name, attachment_expression in items:
+
+        destructive_expressions = set()
+        selectors = set()
+        selectors_to_expressions = {}
+        for item in items:
+            name, attachment_expression = item
+            if attachment_expression.is_destructive:
+                destructive_expressions.add(item)
+                continue
+            selector = attachment_expression.selector
+            if selector is None:
+                selector = selectortools.Selector()
+            selectors.add(selector)
+            if selector not in selectors_to_expressions:
+                selectors_to_expressions[selector] = set()
+            selectors_to_expressions[selector].add(item)
+        selectors_to_selections = selectortools.Selector.run_selectors(
+            music, selectors,
+            rotation=seed,
+            )
+        for selector in selectors:
+            expressions = selectors_to_expressions[selector]
+            selections = selectors_to_selections[selector]
+            for name, attachment_expression in expressions:
+                attachment_expression._apply_attachments(
+                    selections,
+                    name=name,
+                    rotation=seed,
+                    )
+        for name, attachment_expression in destructive_expressions:
             attachment_expression(
                 music,
                 name=name,
                 rotation=seed,
                 )
+
+#        for name, attachment_expression in items:
+#            attachment_expression(
+#                music,
+#                name=name,
+#                rotation=seed,
+#                )
 
     def __getattr__(self, item):
         if item in self.attachment_expressions:
