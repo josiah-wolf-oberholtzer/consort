@@ -2,6 +2,7 @@
 from __future__ import print_function
 import abc
 import collections
+from abjad import new
 from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
@@ -163,6 +164,13 @@ class TimespanMaker(abctools.AbjadValueObject):
                 for timespan in sounding_timespans_by_context[context_name]:
                     silent_timespans - timespan
             timespans.extend(silent_timespans)
+
+    ### PUBLIC METHODS ###
+
+    def rotate(self, rotation):
+        seed = self.seed or 0
+        seed = seed + rotation
+        return new(self, seed=seed)
 
     ### PUBLIC PROPERTIES ###
 
