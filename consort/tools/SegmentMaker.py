@@ -9,6 +9,7 @@ from abjad import detach
 from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
+from abjad import override
 from abjad import new
 from abjad import set_
 from abjad.tools import datastructuretools
@@ -170,6 +171,7 @@ class SegmentMaker(makertools.SegmentMaker):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_annotate_colors',
         '_annotate_phrasing',
         '_annotate_timespans',
         '_attack_point_map',
@@ -197,6 +199,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def __init__(
         self,
+        annotate_colors=None,
         annotate_phrasing=None,
         annotate_timespans=None,
         desired_duration_in_seconds=None,
@@ -215,6 +218,7 @@ class SegmentMaker(makertools.SegmentMaker):
             self,
             )
         self.name = name
+        self.annotate_colors = annotate_colors
         self.annotate_phrasing = annotate_phrasing
         self.annotate_timespans = annotate_timespans
         self.discard_final_silence = discard_final_silence
@@ -507,6 +511,21 @@ class SegmentMaker(makertools.SegmentMaker):
                 markup = markuptools.Markup(markup, Up)
                 markup = markup.pad_around(0.5).box()
                 attach(markup, leaf)
+        if self.annotate_colors:
+            for voice in iterate(self.score).by_class(scoretools.Voice):
+                for phrase in voice:
+                    music_specifier = inspect_(phrase).get_indicator(
+                        consort.MusicSpecifier)
+                    if music_specifier is None:
+                        continue
+                    color = music_specifier.color
+                    if color is None:
+                        continue
+                    override(phrase).beam.color = color
+                    override(phrase).dots.color = color
+                    override(phrase).flag.color = color
+                    override(phrase).note_head.color = color
+                    override(phrase).stem.color = color
 
     def postprocess_staff_lines_spanners(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
@@ -2563,6 +2582,16 @@ class SegmentMaker(makertools.SegmentMaker):
             )
         final_markup = markuptools.Markup(italic, 'down')
         return final_markup
+
+    @property
+    def annotate_colors(self):
+        return self._annotate_colors
+
+    @annotate_colors.setter
+    def annotate_colors(self, expr):
+        if expr is not None:
+            expr = bool(expr)
+        self._annotate_colors = expr
 
     @property
     def annotate_phrasing(self):
