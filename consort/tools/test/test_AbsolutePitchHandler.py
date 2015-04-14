@@ -56,7 +56,6 @@ def test_AbsolutePitchHandler_01():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -121,7 +120,6 @@ def test_AbsolutePitchHandler_02():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -194,7 +192,6 @@ def test_AbsolutePitchHandler_03():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -303,7 +300,6 @@ def test_AbsolutePitchHandler_04():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -401,7 +397,6 @@ def test_AbsolutePitchHandler_05():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -444,7 +439,6 @@ def test_AbsolutePitchHandler_05():
                     }
                     \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 2] Measure 1
                                 {
@@ -543,7 +537,6 @@ def test_AbsolutePitchHandler_06():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -586,7 +579,6 @@ def test_AbsolutePitchHandler_06():
                     }
                     \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 2] Measure 1
                                 {
@@ -693,7 +685,6 @@ def test_AbsolutePitchHandler_07():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -736,7 +727,6 @@ def test_AbsolutePitchHandler_07():
                     }
                     \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 2] Measure 1
                                 {
@@ -831,7 +821,6 @@ def test_AbsolutePitchHandler_08():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -874,7 +863,6 @@ def test_AbsolutePitchHandler_08():
                     }
                     \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 2] Measure 1
                                 {
@@ -969,7 +957,6 @@ def test_AbsolutePitchHandler_09():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -1012,7 +999,6 @@ def test_AbsolutePitchHandler_09():
                     }
                     \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 2] Measure 1
                                 {
@@ -1108,7 +1094,6 @@ def test_AbsolutePitchHandler_10():
                 \context StaffGroup = "Grouped Staves Staff Group" <<
                     \context Staff = "Staff 1" {
                         \context Voice = "Voice 1" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 1] Measure 1
                                 {
@@ -1151,7 +1136,6 @@ def test_AbsolutePitchHandler_10():
                     }
                     \context Staff = "Staff 2" {
                         \context Voice = "Voice 2" {
-                            \tag #'transposition \transposition c'
                             {
                                 % [Voice 2] Measure 1
                                 {
