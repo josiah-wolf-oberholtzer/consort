@@ -502,12 +502,9 @@ class SegmentMaker(makertools.SegmentMaker):
                     timespan.start_offset)
                 stop_fraction = markuptools.Markup.fraction(
                     timespan.stop_offset)
-                markup_contents = [
-                    start_fraction,
-                    ':',
-                    stop_fraction,
-                    ]
-                markup = markuptools.Markup(markup_contents, Up)
+                markup_contents = [start_fraction, ' : ', stop_fraction]
+                markup = markuptools.Markup.concat(markup_contents)
+                markup = markuptools.Markup(markup, Up)
                 markup = markup.pad_around(0.5).box()
                 attach(markup, leaf)
 
