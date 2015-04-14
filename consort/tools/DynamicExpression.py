@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 from abjad import attach
+from abjad import inspect_
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -425,6 +426,10 @@ class DynamicExpression(abctools.AbjadValueObject):
                             dynamic = indicatortools.Dynamic(dynamic_name)
         if dynamic != current_dynamic and dynamic.name != 'o':
             attach(dynamic, components[-1], name=name)
+        if dynamic.name == 'o' and current_hairpin:
+            next_leaf = components[-1]._get_leaf(1)
+            if next_leaf is not None:
+                current_hairpin._append(next_leaf)
 
     ### PRIVATE METHODS ###
 
