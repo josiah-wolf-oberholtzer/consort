@@ -226,9 +226,10 @@ class MusicSpecifier(HashCachingObject):
 
     ### PUBLIC METHODS ###
 
-    #def rotate(self, **kwargs):
-    #    # like new, but rotating instead of assigning
-    #    pass
+    def rotate(self, rotation):
+        seed = self.seed or 0
+        seed = seed + rotation
+        return new(self, seed=seed)
 
     def transpose(self, expr):
         r'''Transposes music specifier.
