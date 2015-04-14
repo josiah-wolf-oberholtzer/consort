@@ -3,6 +3,7 @@ import abc
 from abjad import attach
 from abjad.tools import abctools
 from abjad.tools import indicatortools
+from abjad.tools import instrumenttools
 from abjad.tools import scoretools
 from abjad.tools import stringtools
 
@@ -62,6 +63,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
         clef,
         abbreviation=None,
         context_name=None,
+        instrument=None,
         tag=None,
         ):
         name = name.title()
@@ -81,6 +83,9 @@ class ScoreTemplate(abctools.AbjadValueObject):
         attach(clef, staff)
         if tag:
             self._attach_tag(tag, staff)
+        if instrument:
+            assert isinstance(instrument, instrumenttools.Instrument)
+            attach(instrument, staff)
         return staff
 
     def _populate(self):
