@@ -284,7 +284,7 @@ class MusicSpecifier(HashCachingObject):
         '''
         if isinstance(expr, str):
             try:
-                pitch = pitchtools.NamedPitch(str)
+                pitch = pitchtools.NamedPitch(expr)
                 expr = pitchtools.NamedPitch('C4') - pitch
             except:
                 expr = pitchtools.NamedInterval(expr)
