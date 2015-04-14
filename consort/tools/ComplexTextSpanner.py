@@ -99,7 +99,7 @@ class ComplexTextSpanner(spannertools.Spanner):
             elif next_is_similar:
                 self._make_spanner_start(lilypond_format_bundle)
 
-            elif leaf.written_duration < durationtools.Duration(1, 8):
+            elif leaf.written_duration <= durationtools.Duration(1, 4):
                 self._make_markup(lilypond_format_bundle)
 
             else:
