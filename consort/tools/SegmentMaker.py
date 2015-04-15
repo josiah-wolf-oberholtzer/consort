@@ -734,51 +734,51 @@ class SegmentMaker(makertools.SegmentMaker):
         if current_violators:
             raise AssertionError
         for voice in iterate(score).by_class(scoretools.Voice):
-            print(voice.name)
+            #print(voice.name)
             voice_name = voice.name
             for phrase in voice:
-                print('PHRASE:', phrase)
+                #print('PHRASE:', phrase)
                 music_specifier = inspect_(phrase).get_indicator(
                     consort.MusicSpecifier)
                 if music_specifier is None:
-                    print('\tNO MUSIC SPECIFIER')
+                    #print('\tNO MUSIC SPECIFIER')
                     continue
                 pitch_handler = music_specifier.pitch_handler
                 if pitch_handler is not None:
                     if pitch_handler.pitches_are_nonsemantic:
-                        print('\tPITCHES ARE NONSEMANTIC')
+                        #print('\tPITCHES ARE NONSEMANTIC')
                         continue
                 instrument = music_specifier.instrument
                 if instrument is None:
                     instrument = inspect_(phrase).get_effective(
                         instrumenttools.Instrument)
                 if instrument is None:
-                    print('\tNO INSTRUMENT')
+                    #print('\tNO INSTRUMENT')
                     continue
                 pitch_range = instrument.pitch_range
                 for leaf in iterate(phrase).by_class((
                     scoretools.Note, scoretools.Chord,
                     )):
                     timespan = inspect_(leaf).get_timespan()
-                    print('\t{!r}'.format(leaf))
+                    #print('\t{!r}'.format(leaf))
                     if isinstance(leaf, scoretools.Note):
                         note_head = leaf.note_head
-                        print('\t\t', note_head)
+                        #print('\t\t', note_head)
                         if note_head.written_pitch not in pitch_range:
                             override(leaf).note_head.color = 'red'
                             print(
-                                '\t\tOut of range:',
+                                '    Out of range:',
                                 voice_name,
                                 timespan,
                                 leaf,
                                 )
                     elif isinstance(leaf, scoretools.Chord):
                         for note_head in leaf.note_heads:
-                            print('\t\t', note_head)
+                            #print('\t\t', note_head)
                             if note_head.written_pitch not in pitch_range:
                                 note_head.tweak.color = 'red'
                                 print(
-                                    '\t\tOut of range:',
+                                    '    Out of range:',
                                     voice_name,
                                     timespan,
                                     leaf,
