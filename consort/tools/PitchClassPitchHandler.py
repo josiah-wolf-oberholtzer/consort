@@ -193,18 +193,18 @@ class PitchClassPitchHandler(PitchHandler):
             self.forbid_repetitions:
             if self.pitch_application_rate == 'phrase':
                 if attack_point_signature.is_first_of_phrase:
-                    while pitch_class == previous_pitch_class:
+                    while float(pitch_class) == float(previous_pitch_class):
                         seed += 1
                         pitch_class = pitch_choices[seed]
                         pitch_class = pitchtools.NamedPitchClass(pitch_class)
             elif self.pitch_application_rate == 'division':
                 if attack_point_signature.is_first_of_division:
-                    while pitch_class == previous_pitch_class:
+                    while float(pitch_class) == float(previous_pitch_class):
                         seed += 1
                         pitch_class = pitch_choices[seed]
                         pitch_class = pitchtools.NamedPitchClass(pitch_class)
             else:
-                while pitch_class == previous_pitch_class:
+                while float(pitch_class) == float(previous_pitch_class):
                     seed += 1
                     pitch_class = pitch_choices[seed]
                     pitch_class = pitchtools.NamedPitchClass(pitch_class)

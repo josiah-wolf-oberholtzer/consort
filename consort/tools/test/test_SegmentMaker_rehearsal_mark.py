@@ -50,8 +50,8 @@ def test_SegmentMaker_rehearsal_mark_01():
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \bar "||"
                     \context RhythmicStaff = "Staff 1" {
+                        \bar "||"
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1
@@ -118,8 +118,8 @@ def test_SegmentMaker_rehearsal_mark_02():
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
-                    \bar "||"
                     \context RhythmicStaff = "Staff 1" {
+                        \bar "||"
                         \context Voice = "Voice 1" {
                             {
                                 % [Voice 1] Measure 1

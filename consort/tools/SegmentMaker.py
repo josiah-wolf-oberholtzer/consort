@@ -403,7 +403,7 @@ class SegmentMaker(makertools.SegmentMaker):
             return
         elif segment_number == 1:
             return
-        bar_line = indicatortools.LilyPondCommand('bar "||"', 'before')
+        bar_line = indicatortools.LilyPondCommand('bar "||"', 'opening')
         for staff in iterate(self.score).by_class(scoretools.Staff):
             attach(bar_line, staff)
 
