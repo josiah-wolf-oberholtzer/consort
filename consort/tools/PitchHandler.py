@@ -448,7 +448,7 @@ class PitchHandler(HashCachingObject):
             format_slot='before',
             )
         print(
-            'Transposing',
+            '        transposing',
             voice.name,
             voice.index(phrase),
             sounding_pitch,
