@@ -1,11 +1,9 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 import collections
-from abjad import new
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
-from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
