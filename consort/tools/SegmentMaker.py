@@ -720,6 +720,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @staticmethod
     def validate_score(score, verbose=True):
+        import consort
         manager = systemtools.WellformednessManager(expr=score)
         triples = manager()
         for current_violators, current_total, current_check in triples:
@@ -731,6 +732,48 @@ class SegmentMaker(makertools.SegmentMaker):
                     ))
         if current_violators:
             raise AssertionError
+        for voice in iterate(score).by_class(scoretools.Voice):
+            voice_name = voice.name
+            for phrase in voice:
+                music_specifier = inspect_(phrase).get_indicator(
+                    consort.MusicSpecifier)
+                if music_specifier is None:
+                    continue
+                pitch_handler = music_specifier.pitch_handler
+                if pitch_handler is not None:
+                    if pitch_handler.pitches_are_nonsemantic:
+                        continue
+                instrument = music_specifier.instrument
+                if instrument is None:
+                    instrument = inspect_(phrase).get_effective(
+                        instrumenttools.Instrument)
+                if instrument is None:
+                    continue
+                pitch_range = instrument.pitch_range
+                for leaf in iterate(phrase).by_class((
+                    scoretools.Note, scoretools.Chord,
+                    )):
+                    timespan = inspect_(leaf).get_timespan()
+                    if isinstance(leaf, scoretools.Note):
+                        note_head = leaf.note_head
+                        if note_head.written_pitch not in pitch_range:
+                            note_head.tweak.color = 'red'
+                            print(
+                                'Out of range:',
+                                voice_name,
+                                timespan,
+                                leaf,
+                                )
+                    elif isinstance(leaf, scoretools.Chord):
+                        for note_head in leaf.note_heads:
+                            if note_head.written_pitch not in pitch_range:
+                                note_head.tweak.color = 'red'
+                                print(
+                                    'Out of range:',
+                                    voice_name,
+                                    timespan,
+                                    leaf,
+                                    )
 
     @staticmethod
     def can_rewrite_meter(inscribed_timespan):
