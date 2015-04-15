@@ -556,6 +556,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     components,
                     name='staff_lines_spanner',
                     )
+                break
 
     def attach_bar_number_comments(self):
         first_bar_number = self._segment_metadata.get('first_bar_number', 1)
