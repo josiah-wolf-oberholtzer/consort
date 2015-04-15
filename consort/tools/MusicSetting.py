@@ -257,6 +257,8 @@ class MusicSetting(abctools.AbjadValueObject):
             assert isinstance(timespan_maker,
                 consort.TimespanMaker), \
                 timespan_maker
+        else:
+            timespan_maker = consort.FloodedTimespanMaker()
         self._timespan_maker = timespan_maker
 
     ### SPECIAL METHODS ###
@@ -288,8 +290,9 @@ class MusicSetting(abctools.AbjadValueObject):
             segment_timespan,
             timespan_quantization,
             )
-        for target_timespan in target_timespans:
-            timespan_inventory = self.timespan_maker(
+        for i, target_timespan in enumerate(target_timespans):
+            timespan_maker = self.timespan_maker.rotate(i)
+            timespan_inventory = timespan_maker(
                 layer=layer,
                 music_specifiers=music_specifiers,
                 silenced_context_names=silenced_context_names,

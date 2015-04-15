@@ -56,6 +56,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         self,
         layer=None,
         music_specifiers=None,
+        rotation=None,
         silenced_context_names=None,
         target_timespan=None,
         timespan_inventory=None,

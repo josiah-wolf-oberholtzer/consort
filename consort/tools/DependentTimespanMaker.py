@@ -128,6 +128,7 @@ class DependentTimespanMaker(TimespanMaker):
         output_masks=None,
         padding=None,
         rotation_indices=None,
+        seed=None,
         timespan_specifier=None,
         voice_names=None,
         ):
@@ -135,6 +136,7 @@ class DependentTimespanMaker(TimespanMaker):
             self,
             output_masks=output_masks,
             padding=padding,
+            seed=seed,
             timespan_specifier=timespan_specifier,
             )
         if hysteresis is not None:

@@ -91,12 +91,14 @@ class FloodedTimespanMaker(TimespanMaker):
         self,
         output_masks=None,
         padding=None,
+        seed=None,
         timespan_specifier=None,
         ):
         TimespanMaker.__init__(
             self,
             output_masks=output_masks,
             padding=padding,
+            seed=seed,
             timespan_specifier=timespan_specifier,
             )
 

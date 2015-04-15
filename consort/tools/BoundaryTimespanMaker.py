@@ -114,6 +114,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         labels=None,
         output_masks=None,
         padding=None,
+        seed=None,
         timespan_specifier=None,
         voice_names=None,
         ):
@@ -121,6 +122,7 @@ class BoundaryTimespanMaker(TimespanMaker):
             self,
             output_masks=output_masks,
             padding=padding,
+            seed=seed,
             timespan_specifier=timespan_specifier,
             )
         if start_duration is not None:
