@@ -97,8 +97,8 @@ def test_BoundaryTimespanMaker_02():
         ])
     target_timespan = timespantools.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
-        start_duration=5,
-        stop_duration=5,
+        start_talea=5,
+        stop_talea=5,
         voice_names=(
             'A',
             'B',
@@ -179,8 +179,8 @@ def test_BoundaryTimespanMaker_03():
     target_timespan = timespantools.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
         labels=['labeled'],
-        start_duration=5,
-        stop_duration=5,
+        start_talea=5,
+        stop_talea=5,
         voice_names=(
             'A',
             'B',
@@ -260,8 +260,8 @@ def test_BoundaryTimespanMaker_04():
         ])
     target_timespan = timespantools.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
-        start_duration=5,
-        stop_duration=15,
+        start_talea=5,
+        stop_talea=15,
         voice_names=(
             'A',
             'B',
@@ -336,8 +336,8 @@ def test_BoundaryTimespanMaker_05():
         ])
     target_timespan = timespantools.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
-        start_duration=5,
-        stop_duration=5,
+        start_talea=5,
+        stop_talea=5,
         labels=['labeled'],
         )
     timespan_inventory = timespan_maker(

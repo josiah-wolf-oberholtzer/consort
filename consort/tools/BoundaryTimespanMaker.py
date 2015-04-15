@@ -33,8 +33,6 @@ class BoundaryTimespanMaker(TimespanMaker):
                 counts=(1,),
                 denominator=4,
                 ),
-            start_groupings=(1,),
-            stop_groupings=(1,),
             voice_names=('Violin 1 Voice', 'Violin 2 Voice'),
             )
 
@@ -144,32 +142,48 @@ class BoundaryTimespanMaker(TimespanMaker):
             timespan_specifier=timespan_specifier,
             )
 
-        assert isinstance(start_talea, rhythmmakertools.Talea)
-        assert start_talea.counts
-        assert all(0 < x for x in start_talea.counts)
+        if start_talea is not None:
+            if not isinstance(start_talea, rhythmmakertools.Talea):
+                start_duration = durationtools.Duration(start_talea)
+                counts = [start_duration.numerator]
+                denominator = start_duration.denominator
+                start_talea = rhythmmakertools.Talea(
+                    counts=counts,
+                    denominator=denominator,
+                    )
+            assert isinstance(start_talea, rhythmmakertools.Talea)
+            assert start_talea.counts
+            assert all(0 < x for x in start_talea.counts)
         self._start_talea = start_talea
 
-        if start_groupings is None:
-            start_groupings = [1]
-        if not isinstance(start_groupings, collections.Sequence):
-            start_groupings = (start_groupings,)
-        start_groupings = tuple(int(x) for x in start_groupings)
-        assert len(start_groupings)
-        assert all(0 < x for x in start_groupings)
+        if start_groupings is not None:
+            if not isinstance(start_groupings, collections.Sequence):
+                start_groupings = (start_groupings,)
+            start_groupings = tuple(int(x) for x in start_groupings)
+            assert len(start_groupings)
+            assert all(0 < x for x in start_groupings)
         self._start_groupings = start_groupings
 
-        assert isinstance(stop_talea, rhythmmakertools.Talea)
-        assert stop_talea.counts
-        assert all(0 < x for x in stop_talea.counts)
+        if stop_talea is not None:
+            if not isinstance(stop_talea, rhythmmakertools.Talea):
+                stop_duration = durationtools.Duration(stop_talea)
+                counts = [stop_duration.numerator]
+                denominator = stop_duration.denominator
+                stop_talea = rhythmmakertools.Talea(
+                    counts=counts,
+                    denominator=denominator,
+                    )
+            assert isinstance(stop_talea, rhythmmakertools.Talea)
+            assert stop_talea.counts
+            assert all(0 < x for x in stop_talea.counts)
         self._stop_talea = stop_talea
 
-        if stop_groupings is None:
-            stop_groupings = [1]
-        if not isinstance(stop_groupings, collections.Sequence):
-            stop_groupings = (stop_groupings,)
-        stop_groupings = tuple(int(x) for x in stop_groupings)
-        assert len(stop_groupings)
-        assert all(0 < x for x in stop_groupings)
+        if stop_groupings is not None:
+            if not isinstance(stop_groupings, collections.Sequence):
+                stop_groupings = (stop_groupings,)
+            stop_groupings = tuple(int(x) for x in stop_groupings)
+            assert len(stop_groupings)
+            assert all(0 < x for x in stop_groupings)
         self._stop_groupings = stop_groupings
 
         if labels is not None:
@@ -228,18 +242,22 @@ class BoundaryTimespanMaker(TimespanMaker):
         if start_talea is None:
             start_talea = rhythmmakertools.Talea((0,), 1)
         start_talea = consort.Cursor(start_talea)
+
         start_groupings = self.start_groupings
         if start_groupings is None:
             start_groupings = (1,)
-        start_groupings = consort.Cursor(self.start_groupings)
+        start_groupings = consort.Cursor(start_groupings)
+
         stop_talea = self.stop_talea
         if stop_talea is None:
             stop_talea = rhythmmakertools.Talea((0,), 1)
         stop_talea = consort.Cursor(stop_talea)
+
         stop_groupings = self.stop_groupings
         if stop_groupings is None:
             stop_groupings = (1,)
-        stop_groupings = consort.Cursor(self.stop_groupings)
+        stop_groupings = consort.Cursor(stop_groupings)
+
         if self.seed:
             if self.seed < 0:
                 for _ in range(abs(self.seed)):
