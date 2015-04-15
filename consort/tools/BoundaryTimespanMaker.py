@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import collections
-from abjad import inspect_
 from abjad.tools import durationtools
+from abjad.tools import rhythmmakertools
 from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
@@ -13,14 +13,28 @@ class BoundaryTimespanMaker(TimespanMaker):
 
         >>> import consort
         >>> timespan_maker = consort.BoundaryTimespanMaker(
-        ...     start_duration=(1, 2),
-        ...     stop_duration=(1, 4),
+        ...     start_talea=rhythmmakertools.Talea(
+        ...         counts=[1],
+        ...         denominator=2,
+        ...         ),
+        ...     stop_talea=rhythmmakertools.Talea(
+        ...         counts=[1],
+        ...         denominator=4,
+        ...         ),
         ...     voice_names=('Violin 1 Voice', 'Violin 2 Voice'),
         ...     )
         >>> print(format(timespan_maker))
         consort.tools.BoundaryTimespanMaker(
-            start_duration=durationtools.Duration(1, 2),
-            stop_duration=durationtools.Duration(1, 4),
+            start_talea=rhythmmakertools.Talea(
+                counts=(1,),
+                denominator=2,
+                ),
+            stop_talea=rhythmmakertools.Talea(
+                counts=(1,),
+                denominator=4,
+                ),
+            start_groupings=(1,),
+            stop_groupings=(1,),
             voice_names=('Violin 1 Voice', 'Violin 2 Voice'),
             )
 
@@ -100,8 +114,10 @@ class BoundaryTimespanMaker(TimespanMaker):
 
     __slots__ = (
         '_labels',
-        '_start_duration',
-        '_stop_duration',
+        '_start_talea',
+        '_start_groupings',
+        '_stop_talea',
+        '_stop_groupings',
         '_voice_names',
         )
 
@@ -109,8 +125,10 @@ class BoundaryTimespanMaker(TimespanMaker):
 
     def __init__(
         self,
-        start_duration=None,
-        stop_duration=None,
+        start_talea=None,
+        stop_talea=None,
+        start_groupings=None,
+        stop_groupings=None,
         labels=None,
         output_masks=None,
         padding=None,
@@ -125,19 +143,41 @@ class BoundaryTimespanMaker(TimespanMaker):
             seed=seed,
             timespan_specifier=timespan_specifier,
             )
-        if start_duration is not None:
-            start_duration = durationtools.Duration(start_duration)
-            assert 0 < start_duration
-        self._start_duration = start_duration
-        if stop_duration is not None:
-            stop_duration = durationtools.Duration(stop_duration)
-            assert 0 < stop_duration
-        self._stop_duration = stop_duration
+
+        assert isinstance(start_talea, rhythmmakertools.Talea)
+        assert start_talea.counts
+        assert all(0 < x for x in start_talea.counts)
+        self._start_talea = start_talea
+
+        if start_groupings is None:
+            start_groupings = [1]
+        if not isinstance(start_groupings, collections.Sequence):
+            start_groupings = (start_groupings,)
+        start_groupings = tuple(int(x) for x in start_groupings)
+        assert len(start_groupings)
+        assert all(0 < x for x in start_groupings)
+        self._start_groupings = start_groupings
+
+        assert isinstance(stop_talea, rhythmmakertools.Talea)
+        assert stop_talea.counts
+        assert all(0 < x for x in stop_talea.counts)
+        self._stop_talea = stop_talea
+
+        if stop_groupings is None:
+            stop_groupings = [1]
+        if not isinstance(stop_groupings, collections.Sequence):
+            stop_groupings = (stop_groupings,)
+        stop_groupings = tuple(int(x) for x in stop_groupings)
+        assert len(stop_groupings)
+        assert all(0 < x for x in stop_groupings)
+        self._stop_groupings = stop_groupings
+
         if labels is not None:
             if isinstance(labels, str):
                 labels = (labels,)
             labels = tuple(str(_) for _ in labels)
         self._labels = labels
+
         if voice_names is not None:
             voice_names = tuple(voice_names)
         self._voice_names = voice_names
@@ -178,9 +218,41 @@ class BoundaryTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        import consort
+
         new_timespans = timespantools.TimespanInventory()
         if not self.voice_names and not self.labels:
             return new_timespans
+
+        start_talea = self.start_talea
+        if start_talea is None:
+            start_talea = rhythmmakertools.Talea((0,), 1)
+        start_talea = consort.Cursor(start_talea)
+        start_groupings = self.start_groupings
+        if start_groupings is None:
+            start_groupings = (1,)
+        start_groupings = consort.Cursor(self.start_groupings)
+        stop_talea = self.stop_talea
+        if stop_talea is None:
+            stop_talea = rhythmmakertools.Talea((0,), 1)
+        stop_talea = consort.Cursor(stop_talea)
+        stop_groupings = self.stop_groupings
+        if stop_groupings is None:
+            stop_groupings = (1,)
+        stop_groupings = consort.Cursor(self.stop_groupings)
+        if self.seed:
+            if self.seed < 0:
+                for _ in range(abs(self.seed)):
+                    start_talea.backtrack()
+                    start_groupings.backtrack()
+                    stop_talea.backtrack()
+                    stop_groupings.backtrack()
+            else:
+                    next(start_talea)
+                    next(start_groupings)
+                    next(stop_talea)
+                    next(stop_groupings)
+
         context_counter = collections.Counter()
         preexisting_timespans = self._collect_preexisting_timespans(
             target_timespan=target_timespan,
@@ -195,9 +267,12 @@ class BoundaryTimespanMaker(TimespanMaker):
                     new_timespan_mapping[context_name] = \
                         timespantools.TimespanInventory()
                 context_seed = context_counter[context_name]
-                if self.start_duration:
+                start_durations = []
+                for _ in range(next(start_groupings)):
+                    start_durations.append(next(start_talea))
+                if start_durations:
                     timespans = music_specifier(
-                        durations=[self.start_duration],
+                        durations=start_durations,
                         layer=layer,
                         output_masks=self.output_masks,
                         padding=self.padding,
@@ -208,9 +283,12 @@ class BoundaryTimespanMaker(TimespanMaker):
                         )
                     context_counter[context_name] += 1
                     new_timespan_mapping[context_name].extend(timespans)
-                if self.stop_duration:
+                stop_durations = []
+                for _ in range(next(stop_groupings)):
+                    stop_durations.append(next(stop_talea))
+                if stop_durations:
                     timespans = music_specifier(
-                        durations=[self.stop_duration],
+                        durations=stop_durations,
                         layer=layer,
                         output_masks=self.output_masks,
                         padding=self.padding,
@@ -233,12 +311,20 @@ class BoundaryTimespanMaker(TimespanMaker):
         return self._labels
 
     @property
-    def start_duration(self):
-        return self._start_duration
+    def start_talea(self):
+        return self._start_talea
 
     @property
-    def stop_duration(self):
-        return self._stop_duration
+    def stop_talea(self):
+        return self._stop_talea
+
+    @property
+    def start_groupings(self):
+        return self._start_groupings
+
+    @property
+    def stop_groupings(self):
+        return self._stop_groupings
 
     @property
     def voice_names(self):
