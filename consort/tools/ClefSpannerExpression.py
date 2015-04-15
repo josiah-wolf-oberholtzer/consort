@@ -38,7 +38,7 @@ class ClefSpannerExpression(abctools.AbjadValueObject):
                     pitch = float(pitch)
                     weighted_pitch = pitch * weight
                     weighted_pitches.append(weighted_pitch)
-                weights.append(weight)
+                    weights.append(weight)
         sum_of_weights = sum(weights)
         sum_of_weighted_pitches = sum(weighted_pitches)
         weighted_average = sum_of_weighted_pitches / sum_of_weights
