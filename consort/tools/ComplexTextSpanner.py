@@ -3,6 +3,7 @@ from abjad.tools import durationtools
 from abjad.tools import lilypondnametools
 from abjad.tools import spannertools
 from abjad.tools import markuptools
+from abjad.tools import scoretools
 
 
 class ComplexTextSpanner(spannertools.Spanner):
@@ -49,7 +50,44 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         ::
 
-            >>> staff = Staff("c'8 d' e' f' g' a' b' c''")
+            >>> import consort
+            >>> staff = Staff("c'4 d'4 e'4 f'4")
+            >>> spanner_one = consort.ComplexTextSpanner(
+            ...     direction=Up,
+            ...     markup='foo',
+            ...     )
+            >>> spanner_two = consort.ComplexTextSpanner(
+            ...     direction=Down,
+            ...     markup='bar',
+            ...     )
+            >>> attach(spanner_one, staff[:2])
+            >>> attach(spanner_two, staff[3:])
+
+        ::
+
+            >>> print(format(staff))
+            \new Staff {
+                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left.text = \markup { foo }
+                \once \override TextSpanner.bound-details.right-broken.text = ##f
+                \once \override TextSpanner.bound-details.right.text = \markup {
+                    \draw-line
+                        #'(0 . -1)
+                    }
+                \once \override TextSpanner.dash-fraction = 1
+                \once \override TextSpanner.direction = #up
+                c'4 \startTextSpan
+                d'4
+                <> \stopTextSpan
+                e'4
+                f'4 _ \markup { bar }
+            }
+
+    ..  container:: example
+
+        ::
+
+            >>> staff = Staff("c'8 d' e' r r a' b' c''")
             >>> spanner_one = consort.ComplexTextSpanner(
             ...     direction=Up,
             ...     markup='foo',
@@ -77,8 +115,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 c'8 \startTextSpan
                 d'8
                 e'8
-                f'8
-                g'8
+                r8
+                r8
                 a'8
                 b'8
                 c''8
@@ -287,6 +325,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 #        return next_spanner_is_similar
 
     def _next_spanner_is_similar(self, leaf):
+        leaf_prototype = (scoretools.Note, scoretools.Chord)
         next_spanner = None
         next_spanner_is_similar = False
         for index in range(1, 5):
@@ -295,6 +334,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 break
             has_spanner = next_leaf._has_spanner(type(self))
             if not has_spanner:
+                if isinstance(next_leaf, leaf_prototype):
+                    break
                 continue
             next_spanner = next_leaf._get_spanner(type(self))
             if next_spanner.direction != self.direction:
@@ -305,6 +346,7 @@ class ComplexTextSpanner(spannertools.Spanner):
         return next_spanner_is_similar
 
     def _previous_spanner_is_similar(self, leaf):
+        leaf_prototype = (scoretools.Note, scoretools.Chord)
         previous_spanner = None
         previous_spanner_is_similar = False
         for index in range(1, 5):
@@ -313,6 +355,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 break
             has_spanner = previous_leaf._has_spanner(type(self))
             if not has_spanner:
+                if isinstance(previous_leaf, leaf_prototype):
+                    break
                 continue
             previous_spanner = previous_leaf._get_spanner(type(self))
             if previous_spanner.direction != self.direction:
