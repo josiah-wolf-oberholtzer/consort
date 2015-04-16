@@ -540,7 +540,7 @@ class SegmentMaker(makertools.SegmentMaker):
         for voice in iterate(self.score).by_class(scoretools.Voice):
             for leaf in iterate(voice).by_class(scoretools.Leaf, reverse=True):
                 if not isinstance(leaf, scoretools.MultimeasureRest):
-                    continue
+                    break
                 prototype = spannertools.StaffLinesSpanner
                 if not inspect_(leaf).has_spanner(prototype):
                     continue
