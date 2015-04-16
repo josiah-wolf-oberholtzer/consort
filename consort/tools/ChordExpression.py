@@ -264,8 +264,12 @@ class ChordExpression(LogicalTieExpression):
         pitches = [base_pitch.transpose(x) for x in new_chord_expr]
         pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]
         if pitch_range is not None:
-            assert all(pitch in pitch_range for pitch in pitches), \
-                (pitch_range, base_pitch, chord_expr, pitches)
+            if not all(pitch in pitch_range for pitch in pitches):
+                print('Pitch range:', pitch_range)
+                print('Base pitch:', base_pitch)
+                print('Chord expression:', chord_expr)
+                print('Resulting pitches:', pitches)
+                raise Exception
 
         pitch_set = self._respell_pitch_set(pitchtools.PitchSet(pitches))
         pitches = pitchtools.PitchSegment(sorted(pitch_set))
