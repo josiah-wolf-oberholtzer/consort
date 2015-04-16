@@ -8,40 +8,147 @@ from abjad.tools import markuptools
 class ComplexTextSpanner(spannertools.Spanner):
     r'''A complex text spanner.
 
-    ::
+    ..  container:: example
 
-        >>> import consort
-        >>> staff = Staff("c'4 d'4 r4 e'4")
-        >>> spanner_one = consort.ComplexTextSpanner(
-        ...     direction=Up,
-        ...     markup='foo',
-        ...     )
-        >>> spanner_two = consort.ComplexTextSpanner(
-        ...     direction=Down,
-        ...     markup='bar',
-        ...     )
-        >>> attach(spanner_one, staff[:2])
-        >>> attach(spanner_two, staff[3:])
+        ::
 
-    ::
+            >>> import consort
+            >>> staff = Staff("c'4 d'4 r4 e'4")
+            >>> spanner_one = consort.ComplexTextSpanner(
+            ...     direction=Up,
+            ...     markup='foo',
+            ...     )
+            >>> spanner_two = consort.ComplexTextSpanner(
+            ...     direction=Down,
+            ...     markup='bar',
+            ...     )
+            >>> attach(spanner_one, staff[:2])
+            >>> attach(spanner_two, staff[3:])
 
-        >>> print(format(staff))
-        \new Staff {
-            \once \override TextSpanner.bound-details.left-broken.text = ##f
-            \once \override TextSpanner.bound-details.left.text = \markup { foo }
-            \once \override TextSpanner.bound-details.right-broken.text = ##f
-            \once \override TextSpanner.bound-details.right.text = \markup {
-                \draw-line
-                    #'(0 . -1)
-                }
-            \once \override TextSpanner.dash-fraction = 1
-            \once \override TextSpanner.direction = #up
-            c'4 \startTextSpan
-            d'4
-            <> \stopTextSpan
-            r4
-            e'4 _ \markup { bar }
-        }
+        ::
+
+            >>> print(format(staff))
+            \new Staff {
+                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left.text = \markup { foo }
+                \once \override TextSpanner.bound-details.right-broken.text = ##f
+                \once \override TextSpanner.bound-details.right.text = \markup {
+                    \draw-line
+                        #'(0 . -1)
+                    }
+                \once \override TextSpanner.dash-fraction = 1
+                \once \override TextSpanner.direction = #up
+                c'4 \startTextSpan
+                d'4
+                <> \stopTextSpan
+                r4
+                e'4 _ \markup { bar }
+            }
+
+    ..  container:: example
+
+        ::
+
+            >>> staff = Staff("c'8 d' e' f' g' a' b' c''")
+            >>> spanner_one = consort.ComplexTextSpanner(
+            ...     direction=Up,
+            ...     markup='foo',
+            ...     )
+            >>> spanner_two = consort.ComplexTextSpanner(
+            ...     direction=Up,
+            ...     markup='foo',
+            ...     )
+            >>> attach(spanner_one, staff[:3])
+            >>> attach(spanner_two, staff[5:])
+
+        ::
+
+            >>> print(format(staff))
+            \new Staff {
+                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left.text = \markup { foo }
+                \once \override TextSpanner.bound-details.right-broken.text = ##f
+                \once \override TextSpanner.bound-details.right.text = \markup {
+                    \draw-line
+                        #'(0 . -1)
+                    }
+                \once \override TextSpanner.dash-fraction = 1
+                \once \override TextSpanner.direction = #up
+                c'8 \startTextSpan
+                d'8
+                e'8
+                f'8
+                g'8
+                a'8
+                b'8
+                c''8
+                <> \stopTextSpan
+            }
+
+    ..  container:: example
+
+        ::
+
+            >>> staff = Staff("c'8 d' e' f' g' a' b' c''")
+            >>> spanner_one = consort.ComplexTextSpanner(
+            ...     direction=Up,
+            ...     markup='foo',
+            ...     )
+            >>> spanner_two = consort.ComplexTextSpanner(
+            ...     direction=Down,
+            ...     markup='bar',
+            ...     )
+            >>> spanner_three = consort.ComplexTextSpanner(
+            ...     direction=Up,
+            ...     markup='foo',
+            ...     )
+            >>> attach(spanner_one, staff[:3])
+            >>> attach(spanner_two, staff[3:5])
+            >>> attach(spanner_three, staff[5:])
+
+        ::
+
+            >>> print(format(staff))
+            \new Staff {
+                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left.text = \markup { foo }
+                \once \override TextSpanner.bound-details.right-broken.text = ##f
+                \once \override TextSpanner.bound-details.right.text = \markup {
+                    \draw-line
+                        #'(0 . -1)
+                    }
+                \once \override TextSpanner.dash-fraction = 1
+                \once \override TextSpanner.direction = #up
+                c'8 \startTextSpan
+                d'8
+                e'8
+                <> \stopTextSpan
+                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left.text = \markup { bar }
+                \once \override TextSpanner.bound-details.right-broken.text = ##f
+                \once \override TextSpanner.bound-details.right.text = \markup {
+                    \draw-line
+                        #'(0 . -1)
+                    }
+                \once \override TextSpanner.dash-fraction = 1
+                \once \override TextSpanner.direction = #down
+                f'8 \startTextSpan
+                g'8
+                <> \stopTextSpan
+                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left.text = \markup { foo }
+                \once \override TextSpanner.bound-details.right-broken.text = ##f
+                \once \override TextSpanner.bound-details.right.text = \markup {
+                    \draw-line
+                        #'(0 . -1)
+                    }
+                \once \override TextSpanner.dash-fraction = 1
+                \once \override TextSpanner.direction = #up
+                a'8 \startTextSpan
+                b'8
+                c''8
+                <> \stopTextSpan
+            }
 
     '''
 
@@ -165,33 +272,69 @@ class ComplexTextSpanner(spannertools.Spanner):
         string = r'<> \stopTextSpan'
         lilypond_format_bundle.after.indicators.append(string)
 
+#    def _next_spanner_is_similar(self, leaf):
+#        next_leaf = leaf._get_leaf(1)
+#        next_spanner = None
+#        next_spanner_is_similar = False
+#        if next_leaf is not None:
+#            spanners = next_leaf._get_spanners(type(self))
+#            if spanners:
+#                assert len(spanners) == 1
+#                next_spanner = tuple(spanners)[0]
+#                if next_spanner.direction == self.direction:
+#                    if next_spanner.markup == self.markup:
+#                        next_spanner_is_similar = True
+#        return next_spanner_is_similar
+
     def _next_spanner_is_similar(self, leaf):
-        next_leaf = leaf._get_leaf(1)
         next_spanner = None
         next_spanner_is_similar = False
-        if next_leaf is not None:
-            spanners = next_leaf._get_spanners(type(self))
-            if spanners:
-                assert len(spanners) == 1
-                next_spanner = tuple(spanners)[0]
-                if next_spanner.direction == self.direction:
-                    if next_spanner.markup == self.markup:
-                        next_spanner_is_similar = True
+        for index in range(1, 5):
+            next_leaf = leaf._get_leaf(index)
+            if next_leaf is None:
+                break
+            has_spanner = next_leaf._has_spanner(type(self))
+            if not has_spanner:
+                continue
+            next_spanner = next_leaf._get_spanner(type(self))
+            if next_spanner.direction != self.direction:
+                break
+            if next_spanner.markup != self.markup:
+                break
+            next_spanner_is_similar = True
         return next_spanner_is_similar
 
     def _previous_spanner_is_similar(self, leaf):
-        previous_leaf = leaf._get_leaf(-1)
         previous_spanner = None
         previous_spanner_is_similar = False
-        if previous_leaf is not None:
-            spanners = previous_leaf._get_spanners(type(self))
-            if spanners:
-                assert len(spanners) == 1
-                previous_spanner = tuple(spanners)[0]
-                if previous_spanner.direction == self.direction:
-                    if previous_spanner.markup == self.markup:
-                        previous_spanner_is_similar = True
+        for index in range(1, 5):
+            previous_leaf = leaf._get_leaf(-index)
+            if previous_leaf is None:
+                break
+            has_spanner = previous_leaf._has_spanner(type(self))
+            if not has_spanner:
+                continue
+            previous_spanner = previous_leaf._get_spanner(type(self))
+            if previous_spanner.direction != self.direction:
+                break
+            if previous_spanner.markup != self.markup:
+                break
+            previous_spanner_is_similar = True
         return previous_spanner_is_similar
+
+#    def _previous_spanner_is_similar(self, leaf):
+#        previous_leaf = leaf._get_leaf(-1)
+#        previous_spanner = None
+#        previous_spanner_is_similar = False
+#        if previous_leaf is not None:
+#            spanners = previous_leaf._get_spanners(type(self))
+#            if spanners:
+#                assert len(spanners) == 1
+#                previous_spanner = tuple(spanners)[0]
+#                if previous_spanner.direction == self.direction:
+#                    if previous_spanner.markup == self.markup:
+#                        previous_spanner_is_similar = True
+#        return previous_spanner_is_similar
 
     ### PUBLIC PROPERTIES ###
 
