@@ -146,7 +146,8 @@ class PitchClassPitchHandler(PitchHandler):
         if previous_pitch is None or not self.leap_constraint:
             return current_pitch
         maximum_leap = self.leap_constraint.semitones
-        semitones = (current_pitch - previous_pitch).semitones
+        #semitones = float(current_pitch) - float(previous_pitch)
+        semitones = float(previous_pitch) - float(current_pitch)
         if maximum_leap < semitones:  # descent
             current_pitch = current_pitch.transpose(12)
         elif semitones < -maximum_leap:  # ascent

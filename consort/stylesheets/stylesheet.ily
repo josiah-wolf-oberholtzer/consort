@@ -76,6 +76,7 @@ afterGraceFraction = #(cons 127 128)
 
 \layout {
 
+    \accidentalStyle modern-cautionary
     indent = 0
     ragged-bottom = ##t
     ragged-last = ##t
