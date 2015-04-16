@@ -113,7 +113,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
                 timespans.append(timespan)
             else:
                 output_mask = output_masks.get_matching_pattern(
-                    i, offset_pair_count)
+                    i, offset_pair_count, rotation=seed)
                 if isinstance(output_mask, output_mask_prototype):
                     timespans.append(timespan)
             if self.application_rate == 'division':
