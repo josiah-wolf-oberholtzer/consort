@@ -767,26 +767,32 @@ class SegmentMaker(makertools.SegmentMaker):
                         #print('\t\t', note_head)
                         if note_head.written_pitch not in pitch_range:
                             override(leaf).note_head.color = 'red'
-                            print(
-                                '    Out of range:',
+                            message = '    {}Out of range: {} {!r} {!s} {!s}{}'
+                            message = message.format(
+                                '\033[91m',
                                 voice_name,
                                 timespan,
                                 pitch_range,
                                 leaf,
+                                '\033[0m',
                                 )
+                            print(message)
                     elif isinstance(leaf, scoretools.Chord):
                         for note_head in leaf.note_heads:
                             #print('\t\t', note_head)
                             if note_head.written_pitch not in pitch_range:
                                 note_head.tweak.color = 'red'
-                                print(
-                                    '    Out of range:',
+                                message = '    {}Out of range: {} {!r} {!s} {!s} {!s}{}'
+                                message = message.format(
+                                    '\033[91m',
                                     voice_name,
                                     timespan,
                                     pitch_range,
                                     leaf,
                                     note_head,
+                                    '\033[0m',
                                     )
+                                print(message)
 
     @staticmethod
     def can_rewrite_meter(inscribed_timespan):
