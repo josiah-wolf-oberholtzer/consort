@@ -31,7 +31,15 @@ class LogicalTieExpression(abctools.AbjadValueObject):
         indicators = inspect_(old_leaf).get_indicators()
         for indicator in indicators:
             detach(indicator, old_leaf)
+
+        timespan = old_leaf._timespan
+        start_offset = old_leaf._start_offset
+        stop_offset = old_leaf._stop_offset
         mutate(old_leaf).replace(new_leaf)
+        new_leaf._timespan = timespan
+        new_leaf._start_offset = start_offset
+        new_leaf._stop_offset = stop_offset
+
         if grace_containers:
             new_grace_container = scoretools.GraceContainer(
                 grace_notes,

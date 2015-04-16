@@ -94,6 +94,7 @@ class ChordExpression(LogicalTieExpression):
             pitches = self._get_pitches_from_intervals(
                 logical_tie.head.written_pitch,
                 pitch_range,
+                logical_tie,
                 )
         else:
             pitches = self.chord_expr
@@ -242,14 +243,22 @@ class ChordExpression(LogicalTieExpression):
         scored_pitch_sets.sort()
         return scored_pitch_sets[0][1]
 
-    def _get_pitches_from_intervals(self, base_pitch, pitch_range):
+    def _get_pitches_from_intervals(self, base_pitch, pitch_range, logical_tie):
+        import consort
         chord_expr = self.chord_expr or ()
         new_chord_expr = chord_expr
         if pitch_range is not None:
-            assert base_pitch in pitch_range, (
-                pitch_range,
-                base_pitch.pitch_class_octave_label,
-                )
+            if base_pitch not in pitch_range:
+                print('Voice:', consort.SegmentMaker.logical_tie_to_voice(
+                    logical_tie).name)
+                print('Pitch range:', pitch_range)
+                print('Base pitch:', base_pitch)
+                print('Chord expression:', chord_expr)
+                print('MusicSpec:')
+                print(format(
+                    consort.SegmentMaker.logical_tie_to_music_specifier(
+                        logical_tie)))
+                raise Exception
 
             sorted_intervals = sorted(chord_expr, key=lambda x: x.semitones)
             maximum = sorted_intervals[-1]
@@ -265,10 +274,16 @@ class ChordExpression(LogicalTieExpression):
         pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]
         if pitch_range is not None:
             if not all(pitch in pitch_range for pitch in pitches):
+                print('Voice:', consort.SegmentMaker.logical_tie_to_voice(
+                    logical_tie).name)
                 print('Pitch range:', pitch_range)
                 print('Base pitch:', base_pitch)
                 print('Chord expression:', chord_expr)
                 print('Resulting pitches:', pitches)
+                print('MusicSpec:')
+                print(format(
+                    consort.SegmentMaker.logical_tie_to_music_specifier(
+                        logical_tie)))
                 raise Exception
 
         pitch_set = self._respell_pitch_set(pitchtools.PitchSet(pitches))

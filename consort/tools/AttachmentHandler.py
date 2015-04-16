@@ -58,6 +58,8 @@ class AttachmentHandler(abctools.AbjadValueObject):
             return
         items = self.attachment_expressions.items()
 
+        #print('\nnondestructive...')
+
         destructive_expressions = set()
         selectors = set()
         selectors_to_expressions = {}
@@ -86,19 +88,18 @@ class AttachmentHandler(abctools.AbjadValueObject):
                     name=name,
                     rotation=seed,
                     )
-        for name, attachment_expression in destructive_expressions:
-            attachment_expression(
-                music,
-                name=name,
-                rotation=seed,
-                )
 
-#        for name, attachment_expression in items:
-#            attachment_expression(
-#                music,
-#                name=name,
-#                rotation=seed,
-#                )
+        #print('\t...done')
+        if destructive_expressions:
+            #print('destructive...')
+            for name, attachment_expression in destructive_expressions:
+                #print('\t', name)
+                attachment_expression(
+                    music,
+                    name=name,
+                    rotation=seed,
+                    )
+            #print('\t...done')
 
     def __getattr__(self, item):
         if item in self.attachment_expressions:

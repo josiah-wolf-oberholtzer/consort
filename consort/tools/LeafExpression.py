@@ -48,7 +48,15 @@ class LeafExpression(HashCachingObject):
         for i, old_leaf in enumerate(expr):
             assert isinstance(old_leaf, scoretools.Leaf)
             new_leaf = self._make_new_leaf(old_leaf)
+
+            timespan = old_leaf._timespan
+            start_offset = old_leaf._start_offset
+            stop_offset = old_leaf._stop_offset
             mutate(old_leaf).replace(new_leaf)
+            new_leaf._timespan = timespan
+            new_leaf._start_offset = start_offset
+            new_leaf._stop_offset = stop_offset
+
             if i == 0 and self.attachments:
                 for attachment in self.attachments:
                     attach(attachment, new_leaf)
