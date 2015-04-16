@@ -44,7 +44,7 @@ class OctavationExpression(abctools.AbjadValueObject):
         sum_of_weights = sum(weights)
         sum_of_weighted_pitches = sum(weighted_pitches)
         weighted_average = sum_of_weighted_pitches / sum_of_weights
-        print(music, weighted_average)
+        #print(music, weighted_average)
         clef = inspect_(leaves[0]).get_effective(indicatortools.Clef)
         octavation_spanner = None
         if clef == indicatortools.Clef('treble'):

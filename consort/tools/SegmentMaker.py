@@ -771,6 +771,7 @@ class SegmentMaker(makertools.SegmentMaker):
                                 '    Out of range:',
                                 voice_name,
                                 timespan,
+                                pitch_range,
                                 leaf,
                                 )
                     elif isinstance(leaf, scoretools.Chord):
@@ -782,7 +783,9 @@ class SegmentMaker(makertools.SegmentMaker):
                                     '    Out of range:',
                                     voice_name,
                                     timespan,
+                                    pitch_range,
                                     leaf,
+                                    note_head,
                                     )
 
     @staticmethod
