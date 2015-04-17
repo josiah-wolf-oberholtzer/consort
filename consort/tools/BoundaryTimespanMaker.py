@@ -282,6 +282,10 @@ class BoundaryTimespanMaker(TimespanMaker):
             ):
             for context_name, music_specifier in music_specifiers.items():
                 if context_name not in new_timespan_mapping:
+                    continue
+                new_timespan_mapping[context_name] - group.timespan
+            for context_name, music_specifier in music_specifiers.items():
+                if context_name not in new_timespan_mapping:
                     new_timespan_mapping[context_name] = \
                         timespantools.TimespanInventory()
                 context_seed = context_counter[context_name]
