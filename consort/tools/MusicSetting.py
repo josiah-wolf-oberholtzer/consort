@@ -406,17 +406,24 @@ class MusicSetting(abctools.AbjadValueObject):
         ):
         import consort
         assert isinstance(segment_timespan, timespantools.Timespan)
-        if self.timespan_identifier is None:
+        timespan_identifier = self.timespan_identifier
+        if timespan_identifier is None:
             target_timespans = timespantools.TimespanInventory([
                 segment_timespan,
                 ])
         elif isinstance(self.timespan_identifier, timespantools.Timespan):
-            target_timespans = segment_timespan & self.timespan_identifier
+            if timespan_identifier.stop_offset == Infinity:
+                timespan_identifier = new(
+                    timespan_identifier,
+                    stop_offset=segment_timespan.stop_offset,
+                    )
+            segment_timespan = timespantools.Timespan(start_offset=0)
+            target_timespans = segment_timespan & timespan_identifier
         else:
-            if isinstance(self.timespan_identifier, consort.RatioPartsExpression):
-                mask_timespans = self.timespan_identifier(segment_timespan)
+            if isinstance(timespan_identifier, consort.RatioPartsExpression):
+                mask_timespans = timespan_identifier(segment_timespan)
             else:
-                mask_timespans = self.timespan_identifier
+                mask_timespans = timespan_identifier
             target_timespans = timespantools.TimespanInventory()
             for mask_timespan in mask_timespans:
                 available_timespans = segment_timespan & mask_timespan
