@@ -403,6 +403,9 @@ class SegmentMaker(makertools.SegmentMaker):
     def attach_initial_bar_line(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
         if self.repeat:
+            if segment_number != 1:
+                command = indicatortools.LilyPondCommand('break', 'opening')
+                attach(command, self.score['Time Signature Context'])
             return
         elif self._previous_segment_metadata.get('is_repeated'):
             return
