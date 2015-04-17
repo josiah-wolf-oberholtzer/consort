@@ -288,8 +288,12 @@ class BoundaryTimespanMaker(TimespanMaker):
                 start_durations = []
                 for _ in range(next(start_groupings)):
                     start_durations.append(next(start_talea))
+                stop_durations = []
+                for _ in range(next(stop_groupings)):
+                    stop_durations.append(next(stop_talea))
+                start_timespans, stop_timespans = (), ()
                 if start_durations:
-                    timespans = music_specifier(
+                    start_timespans = music_specifier(
                         durations=start_durations,
                         layer=layer,
                         output_masks=self.output_masks,
@@ -300,12 +304,8 @@ class BoundaryTimespanMaker(TimespanMaker):
                         voice_name=context_name,
                         )
                     context_counter[context_name] += 1
-                    new_timespan_mapping[context_name].extend(timespans)
-                stop_durations = []
-                for _ in range(next(stop_groupings)):
-                    stop_durations.append(next(stop_talea))
                 if stop_durations:
-                    timespans = music_specifier(
+                    stop_timespans = music_specifier(
                         durations=stop_durations,
                         layer=layer,
                         output_masks=self.output_masks,
@@ -316,7 +316,10 @@ class BoundaryTimespanMaker(TimespanMaker):
                         voice_name=context_name,
                         )
                     context_counter[context_name] += 1
-                    new_timespan_mapping[context_name].extend(timespans)
+                if start_timespans and stop_timespans:
+                    start_timespans & group.timespan
+                new_timespan_mapping[context_name].extend(start_timespans)
+                new_timespan_mapping[context_name].extend(stop_timespans)
         for context_name, timespans in new_timespan_mapping.items():
             timespans.compute_logical_or()
             new_timespans.extend(timespans)
