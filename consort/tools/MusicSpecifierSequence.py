@@ -62,6 +62,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
             if not isinstance(music_specifiers, collections.Sequence) or \
                 isinstance(music_specifiers, str):
                 music_specifiers = [music_specifiers]
+            music_specifiers = tuple(music_specifiers)
             music_specifiers = datastructuretools.CyclicTuple(music_specifiers)
             assert len(music_specifiers)
         self._application_rate = application_rate
@@ -153,7 +154,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
     ### PUBLIC METHODS ###
 
     def transpose(self, expr):
-        music_specifiers = (_.transpose(expr) for _ in self.music_specifiers)
+        music_specifiers = [_.transpose(expr) for _ in self.music_specifiers]
         return new(
             self,
             music_specifiers=music_specifiers,
