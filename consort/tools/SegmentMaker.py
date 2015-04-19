@@ -2593,6 +2593,8 @@ class SegmentMaker(makertools.SegmentMaker):
     @property
     def desired_duration(self):
         tempo = self.tempo
+        if tempo is None:
+            tempo = indicatortools.Tempo((1, 4), 60)
         tempo_desired_duration_in_seconds = durationtools.Duration(
             tempo.duration_to_milliseconds(tempo.duration),
             1000,
