@@ -2851,12 +2851,15 @@ class SegmentMaker(makertools.SegmentMaker):
                 )
 
         '''
-        if self._tempo is None:
-            if self._previous_segment_metadata is not None:
-                tempo = self._previous_segment_metadata.get('end_tempo')
+        tempo = self._tempo
+        if tempo is not None:
+            return tempo
+        elif self._previous_segment_metadata is not None:
+            tempo = self._previous_segment_metadata.get(
+                'end_tempo')
+            if tempo:
                 tempo = indicatortools.Tempo(*tempo)
-                return tempo
-        return self._tempo
+        return tempo
 
     @tempo.setter
     def tempo(self, tempo):
