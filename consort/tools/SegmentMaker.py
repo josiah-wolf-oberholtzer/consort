@@ -376,13 +376,23 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def add_time_signature_context(self):
         import consort
-        time_signatures = [_.implied_time_signature for _ in self.meters]
-        measures = scoretools.make_spacer_skip_measures(time_signatures)
         if 'Time Signature Context' not in self.score:
             time_signature_context = \
                 consort.ScoreTemplateManager.make_time_signature_context()
             self.score.insert(0, time_signature_context)
-        self.score['Time Signature Context'].extend(measures)
+        context = self.score['Time Signature Context']
+        time_signatures = [_.implied_time_signature for _ in self.meters]
+        iterator = itertools.groupby(time_signatures, lambda x: x)
+        measures = []
+        for time_signature, group in iterator:
+            count = len(tuple(group))
+            skip = scoretools.Skip(1)
+            multiplier = durationtools.Multiplier(time_signature) * count
+            attach(multiplier, skip)
+            attach(time_signature, skip, scope=scoretools.Score)
+            measure = scoretools.Container([skip])
+            measures.append(measure)
+        context.extend(measures)
 
     def add_setting(
         self,

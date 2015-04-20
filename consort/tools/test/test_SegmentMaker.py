@@ -37,12 +37,9 @@ def test_SegmentMaker_01():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 7/16
                         \tempo 4=60
-                        s1 * 7/16
-                    }
-                    {
-                        s1 * 7/16
+                        \time 7/16
+                        s1 * 7/8
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
@@ -111,8 +108,8 @@ def test_SegmentMaker_02():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 7/16
                         \tempo 4=60
+                        \time 7/16
                         s1 * 7/16
                     }
                 }
@@ -188,12 +185,9 @@ def test_SegmentMaker_03():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 7/16
                         \tempo 4=60
-                        s1 * 7/16
-                    }
-                    {
-                        s1 * 7/16
+                        \time 7/16
+                        s1 * 7/8
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
@@ -286,8 +280,8 @@ def test_SegmentMaker_04():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 5/8
                         \tempo 4=60
+                        \time 5/8
                         s1 * 5/8
                     }
                 }
@@ -363,8 +357,8 @@ def test_SegmentMaker_05():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 5/8
                         \tempo 4=60
+                        \time 5/8
                         s1 * 5/8
                     }
                 }
@@ -448,12 +442,9 @@ def test_SegmentMaker_06():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 7/16
                         \tempo 4=60
-                        s1 * 7/16
-                    }
-                    {
-                        s1 * 7/16
+                        \time 7/16
+                        s1 * 7/8
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
@@ -573,12 +564,9 @@ def test_SegmentMaker_07():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 7/16
                         \tempo 4=60
-                        s1 * 7/16
-                    }
-                    {
-                        s1 * 7/16
+                        \time 7/16
+                        s1 * 7/8
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<

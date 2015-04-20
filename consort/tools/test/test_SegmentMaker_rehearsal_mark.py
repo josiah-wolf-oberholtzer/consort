@@ -37,8 +37,8 @@ def test_SegmentMaker_rehearsal_mark_01():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         \mark \markup {
                             \box
                                 \pad-around
@@ -98,8 +98,8 @@ def test_SegmentMaker_rehearsal_mark_02():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         \mark \markup {
                             \concat
                                 {

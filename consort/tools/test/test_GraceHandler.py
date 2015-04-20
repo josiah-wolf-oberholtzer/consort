@@ -58,8 +58,8 @@ def test_GraceHandler_01():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }
@@ -193,8 +193,8 @@ def test_GraceHandler_02():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }
@@ -346,8 +346,8 @@ def test_GraceHandler_03():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }
@@ -477,14 +477,14 @@ def test_GraceHandler_04():
         r'''
         \version "2.19.17"
         \language "english"
-        
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }
@@ -564,14 +564,14 @@ def test_GraceHandler_05():
         r'''
         \version "2.19.17"
         \language "english"
-        
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }

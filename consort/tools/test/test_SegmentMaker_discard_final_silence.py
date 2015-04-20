@@ -42,18 +42,9 @@ def test_SegmentMaker_discard_final_silence_01():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
-                        s1 * 1
-                    }
-                    {
-                        s1 * 1
-                    }
-                    {
-                        s1 * 1
-                    }
-                    {
-                        s1 * 1
+                        \time 4/4
+                        s1 * 4
                     }
                 }
                 \context StaffGroup = "Grouped Rhythmic Staves Staff Group" <<
@@ -116,8 +107,8 @@ def test_SegmentMaker_discard_final_silence_02():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }

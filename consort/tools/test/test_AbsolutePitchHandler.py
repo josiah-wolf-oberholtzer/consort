@@ -48,8 +48,8 @@ def test_AbsolutePitchHandler_01():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
+                        \time 1/4
                         s1 * 1/4
                     }
                 }
@@ -112,8 +112,8 @@ def test_AbsolutePitchHandler_02():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
+                        \time 1/4
                         s1 * 1/4
                     }
                 }
@@ -178,15 +178,9 @@ def test_AbsolutePitchHandler_03():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -286,15 +280,9 @@ def test_AbsolutePitchHandler_04():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -383,15 +371,9 @@ def test_AbsolutePitchHandler_05():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -523,15 +505,9 @@ def test_AbsolutePitchHandler_06():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -671,15 +647,9 @@ def test_AbsolutePitchHandler_07():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -807,15 +777,9 @@ def test_AbsolutePitchHandler_08():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -943,15 +907,9 @@ def test_AbsolutePitchHandler_09():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<
@@ -1080,15 +1038,9 @@ def test_AbsolutePitchHandler_10():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 1/4
                         \tempo 4=60
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
-                    }
-                    {
-                        s1 * 1/4
+                        \time 1/4
+                        s1 * 3/4
                     }
                 }
                 \context StaffGroup = "Grouped Staves Staff Group" <<

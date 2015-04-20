@@ -37,8 +37,8 @@ def test_SegmentMaker_is_final_segment_01():
                 \tag #'time
                 \context TimeSignatureContext = "Time Signature Context" {
                     {
-                        \time 4/4
                         \tempo 4=60
+                        \time 4/4
                         s1 * 1
                     }
                 }
