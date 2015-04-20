@@ -74,15 +74,7 @@ def test_SegmentMaker_discard_final_silence_01():
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
-                                    R1 * 1
-                                }
-                                % [Voice 1] Measure 3
-                                {
-                                    R1 * 1
-                                }
-                                % [Voice 1] Measure 4
-                                {
-                                    R1 * 1
+                                    R1 * 3
                                     \stopStaff
                                     \startStaff
                                 }

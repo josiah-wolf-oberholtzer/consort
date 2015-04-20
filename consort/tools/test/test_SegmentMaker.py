@@ -54,11 +54,7 @@ def test_SegmentMaker_01():
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
-                                    R1 * 7/16
-                                }
-                                % [Voice 1] Measure 2
-                                {
-                                    R1 * 7/16
+                                    R1 * 7/8
                                     \stopStaff
                                     \startStaff
                                 }
@@ -73,11 +69,7 @@ def test_SegmentMaker_01():
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
-                                    R1 * 7/16
-                                }
-                                % [Voice 2] Measure 2
-                                {
-                                    R1 * 7/16
+                                    R1 * 7/8
                                     \stopStaff
                                     \startStaff
                                 }
@@ -663,11 +655,7 @@ def test_SegmentMaker_07():
                                     \stopStaff
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
-                                    R1 * 7/16
-                                }
-                                % [Voice 3] Measure 2
-                                {
-                                    R1 * 7/16
+                                    R1 * 7/8
                                     \stopStaff
                                     \startStaff
                                 }

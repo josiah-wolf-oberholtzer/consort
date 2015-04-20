@@ -499,6 +499,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self.postprocess_grace_containers()
         self.postprocess_ties()
         self.postprocess_staff_lines_spanners()
+        self.postprocess_multimeasure_rests()
         self.attach_bar_number_comments()
         self.apply_annotations()
 
@@ -534,6 +535,40 @@ class SegmentMaker(makertools.SegmentMaker):
                     override(phrase).flag.color = color
                     override(phrase).note_head.color = color
                     override(phrase).stem.color = color
+
+    def postprocess_multimeasure_rests(self):
+        def division_to_meter(division):
+            offset = inspect_(division).get_timespan().start_offset
+            timespan = meter_timespans.find_timespans_starting_at(offset)[0]
+            meter = timespan.annotation
+            return meter
+        import consort
+        silent_specifier = consort.MusicSpecifier()
+        meter_timespans = self.meters_to_timespans(self.meters)
+        with systemtools.ForbidUpdate(self.score):
+            for voice in iterate(self.score).by_class(scoretools.Voice):
+                for phrase in voice:
+                    music_specifier = inspect_(phrase).get_indicator(
+                        consort.MusicSpecifier)
+                    if music_specifier != silent_specifier:
+                        continue
+                    divisions = [_ for _ in phrase
+                        if isinstance(_[0], scoretools.MultimeasureRest)
+                        ]
+                    iterator = itertools.groupby(divisions, division_to_meter)
+                    for meter, grouped_divisions in iterator:
+                        grouped_divisions = list(grouped_divisions)
+                        count = len(grouped_divisions)
+                        if count == 1:
+                            continue
+                        for division in grouped_divisions[1:]:
+                            phrase.remove(division)
+                        rest = grouped_divisions[0][0]
+                        multiplier = inspect_(rest).get_indicator(
+                            durationtools.Multiplier)
+                        detach(multiplier, rest)
+                        multiplier = multiplier * count
+                        attach(multiplier, rest)
 
     def postprocess_staff_lines_spanners(self):
         segment_number = self._segment_metadata.get('segment_number', 1)
