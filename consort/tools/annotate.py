@@ -72,16 +72,16 @@ def annotate(context, nonsilence=None):
             )
         for phrase in voice:
             color = None
-            music_specifier = inspect_(phrase).get_indicator(prototype)
             if nonsilence:
+                music_specifier = inspect_(phrase).get_indicator(prototype)
                 if music_specifier == silence_specifier:
                     inner_container, outer_container = \
                         make_empty_phrase_divisions(phrase)
                     division_voice.append(inner_container)
                     phrase_voice.append(outer_container)
                     continue
-            if music_specifier:
-                color = music_specifier.color
+                if music_specifier:
+                    color = music_specifier.color
             for division in phrase:
                 annotation_division = make_annotated_division(division, color)
                 division_voice.append(annotation_division)

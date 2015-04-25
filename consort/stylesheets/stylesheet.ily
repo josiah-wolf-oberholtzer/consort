@@ -90,6 +90,7 @@ afterGraceFraction = #(cons 127 128)
         \type Engraver_group
         \alias Voice
         \override Accidental.stencil = ##f
+        \override Beam.stencil = ##f
         \override Dots.stencil = ##f
         \override Flag.stencil = ##f
         \override NoteCollision.merge-differently-dotted = ##t
@@ -111,6 +112,7 @@ afterGraceFraction = #(cons 127 128)
         \type Engraver_group
         \alias Voice
         \override Accidental.stencil = ##f
+        \override Beam.stencil = ##f
         \override Dots.stencil = ##f
         \override Flag.stencil = ##f
         \override NoteCollision.merge-differently-dotted = ##t
