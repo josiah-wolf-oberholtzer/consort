@@ -52,17 +52,6 @@ def test_SegmentMaker_is_final_segment_01():
                                     \once \override Staff.StaffSymbol.line-positions = #'(0)
                                     \startStaff
                                     R1 * 1
-                                        _ \markup {
-                                            \italic
-                                                \center-column
-                                                    {
-                                                        " "
-                                                        " "
-                                                        " "
-                                                        Nowhere
-                                                        "2001 - 3001"
-                                                    }
-                                            }
                                     \bar "|."
                                 }
                             }

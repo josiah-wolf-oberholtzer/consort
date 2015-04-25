@@ -438,7 +438,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 abbreviation='|.',
                 to_each_voice=True,
                 )
-        if segment_number == segment_count:
+        if segment_number == segment_count and self.final_markup is not None:
             self.score.add_final_markup(self.final_markup)
 
     def get_rehearsal_letter(self):
@@ -2678,26 +2678,7 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @property
     def final_markup(self):
-        metadata = self.score_package_metadata
-        contents = [' ', ' ', ' ']
-        locale = metadata.get('locale', 'Nowhere')
-        if isinstance(locale, str):
-            contents.append(locale)
-        else:
-            contents.extend(locale)
-        time_period_default = ('2001', '3001')
-        time_period = metadata.get('time_period', time_period_default)
-        time_period = '{} - {}'.format(time_period[0], time_period[1])
-        contents.append(time_period)
-        column = markuptools.MarkupCommand(
-            'center-column', contents
-            )
-        italic = markuptools.MarkupCommand(
-            'italic',
-            column,
-            )
-        final_markup = markuptools.Markup(italic, 'down')
-        return final_markup
+        return None
 
     @property
     def annotate_colors(self):
