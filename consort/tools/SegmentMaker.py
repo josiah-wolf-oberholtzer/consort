@@ -99,7 +99,7 @@ class SegmentMaker(makertools.SegmentMaker):
                     ),
                 ),
             tempo=indicatortools.Tempo(
-                duration=durationtools.Duration(1, 4),
+                reference_duration=durationtools.Duration(1, 4),
                 units_per_minute=72,
                 ),
             )
@@ -359,7 +359,7 @@ class SegmentMaker(makertools.SegmentMaker):
         last_leaf = inspect_(context).get_leaf(-1)
         effective_tempo = inspect_(last_leaf).get_effective(prototype)
         if effective_tempo is not None:
-            duration = effective_tempo.duration.pair
+            duration = effective_tempo.reference_duration.pair
             units_per_minute = effective_tempo.units_per_minute
             effective_tempo = (duration, units_per_minute)
         return effective_tempo
@@ -2641,14 +2641,14 @@ class SegmentMaker(makertools.SegmentMaker):
         if tempo is None:
             tempo = indicatortools.Tempo((1, 4), 60)
         tempo_desired_duration_in_seconds = durationtools.Duration(
-            tempo.duration_to_milliseconds(tempo.duration),
+            tempo.duration_to_milliseconds(tempo.reference_duration),
             1000,
             )
         desired_duration = durationtools.Duration((
             self.desired_duration_in_seconds /
             tempo_desired_duration_in_seconds
             ).limit_denominator(8))
-        desired_duration *= tempo.duration
+        desired_duration *= tempo.reference_duration
         count = desired_duration // durationtools.Duration(1, 8)
         desired_duration = durationtools.Duration(count, 8)
         assert 0 < desired_duration
@@ -2871,7 +2871,7 @@ class SegmentMaker(makertools.SegmentMaker):
             >>> print(format(segment_maker))
             consort.tools.SegmentMaker(
                 tempo=indicatortools.Tempo(
-                    duration=durationtools.Duration(1, 4),
+                    reference_duration=durationtools.Duration(1, 4),
                     units_per_minute=52,
                     ),
                 )

@@ -40,7 +40,7 @@ def test_AbsolutePitchHandler_01():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -104,7 +104,7 @@ def test_AbsolutePitchHandler_02():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -170,7 +170,7 @@ def test_AbsolutePitchHandler_03():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -272,7 +272,7 @@ def test_AbsolutePitchHandler_04():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -363,7 +363,7 @@ def test_AbsolutePitchHandler_05():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -497,7 +497,7 @@ def test_AbsolutePitchHandler_06():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -639,7 +639,7 @@ def test_AbsolutePitchHandler_07():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -769,7 +769,7 @@ def test_AbsolutePitchHandler_08():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -899,7 +899,7 @@ def test_AbsolutePitchHandler_09():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
@@ -1030,7 +1030,7 @@ def test_AbsolutePitchHandler_10():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.17"
+        \version "2.19.20"
         \language "english"
 
         \score {
