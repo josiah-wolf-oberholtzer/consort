@@ -5,7 +5,7 @@ from distutils.core import setup
 from distutils.version import StrictVersion
 
 install_requires = [
-    'abjad',
+    'abjad[development]',
     ]
 
 version = '.'.join(str(x) for x in sys.version_info[:3])
