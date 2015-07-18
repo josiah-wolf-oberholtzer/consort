@@ -298,7 +298,7 @@ class PitchHandler(HashCachingObject):
 
     def _initialize_logical_tie_expressions(self, logical_tie_expressions):
         import consort
-        if logical_tie_expressions is not None:
+        if logical_tie_expressions:
             prototype = (consort.LogicalTieExpression, type(None))
             assert logical_tie_expressions, logical_tie_expressions
             assert all(isinstance(_, prototype)
