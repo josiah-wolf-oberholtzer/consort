@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad import new
 from abjad.tools import abctools
-from abjad.tools import durationtools
+from abjad.tools import mathtools
 from abjad.tools import rhythmmakertools
 
 
@@ -150,7 +150,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
     ### SPECIAL METHODS ###
 
     def __call__(self, divisions, rotation=None):
-        divisions = [durationtools.Division(x) for x in divisions]
+        divisions = [mathtools.NonreducedFraction(x) for x in divisions]
         result = []
         if not divisions:
             pass
