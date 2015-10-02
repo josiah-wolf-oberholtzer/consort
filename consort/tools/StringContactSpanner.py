@@ -531,7 +531,7 @@ class StringContactSpanner(spannertools.Spanner):
         lilypond_format_bundle.right.spanner_starts.append(string)
         overrides = line_segment._get_lilypond_grob_overrides()
         for override_ in overrides:
-            override_string = '\n'.join(override_._override_format_pieces)
+            override_string = '\n'.join(override_.override_format_pieces)
             lilypond_format_bundle.grob_overrides.append(override_string)
         if start_markup:
             override_ = lilypondnametools.LilyPondGrobOverride(
@@ -544,7 +544,7 @@ class StringContactSpanner(spannertools.Spanner):
                     ),
                 value=start_markup.halign(0),
                 )
-            override_string = '\n'.join(override_._override_format_pieces)
+            override_string = '\n'.join(override_.override_format_pieces)
             lilypond_format_bundle.grob_overrides.append(override_string)
         if stop_markup:
             override_ = lilypondnametools.LilyPondGrobOverride(
@@ -557,7 +557,7 @@ class StringContactSpanner(spannertools.Spanner):
                     ),
                 value=stop_markup.halign(0),
                 )
-            override_string = '\n'.join(override_._override_format_pieces)
+            override_string = '\n'.join(override_.override_format_pieces)
             lilypond_format_bundle.grob_overrides.append(override_string)
 
     def _add_segment_stop_contributions(
