@@ -27,19 +27,19 @@ class TimespanMaker(abctools.AbjadValueObject):
     @abc.abstractmethod
     def __init__(
         self,
-        output_masks=None,
+        division_masks=None,
         padding=None,
         seed=None,
         timespan_specifier=None,
         ):
         import consort
-        if output_masks is not None:
-            if isinstance(output_masks, rhythmmakertools.BooleanPattern):
-                output_masks = (output_masks,)
-            output_masks = rhythmmakertools.BooleanPatternInventory(
-                items=output_masks,
+        if division_masks is not None:
+            if isinstance(division_masks, rhythmmakertools.BooleanPattern):
+                division_masks = (division_masks,)
+            division_masks = rhythmmakertools.BooleanPatternInventory(
+                items=division_masks,
                 )
-        self._output_masks = output_masks
+        self._output_masks = division_masks
         if padding is not None:
             padding = durationtools.Duration(padding)
         self._padding = padding
@@ -180,7 +180,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         return False
 
     @property
-    def output_masks(self):
+    def division_masks(self):
         return self._output_masks
 
     @property

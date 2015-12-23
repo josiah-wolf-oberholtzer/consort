@@ -128,7 +128,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         start_groupings=None,
         stop_groupings=None,
         labels=None,
-        output_masks=None,
+        division_masks=None,
         padding=None,
         seed=None,
         timespan_specifier=None,
@@ -136,7 +136,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         ):
         TimespanMaker.__init__(
             self,
-            output_masks=output_masks,
+            division_masks=division_masks,
             padding=padding,
             seed=seed,
             timespan_specifier=timespan_specifier,
@@ -300,7 +300,7 @@ class BoundaryTimespanMaker(TimespanMaker):
                     start_timespans = music_specifier(
                         durations=start_durations,
                         layer=layer,
-                        output_masks=self.output_masks,
+                        division_masks=self.division_masks,
                         padding=self.padding,
                         seed=context_seed,
                         start_offset=group.start_offset,
@@ -312,7 +312,7 @@ class BoundaryTimespanMaker(TimespanMaker):
                     stop_timespans = music_specifier(
                         durations=stop_durations,
                         layer=layer,
-                        output_masks=self.output_masks,
+                        division_masks=self.division_masks,
                         padding=self.padding,
                         seed=context_seed,
                         start_offset=group.stop_offset,

@@ -249,7 +249,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         self,
         durations=None,
         layer=None,
-        output_masks=None,
+        division_masks=None,
         padding=None,
         seed=None,
         start_offset=None,
@@ -271,7 +271,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         primary_timespans = self.primary_music_specifier(
             durations=primary_durations,
             layer=layer,
-            output_masks=output_masks,
+            division_masks=division_masks,
             padding=padding,
             seed=seed,
             start_offset=start_offset,
@@ -281,7 +281,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         secondary_timespans = self.secondary_music_specifier(
             durations=secondary_durations,
             layer=layer,
-            output_masks=output_masks,
+            division_masks=division_masks,
             padding=padding,
             seed=seed,
             start_offset=start_offset,

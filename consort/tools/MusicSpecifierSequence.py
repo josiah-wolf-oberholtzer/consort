@@ -74,7 +74,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         self,
         durations=None,
         layer=None,
-        output_masks=None,
+        division_masks=None,
         padding=None,
         seed=None,
         start_offset=None,
@@ -110,10 +110,10 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
                 stop_offset=stop_offset,
                 voice_name=voice_name,
                 )
-            if not output_masks:
+            if not division_masks:
                 timespans.append(timespan)
             else:
-                output_mask = output_masks.get_matching_pattern(
+                output_mask = division_masks.get_matching_pattern(
                     i, offset_pair_count, rotation=seed)
                 if isinstance(output_mask, output_mask_prototype):
                     timespans.append(timespan)
