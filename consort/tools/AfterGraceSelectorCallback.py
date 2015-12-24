@@ -12,7 +12,7 @@ class AfterGraceSelectorCallback(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, expr):
+    def __call__(self, expr, start_offset=None):
         assert isinstance(expr, tuple), repr(tuple)
         result = []
         for subexpr in expr:
@@ -26,4 +26,4 @@ class AfterGraceSelectorCallback(abctools.AbjadValueObject):
             if subresult:
                 subresult = selectiontools.Selection(subresult)
                 result.append(subresult)
-        return tuple(result)
+        return tuple(result), start_offset

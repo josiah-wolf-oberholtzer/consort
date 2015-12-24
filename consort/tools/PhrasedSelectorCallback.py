@@ -12,7 +12,7 @@ class PhrasedSelectorCallback(abctools.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, expr):
+    def __call__(self, expr, rotation=None, start_offset=None):
         assert isinstance(expr, tuple), repr(tuple)
         result = []
         for subexpr in expr:
@@ -32,4 +32,4 @@ class PhrasedSelectorCallback(abctools.AbjadValueObject):
             subresult = selectiontools.Selection(subresult)
             result.append(subresult)
         result = tuple(result)
-        return result
+        return result, start_offset
