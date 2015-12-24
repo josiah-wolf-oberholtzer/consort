@@ -101,8 +101,8 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
     ### SPECIAL METHODS ###
 
     def __call__(self, music, name=None):
-        if not isinstance(music, selectiontools.SliceSelection):
-            music = selectiontools.SliceSelection(music)
+        if not isinstance(music, selectiontools.Selection):
+            music = selectiontools.Selection(music)
         is_short_group = False
         if len(music) < 2:
             is_short_group = True

@@ -36,7 +36,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         if division_masks is not None:
             if isinstance(division_masks, rhythmmakertools.BooleanPattern):
                 division_masks = (division_masks,)
-            division_masks = rhythmmakertools.BooleanPatternInventory(
+            division_masks = rhythmmakertools.PatternInventory(
                 items=division_masks,
                 )
         self._output_masks = division_masks

@@ -1567,8 +1567,10 @@ class SegmentMaker(makertools.SegmentMaker):
             ...     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
             ...         division_masks=[
             ...             rhythmmakertools.SilenceMask(
-            ...                 indices=[0],
-            ...                 period=3,
+            ...                 pattern=rhythmmakertools.Pattern(
+            ...                     indices=[0],
+            ...                     period=3,
+            ...                     ),
             ...                 ),
             ...             ],
             ...         ),
@@ -1597,11 +1599,13 @@ class SegmentMaker(makertools.SegmentMaker):
                     ),
                 music_specifier=consort.tools.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                        division_masks=rhythmmakertools.BooleanPatternInventory(
+                        division_masks=rhythmmakertools.PatternInventory(
                             (
                                 rhythmmakertools.SilenceMask(
-                                    indices=(0,),
-                                    period=3,
+                                    pattern=rhythmmakertools.Pattern(
+                                        indices=(0,),
+                                        period=3,
+                                        ),
                                     ),
                                 )
                             ),
@@ -1623,11 +1627,13 @@ class SegmentMaker(makertools.SegmentMaker):
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                division_masks=rhythmmakertools.BooleanPatternInventory(
+                                division_masks=rhythmmakertools.PatternInventory(
                                     (
                                         rhythmmakertools.SilenceMask(
-                                            indices=(0,),
-                                            period=3,
+                                            pattern=rhythmmakertools.Pattern(
+                                                indices=(0,),
+                                                period=3,
+                                                ),
                                             ),
                                         )
                                     ),
@@ -1644,11 +1650,13 @@ class SegmentMaker(makertools.SegmentMaker):
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                division_masks=rhythmmakertools.BooleanPatternInventory(
+                                division_masks=rhythmmakertools.PatternInventory(
                                     (
                                         rhythmmakertools.SilenceMask(
-                                            indices=(0,),
-                                            period=3,
+                                            pattern=rhythmmakertools.Pattern(
+                                                indices=(0,),
+                                                period=3,
+                                                ),
                                             ),
                                         )
                                     ),
@@ -2344,7 +2352,7 @@ class SegmentMaker(makertools.SegmentMaker):
         if is_tied:
             last_leaf = container.select_leaves()[-1]
             next_leaf = inspect_(last_leaf).get_leaf(1)
-            selection = selectiontools.ContiguousSelection((
+            selection = selectiontools.Selection((
                 last_leaf, next_leaf))
             selection._attach_tie_spanner_to_leaf_pair()
 
