@@ -5,7 +5,7 @@ import collections
 from abjad import new
 from abjad.tools import abctools
 from abjad.tools import durationtools
-from abjad.tools import rhythmmakertools
+from abjad.tools import patterntools
 from abjad.tools import timespantools
 
 
@@ -34,9 +34,9 @@ class TimespanMaker(abctools.AbjadValueObject):
         ):
         import consort
         if division_masks is not None:
-            if isinstance(division_masks, rhythmmakertools.Pattern):
+            if isinstance(division_masks, patterntools.Pattern):
                 division_masks = (division_masks,)
-            division_masks = rhythmmakertools.PatternInventory(
+            division_masks = patterntools.PatternInventory(
                 items=division_masks,
                 )
         self._output_masks = division_masks
