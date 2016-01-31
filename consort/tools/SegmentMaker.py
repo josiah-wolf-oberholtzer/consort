@@ -492,7 +492,12 @@ class SegmentMaker(makertools.SegmentMaker):
                     'nonfirst-segment.ily',
                     )
                 lilypond_file.file_initial_user_includes.append(path)
-        lilypond_file.file_initial_system_comments[:] = []
+        lilypond_file.file_initial_system_comments[:] = [
+            lilypondfiletools.PackageGitCommitToken('abjad'),
+            lilypondfiletools.PackageGitCommitToken('ide'),
+            lilypondfiletools.PackageGitCommitToken('consort'),
+            lilypondfiletools.PackageGitCommitToken(self.score_package_name),
+            ]
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(self.score)
         lilypond_file.items.append(score_block)
