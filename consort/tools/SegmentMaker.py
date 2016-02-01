@@ -492,12 +492,14 @@ class SegmentMaker(makertools.SegmentMaker):
                     'nonfirst-segment.ily',
                     )
                 lilypond_file.file_initial_user_includes.append(path)
-        lilypond_file.file_initial_system_comments[:] = [
-            #lilypondfiletools.PackageGitCommitToken('abjad'),
-            #lilypondfiletools.PackageGitCommitToken('ide'),
-            #lilypondfiletools.PackageGitCommitToken('consort'),
-            #lilypondfiletools.PackageGitCommitToken(self.score_package_name),
-            ]
+        lilypond_file.file_initial_system_comments[:] = []
+        if self.score_package_name != 'consort':
+            lilypond_file.file_initial_user_comments.extend([
+                lilypondfiletools.PackageGitCommitToken('abjad'),
+                lilypondfiletools.PackageGitCommitToken('ide'),
+                lilypondfiletools.PackageGitCommitToken('consort'),
+                lilypondfiletools.PackageGitCommitToken(self.score_package_name),
+                ])
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(self.score)
         lilypond_file.items.append(score_block)
@@ -2345,6 +2347,10 @@ class SegmentMaker(makertools.SegmentMaker):
                 boundary_depth = 1
                 if meter.numerator in (3, 4):
                     boundary_depth = None
+                #print()
+                #print(container)
+                #print(meter)
+                #print(initial_offset)
                 mutate(container[:]).rewrite_meter(
                     meter,
                     boundary_depth=boundary_depth,
