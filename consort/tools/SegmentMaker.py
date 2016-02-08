@@ -474,16 +474,23 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(self.tempo, first_leaf)
 
     def configure_lilypond_file(self):
-        lilypond_file = lilypondfiletools.LilyPondFile()
+        comments = []
+        includes = []
+        if self.score_package_name != 'consort':
+            comments.extend([
+                lilypondfiletools.PackageGitCommitToken('abjad'),
+                lilypondfiletools.PackageGitCommitToken('ide'),
+                lilypondfiletools.PackageGitCommitToken('consort'),
+                lilypondfiletools.PackageGitCommitToken(self.score_package_name),
+                ])
         if not self.omit_stylesheets:
-            lilypond_file.use_relative_includes = True
             path = os.path.join(
                 '..',
                 '..',
                 'stylesheets',
                 'stylesheet.ily',
                 )
-            lilypond_file.file_initial_user_includes.append(path)
+            includes.append(path)
             if 1 < self._segment_metadata.get('segment_number', 1):
                 path = os.path.join(
                     '..',
@@ -491,19 +498,16 @@ class SegmentMaker(makertools.SegmentMaker):
                     'stylesheets',
                     'nonfirst-segment.ily',
                     )
-                lilypond_file.file_initial_user_includes.append(path)
-        lilypond_file.file_initial_system_comments[:] = []
-        if self.score_package_name != 'consort':
-            lilypond_file.file_initial_user_comments.extend([
-                lilypondfiletools.PackageGitCommitToken('abjad'),
-                lilypondfiletools.PackageGitCommitToken('ide'),
-                lilypondfiletools.PackageGitCommitToken('consort'),
-                lilypondfiletools.PackageGitCommitToken(self.score_package_name),
-                ])
+                includes.append(path)
         score_block = lilypondfiletools.Block(name='score')
         score_block.items.append(self.score)
-        lilypond_file.items.append(score_block)
-        lilypond_file.score = self.score
+        items = [score_block]
+        lilypond_file = lilypondfiletools.LilyPondFile(
+            comments=comments,
+            includes=includes,
+            items=items,
+            use_relative_includes=True,
+            )
         self._lilypond_file = lilypond_file
 
     def configure_score(self):
