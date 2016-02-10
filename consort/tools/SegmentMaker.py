@@ -2253,10 +2253,9 @@ class SegmentMaker(makertools.SegmentMaker):
         timespan_inventories=None,
         ):
         import consort
-        timespan_inventories = [x[1] for x in
-            sorted(timespan_inventories.items(),
-                key=lambda item: item[0],
-                )
+        timespan_inventories = [
+            x[1] for x in
+            sorted(timespan_inventories.items(), key=lambda item: item[0])
             ]
         for timespan_inventory in timespan_inventories:
             assert timespan_inventory.all_are_nonoverlapping
@@ -2639,6 +2638,31 @@ class SegmentMaker(makertools.SegmentMaker):
             is_repeated=self.repeat,
             measure_count=len(self.meters),
             )
+
+    def get_previous_segment_metadata(self, current_segment_directory):
+        current_segment_name = os.path.basename(current_segment_directory)
+        segments_directory = os.path.abspath(
+            os.path.join(current_segment_directory, '..'))
+        all_segment_names = [
+            entry for entry in sorted(os.listdir(segments_directory))
+            if os.path.exists(
+                os.path.join(segments_directory, entry, '__init__.py'),
+                )
+            ]
+        current_segment_index = all_segment_names.index(current_segment_name)
+        previous_segment_index = current_segment_index - 1
+        if previous_segment_index < 0:
+            return None
+        previous_segment_name = all_segment_names[previous_segment_index]
+        metadata_path = '{}.segments.{}.__metadata__'.format(
+            self.score_package_name,
+            previous_segment_name,
+            )
+        try:
+            metadata_module = importlib.import_module(metadata_path)
+        except ImportError:
+            return None
+        return getattr(metadata_module, 'metadata', None)
 
     ### PUBLIC PROPERTIES ###
 
