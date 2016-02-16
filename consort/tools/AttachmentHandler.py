@@ -113,25 +113,24 @@ class AttachmentHandler(abctools.AbjadValueObject):
         import consort
         score = segment_maker.score
         counter = collections.Counter()
+        template = '        decorating {}: {}'
         for voice in iterate(score).by_class(scoretools.Voice):
-            progress_indicator = systemtools.ProgressIndicator(
-                message='        decorating {}'.format(voice.name),
-                verbose=verbose,
-                )
-            with progress_indicator:
-                for container in voice:
-                    prototype = consort.MusicSpecifier
-                    music_specifier = inspect_(container).get_effective(prototype)
-                    maker = music_specifier.attachment_handler
-                    if maker is None:
-                        continue
-                    if music_specifier not in counter:
-                        seed = music_specifier.seed or 0
-                        counter[music_specifier] = seed
-                    seed = counter[music_specifier]
-                    maker(container, seed=seed)
-                    counter[music_specifier] -= 1
-                    progress_indicator.advance()
+            count = 0
+            for container in voice:
+                prototype = consort.MusicSpecifier
+                music_specifier = inspect_(container).get_effective(prototype)
+                maker = music_specifier.attachment_handler
+                if maker is None:
+                    continue
+                if music_specifier not in counter:
+                    seed = music_specifier.seed or 0
+                    counter[music_specifier] = seed
+                seed = counter[music_specifier]
+                maker(container, seed=seed)
+                counter[music_specifier] -= 1
+                count += 1
+            message = template.format(voice.name, count)
+            print(message)
 
     ### PRIVATE PROPERTIES ###
 

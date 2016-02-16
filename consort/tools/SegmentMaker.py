@@ -2380,62 +2380,61 @@ class SegmentMaker(makertools.SegmentMaker):
         import consort
         meter_timespans = SegmentMaker.meters_to_timespans(meters)
         cache = {}
+        template = '        rewriting {}: {}'
         for context_name in sorted(demultiplexed_maquette):
             inscribed_timespans = demultiplexed_maquette[context_name]
             consort.debug('CONTEXT: {}'.format(context_name))
             context = score[context_name]
             forbid_staff_lines_spanner = context.context_name == 'Dynamics'
-            progress_indicator = systemtools.ProgressIndicator(
-                message='        rewriting {}'.format(context_name),
-                verbose=verbose,
-                )
-            with progress_indicator:
-                for inscribed_timespan in inscribed_timespans:
-                    consort.debug('\t{!s} {!s} {!r}'.format(
-                        inscribed_timespan.start_offset,
-                        inscribed_timespan.stop_offset,
-                        inscribed_timespan.music,
-                        ))
-                    if not SegmentMaker.can_rewrite_meter(inscribed_timespan):
-                        continue
-                    with systemtools.ForbidUpdate(
-                        inscribed_timespan.music,
-                        update_on_exit=True,
-                        ):
-                        for i, container in enumerate(inscribed_timespan.music):
-                            container_timespan = inspect_(container).get_timespan()
-                            container_timespan = container_timespan.translate(
-                                inscribed_timespan.start_offset)
-                            if i == 0:
-                                assert container_timespan.start_offset == \
-                                    inscribed_timespan.start_offset
-                            if i == (len(inscribed_timespan.music) - 1):
-                                assert container_timespan.stop_offset == \
-                                    inscribed_timespan.stop_offset
-                            if container_timespan in cache:
-                                intersecting_meters = cache[container_timespan]
-                            else:
-                                intersecting_meters = \
-                                    meter_timespans.find_timespans_intersecting_timespan(
-                                        container_timespan)
-                                cache[container_timespan] = intersecting_meters
-                            shifted_intersecting_meters = [
-                                _.translate(-1 * inscribed_timespan.start_offset)
-                                for _ in intersecting_meters
-                                ]
-                            consort.debug('\t\t{!r} {!r}'.format(
-                                container,
-                                container_timespan,
-                                ))
-                            for intersecting_meter in intersecting_meters:
-                                consort.debug('\t\t\t' + repr(intersecting_meter))
-                            SegmentMaker.rewrite_container_meter(
-                                container,
-                                shifted_intersecting_meters,
-                                forbid_staff_lines_spanner,
-                                )
-                            SegmentMaker.cleanup_logical_ties(container)
-                            progress_indicator.advance()
+            count = 0
+            for inscribed_timespan in inscribed_timespans:
+                consort.debug('\t{!s} {!s} {!r}'.format(
+                    inscribed_timespan.start_offset,
+                    inscribed_timespan.stop_offset,
+                    inscribed_timespan.music,
+                    ))
+                if not SegmentMaker.can_rewrite_meter(inscribed_timespan):
+                    continue
+                with systemtools.ForbidUpdate(
+                    inscribed_timespan.music,
+                    update_on_exit=True,
+                    ):
+                    for i, container in enumerate(inscribed_timespan.music):
+                        container_timespan = inspect_(container).get_timespan()
+                        container_timespan = container_timespan.translate(
+                            inscribed_timespan.start_offset)
+                        if i == 0:
+                            assert container_timespan.start_offset == \
+                                inscribed_timespan.start_offset
+                        if i == (len(inscribed_timespan.music) - 1):
+                            assert container_timespan.stop_offset == \
+                                inscribed_timespan.stop_offset
+                        if container_timespan in cache:
+                            intersecting_meters = cache[container_timespan]
+                        else:
+                            intersecting_meters = \
+                                meter_timespans.find_timespans_intersecting_timespan(
+                                    container_timespan)
+                            cache[container_timespan] = intersecting_meters
+                        shifted_intersecting_meters = [
+                            _.translate(-1 * inscribed_timespan.start_offset)
+                            for _ in intersecting_meters
+                            ]
+                        consort.debug('\t\t{!r} {!r}'.format(
+                            container,
+                            container_timespan,
+                            ))
+                        for intersecting_meter in intersecting_meters:
+                            consort.debug('\t\t\t' + repr(intersecting_meter))
+                        SegmentMaker.rewrite_container_meter(
+                            container,
+                            shifted_intersecting_meters,
+                            forbid_staff_lines_spanner,
+                            )
+                        SegmentMaker.cleanup_logical_ties(container)
+                        count += 1
+            message = template.format(context_name, count)
+            print(message)
 
     @staticmethod
     def sort_voice_names(score, voice_names):
