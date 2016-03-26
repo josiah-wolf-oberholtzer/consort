@@ -37,8 +37,10 @@ def test_SegmentMaker_validate_01():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "String Quartet Score" <<

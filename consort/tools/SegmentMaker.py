@@ -504,6 +504,7 @@ class SegmentMaker(makertools.SegmentMaker):
         items = [score_block]
         lilypond_file = lilypondfiletools.LilyPondFile(
             comments=comments,
+            date_time_token=self.score_package_name != 'consort',
             includes=includes,
             items=items,
             use_relative_includes=True,
@@ -2433,8 +2434,9 @@ class SegmentMaker(makertools.SegmentMaker):
                             )
                         SegmentMaker.cleanup_logical_ties(container)
                         count += 1
-            message = template.format(context_name, count)
-            print(message)
+            if verbose:
+                message = template.format(context_name, count)
+                print(message)
 
     @staticmethod
     def sort_voice_names(score, voice_names):

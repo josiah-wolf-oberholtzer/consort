@@ -29,9 +29,11 @@ def test_SegmentMaker_is_final_segment_01():
         )
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
-        
+
+        #(ly:set-option 'relative-includes #t)
+
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
                 \tag #'time

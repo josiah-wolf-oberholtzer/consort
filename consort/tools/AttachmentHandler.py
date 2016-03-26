@@ -129,8 +129,9 @@ class AttachmentHandler(abctools.AbjadValueObject):
                 maker(container, seed=seed)
                 counter[music_specifier] -= 1
                 count += 1
-            message = template.format(voice.name, count)
-            print(message)
+            if verbose:
+                message = template.format(voice.name, count)
+                print(message)
 
     ### PRIVATE PROPERTIES ###
 

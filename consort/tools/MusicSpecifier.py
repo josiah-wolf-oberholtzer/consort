@@ -143,6 +143,9 @@ class MusicSpecifier(HashCachingObject):
             ...             ),
             ...         ),
             ...     )
+
+        ::
+
             >>> illustration = piano_glissando_music_specifier.__illustrate__(
             ...     annotate=True,
             ...     verbose=False,
@@ -214,8 +217,11 @@ class MusicSpecifier(HashCachingObject):
             'stylesheet.ily',
             )
         consort_stylesheet_path = os.path.abspath(consort_stylesheet_path)
-        lilypond_file.file_initial_user_includes[:] = [consort_stylesheet_path]
-        lilypond_file.use_relative_includes = False
+        lilypond_file = new(
+            lilypond_file,
+            includes=[consort_stylesheet_path],
+            use_relative_includes=False,
+            )
         if package_name is not None:
             header = lilypondfiletools.Block('header')
             header.title = stringtools.to_space_delimited_lowercase(

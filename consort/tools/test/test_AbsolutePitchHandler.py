@@ -40,8 +40,10 @@ def test_AbsolutePitchHandler_01():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -104,8 +106,10 @@ def test_AbsolutePitchHandler_02():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -170,8 +174,10 @@ def test_AbsolutePitchHandler_03():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -272,8 +278,10 @@ def test_AbsolutePitchHandler_04():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -363,8 +371,10 @@ def test_AbsolutePitchHandler_05():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -497,8 +507,10 @@ def test_AbsolutePitchHandler_06():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -639,8 +651,10 @@ def test_AbsolutePitchHandler_07():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -769,8 +783,10 @@ def test_AbsolutePitchHandler_08():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -899,8 +915,10 @@ def test_AbsolutePitchHandler_09():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<
@@ -1030,8 +1048,10 @@ def test_AbsolutePitchHandler_10():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Staves Score" <<

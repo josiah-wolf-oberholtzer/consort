@@ -29,8 +29,10 @@ def test_SegmentMaker_01():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
@@ -100,8 +102,10 @@ def test_SegmentMaker_02():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
@@ -177,8 +181,10 @@ def test_SegmentMaker_03():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
@@ -272,8 +278,10 @@ def test_SegmentMaker_04():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
@@ -349,8 +357,10 @@ def test_SegmentMaker_05():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
@@ -434,8 +444,10 @@ def test_SegmentMaker_06():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
@@ -556,8 +568,10 @@ def test_SegmentMaker_07():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.26"
+        \version "2.19.15"
         \language "english"
+
+        #(ly:set-option 'relative-includes #t)
 
         \score {
             \context Score = "Grouped Rhythmic Staves Score" <<
