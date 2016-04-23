@@ -1,6 +1,10 @@
 # -*- encoding: utf-8 -*-
 from consort.tools import *
 
+from abjad.tools import lilypondparsertools
+lilypondparsertools.LilyPondParser.register_markup_function('vstrut', [])
+del lilypondparsertools
+
 
 DEBUG = False
 

@@ -706,9 +706,9 @@ def test_DynamicExpression_07():
 def test_DynamicExpression_08():
 
     dynamic_expression = consort.DynamicExpression(
-        dynamic_tokens="p ppp",
-        start_dynamic_tokens="o",
-        stop_dynamic_tokens="o",
+        dynamic_tokens='p ppp',
+        start_dynamic_tokens='niente',
+        stop_dynamic_tokens='niente',
         )
 
     music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")

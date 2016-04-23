@@ -230,8 +230,8 @@ class DynamicExpression(abctools.AbjadValueObject):
             >>> dynamic_expression = consort.DynamicExpression(
             ...     division_period=2,
             ...     dynamic_tokens='p ppp',
-            ...     start_dynamic_tokens='o',
-            ...     stop_dynamic_tokens='o',
+            ...     start_dynamic_tokens='niente',
+            ...     stop_dynamic_tokens='niente',
             ...     )
             >>> dynamic_expression(music)
             >>> print(format(music))
@@ -273,8 +273,8 @@ class DynamicExpression(abctools.AbjadValueObject):
             >>> dynamic_expression = consort.DynamicExpression(
             ...     division_period=2,
             ...     dynamic_tokens='p ppp',
-            ...     start_dynamic_tokens='o',
-            ...     stop_dynamic_tokens='o',
+            ...     start_dynamic_tokens='niente',
+            ...     stop_dynamic_tokens='niente',
             ...     )
             >>> dynamic_expression(music)
             >>> print(format(music))
@@ -398,7 +398,7 @@ class DynamicExpression(abctools.AbjadValueObject):
             dynamic, hairpin, hairpin_override = self._get_attachments(
                 index, length, seed, original_seed)
             if dynamic != current_dynamic:
-                if dynamic.name != 'o':
+                if dynamic.name != 'niente':
                     attach(dynamic, component, name=name)
                 current_dynamic = dynamic
             if self.unsustained:
@@ -424,9 +424,9 @@ class DynamicExpression(abctools.AbjadValueObject):
                         if dynamic.name in dynamic._composite_dynamic_name_to_steady_state_dynamic_name:
                             dynamic_name = dynamic._composite_dynamic_name_to_steady_state_dynamic_name[dynamic.name]
                             dynamic = indicatortools.Dynamic(dynamic_name)
-        if dynamic != current_dynamic and dynamic.name != 'o':
+        if dynamic != current_dynamic and dynamic.name != 'niente':
             attach(dynamic, components[-1], name=name)
-        if dynamic.name == 'o' and current_hairpin:
+        if dynamic.name == 'niente' and current_hairpin:
             next_leaf = components[-1]._get_leaf(1)
             if next_leaf is not None:
                 current_hairpin._append(next_leaf)
@@ -452,7 +452,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                 this_token = self.stop_dynamic_tokens[original_seed]
             else:
                 this_token = self.dynamic_tokens[dynamic_seed]
-            if this_token == 'o':
+            if this_token == 'niente':
                 this_token = self.dynamic_tokens[dynamic_seed]
         elif length == 2:
             if index == 0:
@@ -468,14 +468,14 @@ class DynamicExpression(abctools.AbjadValueObject):
                 if self.stop_dynamic_tokens:
                     this_token = self.stop_dynamic_tokens[original_seed]
                     if (
-                        this_token == 'o' and
+                        this_token == 'niente' and
                         self.start_dynamic_tokens and
-                        self.start_dynamic_tokens[original_seed] == 'o'
+                        self.start_dynamic_tokens[original_seed] == 'niente'
                         ):
                         this_token = self.dynamic_tokens[dynamic_seed]
                 else:
                     this_token = self.dynamic_tokens[dynamic_seed]
-            if this_token == next_token == 'o':
+            if this_token == next_token == 'niente':
                 next_token = self.dynamic_tokens[dynamic_seed]
         else:
             #print('!!!', index)
@@ -510,12 +510,12 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         this_dynamic = indicatortools.Dynamic(this_token)
         this_dynamic_ordinal = mathtools.NegativeInfinity()
-        if this_dynamic.name != 'o':
+        if this_dynamic.name != 'niente':
             this_dynamic_ordinal = this_dynamic.ordinal
         if next_token is not None:
             next_dynamic = indicatortools.Dynamic(next_token)
             next_dynamic_ordinal = mathtools.NegativeInfinity()
-            if next_dynamic.name != 'o':
+            if next_dynamic.name != 'niente':
                 next_dynamic_ordinal = next_dynamic.ordinal
 
         if next_dynamic is not None:
@@ -535,7 +535,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                     property_path='stencil',
                     value=schemetools.Scheme('{}-hairpin'.format(transition)),
                     )
-            if this_dynamic.name == 'o' or next_dynamic.name == 'o':
+            if this_dynamic.name == 'niente' or next_dynamic.name == 'niente':
                 hairpin_override = lilypondnametools.LilyPondGrobOverride(
                     grob_name='Hairpin',
                     is_once=True,
@@ -707,8 +707,8 @@ class DynamicExpression(abctools.AbjadValueObject):
                 >>> dynamic_expression = consort.DynamicExpression(
                 ...     division_period=2,
                 ...     dynamic_tokens='p ppp',
-                ...     start_dynamic_tokens='o',
-                ...     stop_dynamic_tokens='o',
+                ...     start_dynamic_tokens='niente',
+                ...     stop_dynamic_tokens='niente',
                 ...     )
                 >>> result = dynamic_expression._get_selections(music)
                 >>> selections, attach_components = result
@@ -772,7 +772,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         if isinstance(tokens, str):
             tokens = tokens.split()
         for token in tokens:
-            if token == 'o':
+            if token == 'niente':
                 continue
             assert token in indicatortools.Dynamic._dynamic_names
         assert len(tokens)

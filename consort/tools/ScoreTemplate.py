@@ -65,6 +65,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
         context_name=None,
         instrument=None,
         tag=None,
+        voices=None,
         ):
         name = name.title()
         staff_name = '{} Staff'.format(name)
@@ -72,9 +73,9 @@ class ScoreTemplate(abctools.AbjadValueObject):
         context_name = context_name.replace(' ', '')
         abbreviation = abbreviation or name
         abbreviation = stringtools.to_snake_case(abbreviation)
-        voice = self._make_voice(name, abbreviation=abbreviation)
+        voices = voices or [self._make_voice(name, abbreviation=abbreviation)]
         staff = scoretools.Staff(
-            [voice],
+            voices,
             context_name=context_name,
             name=staff_name
             )
