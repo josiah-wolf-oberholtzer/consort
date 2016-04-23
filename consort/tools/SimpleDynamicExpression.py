@@ -7,7 +7,6 @@ from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
-from abjad.tools import lilypondparsertools
 from abjad.tools import selectiontools
 from abjad.tools import spannertools
 
@@ -22,7 +21,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
             >>> import consort
             >>> dynamic_expression = consort.SimpleDynamicExpression(
             ...     hairpin_start_token='sfp',
-            ...     hairpin_stop_token='o',
+            ...     hairpin_stop_token='niente',
             ...     )
 
         ::
@@ -82,16 +81,14 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         hairpin_stop_token=None,
         minimum_duration=durationtools.Duration(1, 4),
         ):
-        lilypond_parser = lilypondparsertools.LilyPondParser
-        known_dynamics = list(lilypond_parser.list_known_dynamics())
-        known_dynamics.append('o')
+        known_dynamics = indicatortools.Dynamic._dynamic_names
         assert hairpin_start_token in known_dynamics, \
             (known_dynamics, hairpin_start_token)
         if hairpin_stop_token is not None:
             assert hairpin_stop_token in known_dynamics
-        assert hairpin_start_token != 'o' or hairpin_stop_token != 'o'
-        if hairpin_start_token == 'o':
-            assert not hairpin_stop_token is None
+        assert hairpin_start_token != 'niente' or hairpin_stop_token != 'niente'
+        if hairpin_start_token == 'niente':
+            assert hairpin_stop_token is not None
         self._hairpin_start_token = hairpin_start_token
         self._hairpin_stop_token = hairpin_stop_token
         if minimum_duration is not None:
@@ -130,7 +127,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         start_token = self.hairpin_start_token
         stop_token = self.hairpin_stop_token
         if is_short_group or stop_token is None:
-            if start_token == 'o':
+            if start_token == 'niente':
                 start_token = stop_token
             if start_token.startswith('fp'):
                 start_token = start_token[1:]
@@ -138,16 +135,16 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
             attach(command, music[0], name=name)
             return
         start_ordinal = NegativeInfinity
-        if start_token != 'o':
+        if start_token != 'niente':
             start_ordinal = indicatortools.Dynamic.dynamic_name_to_dynamic_ordinal(
                 start_token)
         stop_ordinal = NegativeInfinity
-        if stop_token != 'o':
+        if stop_token != 'niente':
             stop_ordinal = indicatortools.Dynamic.dynamic_name_to_dynamic_ordinal(stop_token)
         items = []
         is_circled = False
         if start_ordinal < stop_ordinal:
-            if start_token != 'o':
+            if start_token != 'niente':
                 items.append(start_token)
             else:
                 is_circled = True
@@ -156,10 +153,10 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         elif stop_ordinal < start_ordinal:
             items.append(start_token)
             items.append('>')
-            if stop_token != 'o':
+            if stop_token != 'niente':
                 items.append(stop_token)
             else:
-                items.append('!')
+                #items.append('!')
                 is_circled = True
         hairpin_descriptor = ' '.join(items)
         hairpin = spannertools.Hairpin(

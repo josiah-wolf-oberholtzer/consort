@@ -54,7 +54,7 @@ class AttachmentExpression(HashCachingObject):
             ...     attachments=(
             ...         consort.SimpleDynamicExpression(
             ...             hairpin_start_token='sfz',
-            ...             hairpin_stop_token='o',
+            ...             hairpin_stop_token='niente',
             ...             ),
             ...         ),
             ...     selector=selectortools.Selector().by_leaves().by_run(Note),
