@@ -224,8 +224,10 @@ class MusicSpecifier(HashCachingObject):
             )
         if package_name is not None:
             header = lilypondfiletools.Block('header')
-            header.title = stringtools.to_space_delimited_lowercase(
-                package_name).title()
+            title = stringtools.to_space_delimited_lowercase(package_name)
+            title = title.title()
+            title = markuptools.Markup(title).override(('font-name', 'Didot'))
+            header.title = title
             header.tagline = markuptools.Markup('""')
             lilypond_file.items.insert(0, header)
         return lilypond_file

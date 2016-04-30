@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 from abjad import attach
-from abjad import inspect_
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -741,7 +740,8 @@ class DynamicExpression(abctools.AbjadValueObject):
                 selection = selection + (initial_selections[i + 1][0],)
                 selections.append(selection)
                 attach_components.append(selection[0])
-            elif ((selection.get_duration() <= durationtools.Duration(1, 8) and
+            elif (
+                (selection.get_duration() <= durationtools.Duration(1, 8) and
                 1 < len(selections)) or len(selection) == 1
                 ):
                 #print('   ', 'B')

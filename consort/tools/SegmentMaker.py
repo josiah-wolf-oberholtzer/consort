@@ -262,6 +262,13 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.interpret_rhythms(verbose=verbose)
+            # systemtools.IOManager.profile_expr(
+            #     'self.interpret_rhythms(verbose=verbose)',
+            #     line_count=40,
+            #     global_context=globals(),
+            #     local_context=locals(),
+            #     print_callees=True,
+            #     )
         with systemtools.Timer(
             '    total:',
             'Performing non-rhythmic interpretation:',
@@ -574,7 +581,8 @@ class SegmentMaker(makertools.SegmentMaker):
                         consort.MusicSpecifier)
                     if music_specifier != silent_specifier:
                         continue
-                    divisions = [_ for _ in phrase
+                    divisions = [
+                        _ for _ in phrase
                         if isinstance(_[0], scoretools.MultimeasureRest)
                         ]
                     iterator = itertools.groupby(divisions, division_to_meter)
@@ -1956,7 +1964,7 @@ class SegmentMaker(makertools.SegmentMaker):
             '        populated timespans:',
             verbose=verbose,
             ):
-            populated = self.populate_multiplexed_maquette(
+            self.populate_multiplexed_maquette(
                 dependent=True,
                 score=score,
                 score_template=score_template,
@@ -2118,10 +2126,12 @@ class SegmentMaker(makertools.SegmentMaker):
             timespan_quantization = durationtools.Duration(1, 16)
         if timespan_inventory is None:
             timespan_inventory = timespantools.TimespanInventory()
-        independent_settings = [setting for setting in settings
+        independent_settings = [
+            setting for setting in settings
             if not setting.timespan_maker.is_dependent
             ]
-        dependent_settings = [setting for setting in settings
+        dependent_settings = [
+            setting for setting in settings
             if setting.timespan_maker.is_dependent
             ]
         if dependent:
@@ -2187,8 +2197,8 @@ class SegmentMaker(makertools.SegmentMaker):
                 silences, timespans)
             silences = SegmentMaker.split_timespans(meter_offsets, silences)
             for group in silences.partition(include_tangent_timespans=True):
-                start_offset = group.start_offset,
-                stop_offset = group.stop_offset,
+                start_offset = group.start_offset
+                stop_offset = group.stop_offset
                 durations = [_.duration for _ in group]
                 silence = SegmentMaker.make_music(
                     rhythm_maker,
