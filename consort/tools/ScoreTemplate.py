@@ -1,11 +1,18 @@
 # -*- encoding: utf-8 -*-
 import abc
+import importlib
 from abjad import attach
+from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
+from abjad.tools import lilypondfiletools
 from abjad.tools import scoretools
 from abjad.tools import stringtools
+try:
+    import pathlib
+except ImportError:
+    import pathlib2 as pathlib
 
 
 class ScoreTemplate(abctools.AbjadValueObject):
@@ -34,6 +41,22 @@ class ScoreTemplate(abctools.AbjadValueObject):
     @abc.abstractmethod
     def __call__(self):
         raise NotImplementedError
+
+    def __illustrate__(self):
+        score = self()
+        for voice in iterate(score).by_class(scoretools.Voice):
+            voice.append('R1 R1 R1 R1')
+        score['Time Signature Context'].extend('R1 R1 R1 R1')
+        module = importlib.import_module(type(self).__module__)
+        score_path = pathlib.Path(module.__file__).parent.parent
+        stylesheet_path = score_path.joinpath('stylesheets', 'stylesheet.ily')
+        stylesheet_path = stylesheet_path.resolve()
+        lilypond_file = lilypondfiletools.make_basic_lilypond_file(
+            score,
+            includes=[str(stylesheet_path)],
+            use_relative_includes=True,
+            )
+        return lilypond_file
 
     ### PRIVATE METHODS ###
 
