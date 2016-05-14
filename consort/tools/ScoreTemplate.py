@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import abc
 import importlib
+from abjad import Multiplier
 from abjad import attach
 from abjad import iterate
 from abjad.tools import abctools
@@ -44,9 +45,25 @@ class ScoreTemplate(abctools.AbjadValueObject):
 
     def __illustrate__(self):
         score = self()
+        time_signatures = [
+            (3, 4), (7, 8), (2, 4), (5, 16),
+            (4, 4), (6, 8), (5, 4), (3, 8),
+            (3, 4), (7, 8), (2, 4), (5, 16),
+            ]
         for voice in iterate(score).by_class(scoretools.Voice):
-            voice.append('R1 R1 R1 R1')
-        score['Time Signature Context'].extend('R1 R1 R1 R1')
+            for pair in time_signatures:
+                rest = scoretools.MultimeasureRest(1)
+                attach(Multiplier(pair), rest)
+                voice.append(rest)
+        for pair in time_signatures:
+            skip = scoretools.Skip(1)
+            attach(Multiplier(pair), skip)
+            score['Time Signature Context'].append(skip)
+            attach(
+                indicatortools.TimeSignature(pair),
+                skip,
+                scope=scoretools.Score,
+                )
         module = importlib.import_module(type(self).__module__)
         score_path = pathlib.Path(module.__file__).parent.parent
         stylesheet_path = score_path.joinpath('stylesheets', 'stylesheet.ily')
