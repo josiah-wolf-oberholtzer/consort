@@ -94,7 +94,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
             name=voice_name,
             context_name=context_name,
             )
-        self._context_name_abbreviations[abbreviation] = voice.name
+        self._register_abbreviation(abbreviation, voice)
         return voice
 
     def _make_staff(
@@ -133,6 +133,10 @@ class ScoreTemplate(abctools.AbjadValueObject):
         if not type(self)._is_populated:
             self()
             type(self)._is_populated = True
+
+    def _register_abbreviation(self, abbreviation, voice):
+        assert isinstance(voice, scoretools.Voice)
+        self._context_name_abbreviations[abbreviation] = voice.name
 
     ### PUBLIC PROPERTIES ###
 
