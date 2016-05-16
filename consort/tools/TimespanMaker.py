@@ -5,6 +5,9 @@ import collections
 from abjad import new
 from abjad.tools import abctools
 from abjad.tools import durationtools
+from abjad.tools import lilypondfiletools
+from abjad.tools import metertools
+from abjad.tools import markuptools
 from abjad.tools import patterntools
 from abjad.tools import timespantools
 
@@ -88,6 +91,55 @@ class TimespanMaker(abctools.AbjadValueObject):
         timespan_inventory.extend(new_timespans)
         timespan_inventory.sort()
         return timespan_inventory
+
+    def __illustrate__(self, scale=None, target_timespan=None, **kwargs):
+        target_timespan = target_timespan or timespantools.Timespan(0, 16)
+        assert isinstance(target_timespan, timespantools.Timespan)
+        assert 0 < target_timespan.duration
+        scale = scale or 1.5
+        music_specifiers = {
+            'A': 'A music',
+            'B': 'B music',
+            'C': 'C music',
+            'D': 'D music',
+            'E': 'E music',
+            'F': 'F music',
+            'G': 'G music',
+            'H': 'H music',
+            'I': 'I music',
+            'J': 'J music',
+            #'K': 'K music',
+            #'L': 'L music',
+            #'M': 'M music',
+            #'N': 'N music',
+            }
+        timespan_inventory = self(
+            layer=0,
+            music_specifiers=music_specifiers,
+            target_timespan=target_timespan,
+            )
+        ti_lilypond_file = timespan_inventory.__illustrate__(
+            key='voice_name',
+            range_=target_timespan,
+            scale=scale,
+            )
+        ti_markup = ti_lilypond_file.items[-1]
+        offset_counter = metertools.OffsetCounter(timespan_inventory)
+        oc_lilypond_file = offset_counter.__illustrate__(
+            range_=target_timespan,
+            scale=scale,
+            )
+        oc_markup = oc_lilypond_file.items[-1]
+        lilypond_file = lilypondfiletools.make_basic_lilypond_file(
+            default_paper_size=['tabloid', 'landscape'],
+            )
+        lilypond_file.items.extend([
+            ti_markup,
+            markuptools.Markup.null().pad_around(2),
+            oc_markup,
+            ])
+        lilypond_file.header_block.tagline = False
+        return lilypond_file
 
     ### PRIVATE METHODS ###
 
