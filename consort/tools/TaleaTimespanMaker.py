@@ -317,6 +317,7 @@ class TaleaTimespanMaker(TimespanMaker):
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         can_continue = True
+        division_mask_seed = 0
         while start_offset < stop_offset and can_continue:
             silence_duration = next(silence_talea)
             durations = []
@@ -370,10 +371,12 @@ class TaleaTimespanMaker(TimespanMaker):
                     division_masks=self.division_masks,
                     padding=self.padding,
                     seed=seed,
+                    division_mask_seed=division_mask_seed,
                     start_offset=group_offset,
                     timespan_specifier=self.timespan_specifier,
                     voice_name=context_name,
                     )
+                division_mask_seed += 1
 
                 if all(isinstance(_, consort.SilentTimespan)
                     for _ in new_timespans):

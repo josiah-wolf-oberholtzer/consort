@@ -74,6 +74,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         self,
         durations=None,
         layer=None,
+        division_mask_seed=0,
         division_masks=None,
         padding=None,
         seed=None,
@@ -90,12 +91,9 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         offsets = mathtools.cumulative_sums(durations, start_offset)
         if not offsets:
             return timespans
-
         offset_pair_count = len(offsets) - 1
-        output_mask_prototype = (
-            type(None),
-            rhythmmakertools.SustainMask,
-            )
+        if offset_pair_count == 1:
+            offset_pair_count = 2  # make patterns happy
         iterator = sequencetools.iterate_sequence_nwise(offsets)
         for i, offset_pair in enumerate(iterator):
             start_offset, stop_offset = offset_pair
@@ -114,9 +112,14 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
                 timespans.append(timespan)
             else:
                 output_mask = division_masks.get_matching_pattern(
-                    i, offset_pair_count, rotation=seed)
-                if isinstance(output_mask, output_mask_prototype):
+                    i, offset_pair_count + 1, rotation=division_mask_seed)
+                if output_mask is None:
                     timespans.append(timespan)
+                elif isinstance(output_mask, rhythmmakertools.SustainMask):
+                    timespans.append(timespan)
+                elif isinstance(output_mask, rhythmmakertools.SilenceMask):
+                    pass
+            division_mask_seed += 1
             if self.application_rate == 'division':
                 seed += 1
 

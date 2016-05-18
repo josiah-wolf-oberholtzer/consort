@@ -97,22 +97,18 @@ class TimespanMaker(abctools.AbjadValueObject):
         assert isinstance(target_timespan, timespantools.Timespan)
         assert 0 < target_timespan.duration
         scale = scale or 1.5
-        music_specifiers = {
-            'A': 'A music',
-            'B': 'B music',
-            'C': 'C music',
-            'D': 'D music',
-            'E': 'E music',
-            'F': 'F music',
-            'G': 'G music',
-            'H': 'H music',
-            'I': 'I music',
-            'J': 'J music',
-            #'K': 'K music',
-            #'L': 'L music',
-            #'M': 'M music',
-            #'N': 'N music',
-            }
+        music_specifiers = collections.OrderedDict([
+            ('A', 'A music'),
+            ('B', 'B music'),
+            ('C', 'C music'),
+            ('D', 'D music'),
+            ('E', 'E music'),
+            ('F', 'F music'),
+            ('G', 'G music'),
+            ('H', 'H music'),
+            ('I', 'I music'),
+            ('J', 'J music'),
+            ])
         timespan_inventory = self(
             layer=0,
             music_specifiers=music_specifiers,

@@ -29,7 +29,7 @@ def test_SegmentMaker_rehearsal_mark_01():
         )
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.15"
+        \version "2.19.41"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -92,7 +92,7 @@ def test_SegmentMaker_rehearsal_mark_02():
         )
     assert format(lilypond_file) == systemtools.TestManager.clean_string(
         r'''
-        \version "2.19.15"
+        \version "2.19.41"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
