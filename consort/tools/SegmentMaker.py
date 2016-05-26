@@ -247,9 +247,11 @@ class SegmentMaker(makertools.SegmentMaker):
 
         self._annotate_phrasing = self._annotate_phrasing or annotate
         self._segment_metadata = segment_metadata or \
-            datastructuretools.TypedOrderedDict()
+            collections.OrderedDict()
+        # datastructuretools.TypedOrderedDict()
         self._previous_segment_metadata = previous_segment_metadata or \
-            datastructuretools.TypedOrderedDict()
+            collections.OrderedDict()
+        # datastructuretools.TypedOrderedDict()
         self._score = self.score_template()
         self._voice_names = tuple(
             voice.name for voice in
@@ -346,7 +348,8 @@ class SegmentMaker(makertools.SegmentMaker):
     ### PUBLIC METHODS ###
 
     def get_end_instruments(self):
-        result = datastructuretools.TypedOrderedDict()
+        #result = datastructuretools.TypedOrderedDict()
+        result = collections.OrderedDict()
         staves = iterate(self._score).by_class(scoretools.Staff)
         staves = list(staves)
         staves.sort(key=lambda x: x.name)

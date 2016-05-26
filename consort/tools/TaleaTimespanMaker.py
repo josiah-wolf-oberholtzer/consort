@@ -160,7 +160,6 @@ class TaleaTimespanMaker(TimespanMaker):
     __slots__ = (
         '_fuse_groups',
         '_initial_silence_talea',
-        '_padding',
         '_playing_talea',
         '_playing_groupings',
         '_reflect',
@@ -244,13 +243,6 @@ class TaleaTimespanMaker(TimespanMaker):
         self._synchronize_step = bool(synchronize_step)
 
     ### PRIVATE METHODS ###
-
-    def _make_infinite_iterator(self, sequence):
-        index = 0
-        sequence = datastructuretools.CyclicTuple(sequence)
-        while True:
-            yield sequence[index]
-            index += 1
 
     def _make_timespans(
         self,
