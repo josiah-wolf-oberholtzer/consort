@@ -436,8 +436,8 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(bar_line, staff)
 
     def attach_final_bar_line(self):
-        segment_number = self._segment_metadata.get('segment_number', 1)
-        segment_count = self._segment_metadata.get('segment_count', 1)
+        segment_number = int(self._segment_metadata.get('segment_number', 1))
+        segment_count = int(self._segment_metadata.get('segment_count', 1))
         if self.repeat:
             repeat = indicatortools.Repeat()
             for staff in iterate(self.score).by_class(scoretools.Staff):
@@ -523,16 +523,16 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def configure_score(self):
         self.add_time_signature_context()
-        self.attach_tempo()
-        self.attach_rehearsal_mark()
-        self.attach_initial_bar_line()
-        self.attach_final_bar_line()
         self.set_bar_number()
         self.postprocess_grace_containers()
         self.postprocess_ties()
         self.postprocess_staff_lines_spanners()
         self.postprocess_multimeasure_rests()
         self.attach_bar_number_comments()
+        self.attach_tempo()
+        self.attach_rehearsal_mark()
+        self.attach_initial_bar_line()
+        self.attach_final_bar_line()
         self.apply_annotations()
 
     def apply_annotations(self):

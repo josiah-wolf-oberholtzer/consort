@@ -38,6 +38,8 @@ class MusicSpecifier(HashCachingObject):
 
     ### CLASS VARIABLES ###
 
+    __is_terminal_ajv_list_item__ = True
+
     __slots__ = (
         '_attachment_handler',
         '_color',
