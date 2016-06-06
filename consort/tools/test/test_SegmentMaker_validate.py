@@ -71,7 +71,7 @@ def test_SegmentMaker_validate_01():
                             {
                                 % [Violin 1 Voice] Measure 1
                                 {
-                                    \once \override NoteHead #'color = #red
+                                    \once \override NoteHead.color = #red
                                     c,1
                                 }
                             }
@@ -97,7 +97,7 @@ def test_SegmentMaker_validate_01():
                             {
                                 % [Violin 2 Voice] Measure 1
                                 {
-                                    \once \override NoteHead #'color = #red
+                                    \once \override NoteHead.color = #red
                                     c,1
                                 }
                             }
@@ -123,7 +123,7 @@ def test_SegmentMaker_validate_01():
                             {
                                 % [Viola Voice] Measure 1
                                 {
-                                    \once \override NoteHead #'color = #red
+                                    \once \override NoteHead.color = #red
                                     c,1
                                 }
                             }

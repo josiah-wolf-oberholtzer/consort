@@ -68,16 +68,16 @@ class AttachmentExpression(HashCachingObject):
             \new Staff {
                 c'8 \sfz
                 r8
-                \override Hairpin #'circled-tip = ##t
+                \override Hairpin.circled-tip = ##t
                 d'8 \> \sfz
                 e'8 \!
-                \revert Hairpin #'circled-tip
+                \revert Hairpin.circled-tip
                 r8
-                \override Hairpin #'circled-tip = ##t
+                \override Hairpin.circled-tip = ##t
                 f'8 \> \sfz
                 g'8
                 a'8 \!
-                \revert Hairpin #'circled-tip
+                \revert Hairpin.circled-tip
             }
 
     ..  container:: example

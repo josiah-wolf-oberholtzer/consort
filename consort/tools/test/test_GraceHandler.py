@@ -74,11 +74,11 @@ def test_GraceHandler_01():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
@@ -90,11 +90,11 @@ def test_GraceHandler_01():
                                     \afterGrace
                                     r4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                             }
@@ -113,11 +113,11 @@ def test_GraceHandler_01():
                                     \afterGrace
                                     r4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                             }
@@ -126,11 +126,11 @@ def test_GraceHandler_01():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
@@ -211,11 +211,11 @@ def test_GraceHandler_02():
                                     \afterGrace
                                     r4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                             }
@@ -224,25 +224,25 @@ def test_GraceHandler_02():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
@@ -259,12 +259,12 @@ def test_GraceHandler_02():
                                     \afterGrace
                                     r4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                             }
@@ -273,24 +273,24 @@ def test_GraceHandler_02():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
@@ -371,26 +371,26 @@ def test_GraceHandler_03():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
@@ -407,12 +407,12 @@ def test_GraceHandler_03():
                                     \afterGrace
                                     r4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                             }
@@ -424,14 +424,14 @@ def test_GraceHandler_03():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
                                         c'16
                                         c'16
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {
@@ -505,11 +505,11 @@ def test_GraceHandler_04():
                                     \afterGrace
                                     r4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                             }
@@ -599,11 +599,11 @@ def test_GraceHandler_05():
                                     \afterGrace
                                     c'4
                                     {
-                                        \override Flag #'stroke-style = #"grace"
-                                        \override Script #'font-size = #0.5
+                                        \override Flag.stroke-style = #"grace"
+                                        \override Script.font-size = #0.5
                                         c'16
-                                        \revert Flag #'stroke-style
-                                        \revert Script #'font-size
+                                        \revert Flag.stroke-style
+                                        \revert Script.font-size
                                     }
                                 }
                                 {

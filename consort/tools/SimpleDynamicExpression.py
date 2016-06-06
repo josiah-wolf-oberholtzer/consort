@@ -32,12 +32,12 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
             \new Staff {
                 c'8
                 d'8
-                \override Hairpin #'circled-tip = ##t
+                \override Hairpin.circled-tip = ##t
                 e'8 \> \sfp
                 f'8
                 g'8
                 a'8 \!
-                \revert Hairpin #'circled-tip
+                \revert Hairpin.circled-tip
                 b'8
                 c''8
             }

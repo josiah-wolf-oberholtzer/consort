@@ -19,16 +19,16 @@ class KeyClickExpression(LogicalTieExpression):
             c'4
             <
                 \parenthesize
-                \tweak #'font-size #-2
+                \tweak font-size #-2
                 ef
-                \tweak #'style #'cross
+                \tweak style #'cross
                 d'
             >4 ~
             <
                 \parenthesize
-                \tweak #'font-size #-2
+                \tweak font-size #-2
                 ef
-                \tweak #'style #'cross
+                \tweak style #'cross
                 d'
             >4
             e'4

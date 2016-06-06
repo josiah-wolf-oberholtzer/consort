@@ -26,12 +26,12 @@ class HarmonicExpression(LogicalTieExpression):
             c'4
             <
                 d'
-                \tweak #'style #'harmonic
+                \tweak style #'harmonic
                 g'
             >4 ~
             <
                 d'
-                \tweak #'style #'harmonic
+                \tweak style #'harmonic
                 g'
             >4
             e'4

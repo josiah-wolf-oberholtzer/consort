@@ -310,7 +310,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                     c'8 \f ~ \>
                     c'4
                 }
-                \tweak #'text #tuplet-number::calc-fraction-text
+                \tweak text #tuplet-number::calc-fraction-text
                 \times 3/4 {
                     d'16 \mf
                     d'16
