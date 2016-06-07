@@ -12,7 +12,6 @@ from abjad import mutate
 from abjad import override
 from abjad import new
 from abjad import set_
-from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
@@ -562,11 +561,13 @@ class SegmentMaker(makertools.SegmentMaker):
                     color = music_specifier.color
                     if color is None:
                         continue
-                    override(phrase).beam.color = color
-                    override(phrase).dots.color = color
-                    override(phrase).flag.color = color
-                    override(phrase).note_head.color = color
-                    override(phrase).stem.color = color
+                    spanner = consort.ColorBracket(color)
+                    attach(spanner, phrase)
+                    #override(phrase).beam.color = color
+                    #override(phrase).dots.color = color
+                    #override(phrase).flag.color = color
+                    #override(phrase).note_head.color = color
+                    #override(phrase).stem.color = color
 
     def postprocess_multimeasure_rests(self):
         def division_to_meter(division):

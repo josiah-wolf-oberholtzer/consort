@@ -58,13 +58,14 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         if application_rate is not None:
             application_rate = application_rate or 'phrase'
             assert application_rate in ('division', 'phrase')
-        if music_specifiers is not None:
-            if not isinstance(music_specifiers, collections.Sequence) or \
-                isinstance(music_specifiers, str):
-                music_specifiers = [music_specifiers]
-            music_specifiers = tuple(music_specifiers)
-            music_specifiers = datastructuretools.CyclicTuple(music_specifiers)
-            assert len(music_specifiers)
+        if music_specifiers is None:
+            music_specifiers = [None]
+        if not isinstance(music_specifiers, collections.Sequence) or \
+            isinstance(music_specifiers, str):
+            music_specifiers = [music_specifiers]
+        music_specifiers = tuple(music_specifiers)
+        music_specifiers = datastructuretools.CyclicTuple(music_specifiers)
+        assert len(music_specifiers)
         self._application_rate = application_rate
         self._music_specifiers = music_specifiers
 

@@ -4,6 +4,7 @@ import collections
 from abjad import inspect_
 from abjad import new
 from abjad.tools import abctools
+from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
 
@@ -223,11 +224,21 @@ class MusicSetting(abctools.AbjadValueObject):
             consort.MusicSpecifier,
             consort.MusicSpecifierSequence,
             str,  # for demonstration purposes only
-            type(None),
             )
+        color = music_specifiers.pop('color', None)
         for abbreviation, music_specifier in sorted(music_specifiers.items()):
             if isinstance(music_specifier, prototype):
                 continue
+            elif music_specifier is None:
+                music_specifier = consort.MusicSpecifier(
+                    color=color,
+                    rhythm_maker=rhythmmakertools.NoteRhythmMaker(
+                        tie_specifier=rhythmmakertools.TieSpecifier(
+                            tie_across_divisions=True,
+                            ),
+                        ),
+                    )
+                music_specifiers[abbreviation] = music_specifier
             elif isinstance(music_specifier, collections.Sequence) and \
                 all(isinstance(x, prototype) for x in music_specifier):
                 music_specifier = consort.MusicSpecifierSequence(
