@@ -111,7 +111,8 @@ class CascadingTimespanMaker(TimespanMaker):
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 2),
+                    stop_offset=durationtools.Offset(3, 4),
+                    original_stop_offset=durationtools.Offset(1, 2),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
@@ -120,33 +121,20 @@ class CascadingTimespanMaker(TimespanMaker):
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
-                    voice_name='C',
-                    ),
-                consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    stop_offset=durationtools.Offset(5, 4),
+                    original_stop_offset=durationtools.Offset(1, 1),
                     voice_name='D',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
                     stop_offset=durationtools.Offset(5, 4),
                     voice_name='C',
-                    ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(5, 4),
-                    voice_name='D',
                     ),
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(5, 4),
-                    stop_offset=durationtools.Offset(3, 2),
-                    voice_name='A',
-                    ),
-                consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 2),
                     stop_offset=durationtools.Offset(7, 4),
+                    original_stop_offset=durationtools.Offset(3, 2),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
@@ -161,6 +149,7 @@ class CascadingTimespanMaker(TimespanMaker):
                     ),
                 ]
             )
+
 
     """
 
@@ -277,6 +266,7 @@ class CascadingTimespanMaker(TimespanMaker):
         can_continue = True
         division_mask_seed = 0
         # start the engine
+        new_timespan_mapping = {}
         while start_offset < stop_offset and can_continue:
             for cascade_step in cascade_pattern:
                 context_name = context_names[context_index]
@@ -305,7 +295,10 @@ class CascadingTimespanMaker(TimespanMaker):
                 if all(isinstance(_, consort.SilentTimespan)
                     for _ in new_timespans):
                     new_timespans[:] = []
-                timespan_inventory.extend(new_timespans)
+                if context_name not in new_timespan_mapping:
+                    new_timespan_mapping[context_name] = \
+                        timespantools.TimespanInventory()
+                new_timespan_mapping[context_name].extend(new_timespans)
                 context_index += cascade_step
                 context_seeds[context_name] += 1
                 division_mask_seed += 1
@@ -314,6 +307,9 @@ class CascadingTimespanMaker(TimespanMaker):
                     break
             if not self.repeat:
                 break
+        for context_name, timespans in new_timespan_mapping.items():
+            timespans.compute_logical_or()
+            timespan_inventory.extend(timespans)
         return timespan_inventory
 
     ### PUBLIC PROPERTIES ###

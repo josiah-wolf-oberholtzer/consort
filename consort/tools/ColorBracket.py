@@ -1,9 +1,45 @@
 # -*- coding: utf-8 -*-
-from abjad.tools.spannertools.HorizontalBracket import HorizontalBracket
+from abjad import inspect_
+from abjad.tools.spannertools.Spanner import Spanner
 
 
-class ColorBracket(HorizontalBracket):
-    r'''A color bracket.'''
+class ColorBracket(Spanner):
+    r'''A color bracket.
+
+    ..  note::
+
+        Requires a Scheme definition for the ``\colorSpan`` command.
+
+    ::
+
+        >>> staff = Staff("c'4 d'4 e'4 f'4")
+        >>> print(format(staff))
+        \new Staff {
+            c'4
+            d'4
+            e'4
+            f'4
+        }
+
+    ::
+
+        >>> import consort
+        >>> red_bracket = consort.ColorBracket('red')
+        >>> blue_bracket = consort.ColorBracket('blue')
+        >>> attach(red_bracket, staff[:2])
+        >>> attach(blue_bracket, staff[2:])
+        >>> print(format(staff))
+        \new Staff {
+            \colorSpan #-4 #4 #(x11-color 'red)
+            c'4 \(
+            d'4
+            \colorSpan #-4 #4 #(x11-color 'blue)
+            e'4 \) \(
+            f'4
+            <> \)
+        }
+
+    '''
 
     ### CLASS VARIABLES ###
 
@@ -18,7 +54,7 @@ class ColorBracket(HorizontalBracket):
         color='white',
         overrides=None,
         ):
-        HorizontalBracket.__init__(
+        Spanner.__init__(
             self,
             overrides=overrides,
             )
@@ -27,13 +63,18 @@ class ColorBracket(HorizontalBracket):
     ### PRIVATE METHODS ###
 
     def _format_after_leaf(self, leaf):
-        result = HorizontalBracket._format_after_leaf(self, leaf)
+        result = Spanner._format_after_leaf(self, leaf)
         if self._is_my_last_leaf(leaf):
-            result.append(r'<> \stopGroup')
+            next_leaf = leaf._get_leaf(1)
+            if (
+                next_leaf is None or
+                not inspect_(next_leaf).has_spanner(type(self))
+                ):
+                result.append(r'<> \)')
         return result
 
     def _format_before_leaf(self, leaf):
-        result = HorizontalBracket._format_before_leaf(self, leaf)
+        result = Spanner._format_before_leaf(self, leaf)
         if self._is_my_first_leaf(leaf):
             string = r"\colorSpan #-4 #4 #(x11-color '{})"
             string = string.format(self._color)
@@ -43,5 +84,11 @@ class ColorBracket(HorizontalBracket):
     def _format_right_of_leaf(self, leaf):
         result = []
         if self._is_my_first_leaf(leaf):
-            result.append(r'\startGroup')
+            previous_leaf = leaf._get_leaf(-1)
+            if (
+                previous_leaf is not None and
+                inspect_(previous_leaf).has_spanner(type(self))
+                ):
+                result.append(r'\)')
+            result.append(r'\(')
         return result
