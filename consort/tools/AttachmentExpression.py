@@ -130,6 +130,7 @@ class AttachmentExpression(HashCachingObject):
         '_selector',
         '_is_annotation',
         '_is_destructive',
+        '_use_only_first_attachment',
         )
 
     ### INITIALIZER ###
@@ -141,6 +142,7 @@ class AttachmentExpression(HashCachingObject):
         scope=None,
         is_annotation=None,
         is_destructive=None,
+        use_only_first_attachment=None,
         ):
         HashCachingObject.__init__(self)
         if attachments is not None:
@@ -163,6 +165,9 @@ class AttachmentExpression(HashCachingObject):
         if is_destructive is not None:
             is_destructive = bool(is_destructive)
         self._is_destructive = is_destructive
+        if use_only_first_attachment is not None:
+            use_only_first_attachment = bool(use_only_first_attachment)
+        self._use_only_first_attachment = use_only_first_attachment
 
     ### PUBLIC METHODS ###
 
@@ -188,8 +193,11 @@ class AttachmentExpression(HashCachingObject):
         if not self.attachments:
             return
         all_attachments = datastructuretools.CyclicTuple(self.attachments)
+        if self.use_only_first_attachment:
+            attachments = all_attachments[rotation]
         for i, selection in enumerate(selections, rotation):
-            attachments = all_attachments[i]
+            if not self.use_only_first_attachment:
+                attachments = all_attachments[i]
             # print(i, selection, attachments)
             if attachments is None:
                 continue
@@ -265,3 +273,7 @@ class AttachmentExpression(HashCachingObject):
     @property
     def selector(self):
         return self._selector
+
+    @property
+    def use_only_first_attachment(self):
+        return self._use_only_first_attachment
