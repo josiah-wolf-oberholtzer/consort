@@ -39,6 +39,26 @@ class ColorBracket(Spanner):
             <> \)
         }
 
+    ::
+
+        >>> staff = Staff("c'4 d'4 e'4 f'4")
+        >>> red = consort.Color(1, 0, 0)
+        >>> blue = consort.Color(0, 0, 1)
+        >>> red_bracket = consort.ColorBracket(red)
+        >>> blue_bracket = consort.ColorBracket(blue)
+        >>> attach(red_bracket, staff[:2])
+        >>> attach(blue_bracket, staff[2:])
+        >>> print(format(staff))
+        \new Staff {
+            \colorSpan #-4 #4 #(rgb-color 1.0 0.0 0.0)
+            c'4 \(
+            d'4
+            \colorSpan #-4 #4 #(rgb-color 0.0 0.0 1.0)
+            e'4 \) \(
+            f'4
+            <> \)
+        }
+
     '''
 
     ### CLASS VARIABLES ###
@@ -74,9 +94,16 @@ class ColorBracket(Spanner):
         return result
 
     def _format_before_leaf(self, leaf):
-        result = Spanner._format_before_leaf(self, leaf)
+        import consort
+        result = []
         if self._is_my_first_leaf(leaf):
-            string = r"\colorSpan #-4 #4 #(x11-color '{})"
+            result.extend(Spanner._format_before_leaf(self, leaf))
+            if isinstance(self._color, consort.Color):
+                string = r'\colorSpan #-4 #4 {}'.format(
+                    self._color._lilypond_format,
+                    )
+            else:
+                string = r"\colorSpan #-4 #4 #(x11-color '{})"
             string = string.format(self._color)
             result.append(string)
         return result

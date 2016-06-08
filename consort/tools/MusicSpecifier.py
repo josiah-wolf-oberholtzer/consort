@@ -71,8 +71,6 @@ class MusicSpecifier(HashCachingObject):
         if attachment_handler is not None:
             assert isinstance(attachment_handler, consort.AttachmentHandler)
         self._attachment_handler = attachment_handler
-        if color is not None:
-            color = str(color)
         self._color = color
         if grace_handler is not None:
             assert isinstance(grace_handler, consort.GraceHandler)

@@ -565,11 +565,6 @@ class SegmentMaker(makertools.SegmentMaker):
                         continue
                     spanner = consort.ColorBracket(color)
                     attach(spanner, phrase)
-                    #override(phrase).beam.color = color
-                    #override(phrase).dots.color = color
-                    #override(phrase).flag.color = color
-                    #override(phrase).note_head.color = color
-                    #override(phrase).stem.color = color
 
     def postprocess_multimeasure_rests(self):
         def division_to_meter(division):

@@ -42,6 +42,10 @@ class Color(abctools.AbjadValueObject):
         '_blue',
         )
 
+    _x11_colors = {
+        'Lavender': (90, 90, 98),
+        }
+
     ### INITIALIZER ###
 
     def __init__(self, red=1.0, green=1.0, blue=1.0):
@@ -81,6 +85,17 @@ class Color(abctools.AbjadValueObject):
     def from_hls(cls, hue, luminance, saturation):
         red, green, blue = colorsys.hls_to_rgb(hue, luminance, saturation)
         return cls(red=red, green=green, blue=blue)
+
+    @classmethod
+    def from_x11(cls, name):
+        r, g, b = cls._x11_colors[name]
+        return cls(r / 100., g / 100., b / 100.)
+
+    def rotate_hue(self, rotation):
+        hue, luminance, saturation = self.hls
+        luminance += float(rotation)
+        luminance %= 1.0
+        return self.from_hls(hue, luminance, saturation)
 
     def with_hue(self, hue):
         hue = float(hue)
