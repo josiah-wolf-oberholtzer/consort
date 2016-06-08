@@ -408,6 +408,7 @@ class SegmentMaker(makertools.SegmentMaker):
         silenced_contexts=None,
         timespan_identifier=None,
         timespan_maker=None,
+        color=None,
         **music_specifiers
         ):
         import consort
@@ -415,6 +416,7 @@ class SegmentMaker(makertools.SegmentMaker):
             silenced_contexts=silenced_contexts,
             timespan_identifier=timespan_identifier,
             timespan_maker=timespan_maker,
+            color=color,
             **music_specifiers
             )
         self._settings.append(setting)

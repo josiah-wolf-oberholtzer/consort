@@ -216,6 +216,7 @@ class MusicSetting(abctools.AbjadValueObject):
         timespan_identifier=None,
         timespan_maker=None,
         silenced_contexts=None,
+        color=None,
         **music_specifiers
         ):
         import consort
@@ -225,13 +226,11 @@ class MusicSetting(abctools.AbjadValueObject):
             consort.MusicSpecifierSequence,
             str,  # for demonstration purposes only
             )
-        color = music_specifiers.pop('color', None)
         for abbreviation, music_specifier in sorted(music_specifiers.items()):
             if isinstance(music_specifier, prototype):
                 continue
             elif music_specifier is None:
                 music_specifier = consort.MusicSpecifier(
-                    color=color,
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
                         tie_specifier=rhythmmakertools.TieSpecifier(
                             tie_across_divisions=True,
@@ -247,6 +246,39 @@ class MusicSetting(abctools.AbjadValueObject):
                 music_specifiers[abbreviation] = music_specifier
             else:
                 raise ValueError(music_specifier)
+        if color is not None:
+            for abbreviation, music_specifier in sorted(music_specifiers.items()):
+                if isinstance(music_specifier, consort.MusicSpecifier):
+                    music_specifier = new(music_specifier, color=color)
+                elif isinstance(music_specifier, consort.CompositeMusicSpecifier):
+                    primary = new(
+                        music_specifier.primary_music_specifier,
+                        music_specifiers=[
+                            new(_, color=color) for _ in
+                            music_specifier.primary_music_specifier
+                            ],
+                        )
+                    secondary = new(
+                        music_specifier.secondary_music_specifier,
+                        music_specifiers=[
+                            new(_, color=color) for _ in
+                            music_specifier.secondary_music_specifier
+                            ],
+                        )
+                    music_specifier = new(
+                        music_specifier,
+                        primary_music_specifier=primary,
+                        secondary_music_specifier=secondary,
+                        )
+                elif isinstance(music_specifier, consort.MusicSpecifierSequence):
+                    music_specifier = new(
+                        music_specifier,
+                        music_specifiers=[
+                            new(_, color=color) for _ in
+                            music_specifier.music_specifiers
+                            ],
+                        )
+                music_specifiers[abbreviation] = music_specifier
         self._music_specifiers = music_specifiers
         if silenced_contexts is not None:
             silenced_contexts = (str(_) for _ in silenced_contexts)
