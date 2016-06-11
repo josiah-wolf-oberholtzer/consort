@@ -271,7 +271,7 @@ class ComplexTextSpanner(spannertools.Spanner):
             grob_name='TextSpanner',
             is_once=True,
             property_path=('bound-details', 'left-broken', 'text'),
-            value=False,
+            value=self.markup,
             )
         lilypond_format_bundle.update(override)
         override = lilypondnametools.LilyPondGrobOverride(

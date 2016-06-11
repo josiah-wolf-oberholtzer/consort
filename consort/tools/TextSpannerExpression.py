@@ -76,7 +76,7 @@ class TextSpannerExpression(abctools.AbjadValueObject):
             selection = division.select_leaves()
             selections.append(selection)
         return selections
-    
+
     ### PUBLIC PROPERTIES ###
 
     @property
