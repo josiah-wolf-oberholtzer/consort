@@ -248,14 +248,13 @@ class CascadingTimespanMaker(TimespanMaker):
         import consort
         # setup state
         context_names = datastructuretools.CyclicTuple(music_specifiers)
-        context_index = 0
+        context_index = self.seed or 0
         cascade_pattern = self.cascade_pattern
         playing_talea = consort.Cursor(self.playing_talea)
         playing_groupings = consort.Cursor(self.playing_groupings)
         silence_talea = consort.Cursor(self.silence_talea)
         if self.seed is not None and 0 < self.seed:
             for _ in range(self.seed):
-                next(cascade_pattern)
                 next(playing_talea)
                 next(playing_groupings)
                 next(silence_talea)
@@ -306,7 +305,9 @@ class CascadingTimespanMaker(TimespanMaker):
                 if not can_continue:
                     break
             if not self.repeat:
-                break
+                if len(music_specifiers) == len(new_timespan_mapping):
+                    # dangerous...
+                    break
         for context_name, timespans in new_timespan_mapping.items():
             timespans.compute_logical_or()
             timespan_inventory.extend(timespans)

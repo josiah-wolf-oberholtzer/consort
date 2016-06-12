@@ -347,6 +347,8 @@ class MusicSetting(abctools.AbjadValueObject):
     def __getattr__(self, item):
         if item in self.music_specifiers:
             return self.music_specifiers[item]
+        elif item == 'color':
+            return None
         return object.__getattribute__(self, item)
 
     ### PRIVATE PROPERTIES ###
@@ -357,6 +359,7 @@ class MusicSetting(abctools.AbjadValueObject):
         keyword_argument_names = manager.get_keyword_argument_names(self)
         keyword_argument_names = list(keyword_argument_names)
         keyword_argument_names.extend(sorted(self.music_specifiers))
+        keyword_argument_names.remove('color')
         return systemtools.StorageFormatSpecification(
             self,
             keyword_argument_names=keyword_argument_names

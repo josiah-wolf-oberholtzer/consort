@@ -119,3 +119,9 @@ class ColorBracket(Spanner):
                 result.append(r'\)')
             result.append(r'\(')
         return result
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def color(self):
+        return self._color
