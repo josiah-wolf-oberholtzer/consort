@@ -37,6 +37,11 @@ class Color(abctools.AbjadValueObject):
         >>> color.rotate_hue(0.25)
         Color(red=0.8..., green=0.999..., blue=0.82...)
 
+    ::
+
+        >>> color.scale_luminance(1)
+        Color(red=1.0, green=0.95..., blue=0.89...)
+
     '''
 
     ### CLASS VARIABLES ###
@@ -100,6 +105,18 @@ class Color(abctools.AbjadValueObject):
         hue, luminance, saturation = self.hls
         hue += float(rotation)
         hue %= 1.0
+        return self.from_hls(hue, luminance, saturation)
+
+    def scale_saturation(self, scale):
+        scale = 2.0 ** float(-scale)
+        hue, luminance, saturation = self.hls
+        saturation **= scale
+        return self.from_hls(hue, luminance, saturation)
+
+    def scale_luminance(self, scale):
+        scale = 2.0 ** float(-scale)
+        hue, luminance, saturation = self.hls
+        luminance **= scale
         return self.from_hls(hue, luminance, saturation)
 
     def with_hue(self, hue):

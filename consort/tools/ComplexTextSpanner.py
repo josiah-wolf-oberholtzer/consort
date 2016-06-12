@@ -30,7 +30,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
             >>> print(format(staff))
             \new Staff {
-                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left-broken.text = \markup { foo }
                 \once \override TextSpanner.bound-details.left.text = \markup { foo }
                 \once \override TextSpanner.bound-details.right-broken.text = ##f
                 \once \override TextSpanner.bound-details.right.text = \markup {
@@ -67,7 +67,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
             >>> print(format(staff))
             \new Staff {
-                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left-broken.text = \markup { foo }
                 \once \override TextSpanner.bound-details.left.text = \markup { foo }
                 \once \override TextSpanner.bound-details.right-broken.text = ##f
                 \once \override TextSpanner.bound-details.right.text = \markup {
@@ -103,7 +103,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
             >>> print(format(staff))
             \new Staff {
-                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left-broken.text = \markup { foo }
                 \once \override TextSpanner.bound-details.left.text = \markup { foo }
                 \once \override TextSpanner.bound-details.right-broken.text = ##f
                 \once \override TextSpanner.bound-details.right.text = \markup {
@@ -148,7 +148,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
             >>> print(format(staff))
             \new Staff {
-                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left-broken.text = \markup { foo }
                 \once \override TextSpanner.bound-details.left.text = \markup { foo }
                 \once \override TextSpanner.bound-details.right-broken.text = ##f
                 \once \override TextSpanner.bound-details.right.text = \markup {
@@ -161,7 +161,7 @@ class ComplexTextSpanner(spannertools.Spanner):
                 d'8
                 e'8
                 <> \stopTextSpan
-                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left-broken.text = \markup { bar }
                 \once \override TextSpanner.bound-details.left.text = \markup { bar }
                 \once \override TextSpanner.bound-details.right-broken.text = ##f
                 \once \override TextSpanner.bound-details.right.text = \markup {
@@ -173,7 +173,7 @@ class ComplexTextSpanner(spannertools.Spanner):
                 f'8 \startTextSpan
                 g'8
                 <> \stopTextSpan
-                \once \override TextSpanner.bound-details.left-broken.text = ##f
+                \once \override TextSpanner.bound-details.left-broken.text = \markup { foo }
                 \once \override TextSpanner.bound-details.left.text = \markup { foo }
                 \once \override TextSpanner.bound-details.right-broken.text = ##f
                 \once \override TextSpanner.bound-details.right.text = \markup {
