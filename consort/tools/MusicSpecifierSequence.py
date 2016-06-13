@@ -2,7 +2,6 @@
 import collections
 from abjad import new
 from abjad.tools import abctools
-from abjad.tools import datastructuretools
 from abjad.tools import mathtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import sequencetools
@@ -64,7 +63,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
             isinstance(music_specifiers, str):
             music_specifiers = [music_specifiers]
         music_specifiers = tuple(music_specifiers)
-        music_specifiers = datastructuretools.CyclicTuple(music_specifiers)
+        #music_specifiers = datastructuretools.CyclicTuple(music_specifiers)
         assert len(music_specifiers)
         self._application_rate = application_rate
         self._music_specifiers = music_specifiers
@@ -98,7 +97,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         iterator = sequencetools.iterate_sequence_nwise(offsets)
         for i, offset_pair in enumerate(iterator):
             start_offset, stop_offset = offset_pair
-            music_specifier = self[seed]
+            music_specifier = self[seed % len(self)]
             timespan = consort.PerformedTimespan(
                 forbid_fusing=timespan_specifier.forbid_fusing,
                 forbid_splitting=timespan_specifier.forbid_splitting,
