@@ -1,7 +1,9 @@
 # -*- encoding: utf-8 -*-
+from abjad import new
 from abjad.tools import durationtools
 from abjad.tools import markuptools
 from abjad.tools import mathtools
+from abjad.tools import sequencetools
 from abjad.tools import timespantools
 
 
@@ -143,10 +145,42 @@ class PerformedTimespan(timespantools.Timespan):
         if self.layer is not None:
             ps = ps.moveto(start, postscript_y_offset)
             ps = ps.rmoveto(0.25, 0.5)
-            #ps = ps.scale(0.8, 0.8)
             ps = ps.show(str(self.layer))
-            #ps = ps.scale(1.25, 1.25)
         return ps
+
+    ### PUBLIC METHODS ###
+
+    def split_at_offset(self, offset):
+        from abjad.tools import timespantools
+        offset = durationtools.Offset(offset)
+        result = timespantools.TimespanInventory()
+        if self._start_offset < offset < self._stop_offset:
+            left_divisions, right_divisions = None, None
+            if self.divisions is not None:
+                left_divisions, right_divisions = sequencetools.split_sequence(
+                    self.divisions,
+                    [offset - self.start_offset],
+                    overhang=True,
+                    )
+            left = new(
+                self,
+                start_offset=self._start_offset,
+                stop_offset=offset,
+                divisions=left_divisions,
+                )
+            right = new(
+                self,
+                start_offset=offset,
+                stop_offset=self._stop_offset,
+                divisions=right_divisions,
+                )
+            if left.duration:
+                result.append(left)
+            if right.duration:
+                result.append(right)
+        else:
+            result.append(new(self))
+        return result
 
     ### PUBLIC PROPERTIES ###
 

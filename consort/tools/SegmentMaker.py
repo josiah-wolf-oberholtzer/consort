@@ -2475,7 +2475,7 @@ class SegmentMaker(makertools.SegmentMaker):
         offsets = list(offsets)
         timespan_inventory.sort()
         split_inventory = timespantools.TimespanInventory()
-        for timespan in timespan_inventory:
+        for timespan in sorted(timespan_inventory):
             current_offsets = []
             while offsets and offsets[0] <= timespan.start_offset:
                 offsets.pop(0)
@@ -2488,6 +2488,9 @@ class SegmentMaker(makertools.SegmentMaker):
             elif timespan.forbid_splitting:
                 continue
             if current_offsets:
+                #print(current_offsets, timespan.start_offset,
+                #    timespan.stop_offset, type(timespan),
+                #    timespan.divisions)
                 shards = timespan.split_at_offsets(current_offsets)
                 for shard in shards:
                     if shard.minimum_duration:
