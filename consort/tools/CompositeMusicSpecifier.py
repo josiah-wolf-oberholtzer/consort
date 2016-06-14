@@ -19,23 +19,19 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     secondary_voice_name='Viola 1 LH',
         ...     secondary_music_specifier=consort.MusicSpecifierSequence(
         ...         application_rate='phrase',
-        ...         music_specifiers=['two', 'three', 'four'],
+        ...         music_specifiers=('two', 'three', 'four'),
         ...         ),
         ...     )
         >>> print(format(music_specifier))
         consort.tools.CompositeMusicSpecifier(
             primary_music_specifier=consort.tools.MusicSpecifierSequence(
-                music_specifiers=datastructuretools.CyclicTuple(
-                    ['one']
-                    ),
+                music_specifiers=('one',),
                 ),
             primary_voice_name='Viola 1 RH',
             rotation_indices=(0, 1, -1),
             secondary_music_specifier=consort.tools.MusicSpecifierSequence(
                 application_rate='phrase',
-                music_specifiers=datastructuretools.CyclicTuple(
-                    ['two', 'three', 'four']
-                    ),
+                music_specifiers=('two', 'three', 'four'),
                 ),
             secondary_voice_name='Viola 1 LH',
             )

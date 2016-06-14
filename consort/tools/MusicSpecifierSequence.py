@@ -19,9 +19,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         ...     )
         >>> print(format(sequence_a))
         consort.tools.MusicSpecifierSequence(
-            music_specifiers=datastructuretools.CyclicTuple(
-                ['music']
-                ),
+            music_specifiers=('music',),
             )
 
     ::
@@ -33,9 +31,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         >>> print(format(sequence_b))
         consort.tools.MusicSpecifierSequence(
             application_rate='phrase',
-            music_specifiers=datastructuretools.CyclicTuple(
-                ['one', 'two', 'three']
-                ),
+            music_specifiers=('one', 'two', 'three'),
             )
 
     '''
