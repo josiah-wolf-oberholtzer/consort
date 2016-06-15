@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
+from abjad import inspect_
 from abjad.tools import datastructuretools
+from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -10,6 +12,7 @@ class RegisterHandler(HashCachingObject):
     ### CLASS VARIABLES ###
 
     __slots__ = (
+        '_application_rate',
         '_octavations',
         '_pitch_range',
         '_register_specifier',
@@ -31,12 +34,14 @@ class RegisterHandler(HashCachingObject):
 
     def __init__(
         self,
+        application_rate=None,
         octavations=None,
         pitch_range=None,
         register_specifier=None,
         register_spread=None,
         ):
         HashCachingObject.__init__(self)
+        self._initialize_application_rate(application_rate)
         self._initialize_octavations(octavations)
         self._initialize_pitch_range(pitch_range)
         self._initialize_register_specifier(register_specifier)
@@ -88,6 +93,15 @@ class RegisterHandler(HashCachingObject):
             (pitch, pitch.octave_number, pitch_range)
         return pitch
 
+    @staticmethod
+    def _get_instrument(logical_tie, music_specifier):
+        if music_specifier.instrument is not None:
+            return music_specifier.instrument
+        component = logical_tie.head
+        prototype = instrumenttools.Instrument
+        instrument = inspect_(component).get_effective(prototype)
+        return instrument
+
     def _get_pitch(
         self,
         pitch_class,
@@ -102,6 +116,18 @@ class RegisterHandler(HashCachingObject):
         pitch = registration([pitch])[0]
         pitch = pitchtools.NamedPitch(pitch)
         return pitch
+
+    @staticmethod
+    def _get_pitch_range(
+        instrument,
+        logical_tie,
+        ):
+        prototype = pitchtools.PitchRange
+        component = logical_tie.head
+        pitch_range = inspect_(component).get_effective(prototype)
+        if pitch_range is None and instrument is not None:
+            pitch_range = instrument.pitch_range
+        return pitch_range
 
     def _get_registration(
         self,
@@ -134,6 +160,12 @@ class RegisterHandler(HashCachingObject):
             octavations = datastructuretools.CyclicTuple(octavations)
         self._octavations = octavations
 
+    def _initialize_application_rate(self, application_rate):
+        assert application_rate in (
+            None, 'logical_tie', 'division', 'phrase',
+            )
+        self._application_rate = application_rate
+
     def _initialize_pitch_range(self, pitch_range):
         if pitch_range is not None:
             assert isinstance(pitch_range, pitchtools.PitchRange)
@@ -163,7 +195,7 @@ class RegisterHandler(HashCachingObject):
                 continue
             register_handler = music_specifier.register_handler
             attack_point_signature = attack_point_map[logical_tie]
-            application_rate = register_handler.pitch_application_rate
+            application_rate = register_handler.application_rate
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
             seed_session(
                 application_rate,
@@ -181,6 +213,10 @@ class RegisterHandler(HashCachingObject):
                 leaf.written_pitch = pitch
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def application_rate(self):
+        return self._application_rate
 
     @property
     def octavations(self):
