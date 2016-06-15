@@ -297,6 +297,13 @@ class SegmentMaker(makertools.SegmentMaker):
             with systemtools.ForbidUpdate(self.score, update_on_exit=True):
                 with systemtools.Timer(
                     '        total:',
+                    '    handling registers:',
+                    verbose=verbose,
+                    ):
+                    consort.RegisterHandler._process_session(self)
+            with systemtools.ForbidUpdate(self.score, update_on_exit=True):
+                with systemtools.Timer(
+                    '        total:',
                     '    handling attachments:',
                     verbose=verbose,
                     ):
