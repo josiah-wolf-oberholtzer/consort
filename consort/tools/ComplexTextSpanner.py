@@ -43,6 +43,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 d'4
                 <> \stopTextSpan
                 r4
+                \once \override TextScript.parent-alignment-X = #left
+                \once \override TextScript.self-alignment-X = #left
                 e'4 _ \markup { bar }
             }
 
@@ -80,6 +82,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 d'4
                 <> \stopTextSpan
                 e'4
+                \once \override TextScript.parent-alignment-X = #left
+                \once \override TextScript.self-alignment-X = #left
                 f'4 _ \markup { bar }
             }
 
@@ -258,6 +262,20 @@ class ComplexTextSpanner(spannertools.Spanner):
             direction,
             )
         lilypond_format_bundle.right.markup.append(markup)
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextScript',
+            is_once=True,
+            property_path=('parent-alignment-X',),
+            value=Left,
+            )
+        lilypond_format_bundle.update(override)
+        override = lilypondnametools.LilyPondGrobOverride(
+            grob_name='TextScript',
+            is_once=True,
+            property_path=('self-alignment-X',),
+            value=Left,
+            )
+        lilypond_format_bundle.update(override)
 
     def _make_spanner_start(self, lilypond_format_bundle):
         override = lilypondnametools.LilyPondGrobOverride(

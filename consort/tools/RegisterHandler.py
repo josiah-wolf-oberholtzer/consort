@@ -13,6 +13,7 @@ class RegisterHandler(HashCachingObject):
 
     __slots__ = (
         '_application_rate',
+        '_logical_tie_expressions',
         '_octavations',
         '_pitch_range',
         '_register_specifier',
@@ -35,6 +36,7 @@ class RegisterHandler(HashCachingObject):
     def __init__(
         self,
         application_rate=None,
+        logical_tie_expressions=None,
         octavations=None,
         pitch_range=None,
         register_specifier=None,
@@ -42,6 +44,7 @@ class RegisterHandler(HashCachingObject):
         ):
         HashCachingObject.__init__(self)
         self._initialize_application_rate(application_rate)
+        self._initialize_logical_tie_expressions(logical_tie_expressions)
         self._initialize_octavations(octavations)
         self._initialize_pitch_range(pitch_range)
         self._initialize_register_specifier(register_specifier)
@@ -78,9 +81,29 @@ class RegisterHandler(HashCachingObject):
                 pitch,
                 pitch_range,
                 )
-        return pitch
+        for leaf in logical_tie:
+            leaf.written_pitch = pitch
+        self._apply_logical_tie_expression(
+            logical_tie=logical_tie,
+            pitch_range=pitch_range,
+            seed=seed_session.current_unphrased_voicewise_logical_tie_seed,
+            )
 
     ### PRIVATE METHODS ###
+
+    def _apply_logical_tie_expression(
+        self,
+        logical_tie,
+        pitch_range,
+        seed,
+        ):
+        if self.logical_tie_expressions:
+            logical_tie_expression = self.logical_tie_expressions[seed]
+            if logical_tie_expression is not None:
+                logical_tie_expression(
+                    logical_tie,
+                    pitch_range=pitch_range,
+                    )
 
     def _fit_pitch_to_pitch_range(self, pitch, pitch_range):
         while pitch <= pitch_range.start_pitch and \
@@ -153,18 +176,31 @@ class RegisterHandler(HashCachingObject):
                 ])
         return registration
 
+    def _initialize_application_rate(self, application_rate):
+        assert application_rate in (
+            None, 'logical_tie', 'division', 'phrase',
+            )
+        self._application_rate = application_rate
+
+    def _initialize_logical_tie_expressions(self, logical_tie_expressions):
+        import consort
+        if logical_tie_expressions:
+            prototype = (consort.LogicalTieExpression, type(None))
+            assert logical_tie_expressions, logical_tie_expressions
+            assert all(isinstance(_, prototype)
+                for _ in logical_tie_expressions), \
+                logical_tie_expressions
+            logical_tie_expressions = datastructuretools.CyclicTuple(
+                logical_tie_expressions,
+                )
+        self._logical_tie_expressions = logical_tie_expressions
+
     def _initialize_octavations(self, octavations):
         if octavations is not None:
             assert octavations
             assert all(isinstance(x, int) for x in octavations)
             octavations = datastructuretools.CyclicTuple(octavations)
         self._octavations = octavations
-
-    def _initialize_application_rate(self, application_rate):
-        assert application_rate in (
-            None, 'logical_tie', 'division', 'phrase',
-            )
-        self._application_rate = application_rate
 
     def _initialize_pitch_range(self, pitch_range):
         if pitch_range is not None:
@@ -203,20 +239,22 @@ class RegisterHandler(HashCachingObject):
                 music_specifier,
                 voice,
                 )
-            pitch = register_handler(
+            register_handler(
                 attack_point_signature,
                 logical_tie,
                 music_specifier,
                 seed_session,
                 )
-            for leaf in logical_tie:
-                leaf.written_pitch = pitch
 
     ### PUBLIC PROPERTIES ###
 
     @property
     def application_rate(self):
         return self._application_rate
+
+    @property
+    def logical_tie_expressions(self):
+        return self._logical_tie_expressions
 
     @property
     def octavations(self):
