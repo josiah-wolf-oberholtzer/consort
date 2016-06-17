@@ -6,6 +6,7 @@ from abjad.tools import indicatortools
 from abjad.tools import pitchtools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
+from abjad.tools import sequencetools
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 
@@ -127,8 +128,30 @@ class ChordExpression(LogicalTieExpression):
                 buckets[pitch.diatonic_pitch_number] = set()
             buckets[pitch.diatonic_pitch_number].add(pitch)
         penalty = 0
-        for diatonic_pitch_number, bucket in buckets.items():
+        for diatonic_pitch_number, bucket in sorted(buckets.items()):
             penalty = penalty + (len(bucket) - 1)
+        for one, two in sequencetools.iterate_sequence_nwise(
+            sorted(buckets.items())):
+            number_1, bucket_1 = one
+            number_2, bucket_2 = two
+            if abs(number_1 - number_2) != 1:
+                continue
+            one_has_flats, one_has_sharps = False, False
+            for pitch in bucket_1:
+                if pitch.alteration_in_semitones > 0:
+                    one_has_sharps = True
+                if pitch.alteration_in_semitones < 0:
+                    one_has_flats = True
+            two_has_flats, two_has_sharps = False, False
+            for pitch in bucket_2:
+                if pitch.alteration_in_semitones > 0:
+                    two_has_sharps = True
+                if pitch.alteration_in_semitones < 0:
+                    two_has_flats = True
+            if one_has_flats and two_has_sharps:
+                penalty += 1
+            if one_has_sharps and two_has_flats:
+                penalty += 1
         return penalty
 
     @staticmethod
