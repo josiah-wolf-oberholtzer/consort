@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad import new
 from abjad.tools import instrumenttools
+from abjad.tools import lilypondnametools
 from abjad.tools import markuptools
 from abjad.tools import systemtools
 
@@ -101,17 +102,18 @@ class Instrument(instrumenttools.Instrument):
             (previous_leaf or previous_instrument)
             ):
             bundle.right.markup.append(self.instrument_change_markup)
-        line_one = r'\set {!s}.instrumentName = {!s}'
-        line_one = line_one.format(
-            self._scope_name,
-            new(self.instrument_name_markup, direction=None),
+        context_setting = lilypondnametools.LilyPondContextSetting(
+            context_name=self._scope_name,
+            context_property='instrumentName',
+            value=new(self.instrument_name_markup, direction=None),
             )
-        line_two = r'\set {!s}.shortInstrumentName = {!s}'
-        line_two = line_two.format(
-            self._scope_name,
-            new(self.short_instrument_name_markup, direction=None),
+        bundle.update(context_setting)
+        context_setting = lilypondnametools.LilyPondContextSetting(
+            context_name=self._scope_name,
+            context_property='shortInstrumentName',
+            value=new(self.short_instrument_name_markup, direction=None),
             )
-        bundle.context_settings.extend([line_one, line_two])
+        bundle.update(context_setting)
         return bundle
 
     ### PUBLIC PROPERTIES ###
