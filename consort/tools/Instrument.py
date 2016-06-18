@@ -98,26 +98,35 @@ class Instrument(instrumenttools.Instrument):
         previous_instrument = component._get_effective(type(self), n=-1)
         if previous_instrument == self:
             return bundle
-        if isinstance(component, scoretools.Component):
-            component = next(iterate(component).by_leaf())
-        previous_leaf = component._get_leaf(-1)
+        if isinstance(component, scoretools.Container):
+            previous_leaf = next(iterate(component).by_leaf())._get_leaf(-1)
         if (
             self.instrument_change_markup and
             (previous_leaf or previous_instrument)
             ):
             bundle.right.markup.append(self.instrument_change_markup)
-        context_setting = lilypondnametools.LilyPondContextSetting(
-            context_name=self._scope_name,
-            context_property='instrumentName',
-            value=new(self.instrument_name_markup, direction=None),
-            )
-        bundle.update(context_setting)
-        context_setting = lilypondnametools.LilyPondContextSetting(
-            context_name=self._scope_name,
-            context_property='shortInstrumentName',
-            value=new(self.short_instrument_name_markup, direction=None),
-            )
-        bundle.update(context_setting)
+        if isinstance(component, scoretools.Leaf):
+            context_setting = lilypondnametools.LilyPondContextSetting(
+                context_name=self._scope_name,
+                context_property='instrumentName',
+                value=new(self.instrument_name_markup, direction=None),
+                )
+            bundle.update(context_setting)
+            context_setting = lilypondnametools.LilyPondContextSetting(
+                context_name=self._scope_name,
+                context_property='shortInstrumentName',
+                value=new(self.short_instrument_name_markup, direction=None),
+                )
+            bundle.update(context_setting)
+        else:
+            bundle.context_settings.extend([
+                'instrumentName = {}'.format(
+                    self.instrument_name_markup,
+                    ),
+                'shortInstrumentName = {}'.format(
+                    self.short_instrument_name_markup,
+                    ),
+                ])
         return bundle
 
     ### PUBLIC PROPERTIES ###
