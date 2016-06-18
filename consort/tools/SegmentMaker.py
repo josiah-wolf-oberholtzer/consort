@@ -247,29 +247,19 @@ class SegmentMaker(makertools.SegmentMaker):
         self._annotate_phrasing = self._annotate_phrasing or annotate
         self._segment_metadata = segment_metadata or \
             collections.OrderedDict()
-        # datastructuretools.TypedOrderedDict()
         self._previous_segment_metadata = previous_segment_metadata or \
             collections.OrderedDict()
-        # datastructuretools.TypedOrderedDict()
         self._score = self.score_template()
         self._voice_names = tuple(
             voice.name for voice in
             iterate(self.score).by_class(scoretools.Voice)
             )
-
         with systemtools.Timer(
             '    total:',
             'Performing rhythmic interpretation:',
             verbose=verbose,
             ):
             self.interpret_rhythms(verbose=verbose)
-            # systemtools.IOManager.profile_expr(
-            #     'self.interpret_rhythms(verbose=verbose)',
-            #     line_count=40,
-            #     global_context=globals(),
-            #     local_context=locals(),
-            #     print_callees=True,
-            #     )
         with systemtools.Timer(
             '    total:',
             'Performing non-rhythmic interpretation:',
@@ -281,6 +271,12 @@ class SegmentMaker(makertools.SegmentMaker):
                 ):
                 attack_point_map = self.collect_attack_points(self.score)
             self._attack_point_map = attack_point_map
+            with systemtools.ForbidUpdate(self.score, update_on_exit=True):
+                with systemtools.Timer(
+                    '    handled instruments:',
+                    verbose=verbose,
+                    ):
+                    self.apply_instruments()
             with systemtools.ForbidUpdate(self.score, update_on_exit=True):
                 with systemtools.Timer(
                     '    handled graces:',
@@ -354,7 +350,6 @@ class SegmentMaker(makertools.SegmentMaker):
     ### PUBLIC METHODS ###
 
     def get_end_instruments(self):
-        #result = datastructuretools.TypedOrderedDict()
         result = collections.OrderedDict()
         staves = iterate(self._score).by_class(scoretools.Staff)
         staves = list(staves)
@@ -364,7 +359,7 @@ class SegmentMaker(makertools.SegmentMaker):
             last_leaf = inspect_(staff).get_leaf(-1)
             instrument = inspect_(last_leaf).get_effective(prototype)
             if instrument:
-                result[staff.name] = instrument.instrument_name
+                result[staff.name] = format(instrument)
             else:
                 result[staff.name] = None
         return result
@@ -572,6 +567,25 @@ class SegmentMaker(makertools.SegmentMaker):
                         continue
                     spanner = consort.ColorBracket(color)
                     attach(spanner, phrase)
+
+    def apply_instruments(self):
+        import consort
+        prototype = instrumenttools.Instrument
+        for voice in iterate(self.score).by_class(scoretools.Voice):
+            for i, phrase in enumerate(voice):
+                music_specifier = inspect_(phrase).get_indicator(
+                    consort.MusicSpecifier)
+                if music_specifier is None:
+                    continue
+                instrument = music_specifier.instrument
+                if instrument is None:
+                    continue
+                attach(instrument, phrase)
+                if i > 0:
+                    continue
+                for parent in phrase._get_parentage(include_self=False):
+                    for indicator in parent._get_indicator(prototype):
+                        detach(indicator, parent)
 
     def postprocess_multimeasure_rests(self):
         def division_to_meter(division):

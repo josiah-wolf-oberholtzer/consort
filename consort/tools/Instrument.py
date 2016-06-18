@@ -96,7 +96,10 @@ class Instrument(instrumenttools.Instrument):
         if previous_instrument == self:
             return bundle
         previous_leaf = component._get_leaf(-1)
-        if self.instrument_change_markup and previous_leaf:
+        if (
+            self.instrument_change_markup and
+            (previous_leaf or previous_instrument)
+            ):
             bundle.right.markup.append(self.instrument_change_markup)
         line_one = r'\set {!s}.instrumentName = {!s}'
         line_one = line_one.format(
