@@ -33,7 +33,7 @@ class Instrument(instrumenttools.Instrument):
         \new Staff {
             \set Staff.instrumentName = \markup { Bassoon }
             \set Staff.shortInstrumentName = \markup { Bsn. }
-            c'4 ^ \markup { B! }
+            c'4
             d'4
             \set Staff.instrumentName = \markup { Cuica }
             \set Staff.shortInstrumentName = \markup { Cu. }
@@ -92,10 +92,11 @@ class Instrument(instrumenttools.Instrument):
 
     def _get_lilypond_format_bundle(self, component):
         bundle = systemtools.LilyPondFormatBundle()
-        previous = component._get_effective(type(self), n=-1)
-        if previous == self:
+        previous_instrument = component._get_effective(type(self), n=-1)
+        if previous_instrument == self:
             return bundle
-        if self.instrument_change_markup:
+        previous_leaf = component._get_leaf(-1)
+        if self.instrument_change_markup and previous_leaf:
             bundle.right.markup.append(self.instrument_change_markup)
         line_one = r'\set {!s}.instrumentName = {!s}'
         line_one = line_one.format(
