@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
+from abjad import iterate
 from abjad import new
 from abjad.tools import instrumenttools
 from abjad.tools import lilypondnametools
 from abjad.tools import markuptools
+from abjad.tools import scoretools
 from abjad.tools import systemtools
 
 
@@ -96,6 +98,8 @@ class Instrument(instrumenttools.Instrument):
         previous_instrument = component._get_effective(type(self), n=-1)
         if previous_instrument == self:
             return bundle
+        if isinstance(component, scoretools.Component):
+            component = next(iterate(component).by_leaf())
         previous_leaf = component._get_leaf(-1)
         if (
             self.instrument_change_markup and

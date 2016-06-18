@@ -580,12 +580,17 @@ class SegmentMaker(makertools.SegmentMaker):
                 instrument = music_specifier.instrument
                 if instrument is None:
                     continue
-                attach(instrument, phrase)
+                first_leaf = next(iterate(phrase).by_leaf())
+                attach(instrument, first_leaf)
+                print(i, phrase)
                 if i > 0:
+                    print('    continuing')
                     continue
                 for parent in phrase._get_parentage(include_self=False):
-                    for indicator in parent._get_indicator(prototype):
-                        detach(indicator, parent)
+                    print('    {!r}'.format(parent))
+                    indicators = detach(prototype, parent)
+                    if indicators:
+                        print('        {!r}'.format(indicators))
 
     def postprocess_multimeasure_rests(self):
         def division_to_meter(division):
