@@ -4,7 +4,6 @@ from abjad import attach
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
-from abjad.tools import indicatortools
 from abjad.tools import lilypondnametools
 from abjad.tools import mathtools
 from abjad.tools import schemetools
@@ -382,6 +381,7 @@ class DynamicExpression(abctools.AbjadValueObject):
     ### SPECIAL METHODS ###
 
     def __call__(self, music, name=None, seed=0):
+        import consort
         original_seed = seed
         current_dynamic = None
         current_hairpin = None
@@ -422,7 +422,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                     if not selections or len(selections[0]) < 4:
                         if dynamic.name in dynamic._composite_dynamic_name_to_steady_state_dynamic_name:
                             dynamic_name = dynamic._composite_dynamic_name_to_steady_state_dynamic_name[dynamic.name]
-                            dynamic = indicatortools.Dynamic(dynamic_name)
+                            dynamic = consort.Dynamic(dynamic_name)
         if dynamic != current_dynamic and dynamic.name != 'niente':
             attach(dynamic, components[-1], name=name)
         if dynamic.name == 'niente' and current_hairpin:
@@ -433,6 +433,8 @@ class DynamicExpression(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _get_attachments(self, index, length, seed, original_seed):
+        import consort
+
         dynamic_seed = seed
         if self.start_dynamic_tokens:
             dynamic_seed -= 1
@@ -507,12 +509,12 @@ class DynamicExpression(abctools.AbjadValueObject):
                 next_token = self.dynamic_tokens[dynamic_seed + 1]
                 #print('D1', this_token, next_token)
 
-        this_dynamic = indicatortools.Dynamic(this_token)
+        this_dynamic = consort.Dynamic(this_token)
         this_dynamic_ordinal = mathtools.NegativeInfinity()
         if this_dynamic.name != 'niente':
             this_dynamic_ordinal = this_dynamic.ordinal
         if next_token is not None:
-            next_dynamic = indicatortools.Dynamic(next_token)
+            next_dynamic = consort.Dynamic(next_token)
             next_dynamic_ordinal = mathtools.NegativeInfinity()
             if next_dynamic.name != 'niente':
                 next_dynamic_ordinal = next_dynamic.ordinal
@@ -767,6 +769,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         return selections, attach_components
 
     def _tokens_to_cyclic_tuple(self, tokens):
+        import consort
         if tokens is None:
             return tokens
         if isinstance(tokens, str):
@@ -774,7 +777,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         for token in tokens:
             if token == 'niente':
                 continue
-            assert token in indicatortools.Dynamic._dynamic_names
+            assert token in consort.Dynamic._dynamic_names
         assert len(tokens)
         tokens = datastructuretools.CyclicTuple(tokens)
         return tokens

@@ -100,6 +100,8 @@ class Instrument(instrumenttools.Instrument):
             return bundle
         if isinstance(component, scoretools.Container):
             previous_leaf = next(iterate(component).by_leaf())._get_leaf(-1)
+        else:
+            previous_leaf = component._get_leaf(-1)
         if (
             self.instrument_change_markup and
             (previous_leaf or previous_instrument)
