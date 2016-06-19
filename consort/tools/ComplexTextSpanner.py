@@ -350,6 +350,8 @@ class ComplexTextSpanner(spannertools.Spanner):
             next_leaf = leaf._get_leaf(index)
             if next_leaf is None:
                 break
+            elif isinstance(next_leaf, scoretools.MultimeasureRest):
+                break
             has_spanner = next_leaf._has_spanner(type(self))
             if not has_spanner:
                 if isinstance(next_leaf, leaf_prototype):
@@ -370,6 +372,8 @@ class ComplexTextSpanner(spannertools.Spanner):
         for index in range(1, 5):
             previous_leaf = leaf._get_leaf(-index)
             if previous_leaf is None:
+                break
+            elif isinstance(previous_leaf, scoretools.MultimeasureRest):
                 break
             has_spanner = previous_leaf._has_spanner(type(self))
             if not has_spanner:

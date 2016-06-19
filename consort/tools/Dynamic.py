@@ -97,7 +97,11 @@ class Dynamic(indicatortools.Dynamic):
             return bundle
         previous_indicator = indicator_expression.indicator
         previous_component = indicator_expression.component
-        if previous_indicator.name != self.name:
+        previous_name = previous_indicator.name
+        previous_name = \
+            self._composite_dynamic_name_to_steady_state_dynamic_name.get(
+                previous_name, previous_name)
+        if previous_name != self.name:
             bundle.right.indicators.append(string)
             return bundle
         if not isinstance(previous_component, scoretools.Leaf):
