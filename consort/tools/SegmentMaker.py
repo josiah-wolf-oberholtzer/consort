@@ -260,6 +260,7 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.interpret_rhythms(verbose=verbose)
+            self.score._update_logical_measure_numbers()
         with systemtools.Timer(
             '    total:',
             'Performing non-rhythmic interpretation:',

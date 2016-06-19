@@ -50,7 +50,7 @@ class Dynamic(indicatortools.Dynamic):
             f'2
             g'2
             a'2
-            b'1 \p
+            b'2 \p
             c''2 \f
         }
 
