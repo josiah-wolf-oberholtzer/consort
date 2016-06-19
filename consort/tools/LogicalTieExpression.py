@@ -35,10 +35,12 @@ class LogicalTieExpression(abctools.AbjadValueObject):
         timespan = old_leaf._timespan
         start_offset = old_leaf._start_offset
         stop_offset = old_leaf._stop_offset
+        logical_measure_number = old_leaf._logical_measure_number
         mutate(old_leaf).replace(new_leaf)
         new_leaf._timespan = timespan
         new_leaf._start_offset = start_offset
         new_leaf._stop_offset = stop_offset
+        new_leaf._logical_measure_number = logical_measure_number
 
         if grace_containers:
             new_grace_container = scoretools.GraceContainer(
