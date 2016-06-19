@@ -260,6 +260,7 @@ class SegmentMaker(makertools.SegmentMaker):
             verbose=verbose,
             ):
             self.interpret_rhythms(verbose=verbose)
+            self.add_time_signature_context()
             self.score._update_logical_measure_numbers()
         with systemtools.Timer(
             '    total:',
@@ -526,7 +527,6 @@ class SegmentMaker(makertools.SegmentMaker):
         self._lilypond_file = lilypond_file
 
     def configure_score(self):
-        self.add_time_signature_context()
         self.set_bar_number()
         self.postprocess_grace_containers()
         self.postprocess_ties()
@@ -677,6 +677,13 @@ class SegmentMaker(makertools.SegmentMaker):
                         )
                     comment = indicatortools.LilyPondComment(string)
                     attach(comment, division)
+#                for leaf in iterate(phrase).by_leaf():
+#                    string = '[{}] Logical Measure {}'.format(
+#                        voice_name,
+#                        leaf._logical_measure_number
+#                        )
+#                    comment = indicatortools.LilyPondComment(string)
+#                    attach(comment, leaf)
 
     def postprocess_ties(self):
         for component in iterate(self.score).depth_first():

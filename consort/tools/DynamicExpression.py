@@ -397,8 +397,7 @@ class DynamicExpression(abctools.AbjadValueObject):
             dynamic, hairpin, hairpin_override = self._get_attachments(
                 index, length, seed, original_seed)
             if dynamic != current_dynamic:
-                if dynamic.name != 'niente':
-                    attach(dynamic, component, name=name)
+                attach(dynamic, component, name=name)
                 current_dynamic = dynamic
             if self.unsustained:
                 inner_leaves = selection[1:-1]
@@ -423,7 +422,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                         if dynamic.name in dynamic._composite_dynamic_name_to_steady_state_dynamic_name:
                             dynamic_name = dynamic._composite_dynamic_name_to_steady_state_dynamic_name[dynamic.name]
                             dynamic = consort.Dynamic(dynamic_name)
-        if dynamic != current_dynamic and dynamic.name != 'niente':
+        if dynamic != current_dynamic:
             attach(dynamic, components[-1], name=name)
         if dynamic.name == 'niente' and current_hairpin:
             next_leaf = components[-1]._get_leaf(1)

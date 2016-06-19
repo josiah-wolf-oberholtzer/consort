@@ -2,6 +2,7 @@
 from abjad import iterate
 from abjad.tools import indicatortools
 from abjad.tools import scoretools
+from abjad.tools import stringtools
 from abjad.tools import systemtools
 
 
@@ -46,7 +47,7 @@ class Dynamic(indicatortools.Dynamic):
         \new Staff {
             c'2 \p
             d'2
-            e'2 \parenthesize \p
+            e'2 \parenthesizeDynamic \p
             f'2
             g'2
             a'2
@@ -60,10 +61,30 @@ class Dynamic(indicatortools.Dynamic):
 
     __slots__ = ()
 
+    _scheme = stringtools.normalize('''
+    parenthesizeDynamic = #(define-event-function (parser location dyn) (ly:event?)
+        (make-dynamic-script
+            #{ \markup \concat {
+                \normal-text \italic \fontsize #2 (
+                \pad-x #0.2 #(ly:music-property dyn 'text)
+                \normal-text \italic \fontsize #2 )
+            }
+            #}))
+    ''')
+
     ### PRIVATE METHODS ###
 
+    def _attachment_test_all(self, component_expression):
+        return True
+
     def _get_lilypond_format_bundle(self, component):
+        indicators = component._get_indicators(
+            indicatortools.Dynamic)
+        assert len(indicators) == 1
         bundle = systemtools.LilyPondFormatBundle()
+        bundle.before.comments.append('% DYNAMIC: {}'.format(self.name))
+        if self.name == 'niente':
+            return bundle
         string = r'\{}'.format(self.name)
         if not isinstance(component, scoretools.Leaf):
             component = next(iterate(component).by_leaf())
@@ -84,12 +105,15 @@ class Dynamic(indicatortools.Dynamic):
             previous_component = next(iterate(previous_component).by_leaf())
         if component._logical_measure_number is None:
             component._update_logical_measure_numbers()
-        logical_measure = component._logical_measure_number
-        previous_logical_measure = previous_component._logical_measure_number
-        if logical_measure == previous_logical_measure:
+        measure_number = component._logical_measure_number
+        previous_measure_number = previous_component._logical_measure_number
+        assert measure_number is not None
+        assert previous_measure_number is not None
+        if measure_number == previous_measure_number:
+            bundle.before.comments.append('% BAILING...')
             return bundle
-        elif abs(logical_measure - previous_logical_measure) == 1:
-            string = r'\parenthesize {}'.format(string)
+        elif abs(measure_number - previous_measure_number) == 1:
+            string = r'\parenthesizeDynamic {}'.format(string)
             bundle.right.indicators.append(string)
             return bundle
         bundle.right.indicators.append(string)
