@@ -82,7 +82,6 @@ class Dynamic(indicatortools.Dynamic):
             indicatortools.Dynamic)
         assert len(indicators) == 1
         bundle = systemtools.LilyPondFormatBundle()
-        bundle.before.comments.append('% DYNAMIC: {}'.format(self.name))
         if self.name == 'niente':
             return bundle
         string = r'\{}'.format(self.name)
@@ -110,7 +109,6 @@ class Dynamic(indicatortools.Dynamic):
         assert measure_number is not None
         assert previous_measure_number is not None
         if measure_number == previous_measure_number:
-            bundle.before.comments.append('% BAILING...')
             return bundle
         elif abs(measure_number - previous_measure_number) == 1:
             string = r'\parenthesizeDynamic {}'.format(string)
