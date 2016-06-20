@@ -519,7 +519,7 @@ class SegmentMaker(makertools.SegmentMaker):
         items = [score_block]
         lilypond_file = lilypondfiletools.LilyPondFile(
             comments=comments,
-            date_time_token=self.score_package_name != 'consort',
+            date_time_token=False,
             includes=includes,
             items=items,
             use_relative_includes=True,

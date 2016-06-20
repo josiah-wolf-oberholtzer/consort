@@ -83,7 +83,7 @@ class Color(abctools.AbjadValueObject):
 
     @property
     def _lilypond_format(self):
-        return '#(rgb-color {} {} {})'.format(
+        return '#(rgb-color {:.03} {:.03} {:.03})'.format(
             self.red,
             self.green,
             self.blue,

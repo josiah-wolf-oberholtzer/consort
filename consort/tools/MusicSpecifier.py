@@ -166,7 +166,7 @@ class MusicSpecifier(HashCachingObject):
         segment_maker = consort.SegmentMaker(
             desired_duration_in_seconds=10,
             discard_final_silence=True,
-            #annotate_phrasing=True,
+            annotate_colors=True,
             annotate_phrasing=annotate,
             permitted_time_signatures=[
                 (3, 8),
@@ -226,6 +226,7 @@ class MusicSpecifier(HashCachingObject):
             lilypond_file,
             includes=[consort_stylesheet_path],
             use_relative_includes=False,
+            date_time_token=False,
             )
         if package_name is not None:
             header = lilypondfiletools.Block('header')
