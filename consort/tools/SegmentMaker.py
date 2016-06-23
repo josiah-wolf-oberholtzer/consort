@@ -568,6 +568,18 @@ class SegmentMaker(makertools.SegmentMaker):
                         continue
                     spanner = consort.ColorBracket(color)
                     attach(spanner, phrase)
+        for voice in iterate(self.score).by_class(scoretools.Voice):
+            for phrase in voice:
+                music_specifier = inspect_(phrase).get_indicator(
+                    consort.MusicSpecifier)
+                if music_specifier is None:
+                    continue
+                comment = music_specifier.comment
+                if comment is None:
+                    continue
+                comment = '[{}] Material: "{}"'.format(voice.name, comment)
+                comment = indicatortools.LilyPondComment(comment)
+                attach(comment, phrase)
 
     def apply_instruments(self):
         import consort

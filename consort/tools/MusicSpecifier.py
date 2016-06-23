@@ -43,6 +43,7 @@ class MusicSpecifier(HashCachingObject):
     __slots__ = (
         '_attachment_handler',
         '_color',
+        '_comment',
         '_grace_handler',
         '_instrument',
         '_labels',
@@ -59,6 +60,7 @@ class MusicSpecifier(HashCachingObject):
         self,
         attachment_handler=None,
         color=None,
+        comment=None,
         grace_handler=None,
         instrument=None,
         labels=None,
@@ -106,6 +108,9 @@ class MusicSpecifier(HashCachingObject):
         if seed is not None:
             seed = int(seed)
         self._seed = seed
+        if comment is not None:
+            comment = str(comment)
+        self._comment = comment
 
     ### SPECIAL METHODS ###
 
@@ -320,6 +325,10 @@ class MusicSpecifier(HashCachingObject):
     @property
     def color(self):
         return self._color
+
+    @property
+    def comment(self):
+        return self._comment
 
     @property
     def grace_handler(self):
