@@ -586,6 +586,14 @@ class SegmentMaker(makertools.SegmentMaker):
         prototype = instrumenttools.Instrument
         for voice in iterate(self.score).by_class(scoretools.Voice):
             for i, phrase in enumerate(voice):
+                #print(i, phrase)
+                if i == 0:
+                    for parent in phrase._get_parentage(include_self=False):
+                        #print('    {!r}'.format(parent))
+                        indicators = detach(prototype, parent)
+                        if indicators:
+                            #print('        {!r}'.format(indicators))
+                            pass
                 music_specifier = inspect_(phrase).get_indicator(
                     consort.MusicSpecifier)
                 if music_specifier is None:
@@ -595,15 +603,6 @@ class SegmentMaker(makertools.SegmentMaker):
                     continue
                 first_leaf = next(iterate(phrase).by_leaf())
                 attach(instrument, first_leaf)
-                print(i, phrase)
-                if i > 0:
-                    print('    continuing')
-                    continue
-                for parent in phrase._get_parentage(include_self=False):
-                    print('    {!r}'.format(parent))
-                    indicators = detach(prototype, parent)
-                    if indicators:
-                        print('        {!r}'.format(indicators))
 
     def postprocess_multimeasure_rests(self):
         def division_to_meter(division):
@@ -2168,6 +2167,7 @@ class SegmentMaker(makertools.SegmentMaker):
         timespan_inventory=None,
         timespan_quantization=None,
         ):
+        import consort
         segment_timespan = timespantools.Timespan(0, desired_duration)
         if timespan_quantization is None:
             timespan_quantization = durationtools.Duration(1, 16)
@@ -2190,6 +2190,12 @@ class SegmentMaker(makertools.SegmentMaker):
         if not settings:
             return False
         for layer, music_setting in enumerate(settings, start_index):
+            content, silence = 0, 0
+            for timespan in timespan_inventory:
+                if isinstance(timespan, consort.SilentTimespan):
+                    silence += 1
+                else:
+                    content += 1
             music_setting(
                 layer=layer,
                 score=score,

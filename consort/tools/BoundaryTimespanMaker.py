@@ -112,8 +112,10 @@ class BoundaryTimespanMaker(TimespanMaker):
 
     __slots__ = (
         '_labels',
+        '_start_anchor',
         '_start_talea',
         '_start_groupings',
+        '_stop_anchor',
         '_stop_talea',
         '_stop_groupings',
         '_voice_names',
@@ -127,6 +129,8 @@ class BoundaryTimespanMaker(TimespanMaker):
         stop_talea=None,
         start_groupings=None,
         stop_groupings=None,
+        start_anchor=Left,
+        stop_anchor=Left,
         labels=None,
         division_masks=None,
         padding=None,
@@ -196,6 +200,11 @@ class BoundaryTimespanMaker(TimespanMaker):
             voice_names = tuple(voice_names)
         self._voice_names = voice_names
 
+        assert start_anchor in (Left, Right)
+        self._start_anchor = start_anchor
+        assert stop_anchor in (Left, Right)
+        self._stop_anchor = stop_anchor
+
     ### PRIVATE METHODS ###
 
     def _collect_preexisting_timespans(
@@ -206,21 +215,23 @@ class BoundaryTimespanMaker(TimespanMaker):
         import consort
         preexisting_timespans = timespantools.TimespanInventory()
         for timespan in timespan_inventory:
-            if not isinstance(timespan, consort.PerformedTimespan):
+            assert isinstance(timespan, (
+                consort.PerformedTimespan,
+                consort.SilentTimespan,
+                ))
+            if isinstance(timespan, consort.SilentTimespan):
                 continue
             if (
                 self.voice_names and
                 timespan.voice_name not in self.voice_names
                 ):
                 continue
-            if not self.labels:
-                preexisting_timespans.append(timespan)
-            elif not hasattr(timespan, 'music_specifier') or \
-                not timespan.music_specifier or \
-                not timespan.music_specifier.labels:
-                continue
-            elif any(label in timespan.music_specifier.labels
-                for label in self.labels):
+            if self.labels:
+                for label in self.labels:
+                    if label in timespan.music_specifier.labels:
+                        preexisting_timespans.append(timespan)
+                        break
+            else:
                 preexisting_timespans.append(timespan)
         preexisting_timespans & target_timespan
         return preexisting_timespans
@@ -297,31 +308,39 @@ class BoundaryTimespanMaker(TimespanMaker):
                     stop_durations.append(next(stop_talea))
                 start_timespans, stop_timespans = (), ()
                 if start_durations:
+                    group_start = group.start_offset
+                    if self.start_anchor is Right:
+                        #print('!!!', float(group_start), float(group_start -
+                        #    sum(start_durations)))
+                        group_start -= sum(start_durations)
                     start_timespans = music_specifier(
                         durations=start_durations,
                         layer=layer,
                         division_masks=self.division_masks,
                         padding=self.padding,
                         seed=context_seed,
-                        start_offset=group.start_offset,
+                        start_offset=group_start,
                         timespan_specifier=self.timespan_specifier,
                         voice_name=context_name,
                         )
                     context_counter[context_name] += 1
                 if stop_durations:
+                    group_stop = group.stop_offset
+                    if self.stop_anchor is Right:
+                        group_stop -= sum(stop_durations)
                     stop_timespans = music_specifier(
                         durations=stop_durations,
                         layer=layer,
                         division_masks=self.division_masks,
                         padding=self.padding,
                         seed=context_seed,
-                        start_offset=group.stop_offset,
+                        start_offset=group_stop,
                         timespan_specifier=self.timespan_specifier,
                         voice_name=context_name,
                         )
                     context_counter[context_name] += 1
-                if start_timespans and stop_timespans:
-                    start_timespans & group.timespan
+                #if start_timespans and stop_timespans:
+                #    start_timespans & group.timespan
                 new_timespan_mapping[context_name].extend(start_timespans)
                 new_timespan_mapping[context_name].extend(stop_timespans)
         for context_name, timespans in new_timespan_mapping.items():
@@ -336,8 +355,16 @@ class BoundaryTimespanMaker(TimespanMaker):
         return self._labels
 
     @property
+    def start_anchor(self):
+        return self._start_anchor
+
+    @property
     def start_talea(self):
         return self._start_talea
+
+    @property
+    def stop_anchor(self):
+        return self._stop_anchor
 
     @property
     def stop_talea(self):

@@ -166,7 +166,7 @@ class MusicSpecifier(HashCachingObject):
         import consort
         score_template = consort.StringQuartetScoreTemplate(
             split=False,
-            without_instruments=True,
+            without_instruments=False,
             )
         segment_maker = consort.SegmentMaker(
             desired_duration_in_seconds=10,

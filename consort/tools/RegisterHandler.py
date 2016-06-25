@@ -70,7 +70,7 @@ class RegisterHandler(HashCachingObject):
             seed_session.current_timewise_phrase_seed,
             )
         pitch_class = logical_tie[0].written_pitch.named_pitch_class
-        pitch = self._get_pitch(
+        old_pitch = pitch = self._get_pitch(
             pitch_class,
             registration,
             seed_session.current_phrased_voicewise_logical_tie_seed,
@@ -81,6 +81,7 @@ class RegisterHandler(HashCachingObject):
                 pitch,
                 pitch_range,
                 )
+        print(instrument, pitch_class, registration, old_pitch, pitch_range, pitch)
         for leaf in logical_tie:
             leaf.written_pitch = pitch
         self._apply_logical_tie_expression(
