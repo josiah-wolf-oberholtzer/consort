@@ -105,13 +105,13 @@ class Instrument(instrumenttools.Instrument):
         #    previous_instrument_name,
         #    self.instrument_name,
         #    )
-        if previous_instrument == self:
-            return bundle
+        #if previous_instrument == self:
+        #    return bundle
         if isinstance(component, scoretools.Container):
             previous_leaf = next(iterate(component).by_leaf())._get_leaf(-1)
         else:
             previous_leaf = component._get_leaf(-1)
-        if self.instrument_change_markup:
+        if self.instrument_change_markup and previous_instrument != self:
             if previous_instrument or previous_leaf:
                 bundle.right.markup.append(self.instrument_change_markup)
         if isinstance(component, scoretools.Leaf):
