@@ -28,9 +28,10 @@ class LogicalTieExpression(abctools.AbjadValueObject):
             old_grace_container = grace_containers[0]
             grace_notes = old_grace_container.select_leaves()
             detach(scoretools.GraceContainer, old_leaf)
-        indicators = inspect_(old_leaf).get_indicators()
-        for indicator in indicators:
-            detach(indicator, old_leaf)
+
+        indicator_expressions = inspect_(old_leaf).get_indicators(unwrap=False)
+        #for indicator_expression in indicator_expressions:
+        #    detach(indicator, old_leaf)
 
         timespan = old_leaf._timespan
         start_offset = old_leaf._start_offset
@@ -48,5 +49,6 @@ class LogicalTieExpression(abctools.AbjadValueObject):
                 kind='after',
                 )
             attach(new_grace_container, new_leaf)
-        for indicator in indicators:
-            attach(indicator, new_leaf)
+
+        for indicator_expression in indicator_expressions:
+            attach(indicator_expression, new_leaf)

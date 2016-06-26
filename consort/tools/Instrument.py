@@ -95,32 +95,24 @@ class Instrument(instrumenttools.Instrument):
 
     def _get_lilypond_format_bundle(self, component):
         bundle = systemtools.LilyPondFormatBundle()
-        print(component._get_parentage().score_index)
-        if isinstance(component, scoretools.Container):
-            component = next(iterate(component).by_leaf())
-        previous_instrument = component._get_effective(type(self), n=-2)
-        previous_instrument_name = None
-        if previous_instrument is not None:
-            previous_instrument_name = previous_instrument.instrument_name
+        previous_instrument = component._get_effective(type(self), n=-1)
+        #previous_instrument_name = None
+        #if previous_instrument is not None:
+        #    previous_instrument_name = previous_instrument.instrument_name
+        #print(
+        #    '+++',
+        #    component._get_parentage().score_index,
+        #    previous_instrument_name,
+        #    self.instrument_name,
+        #    )
         if previous_instrument == self:
-            print('Skipping it... {!r}, {!r}'.format(
-                previous_instrument_name,
-                self.instrument_name,
-                ))
             return bundle
-        else:
-            print('Continuing with it... {!r}, {!r}'.format(
-                previous_instrument_name,
-                self.instrument_name,
-                ))
         if isinstance(component, scoretools.Container):
             previous_leaf = next(iterate(component).by_leaf())._get_leaf(-1)
         else:
             previous_leaf = component._get_leaf(-1)
         if self.instrument_change_markup:
-            print('Doing it?')
             if previous_instrument or previous_leaf:
-                print('    Doing it...')
                 bundle.right.markup.append(self.instrument_change_markup)
         if isinstance(component, scoretools.Leaf):
             context_setting = lilypondnametools.LilyPondContextSetting(

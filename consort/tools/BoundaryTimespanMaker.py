@@ -33,6 +33,8 @@ class BoundaryTimespanMaker(TimespanMaker):
                 counts=(1,),
                 denominator=4,
                 ),
+            start_anchor=Left,
+            stop_anchor=Left,
             voice_names=('Violin 1 Voice', 'Violin 2 Voice'),
             )
 
@@ -227,8 +229,11 @@ class BoundaryTimespanMaker(TimespanMaker):
                 ):
                 continue
             if self.labels:
+                if not timespan.music_specifier:
+                    continue
+                music_specifier_labels = timespan.music_specifier.labels or ()
                 for label in self.labels:
-                    if label in timespan.music_specifier.labels:
+                    if label in music_specifier_labels:
                         preexisting_timespans.append(timespan)
                         break
             else:

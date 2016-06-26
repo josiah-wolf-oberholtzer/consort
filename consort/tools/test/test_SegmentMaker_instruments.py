@@ -65,6 +65,8 @@ def test_SegmentMaker_instruments_01():
                     \tag #'first-violin
                     \context Staff = "First Violin Staff" {
                         \clef "treble"
+                        \set Staff.instrumentName = \markup { Violin }
+                        \set Staff.shortInstrumentName = \markup { Vn. }
                         \context Voice = "First Violin Voice" {
                             {
                                 % [First Violin Voice] Measure 1
@@ -117,6 +119,8 @@ def test_SegmentMaker_instruments_01():
                     \tag #'viola
                     \context Staff = "Viola Staff" {
                         \clef "alto"
+                        \set Staff.instrumentName = \markup { Viola }
+                        \set Staff.shortInstrumentName = \markup { Va. }
                         \context Voice = "Viola Voice" {
                             {
                                 % [Viola Voice] Measure 1

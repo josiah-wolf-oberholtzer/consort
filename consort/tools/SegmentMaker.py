@@ -361,7 +361,14 @@ class SegmentMaker(makertools.SegmentMaker):
             last_leaf = inspect_(staff).get_leaf(-1)
             instrument = inspect_(last_leaf).get_effective(prototype)
             if instrument:
-                result[staff.name] = format(instrument)
+                formatted = format(instrument)
+                formatted = formatted.replace('\n', ' ')
+                formatted = formatted.replace('    ', '')
+                formatted = formatted.replace(' )', ')')
+                formatted = formatted.replace(' ]', ']')
+                formatted = formatted.replace('( ', '(')
+                formatted = formatted.replace('[ ', '[')
+                result[staff.name] = formatted
             else:
                 result[staff.name] = None
         return result
@@ -582,26 +589,40 @@ class SegmentMaker(makertools.SegmentMaker):
                 attach(comment, phrase)
 
     def apply_instruments(self):
+        import abjad
         import consort
-        prototype = instrumenttools.Instrument
+        end_instruments = self._previous_segment_metadata.get(
+            'end_instruments_by_staff', {})
         for voice in iterate(self.score).by_class(scoretools.Voice):
             for i, phrase in enumerate(voice):
-                #print(i, phrase)
-                if i == 0:
-                    for parent in phrase._get_parentage(include_self=False):
-                        #print('    {!r}'.format(parent))
-                        indicators = detach(prototype, parent)
-                        if indicators:
-                            #print('        {!r}'.format(indicators))
-                            pass
+                staff = voice._parent
                 music_specifier = inspect_(phrase).get_indicator(
                     consort.MusicSpecifier)
+                first_leaf = next(iterate(phrase).by_leaf())
+                previous_instrument = None
+                if i == 0 and end_instruments.get(staff.name):
+                    for parent in phrase._get_parentage(include_self=False):
+                        detach(consort.Instrument, parent)
+                    string = 'instrument = {}'.format(
+                        end_instruments[staff.name])
+                    namespace = abjad.__dict__.copy()
+                    namespace['consort'] = consort
+                    exec(string, namespace)
+                    previous_instrument = namespace['instrument']
+                    attach(previous_instrument, first_leaf)
                 if music_specifier is None:
                     continue
                 instrument = music_specifier.instrument
                 if instrument is None:
                     continue
-                first_leaf = next(iterate(phrase).by_leaf())
+                if i == 0:
+                    for parent in first_leaf._get_parentage(include_self=True):
+                        detach(consort.Instrument, parent)
+                    attach(
+                        previous_instrument,
+                        first_leaf,
+                        synthetic_offset=-1,
+                        )
                 attach(instrument, first_leaf)
 
     def postprocess_multimeasure_rests(self):
@@ -848,6 +869,8 @@ class SegmentMaker(makertools.SegmentMaker):
                     ))
         if current_violators:
             raise AssertionError
+        if not verbose:
+            return
         for voice in iterate(score).by_class(scoretools.Voice):
             #print(voice.name)
             voice_name = voice.name
