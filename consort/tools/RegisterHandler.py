@@ -81,7 +81,7 @@ class RegisterHandler(HashCachingObject):
                 pitch,
                 pitch_range,
                 )
-        print(instrument, pitch_class, registration, old_pitch, pitch_range, pitch)
+        #print(instrument, pitch_class, registration, old_pitch, pitch_range, pitch)
         for leaf in logical_tie:
             leaf.written_pitch = pitch
         self._apply_logical_tie_expression(

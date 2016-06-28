@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-from abjad.tools import durationtools
 from abjad.tools import lilypondnametools
 from abjad.tools import spannertools
 from abjad.tools import markuptools
@@ -230,7 +229,7 @@ class ComplexTextSpanner(spannertools.Spanner):
             next_is_similar = self._next_spanner_is_similar(leaf)
 
             if previous_is_similar and next_is_similar:
-                pass
+                return lilypond_format_bundle
 
             elif previous_is_similar:
                 self._make_spanner_stop(lilypond_format_bundle)
@@ -238,12 +237,8 @@ class ComplexTextSpanner(spannertools.Spanner):
             elif next_is_similar:
                 self._make_spanner_start(lilypond_format_bundle)
 
-            elif leaf.written_duration <= durationtools.Duration(1, 4):
-                self._make_markup(lilypond_format_bundle)
-
             else:
-                self._make_spanner_start(lilypond_format_bundle)
-                self._make_spanner_stop(lilypond_format_bundle)
+                self._make_markup(lilypond_format_bundle)
 
         elif self._is_my_first_leaf(leaf):
             if not self._previous_spanner_is_similar(leaf):
@@ -352,7 +347,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 break
             elif isinstance(next_leaf, scoretools.MultimeasureRest):
                 break
-            has_spanner = next_leaf._has_spanner(type(self))
+            has_spanner = next_leaf._has_spanner(type(self),
+                in_parentage=True)
             if not has_spanner:
                 if isinstance(next_leaf, leaf_prototype):
                     break
@@ -375,7 +371,8 @@ class ComplexTextSpanner(spannertools.Spanner):
                 break
             elif isinstance(previous_leaf, scoretools.MultimeasureRest):
                 break
-            has_spanner = previous_leaf._has_spanner(type(self))
+            has_spanner = previous_leaf._has_spanner(type(self),
+                in_parentage=True)
             if not has_spanner:
                 if isinstance(previous_leaf, leaf_prototype):
                     break
@@ -387,20 +384,6 @@ class ComplexTextSpanner(spannertools.Spanner):
                 break
             previous_spanner_is_similar = True
         return previous_spanner_is_similar
-
-#    def _previous_spanner_is_similar(self, leaf):
-#        previous_leaf = leaf._get_leaf(-1)
-#        previous_spanner = None
-#        previous_spanner_is_similar = False
-#        if previous_leaf is not None:
-#            spanners = previous_leaf._get_spanners(type(self))
-#            if spanners:
-#                assert len(spanners) == 1
-#                previous_spanner = tuple(spanners)[0]
-#                if previous_spanner.direction == self.direction:
-#                    if previous_spanner.markup == self.markup:
-#                        previous_spanner_is_similar = True
-#        return previous_spanner_is_similar
 
     ### PUBLIC PROPERTIES ###
 
