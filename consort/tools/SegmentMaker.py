@@ -2857,9 +2857,6 @@ class SegmentMaker(makertools.SegmentMaker):
 
     @maximum_meter_run_length.setter
     def maximum_meter_run_length(self, expr):
-        if expr is not None:
-            expr = int(expr)
-            assert 0 < expr
         self._maximum_meter_run_length = expr
 
     @property

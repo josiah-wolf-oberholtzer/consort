@@ -14,6 +14,7 @@ class RegisterHandler(HashCachingObject):
     __slots__ = (
         '_application_rate',
         '_logical_tie_expressions',
+        '_logical_tie_expressions_are_phrased',
         '_octavations',
         '_pitch_range',
         '_register_specifier',
@@ -37,6 +38,7 @@ class RegisterHandler(HashCachingObject):
         self,
         application_rate=None,
         logical_tie_expressions=None,
+        logical_tie_expressions_are_phrased=None,
         octavations=None,
         pitch_range=None,
         register_specifier=None,
@@ -49,6 +51,9 @@ class RegisterHandler(HashCachingObject):
         self._initialize_pitch_range(pitch_range)
         self._initialize_register_specifier(register_specifier)
         self._initialize_register_spread(register_spread)
+        if logical_tie_expressions_are_phrased is not None:
+            logical_tie_expressions_are_phrased = bool(logical_tie_expressions_are_phrased)
+        self._logical_tie_expressions_are_phrased = logical_tie_expressions_are_phrased
 
     ### SPECIAL METHODS ###
 
@@ -70,7 +75,7 @@ class RegisterHandler(HashCachingObject):
             seed_session.current_timewise_phrase_seed,
             )
         pitch_class = logical_tie[0].written_pitch.named_pitch_class
-        old_pitch = pitch = self._get_pitch(
+        pitch = self._get_pitch(
             pitch_class,
             registration,
             seed_session.current_phrased_voicewise_logical_tie_seed,
@@ -81,13 +86,16 @@ class RegisterHandler(HashCachingObject):
                 pitch,
                 pitch_range,
                 )
-        #print(instrument, pitch_class, registration, old_pitch, pitch_range, pitch)
         for leaf in logical_tie:
             leaf.written_pitch = pitch
+        if self.logical_tie_expressions_are_phrased:
+            logical_tie_seed = seed_session.current_phrased_voicewise_logical_tie_seed
+        else:
+            logical_tie_seed = seed_session.current_unphrased_voicewise_logical_tie_seed
         self._apply_logical_tie_expression(
             logical_tie=logical_tie,
             pitch_range=pitch_range,
-            seed=seed_session.current_unphrased_voicewise_logical_tie_seed,
+            seed=logical_tie_seed,
             )
 
     ### PRIVATE METHODS ###
@@ -98,13 +106,15 @@ class RegisterHandler(HashCachingObject):
         pitch_range,
         seed,
         ):
-        if self.logical_tie_expressions:
-            logical_tie_expression = self.logical_tie_expressions[seed]
-            if logical_tie_expression is not None:
-                logical_tie_expression(
-                    logical_tie,
-                    pitch_range=pitch_range,
-                    )
+        if not self.logical_tie_expressions:
+            return
+        logical_tie_expression = self.logical_tie_expressions[seed]
+        if logical_tie_expression is None:
+            return
+        logical_tie_expression(
+            logical_tie,
+            pitch_range=pitch_range,
+            )
 
     def _fit_pitch_to_pitch_range(self, pitch, pitch_range):
         while pitch <= pitch_range.start_pitch and \
@@ -256,6 +266,10 @@ class RegisterHandler(HashCachingObject):
     @property
     def logical_tie_expressions(self):
         return self._logical_tie_expressions
+
+    @property
+    def logical_tie_expressions_are_phrased(self):
+        return self._logical_tie_expressions_are_phrased
 
     @property
     def octavations(self):

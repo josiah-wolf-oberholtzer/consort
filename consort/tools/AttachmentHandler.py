@@ -80,7 +80,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
             rotation=seed,
             )
         if destructive_expressions:
-            for name, attachment_expression in destructive_expressions:
+            for name, attachment_expression in sorted(destructive_expressions):
                 attachment_expression(
                     music,
                     name=name,
@@ -89,7 +89,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         for selector in selectors:
             expressions = selectors_to_expressions[selector]
             selections = selectors_to_selections[selector]
-            for name, attachment_expression in expressions:
+            for name, attachment_expression in sorted(expressions):
                 attachment_expression._apply_attachments(
                     selections,
                     name=name,

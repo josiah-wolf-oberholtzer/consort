@@ -23,7 +23,7 @@ class AttachmentExpression(HashCachingObject):
             >>> import consort
             >>> attachment_expression = consort.AttachmentExpression(
             ...     attachments=(indicatortools.Articulation('>'),),
-            ...     selector=selectortools.Selector().by_leaves().by_run(Note)[0],
+            ...     selector=selectortools.Selector().by_leaf().by_run(Note)[0],
             ...     )
             >>> print(format(attachment_expression))
             consort.tools.AttachmentExpression(
@@ -57,7 +57,7 @@ class AttachmentExpression(HashCachingObject):
             ...             hairpin_stop_token='niente',
             ...             ),
             ...         ),
-            ...     selector=selectortools.Selector().by_leaves().by_run(Note),
+            ...     selector=selectortools.Selector().by_leaf().by_run(Note),
             ...     )
 
         ::
