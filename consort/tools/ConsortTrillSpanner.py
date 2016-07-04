@@ -34,7 +34,7 @@ class ConsortTrillSpanner(spannertools.Spanner):
             >>> complex_trill = consort.ConsortTrillSpanner(
             ...     interval='P4',
             ...     )
-            >>> attach(complex_trill, staff.select_leaves())
+            >>> attach(complex_trill, staff)
             >>> show(staff) # doctest: +SKIP
 
         ..  doctest::

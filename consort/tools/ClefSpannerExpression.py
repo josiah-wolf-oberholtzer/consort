@@ -2,6 +2,7 @@
 from __future__ import print_function
 from abjad import attach
 from abjad import inspect_
+from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import scoretools
 
@@ -23,7 +24,7 @@ class ClefSpannerExpression(abctools.AbjadValueObject):
 
     def __call__(self, music, name=None):
         import consort
-        leaves = music.select_leaves()
+        leaves = list(iterate(music).by_leaf())
         weights = []
         weighted_pitches = []
         for leaf in leaves:

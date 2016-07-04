@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from abjad import abctools
 from abjad import attach
+from abjad import iterate
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
@@ -73,7 +74,7 @@ class TextSpannerExpression(abctools.AbjadValueObject):
     def _get_selections(self, music):
         selections = []
         for division in music:
-            selection = division.select_leaves()
+            selection = list(iterate(division).by_leaf())
             selections.append(selection)
         return selections
 

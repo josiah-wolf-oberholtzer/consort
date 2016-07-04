@@ -28,7 +28,7 @@ def make_annotated_division(division, color=None):
     else:
         note = scoretools.Note("c'''2")
         annotated_division = scoretools.Tuplet(2, (note,))
-    leaves = division.select_leaves()
+    leaves = list(iterate(division).by_leaf())
     prototype = (scoretools.Rest, scoretools.MultimeasureRest)
     if all(isinstance(_, prototype) for _ in leaves):
         manager = override(annotated_division)

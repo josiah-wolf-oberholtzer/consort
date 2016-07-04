@@ -474,7 +474,8 @@ class SegmentMaker(makertools.SegmentMaker):
 
     def attach_rehearsal_mark(self):
         markup_a, markup_b = None, None
-        first_leaf = self.score['Time Signature Context'].select_leaves()[0]
+        first_leaf = next(iterate(
+            self.score['Time Signature Context']).by_leaf())
         rehearsal_letter = self.get_rehearsal_letter()
         if rehearsal_letter:
             markup_a = markuptools.Markup(rehearsal_letter)
@@ -491,7 +492,8 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(rehearsal_mark, first_leaf)
 
     def attach_tempo(self):
-        first_leaf = self.score['Time Signature Context'].select_leaves()[0]
+        first_leaf = next(iterate(
+            self.score['Time Signature Context']).by_leaf())
         if self.tempo is not None:
             attach(self.tempo, first_leaf)
 
@@ -858,8 +860,8 @@ class SegmentMaker(makertools.SegmentMaker):
     @staticmethod
     def validate_score(score, verbose=True):
         import consort
-        manager = systemtools.WellformednessManager(expr=score)
-        triples = manager()
+        manager = systemtools.WellformednessManager()
+        triples = manager(score)
         for current_violators, current_total, current_check in triples:
             if verbose:
                 print('    {} {} {}'.format(
@@ -1109,7 +1111,7 @@ class SegmentMaker(makertools.SegmentMaker):
             scoretools.MultimeasureRest,
             )
         initial_music_duration = inspect_(music).get_duration()
-        initial_leaves = music.select_leaves()
+        initial_leaves = list(iterate(music).by_leaf())
         if not isinstance(music[0], scoretools.Tuplet):
             leading_silence = scoretools.Container()
             while music[0] and isinstance(music[0][0], prototype):
@@ -1146,7 +1148,7 @@ class SegmentMaker(makertools.SegmentMaker):
             if not division:
                 music.remove(division)
         assert inspect_(music).get_duration() == initial_music_duration
-        assert music.select_leaves() == initial_leaves
+        assert list(iterate(music).by_leaf()) == initial_leaves
         return music
 
     @staticmethod
@@ -1392,7 +1394,7 @@ class SegmentMaker(makertools.SegmentMaker):
             scoretools.Rest,
             scoretools.MultimeasureRest,
             )
-        leaves = division.select_leaves()
+        leaves = list(iterate(division).by_leaf())
         return all(isinstance(leaf, rest_prototype) for leaf in leaves)
 
     def interpret_rhythms(
@@ -2379,7 +2381,8 @@ class SegmentMaker(makertools.SegmentMaker):
         assert meter_timespans
         assert meter_timespans[0].start_offset <= \
             inspect_(container).get_timespan().start_offset
-        last_leaf = container.select_leaves()[-1]
+        #last_leaf = container.select_leaves()[-1]
+        last_leaf = next(iterate(container).by_leaf(reverse=True))
         is_tied = SegmentMaker.leaf_is_tied(last_leaf)
         container_timespan = inspect_(container).get_timespan()
         if isinstance(container, scoretools.Tuplet):
@@ -2451,7 +2454,7 @@ class SegmentMaker(makertools.SegmentMaker):
             # TODO: handle bar-line-crossing containers
             raise AssertionError('Bar-line-crossing containers not permitted.')
         if is_tied:
-            last_leaf = container.select_leaves()[-1]
+            last_leaf = next(iterate(container).by_leaf(reverse=True))
             next_leaf = inspect_(last_leaf).get_leaf(1)
             selection = selectiontools.Selection((
                 last_leaf, next_leaf))

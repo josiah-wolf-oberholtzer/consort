@@ -3,6 +3,7 @@ import abc
 from abjad import attach
 from abjad import detach
 from abjad import inspect_
+from abjad import iterate
 from abjad import mutate
 from abjad.tools import abctools
 from abjad.tools import scoretools
@@ -26,7 +27,7 @@ class LogicalTieExpression(abctools.AbjadValueObject):
         grace_containers = inspect_(old_leaf).get_grace_containers('after')
         if grace_containers:
             old_grace_container = grace_containers[0]
-            grace_notes = old_grace_container.select_leaves()
+            grace_notes = list(iterate(old_grace_container).by_leaf())
             detach(scoretools.GraceContainer, old_leaf)
 
         indicator_expressions = inspect_(old_leaf).get_indicators(unwrap=False)

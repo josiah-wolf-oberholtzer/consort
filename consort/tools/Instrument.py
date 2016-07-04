@@ -114,6 +114,8 @@ class Instrument(instrumenttools.Instrument):
         if self.instrument_change_markup and previous_instrument != self:
             if previous_instrument or previous_leaf:
                 bundle.right.markup.append(self.instrument_change_markup)
+        if previous_instrument == self:
+            return bundle
         if isinstance(component, scoretools.Leaf):
             context_setting = lilypondnametools.LilyPondContextSetting(
                 context_name=self._scope_name,

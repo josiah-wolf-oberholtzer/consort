@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from __future__ import print_function
 from abjad import attach
+from abjad import iterate
+from abjad import select
 from abjad.tools import abctools
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
@@ -549,7 +551,9 @@ class DynamicExpression(abctools.AbjadValueObject):
 
     def _partition_selections(self, music):
         period = self.division_period or 1
-        selections = [_.select_leaves() for _ in music]
+        selections = [
+            select(list(iterate(_).by_leaf())) for _ in music
+            ]
         parts = sequencetools.partition_sequence_by_counts(
             selections, [period], cyclic=True, overhang=True)
         if len(parts[-1]) < period and 1 < len(parts):

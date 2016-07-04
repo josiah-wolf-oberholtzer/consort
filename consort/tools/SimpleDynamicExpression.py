@@ -120,7 +120,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
             graces = inspect_(previous_leaf).get_grace_containers('after')
             if graces:
                 assert len(graces) == 1
-                grace_notes = list(graces[0].select_leaves())
+                grace_notes = list(iterate(graces[0]).by_leaf())
                 music = selectiontools.ContiguousSelect(
                     tuple(grace_notes) + tuple(music),
                     )
