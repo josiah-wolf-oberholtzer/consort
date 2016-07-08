@@ -46,7 +46,7 @@ def test_SegmentMaker_instruments_01():
     lilypond_file, metadata = segment_maker(segment_metadata=None)
     assert format(lilypond_file) == stringtools.normalize(
         r'''
-        \version "2.19.41"
+        \version "2.19.44"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)

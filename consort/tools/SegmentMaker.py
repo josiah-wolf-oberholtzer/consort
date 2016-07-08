@@ -976,7 +976,7 @@ class SegmentMaker(makertools.SegmentMaker):
     def collect_attack_points(score):
         import consort
         attack_point_map = collections.OrderedDict()
-        iterator = iterate(score).by_timeline(component_class=scoretools.Note)
+        iterator = iterate(score).by_timeline(prototype=scoretools.Note)
         for note in iterator:
             logical_tie = inspect_(note).get_logical_tie()
             if note is not logical_tie.head:
