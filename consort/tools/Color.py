@@ -74,7 +74,7 @@ class Color(abctools.AbjadValueObject):
     def __format__(self, format_specification=''):
         from abjad.tools import systemtools
         if format_specification in ('', 'storage'):
-            return systemtools.StorageFormatManager.get_storage_format(self)
+            return systemtools.StorageFormatAgent(self).get_storage_format()
         elif format_specification == 'lilypond':
             return self._lilypond_format
         return str(self)

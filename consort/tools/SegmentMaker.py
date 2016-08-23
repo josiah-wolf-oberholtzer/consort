@@ -334,19 +334,14 @@ class SegmentMaker(makertools.SegmentMaker):
         self._segment_metadata = None
         self._previous_segment_metadata = None
 
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        from abjad.tools import systemtools
-        manager = systemtools.StorageFormatManager
-        keyword_argument_names = manager.get_keyword_argument_names(self)
-        keyword_argument_names = list(keyword_argument_names)
+    def _get_format_specification(self):
+        agent = systemtools.StorageFormatAgent(self)
+        names = list(agent.signature_keyword_names)
         if not self.settings:
-            keyword_argument_names.remove('settings')
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names
+            names.remove('settings')
+        return systemtools.FormatSpecification(
+            client=self,
+            storage_format_kwargs_names=names,
             )
 
     ### PUBLIC METHODS ###

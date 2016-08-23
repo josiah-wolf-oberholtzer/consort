@@ -103,6 +103,14 @@ class AttachmentHandler(abctools.AbjadValueObject):
 
     ### PRIVATE METHODS ###
 
+    def _get_format_specification(self):
+        names = sorted(self.attachment_expressions.keys())
+        return systemtools.FormatSpecification(
+            client=self,
+            storage_format_kwargs_names=names,
+            template_names=names,
+            )
+
     @staticmethod
     def _process_session(segment_maker, verbose=None):
         import consort
@@ -127,15 +135,6 @@ class AttachmentHandler(abctools.AbjadValueObject):
             if verbose:
                 message = template.format(voice.name, count)
                 print(message)
-
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=sorted(self.attachment_expressions.keys()),
-            )
 
     ### PUBLIC PROPERTIES ###
 

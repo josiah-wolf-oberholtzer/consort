@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from abjad.tools import abctools
-from abjad.tools import timespantools
+from abjad.tools import systemtools
 
 
 class TimespanCollection(abctools.AbjadObject):
@@ -463,20 +463,16 @@ class TimespanCollection(abctools.AbjadObject):
         node._stop_offset_high = stop_offset_high
         return node
 
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        from abjad.tools import systemtools
-        positional_argument_values = ()
+    def _get_format_specification(self):
+        values = []
         timespans = [x for x in self]
         if timespans:
-            positional_argument_values = (timespans,)
-        keyword_argument_names = ()
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names,
-            positional_argument_values=positional_argument_values,
+            values.append(timespans)
+        names = []
+        return systemtools.FormatSpecification(
+            client=self,
+            storage_format_args_values=values,
+            storage_format_kwargs_names=names,
             )
 
     ### PUBLIC METHODS ###

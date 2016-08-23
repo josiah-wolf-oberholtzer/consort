@@ -58,12 +58,11 @@ class MusicSetting(abctools.AbjadValueObject):
 
     ::
 
-        >>> layer = 1
         >>> segment_timespan = timespantools.Timespan(1, 2)
         >>> from abjad.tools import templatetools
         >>> score_template = consort.StringQuartetScoreTemplate()
         >>> timespan_inventory = red_setting(
-        ...     layer=layer,
+        ...     layer=1,
         ...     score_template=score_template,
         ...     segment_timespan=segment_timespan,
         ...     )
@@ -127,8 +126,37 @@ class MusicSetting(abctools.AbjadValueObject):
         ...         'cello',
         ...         ],
         ...     )
+        >>> print(format(red_setting))
+        consort.tools.MusicSetting(
+            timespan_maker=consort.tools.TaleaTimespanMaker(
+                initial_silence_talea=rhythmmakertools.Talea(
+                    counts=(0, 4),
+                    denominator=16,
+                    ),
+                playing_talea=rhythmmakertools.Talea(
+                    counts=(4, 8, 4),
+                    denominator=16,
+                    ),
+                playing_groupings=(1,),
+                repeat=True,
+                silence_talea=rhythmmakertools.Talea(
+                    counts=(4,),
+                    denominator=16,
+                    ),
+                step_anchor=Right,
+                synchronize_groupings=False,
+                synchronize_step=False,
+                ),
+            silenced_contexts=('cello', 'viola_lh'),
+            viola_rh=consort.tools.MusicSpecifier(),
+            violin_1_rh=consort.tools.MusicSpecifier(),
+            violin_2_rh=consort.tools.MusicSpecifier(),
+            )
+
+    ::
+
         >>> timespan_inventory = red_setting(
-        ...     layer=layer,
+        ...     layer=1,
         ...     score_template=score_template,
         ...     segment_timespan=segment_timespan,
         ...     )
@@ -282,7 +310,7 @@ class MusicSetting(abctools.AbjadValueObject):
         self._music_specifiers = music_specifiers
         if silenced_contexts is not None:
             silenced_contexts = (str(_) for _ in silenced_contexts)
-            silenced_contexts = set(silenced_contexts)
+            silenced_contexts = tuple(sorted(set(silenced_contexts)))
         self._silenced_contexts = silenced_contexts
         if timespan_identifier is not None:
             prototype = (
@@ -351,18 +379,19 @@ class MusicSetting(abctools.AbjadValueObject):
             return None
         return object.__getattribute__(self, item)
 
-    ### PRIVATE PROPERTIES ###
+    ### PRIVATE METHODS ###
 
-    @property
-    def _storage_format_specification(self):
-        manager = systemtools.StorageFormatManager
-        keyword_argument_names = manager.get_keyword_argument_names(self)
-        keyword_argument_names = list(keyword_argument_names)
-        keyword_argument_names.extend(sorted(self.music_specifiers))
-        keyword_argument_names.remove('color')
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names
+    def _get_format_specification(self):
+        agent = systemtools.StorageFormatAgent(self)
+        names = list(agent.signature_keyword_names)
+        names.extend(sorted(self.music_specifiers))
+        template_names = tuple(names)
+        if 'color' in names:
+            names.remove('color')
+        return systemtools.FormatSpecification(
+            client=self,
+            storage_format_kwargs_names=names,
+            template_names=template_names,
             )
 
     ### PUBLIC METHODS ###

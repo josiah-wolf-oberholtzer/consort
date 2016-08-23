@@ -9,12 +9,15 @@ from abjad.tools import scoretools
 _classes_to_fix = ()
 
 classes = documentationtools.list_all_classes('consort')
+
+
 @pytest.mark.parametrize('class_', classes)
 def test_consort___deepcopy___01(class_):
     r'''All concrete classes with a storage format can copy.
     '''
 
-    if '_storage_format_specification' not in dir(class_):
+    if ('_storage_format_specification' not in dir(class_) or
+        '_get_format_specification' not in dir(class_)):
         return
     if inspect.isabstract(class_):
         return

@@ -4,6 +4,7 @@ from abjad.tools import durationtools
 from abjad.tools import markuptools
 from abjad.tools import mathtools
 from abjad.tools import sequencetools
+from abjad.tools import systemtools
 from abjad.tools import timespantools
 
 
@@ -94,22 +95,6 @@ class PerformedTimespan(timespantools.Timespan):
         self._original_stop_offset = original_stop_offset
         self._voice_name = voice_name
 
-    ### PRIVATE PROPERTIES ###
-
-    @property
-    def _storage_format_specification(self):
-        from abjad.tools import systemtools
-        manager = systemtools.StorageFormatManager
-        keyword_argument_names = list(manager.get_keyword_argument_names(self))
-        if self.original_start_offset == self.start_offset:
-            keyword_argument_names.remove('original_start_offset')
-        if self.original_stop_offset == self.stop_offset:
-            keyword_argument_names.remove('original_stop_offset')
-        return systemtools.StorageFormatSpecification(
-            self,
-            keyword_argument_names=keyword_argument_names,
-            )
-
     ### SPECIAL METHODS ###
 
     def __lt__(self, expr):
@@ -147,6 +132,17 @@ class PerformedTimespan(timespantools.Timespan):
             ps = ps.rmoveto(0.25, 0.5)
             ps = ps.show(str(self.layer))
         return ps
+
+    def _get_format_specification(self):
+        agent = systemtools.StorageFormatAgent(self)
+        names = agent.signature_keyword_names
+        if self.original_start_offset == self.start_offset:
+            names.remove('original_start_offset')
+        if self.original_stop_offset == self.stop_offset:
+            names.remove('original_stop_offset')
+        return systemtools.FormatSpecification(
+            storage_format_kwargs_names=names,
+            )
 
     ### PUBLIC METHODS ###
 

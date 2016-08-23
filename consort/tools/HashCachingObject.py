@@ -30,8 +30,8 @@ class HashCachingObject(abctools.AbjadValueObject):
     #@profile
     def __format__(self, format_specification=''):
         if self._format is None:
-            manager = systemtools.StorageFormatManager
-            self._format = manager.get_storage_format(self)
+            agent = systemtools.StorageFormatAgent(self)
+            self._format = agent.get_storage_format()
         return self._format
 
     #@profile
