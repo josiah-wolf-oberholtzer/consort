@@ -2,7 +2,10 @@
 from __future__ import print_function
 import collections
 import copy
-import funcsigs
+try:
+    import funcsigs
+except ImportError:
+    import inspect as funcsigs
 from abjad import attach
 from abjad import new
 from abjad.tools import datastructuretools

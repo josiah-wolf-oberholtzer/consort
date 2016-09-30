@@ -35,7 +35,7 @@ class Color(abctools.AbjadValueObject):
     ::
 
         >>> color.rotate_hue(0.25)
-        Color(red=0.8..., green=0.999..., blue=0.82...)
+        Color(red=0.8, green=1.0, blue=0.82)
 
     ::
 
