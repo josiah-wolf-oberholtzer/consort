@@ -428,7 +428,7 @@ class SegmentMaker(makertools.SegmentMaker):
         self._settings.append(setting)
 
     def attach_initial_bar_line(self):
-        segment_number = self._segment_metadata.get('segment_number', 1)
+        segment_number = self._segment_metadata.get('segment_number', 1) or 1
         if self.repeat:
             if segment_number != 1:
                 command = indicatortools.LilyPondCommand('break', 'opening')
@@ -443,8 +443,8 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(bar_line, staff)
 
     def attach_final_bar_line(self):
-        segment_number = int(self._segment_metadata.get('segment_number', 1))
-        segment_count = int(self._segment_metadata.get('segment_count', 1))
+        segment_number = int(self._segment_metadata.get('segment_number', 1) or 1)
+        segment_count = int(self._segment_metadata.get('segment_count', 1) or 1)
         if self.repeat:
             repeat = indicatortools.Repeat()
             for staff in iterate(self.score).by_class(scoretools.Staff):
@@ -459,7 +459,7 @@ class SegmentMaker(makertools.SegmentMaker):
             self.score.add_final_markup(self.final_markup)
 
     def get_rehearsal_letter(self):
-        segment_number = self._segment_metadata.get('segment_number', 1)
+        segment_number = self._segment_metadata.get('segment_number', 1) or 1
         if segment_number == 1:
             return ''
         segment_index = segment_number - 1
@@ -510,7 +510,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 'stylesheet.ily',
                 )
             includes.append(path)
-            if 1 < self._segment_metadata.get('segment_number', 1):
+            if 1 < (self._segment_metadata.get('segment_number', 1) or 1):
                 path = os.path.join(
                     '..',
                     '..',
@@ -658,8 +658,8 @@ class SegmentMaker(makertools.SegmentMaker):
                         attach(multiplier, rest)
 
     def postprocess_staff_lines_spanners(self):
-        segment_number = self._segment_metadata.get('segment_number', 1)
-        segment_count = self._segment_metadata.get('segment_count', 1)
+        segment_number = self._segment_metadata.get('segment_number', 1) or 1
+        segment_count = self._segment_metadata.get('segment_count', 1) or 1
         if segment_number != segment_count:
             return
         for voice in iterate(self.score).by_class(scoretools.Voice):
@@ -684,7 +684,7 @@ class SegmentMaker(makertools.SegmentMaker):
                 break
 
     def attach_bar_number_comments(self):
-        first_bar_number = self._segment_metadata.get('first_bar_number', 1)
+        first_bar_number = self._segment_metadata.get('first_bar_number', 1) or 1
         measure_offsets = self.measure_offsets
         for voice in iterate(self.score).by_class(scoretools.Voice):
             voice_name = voice.name
@@ -727,7 +727,7 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(tie, components)
 
     def set_bar_number(self):
-        first_bar_number = self._segment_metadata.get('first_bar_number')
+        first_bar_number = self._segment_metadata.get('first_bar_number') or 1
         if first_bar_number is not None:
             set_(self.score).current_bar_number = first_bar_number
         #else:
@@ -3013,8 +3013,7 @@ class SegmentMaker(makertools.SegmentMaker):
         if tempo is not None:
             return tempo
         elif self._previous_segment_metadata is not None:
-            tempo = self._previous_segment_metadata.get(
-                'end_tempo')
+            tempo = self._previous_segment_metadata.get('end_tempo')
             if tempo:
                 tempo = indicatortools.Tempo(*tempo)
         return tempo
