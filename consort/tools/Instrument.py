@@ -71,12 +71,6 @@ class Instrument(instrumenttools.Instrument):
         sounding_pitch_of_written_middle_c=None,
         instrument_change_markup=None,
         ):
-        instrument_name_markup = markuptools.Markup(
-            instrument_name_markup, direction=None,
-            )
-        short_instrument_name_markup = markuptools.Markup(
-            short_instrument_name_markup, direction=None,
-            )
         instrumenttools.Instrument.__init__(
             self,
             instrument_name=instrument_name,
@@ -87,26 +81,16 @@ class Instrument(instrumenttools.Instrument):
             pitch_range=pitch_range,
             sounding_pitch_of_written_middle_c=sounding_pitch_of_written_middle_c,
             )
-        self._instrument_change_markup = markuptools.Markup(
-            instrument_change_markup, direction=Up,
-            )
+        if instrument_change_markup is not None:
+            instrument_change_markup = markuptools.Markup(
+                instrument_change_markup, direction=Up)
+        self._instrument_change_markup = instrument_change_markup
 
     ### PRIVATE METHODS ###
 
     def _get_lilypond_format_bundle(self, component):
         bundle = systemtools.LilyPondFormatBundle()
         previous_instrument = component._get_effective(type(self), n=-1)
-        #previous_instrument_name = None
-        #if previous_instrument is not None:
-        #    previous_instrument_name = previous_instrument.instrument_name
-        #print(
-        #    '+++',
-        #    component._get_parentage().score_index,
-        #    previous_instrument_name,
-        #    self.instrument_name,
-        #    )
-        #if previous_instrument == self:
-        #    return bundle
         if isinstance(component, scoretools.Container):
             previous_leaf = next(iterate(component).by_leaf())._get_leaf(-1)
         else:
@@ -117,27 +101,31 @@ class Instrument(instrumenttools.Instrument):
         if previous_instrument == self:
             return bundle
         if isinstance(component, scoretools.Leaf):
-            context_setting = lilypondnametools.LilyPondContextSetting(
-                context_name=self._scope_name,
-                context_property='instrumentName',
-                value=new(self.instrument_name_markup, direction=None),
-                )
-            bundle.update(context_setting)
-            context_setting = lilypondnametools.LilyPondContextSetting(
-                context_name=self._scope_name,
-                context_property='shortInstrumentName',
-                value=new(self.short_instrument_name_markup, direction=None),
-                )
-            bundle.update(context_setting)
+            if self.instrument_name_markup is not None:
+                context_setting = lilypondnametools.LilyPondContextSetting(
+                    context_name=self._scope_name,
+                    context_property='instrumentName',
+                    value=new(self.instrument_name_markup, direction=None),
+                    )
+                bundle.update(context_setting)
+            if self.short_instrument_name_markup is not None:
+                context_setting = lilypondnametools.LilyPondContextSetting(
+                    context_name=self._scope_name,
+                    context_property='shortInstrumentName',
+                    value=new(self.short_instrument_name_markup, direction=None),
+                    )
+                bundle.update(context_setting)
         else:
-            bundle.context_settings.extend([
-                'instrumentName = {}'.format(
+            if self.instrument_name_markup is not None:
+                string = 'instrumentName = {}'.format(
                     self.instrument_name_markup,
-                    ),
-                'shortInstrumentName = {}'.format(
+                    )
+                bundle.context_settings.append(string)
+            if self.short_instrument_name_markup is not None:
+                string = 'shortInstrumentName = {}'.format(
                     self.short_instrument_name_markup,
-                    ),
-                ])
+                    )
+                bundle.context_settings.append(string)
         return bundle
 
     ### PUBLIC PROPERTIES ###
@@ -145,3 +133,11 @@ class Instrument(instrumenttools.Instrument):
     @property
     def instrument_change_markup(self):
         return self._instrument_change_markup
+
+    @property
+    def instrument_name_markup(self):
+        return self._instrument_name_markup
+
+    @property
+    def short_instrument_name_markup(self):
+        return self._short_instrument_name_markup
