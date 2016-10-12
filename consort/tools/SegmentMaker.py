@@ -727,7 +727,7 @@ class SegmentMaker(makertools.SegmentMaker):
             attach(tie, components)
 
     def set_bar_number(self):
-        first_bar_number = self._segment_metadata.get('first_bar_number') or 1
+        first_bar_number = self._segment_metadata.get('first_bar_number')
         if first_bar_number is not None:
             set_(self.score).current_bar_number = first_bar_number
         #else:

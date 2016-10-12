@@ -29,6 +29,7 @@ class PitchHandler(HashCachingObject):
         '_pitch_operation_specifier',
         '_pitch_specifier',
         '_pitches_are_nonsemantic',
+        '_use_self_as_seed_key',
         )
 
     ### INITIALIZER ###
@@ -43,6 +44,7 @@ class PitchHandler(HashCachingObject):
         pitch_specifier=None,
         pitch_operation_specifier=None,
         pitches_are_nonsemantic=None,
+        use_self_as_seed_key=None,
         ):
         HashCachingObject.__init__(self)
         self._initialize_deviations(deviations)
@@ -55,6 +57,9 @@ class PitchHandler(HashCachingObject):
         if pitches_are_nonsemantic is not None:
             pitches_are_nonsemantic = bool(pitches_are_nonsemantic)
         self._pitches_are_nonsemantic = pitches_are_nonsemantic
+        if use_self_as_seed_key is not None:
+            use_self_as_seed_key = bool(use_self_as_seed_key)
+        self._use_self_as_seed_key = use_self_as_seed_key
 
     ### SPECIAL METHODS ###
 
@@ -367,10 +372,13 @@ class PitchHandler(HashCachingObject):
             attack_point_signature = attack_point_map[logical_tie]
             application_rate = pitch_handler.pitch_application_rate
             voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
+            seed_key = music_specifier
+            if pitch_handler.use_self_as_seed_key:
+                seed_key = pitch_handler
             seed_session(
                 application_rate,
                 attack_point_signature,
-                music_specifier,
+                seed_key,
                 voice,
                 )
             previous_pitch = pitch_handler._get_previous_pitch(
@@ -392,6 +400,8 @@ class PitchHandler(HashCachingObject):
                 previous_pitch,
                 seed_session,
                 )
+            if pitch.accidental.abbreviation in ('ss', 'ff'):
+                pitch = pitchtools.NamedPitch(float(pitch))
             pitch_handler._set_previous_pitch(
                 attack_point_signature,
                 music_specifier,
@@ -653,3 +663,7 @@ class PitchHandler(HashCachingObject):
     @property
     def pitches_are_nonsemantic(self):
         return self._pitches_are_nonsemantic
+
+    @property
+    def use_self_as_seed_key(self):
+        return self._use_self_as_seed_key

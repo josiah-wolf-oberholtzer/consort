@@ -89,7 +89,7 @@ class SeedSession(abctools.AbjadObject):
         key = (voice, music_specifier)
         if attack_point_signature.is_first_of_phrase:
             if key not in self._timewise_phrase_seeds:
-                phrase_seed = (music_specifier.seed or 0) - 1
+                phrase_seed = (getattr(music_specifier, 'seed', 0) or 0) - 1
                 self._timewise_phrase_seeds[key] = phrase_seed
             self._timewise_phrase_seeds[key] += 1
         phrase_seed = self._timewise_phrase_seeds[key]
@@ -103,7 +103,7 @@ class SeedSession(abctools.AbjadObject):
         voice,
         ):
         if music_specifier not in self._timewise_logical_tie_seeds:
-            seed = (music_specifier.seed or 0) - 1
+            seed = (getattr(music_specifier, 'seed', 0) or 0) - 1
             self._timewise_logical_tie_seeds[music_specifier] = seed
             self._phrased_voicewise_logical_tie_seeds[voice] = seed
         if application_rate == 'phrase':
@@ -134,7 +134,7 @@ class SeedSession(abctools.AbjadObject):
             self._unphrased_voicewise_logical_tie_seeds[voice] = {}
         if music_specifier not in self._unphrased_voicewise_logical_tie_seeds[voice]:
             self._unphrased_voicewise_logical_tie_seeds[voice][music_specifier] = \
-                (music_specifier.seed or 0) - 1
+                (getattr(music_specifier, 'seed', 0) or 0) - 1
         self._unphrased_voicewise_logical_tie_seeds[voice][music_specifier] += 1
         return self._unphrased_voicewise_logical_tie_seeds[voice][music_specifier]
 

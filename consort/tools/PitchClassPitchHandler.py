@@ -73,6 +73,7 @@ class PitchClassPitchHandler(PitchHandler):
         pitch_operation_specifier=None,
         pitch_specifier=None,
         pitches_are_nonsemantic=None,
+        use_self_as_seed_key=None,
         ):
         PitchHandler.__init__(
             self,
@@ -84,6 +85,7 @@ class PitchClassPitchHandler(PitchHandler):
             pitch_operation_specifier=pitch_operation_specifier,
             pitch_specifier=pitch_specifier,
             pitches_are_nonsemantic=pitches_are_nonsemantic,
+            use_self_as_seed_key=use_self_as_seed_key,
             )
         self._initialize_leap_constraint(leap_constraint)
         self._initialize_octavations(octavations)
