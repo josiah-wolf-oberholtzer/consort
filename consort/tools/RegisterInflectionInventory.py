@@ -2,7 +2,7 @@
 from abjad.tools import datastructuretools
 
 
-class RegisterInflectionList(datastructuretools.TypedList):
+class RegisterInflectionInventory(datastructuretools.TypedList):
 
     ### CLASS VARIABLES ###
 
@@ -18,4 +18,4 @@ class RegisterInflectionList(datastructuretools.TypedList):
     @property
     def _item_callable(self):
         import consort
-        return pitchtools.RegisterInflection
+        return consort.RegisterInflection

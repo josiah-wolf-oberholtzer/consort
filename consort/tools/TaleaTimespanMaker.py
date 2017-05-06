@@ -26,7 +26,7 @@ class TaleaTimespanMaker(TimespanMaker):
                 denominator=16,
                 ),
             playing_talea=rhythmmakertools.Talea(
-                counts=(4,),
+                counts=[4],
                 denominator=16,
                 ),
             playing_groupings=(1,),

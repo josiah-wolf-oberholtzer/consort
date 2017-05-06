@@ -2,7 +2,7 @@
 from abjad.tools import datastructuretools
 
 
-class RegisterSpecifierList(datastructuretools.TypedList):
+class RegisterSpecifierInventory(datastructuretools.TypedList):
 
     ### CLASS VARIABLES ###
 

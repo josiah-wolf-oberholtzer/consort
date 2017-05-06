@@ -35,7 +35,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         >>> print(format(register_specifier))
         consort.tools.RegisterSpecifier(
             base_pitch=pitchtools.NumberedPitch(12),
-            division_inflections=consort.tools.RegisterInflectionList(
+            division_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
@@ -50,7 +50,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                         ),
                     ]
                 ),
-            phrase_inflections=consort.tools.RegisterInflectionList(
+            phrase_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
@@ -64,7 +64,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                         ),
                     ]
                 ),
-            segment_inflections=consort.tools.RegisterInflectionList(
+            segment_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
                         inflections=pitchtools.IntervalSegment(
@@ -112,7 +112,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         phrase_inflections=None,
         segment_inflections=None,
         ):
-        from consort.tools import RegisterInflectionList
+        from consort.tools import RegisterInflectionInventory
         if isinstance(base_pitch, type(self)):
             expr = base_pitch
             self._base_pitch = expr.base_pitch
@@ -126,19 +126,19 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         if division_inflections is not None:
             if not isinstance(division_inflections, collections.Sequence):
                 division_inflections = [division_inflections]
-            division_inflections = RegisterInflectionList(
+            division_inflections = RegisterInflectionInventory(
                 division_inflections)
         self._division_inflections = division_inflections
         if phrase_inflections is not None:
             if not isinstance(phrase_inflections, collections.Sequence):
                 phrase_inflections = [phrase_inflections]
-            phrase_inflections = RegisterInflectionList(
+            phrase_inflections = RegisterInflectionInventory(
                 phrase_inflections)
         self._phrase_inflections = phrase_inflections
         if segment_inflections is not None:
             if not isinstance(segment_inflections, collections.Sequence):
                 segment_inflections = [segment_inflections]
-            segment_inflections = RegisterInflectionList(
+            segment_inflections = RegisterInflectionInventory(
                 segment_inflections)
         self._segment_inflections = segment_inflections
 
@@ -203,7 +203,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
             >>> print(format(transposed_specifier))
             consort.tools.RegisterSpecifier(
                 base_pitch=pitchtools.NumberedPitch(6),
-                division_inflections=consort.tools.RegisterInflectionList(
+                division_inflections=consort.tools.RegisterInflectionInventory(
                     [
                         consort.tools.RegisterInflection(
                             inflections=pitchtools.IntervalSegment(
@@ -218,7 +218,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                             ),
                         ]
                     ),
-                phrase_inflections=consort.tools.RegisterInflectionList(
+                phrase_inflections=consort.tools.RegisterInflectionInventory(
                     [
                         consort.tools.RegisterInflection(
                             inflections=pitchtools.IntervalSegment(
@@ -232,7 +232,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
                             ),
                         ]
                     ),
-                segment_inflections=consort.tools.RegisterInflectionList(
+                segment_inflections=consort.tools.RegisterInflectionInventory(
                     [
                         consort.tools.RegisterInflection(
                             inflections=pitchtools.IntervalSegment(

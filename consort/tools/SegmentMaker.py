@@ -80,13 +80,13 @@ class SegmentMaker(abctools.AbjadObject):
                 consort.tools.MusicSetting(
                     timespan_maker=consort.tools.TaleaTimespanMaker(
                         playing_talea=rhythmmakertools.Talea(
-                            counts=(4,),
+                            counts=[4],
                             denominator=16,
                             ),
                         playing_groupings=(1,),
                         repeat=True,
                         silence_talea=rhythmmakertools.Talea(
-                            counts=(4,),
+                            counts=[4],
                             denominator=16,
                             ),
                         step_anchor=Right,
@@ -1694,7 +1694,7 @@ class SegmentMaker(abctools.AbjadObject):
                             (
                                 rhythmmakertools.SilenceMask(
                                     pattern=patterntools.Pattern(
-                                        indices=(0,),
+                                        indices=[0],
                                         period=3,
                                         ),
                                     ),
@@ -1722,7 +1722,7 @@ class SegmentMaker(abctools.AbjadObject):
                                     (
                                         rhythmmakertools.SilenceMask(
                                             pattern=patterntools.Pattern(
-                                                indices=(0,),
+                                                indices=[0],
                                                 period=3,
                                                 ),
                                             ),
@@ -1745,7 +1745,7 @@ class SegmentMaker(abctools.AbjadObject):
                                     (
                                         rhythmmakertools.SilenceMask(
                                             pattern=patterntools.Pattern(
-                                                indices=(0,),
+                                                indices=[0],
                                                 period=3,
                                                 ),
                                             ),
