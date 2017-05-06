@@ -68,7 +68,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
         score_path = pathlib.Path(module.__file__).parent.parent
         stylesheet_path = score_path.joinpath('stylesheets', 'stylesheet.ily')
         stylesheet_path = stylesheet_path.resolve()
-        lilypond_file = lilypondfiletools.make_basic_lilypond_file(
+        lilypond_file = lilypondfiletools.LilyPondFile.new(
             score,
             includes=[str(stylesheet_path)],
             use_relative_includes=True,

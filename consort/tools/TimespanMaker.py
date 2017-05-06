@@ -126,7 +126,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             scale=scale,
             )
         oc_markup = oc_lilypond_file.items[-1]
-        lilypond_file = lilypondfiletools.make_basic_lilypond_file(
+        lilypond_file = lilypondfiletools.LilyPondFile.new(
             default_paper_size=['tabloid', 'landscape'],
             date_time_token=False,
             )
