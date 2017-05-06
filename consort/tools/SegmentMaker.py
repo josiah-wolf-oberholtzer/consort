@@ -498,6 +498,7 @@ class SegmentMaker(abctools.AbjadObject):
             attach(self.tempo, first_leaf)
 
     def configure_lilypond_file(self):
+        import consort
         comments = []
         includes = []
         if self.score_package_name != 'consort':
