@@ -22,7 +22,7 @@ class PhrasedSelectorCallback(abctools.AbjadValueObject):
                 leaf = next(iterate(division).by_leaf())
                 selection = selectiontools.Selection(leaf)
                 subresult.append(selection)
-            leaves = list(iterate(subexpr[-1]).by_leaf())
+            leaves = selectiontools.Selection(iterate(subexpr[-1]).by_leaf())
             if leaves.get_duration() <= durationtools.Duration(1, 8):
                 subresult.append(leaves[-1])
             elif 1 == len(leaves):
