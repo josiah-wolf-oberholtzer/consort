@@ -556,6 +556,7 @@ class DynamicExpression(abctools.AbjadValueObject):
             ]
         parts = sequencetools.Sequence(selections).partition_by_counts(
             [period], cyclic=True, overhang=True)
+        parts = [list(_) for _ in parts]
         if len(parts[-1]) < period and 1 < len(parts):
             part = parts.pop()
             parts[-1].extend(part)

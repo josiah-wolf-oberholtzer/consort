@@ -34,17 +34,17 @@ class MusicSetting(abctools.AbjadValueObject):
         consort.tools.MusicSetting(
             timespan_maker=consort.tools.TaleaTimespanMaker(
                 initial_silence_talea=rhythmmakertools.Talea(
-                    counts=(0, 4),
+                    counts=[0, 4],
                     denominator=16,
                     ),
                 playing_talea=rhythmmakertools.Talea(
-                    counts=(4, 8, 4),
+                    counts=[4, 8, 4],
                     denominator=16,
                     ),
                 playing_groupings=(1,),
                 repeat=True,
                 silence_talea=rhythmmakertools.Talea(
-                    counts=(4,),
+                    counts=[4],
                     denominator=16,
                     ),
                 step_anchor=Right,
@@ -130,17 +130,17 @@ class MusicSetting(abctools.AbjadValueObject):
         consort.tools.MusicSetting(
             timespan_maker=consort.tools.TaleaTimespanMaker(
                 initial_silence_talea=rhythmmakertools.Talea(
-                    counts=(0, 4),
+                    counts=[0, 4],
                     denominator=16,
                     ),
                 playing_talea=rhythmmakertools.Talea(
-                    counts=(4, 8, 4),
+                    counts=[4, 8, 4],
                     denominator=16,
                     ),
                 playing_groupings=(1,),
                 repeat=True,
                 silence_talea=rhythmmakertools.Talea(
-                    counts=(4,),
+                    counts=[4],
                     denominator=16,
                     ),
                 step_anchor=Right,

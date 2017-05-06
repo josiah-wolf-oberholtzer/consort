@@ -18,12 +18,12 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
             ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(1),
+            ...             pitchtools.Rotation(1, stravinsky=True),
             ...             pitchtools.Transposition(1),
             ...             )),
             ...         None,
             ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(-1),
+            ...             pitchtools.Rotation(-1, stravinsky=True),
             ...             pitchtools.Transposition(-1),
             ...             ))
             ...         ),
@@ -33,27 +33,27 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             consort.tools.PitchOperationSpecifier(
                 pitch_operations=(
                     pitchtools.CompoundOperator(
-                        operators=(
+                        operators=[
                             pitchtools.Rotation(
-                                index=1,
-                                transpose=True,
+                                n=1,
+                                stravinsky=True,
                                 ),
                             pitchtools.Transposition(
-                                index=1,
+                                n=1,
                                 ),
-                            ),
+                            ],
                         ),
                     None,
                     pitchtools.CompoundOperator(
-                        operators=(
+                        operators=[
                             pitchtools.Rotation(
-                                index=-1,
-                                transpose=True,
+                                n=-1,
+                                stravinsky=True,
                                 ),
                             pitchtools.Transposition(
-                                index=-1,
+                                n=-1,
                                 ),
-                            ),
+                            ],
                         ),
                     ),
                 ratio=mathtools.Ratio((1, 2, 1)),
@@ -123,15 +123,15 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                             start_offset=durationtools.Offset(0, 1),
                             stop_offset=durationtools.Offset(5, 2),
                             annotation=pitchtools.CompoundOperator(
-                                operators=(
+                                operators=[
                                     pitchtools.Rotation(
-                                        index=1,
-                                        transpose=True,
+                                        n=1,
+                                        stravinsky=True,
                                         ),
                                     pitchtools.Transposition(
-                                        index=1,
+                                        n=1,
                                         ),
-                                    ),
+                                    ],
                                 ),
                             ),
                         timespantools.AnnotatedTimespan(
@@ -142,15 +142,15 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                             start_offset=durationtools.Offset(15, 2),
                             stop_offset=durationtools.Offset(10, 1),
                             annotation=pitchtools.CompoundOperator(
-                                operators=(
+                                operators=[
                                     pitchtools.Rotation(
-                                        index=-1,
-                                        transpose=True,
+                                        n=-1,
+                                        stravinsky=True,
                                         ),
                                     pitchtools.Transposition(
-                                        index=-1,
+                                        n=-1,
                                         ),
-                                    ),
+                                    ],
                                 ),
                             ),
                         ]
@@ -163,7 +163,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                 >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
                 ...     is_cumulative=True,
                 ...     pitch_operations=(
-                ...         pitchtools.Rotation(1),
+                ...         pitchtools.Rotation(1, stravinsky=True),
                 ...         pitchtools.Transposition(1),
                 ...         pitchtools.Inversion(),
                 ...         None,
@@ -178,59 +178,59 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                             start_offset=durationtools.Offset(0, 1),
                             stop_offset=durationtools.Offset(10, 7),
                             annotation=pitchtools.CompoundOperator(
-                                operators=(
+                                operators=[
                                     pitchtools.Rotation(
-                                        index=1,
-                                        transpose=True,
+                                        n=1,
+                                        stravinsky=True,
                                         ),
-                                    ),
+                                    ],
                                 ),
                             ),
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(10, 7),
                             stop_offset=durationtools.Offset(30, 7),
                             annotation=pitchtools.CompoundOperator(
-                                operators=(
+                                operators=[
                                     pitchtools.Rotation(
-                                        index=1,
-                                        transpose=True,
+                                        n=1,
+                                        stravinsky=True,
                                         ),
                                     pitchtools.Transposition(
-                                        index=1,
+                                        n=1,
                                         ),
-                                    ),
+                                    ],
                                 ),
                             ),
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(30, 7),
                             stop_offset=durationtools.Offset(60, 7),
                             annotation=pitchtools.CompoundOperator(
-                                operators=(
+                                operators=[
                                     pitchtools.Rotation(
-                                        index=1,
-                                        transpose=True,
+                                        n=1,
+                                        stravinsky=True,
                                         ),
                                     pitchtools.Transposition(
-                                        index=1,
+                                        n=1,
                                         ),
                                     pitchtools.Inversion(),
-                                    ),
+                                    ],
                                 ),
                             ),
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(60, 7),
                             stop_offset=durationtools.Offset(10, 1),
                             annotation=pitchtools.CompoundOperator(
-                                operators=(
+                                operators=[
                                     pitchtools.Rotation(
-                                        index=1,
-                                        transpose=True,
+                                        n=1,
+                                        stravinsky=True,
                                         ),
                                     pitchtools.Transposition(
-                                        index=1,
+                                        n=1,
                                         ),
                                     pitchtools.Inversion(),
-                                    ),
+                                    ],
                                 ),
                             ),
                         ]
@@ -258,7 +258,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                 if self.is_cumulative:
                     if current_pitch_operation:
                         pitch_operation = pitchtools.CompoundOperator(
-                            (pitch_operation.operators or ()) +
+                            (pitch_operation.operators or []) +
                             current_pitch_operation.operators
                             )
                 else:
@@ -279,12 +279,12 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
             ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(1),
+            ...             pitchtools.Rotation(1, stravinsky=True),
             ...             pitchtools.Transposition(1),
             ...             )),
             ...         None,
             ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(-1),
+            ...             pitchtools.Rotation(-1, stravinsky=True),
             ...             pitchtools.Transposition(-1),
             ...             ))
             ...         ),
@@ -295,26 +295,26 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             consort.tools.PitchOperationSpecifier(
                 pitch_operations=(
                     pitchtools.CompoundOperator(
-                        operators=(
+                        operators=[
                             pitchtools.Rotation(
-                                index=-1,
-                                transpose=True,
+                                n=-1,
+                                stravinsky=True,
                                 ),
                             pitchtools.Transposition(
-                                index=-1,
+                                n=-1,
                                 ),
-                            ),
+                            ],
                         ),
                     pitchtools.CompoundOperator(
-                        operators=(
+                        operators=[
                             pitchtools.Rotation(
-                                index=1,
-                                transpose=True,
+                                n=1,
+                                stravinsky=True,
                                 ),
                             pitchtools.Transposition(
-                                index=1,
+                                n=1,
                                 ),
-                            ),
+                            ],
                         ),
                     None,
                     ),

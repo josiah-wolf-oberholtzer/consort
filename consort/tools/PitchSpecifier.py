@@ -261,7 +261,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
         import consort
         rotation = int(rotation)
         pitch_segments = tuple(
-            _.rotate(rotation, transpose=True)
+            _.rotate(rotation, stravinsky=True)
             for _ in self.pitch_segments
             )
         pitch_segments = consort.rotate(pitch_segments, rotation)
