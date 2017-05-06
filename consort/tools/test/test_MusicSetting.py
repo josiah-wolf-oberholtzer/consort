@@ -39,7 +39,7 @@ def test_MusicSetting_01():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -91,7 +91,7 @@ def test_MusicSetting_02():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
@@ -110,7 +110,7 @@ def test_MusicSetting_03():
 
     music_setting = consort.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=timespantools.TimespanInventory([
+        timespan_identifier=timespantools.TimespanList([
             timespantools.Timespan(0, 1),
             timespantools.Timespan(2, 4),
             ]),
@@ -125,7 +125,7 @@ def test_MusicSetting_03():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -173,7 +173,7 @@ def test_MusicSetting_04():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
@@ -214,7 +214,7 @@ def test_MusicSetting_05():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -256,7 +256,7 @@ def test_MusicSetting_06():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(21, 16),
@@ -291,7 +291,7 @@ def test_MusicSetting_07():
 
     assert format(result) == systemtools.TestManager.clean_string(
         '''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(19, 8),

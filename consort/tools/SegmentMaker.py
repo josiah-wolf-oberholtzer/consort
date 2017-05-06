@@ -62,7 +62,7 @@ class SegmentMaker(abctools.AbjadObject):
         >>> print(format(segment_maker))
         consort.tools.SegmentMaker(
             desired_duration_in_seconds=durationtools.Duration(2, 1),
-            permitted_time_signatures=indicatortools.TimeSignatureInventory(
+            permitted_time_signatures=indicatortools.TimeSignatureList(
                 [
                     indicatortools.TimeSignature((5, 8)),
                     indicatortools.TimeSignature((7, 16)),
@@ -1161,7 +1161,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> timespans = timespantools.TimespanInventory([
+            >>> timespans = timespantools.TimespanList([
             ...     consort.PerformedTimespan(
             ...         start_offset=0,
             ...         stop_offset=10,
@@ -1189,7 +1189,7 @@ class SegmentMaker(abctools.AbjadObject):
             ...         ),
             ...     ])
             >>> print(format(timespans))
-            timespantools.TimespanInventory(
+            timespantools.TimespanList(
                 [
                     consort.tools.PerformedTimespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -1224,7 +1224,7 @@ class SegmentMaker(abctools.AbjadObject):
             >>> timespans = consort.SegmentMaker.consolidate_timespans(
             ...     timespans)
             >>> print(format(timespans))
-            timespantools.TimespanInventory(
+            timespantools.TimespanList(
                 [
                     consort.tools.PerformedTimespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -1257,7 +1257,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         Returns new timespan inventory.
         '''
-        consolidated_timespans = timespantools.TimespanInventory()
+        consolidated_timespans = timespantools.TimespanList()
         for music_specifier, grouped_timespans in \
             SegmentMaker.group_timespans(timespans):
             if music_specifier is None and not allow_silences:
@@ -1312,14 +1312,14 @@ class SegmentMaker(abctools.AbjadObject):
     @staticmethod
     def resolve_maquette(multiplexed_timespans):
         import consort
-        demultiplexed_maquette = consort.TimespanInventoryMapping()
+        demultiplexed_maquette = consort.TimespanListMapping()
         for timespan in multiplexed_timespans:
             voice_name, layer = timespan.voice_name, timespan.layer
             if voice_name not in demultiplexed_maquette:
                 demultiplexed_maquette[voice_name] = {}
             if layer not in demultiplexed_maquette[voice_name]:
                 demultiplexed_maquette[voice_name][layer] = \
-                    timespantools.TimespanInventory()
+                    timespantools.TimespanList()
             demultiplexed_maquette[voice_name][layer].append(
                 timespan)
             demultiplexed_maquette[voice_name][layer]
@@ -1338,8 +1338,8 @@ class SegmentMaker(abctools.AbjadObject):
     @staticmethod
     def cleanup_maquette_layer(timespans):
         import consort
-        performed_timespans = timespantools.TimespanInventory()
-        silent_timespans = timespantools.TimespanInventory()
+        performed_timespans = timespantools.TimespanList()
+        silent_timespans = timespantools.TimespanList()
         for timespan in timespans:
             if isinstance(timespan, consort.PerformedTimespan):
                 performed_timespans.append(timespan)
@@ -1401,7 +1401,7 @@ class SegmentMaker(abctools.AbjadObject):
         self,
         verbose=True,
         ):
-        multiplexed_timespans = timespantools.TimespanInventory()
+        multiplexed_timespans = timespantools.TimespanList()
 
         with systemtools.Timer(
             enter_message='    populating independent timespans:',
@@ -1608,10 +1608,10 @@ class SegmentMaker(abctools.AbjadObject):
                 music_specifier, forbid_fusing = key
                 if forbid_fusing:
                     for timespan in grouped_timespans:
-                        group = timespantools.TimespanInventory([timespan])
+                        group = timespantools.TimespanList([timespan])
                         yield music_specifier, group
                 else:
-                    group = timespantools.TimespanInventory(
+                    group = timespantools.TimespanList(
                         grouped_timespans)
                     yield music_specifier, group
 
@@ -1624,7 +1624,7 @@ class SegmentMaker(abctools.AbjadObject):
         voice_names = demultiplexed_maquette.keys()
         voice_names = SegmentMaker.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
-            inscribed_timespans = timespantools.TimespanInventory()
+            inscribed_timespans = timespantools.TimespanList()
             uninscribed_timespans = demultiplexed_maquette[voice_name]
             for timespan in uninscribed_timespans:
                 if timespan.music is None:
@@ -1690,7 +1690,7 @@ class SegmentMaker(abctools.AbjadObject):
                     ),
                 music_specifier=consort.tools.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                        division_masks=patterntools.PatternInventory(
+                        division_masks=patterntools.PatternList(
                             (
                                 rhythmmakertools.SilenceMask(
                                     pattern=patterntools.Pattern(
@@ -1708,7 +1708,7 @@ class SegmentMaker(abctools.AbjadObject):
 
             >>> result = consort.SegmentMaker.inscribe_timespan(timespan)
             >>> print(format(result))
-            timespantools.TimespanInventory(
+            timespantools.TimespanList(
                 [
                     consort.tools.PerformedTimespan(
                         start_offset=durationtools.Offset(1, 4),
@@ -1718,7 +1718,7 @@ class SegmentMaker(abctools.AbjadObject):
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                division_masks=patterntools.PatternInventory(
+                                division_masks=patterntools.PatternList(
                                     (
                                         rhythmmakertools.SilenceMask(
                                             pattern=patterntools.Pattern(
@@ -1741,7 +1741,7 @@ class SegmentMaker(abctools.AbjadObject):
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                division_masks=patterntools.PatternInventory(
+                                division_masks=patterntools.PatternList(
                                     (
                                         rhythmmakertools.SilenceMask(
                                             pattern=patterntools.Pattern(
@@ -1761,7 +1761,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         Returns timespan inventory.
         '''
-        inscribed_timespans = timespantools.TimespanInventory()
+        inscribed_timespans = timespantools.TimespanList()
         rhythm_maker = SegmentMaker.get_rhythm_maker(timespan.music_specifier)
         durations = timespan.divisions[:]
         music = SegmentMaker.make_music(
@@ -1971,15 +1971,15 @@ class SegmentMaker(abctools.AbjadObject):
         ::
 
             >>> demultiplexed = {}
-            >>> demultiplexed['foo'] = timespantools.TimespanInventory([
+            >>> demultiplexed['foo'] = timespantools.TimespanList([
             ...     timespantools.Timespan(0, 10),
             ...     timespantools.Timespan(15, 30),
             ...     ])
-            >>> demultiplexed['bar'] = timespantools.TimespanInventory([
+            >>> demultiplexed['bar'] = timespantools.TimespanList([
             ...     timespantools.Timespan(5, 15),
             ...     timespantools.Timespan(20, 35),
             ...     ])
-            >>> demultiplexed['baz'] = timespantools.TimespanInventory([
+            >>> demultiplexed['baz'] = timespantools.TimespanList([
             ...     timespantools.Timespan(5, 40),
             ...     ])
 
@@ -1988,7 +1988,7 @@ class SegmentMaker(abctools.AbjadObject):
             >>> multiplexed = consort.SegmentMaker.multiplex_timespans(
             ...     demultiplexed)
             >>> print(format(multiplexed))
-            timespantools.TimespanInventory(
+            timespantools.TimespanList(
                 [
                     timespantools.Timespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -2015,7 +2015,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         Returns timespan inventory.
         '''
-        multiplexed_timespans = timespantools.TimespanInventory()
+        multiplexed_timespans = timespantools.TimespanList()
         for timespans in demultiplexed_maquette.values():
             multiplexed_timespans.extend(timespans)
         multiplexed_timespans.sort()
@@ -2197,7 +2197,7 @@ class SegmentMaker(abctools.AbjadObject):
         if timespan_quantization is None:
             timespan_quantization = durationtools.Duration(1, 16)
         if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanInventory()
+            timespan_inventory = timespantools.TimespanList()
         independent_settings = [
             setting for setting in settings
             if not setting.timespan_maker.is_dependent
@@ -2262,9 +2262,9 @@ class SegmentMaker(abctools.AbjadObject):
         for voice_name in voice_names:
             if voice_name not in demultiplexed_maquette:
                 demultiplexed_maquette[voice_name] = \
-                    timespantools.TimespanInventory()
+                    timespantools.TimespanList()
             timespans = demultiplexed_maquette[voice_name]
-            silences = timespantools.TimespanInventory([
+            silences = timespantools.TimespanList([
                 consort.SilentTimespan(
                     start_offset=0,
                     stop_offset=meter_offsets[-1],
@@ -2367,7 +2367,7 @@ class SegmentMaker(abctools.AbjadObject):
                     continue
                 resolved_inventory.append(timespan)
             resolved_inventory.sort()
-        resolved_inventory = timespantools.TimespanInventory(
+        resolved_inventory = timespantools.TimespanList(
             resolved_inventory[:],
             )
         return resolved_inventory
@@ -2552,7 +2552,7 @@ class SegmentMaker(abctools.AbjadObject):
     def split_timespans(offsets, timespan_inventory):
         offsets = list(offsets)
         timespan_inventory.sort()
-        split_inventory = timespantools.TimespanInventory()
+        split_inventory = timespantools.TimespanList()
         for timespan in sorted(timespan_inventory):
             current_offsets = []
             while offsets and offsets[0] <= timespan.start_offset:
@@ -2591,7 +2591,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> inventory_one = timespantools.TimespanInventory([
+            >>> inventory_one = timespantools.TimespanList([
             ...     timespantools.Timespan(0, 10),
             ...     timespantools.Timespan(10, 20),
             ...     timespantools.Timespan(40, 80),
@@ -2599,7 +2599,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> inventory_two = timespantools.TimespanInventory([
+            >>> inventory_two = timespantools.TimespanList([
             ...     timespantools.Timespan(5, 15),
             ...     timespantools.Timespan(25, 35),
             ...     timespantools.Timespan(35, 45),
@@ -2616,7 +2616,7 @@ class SegmentMaker(abctools.AbjadObject):
             ...      inventory_two,
             ...      )
             >>> print(format(result))
-            timespantools.TimespanInventory(
+            timespantools.TimespanList(
                 [
                     timespantools.Timespan(
                         start_offset=durationtools.Offset(0, 1),
@@ -2644,7 +2644,7 @@ class SegmentMaker(abctools.AbjadObject):
             ...      inventory_one,
             ...      )
             >>> print(format(result))
-            timespantools.TimespanInventory(
+            timespantools.TimespanList(
                 [
                     timespantools.Timespan(
                         start_offset=durationtools.Offset(25, 1),
@@ -2665,9 +2665,9 @@ class SegmentMaker(abctools.AbjadObject):
         import consort
         resulting_timespans = consort.TimespanCollection()
         if not inventory_two:
-            return timespantools.TimespanInventory(inventory_one)
+            return timespantools.TimespanList(inventory_one)
         elif not inventory_one:
-            return timespantools.TimespanInventory()
+            return timespantools.TimespanList()
         subtractee_index = 0
         subtractor_index = 0
         subtractee = None
@@ -2707,7 +2707,7 @@ class SegmentMaker(abctools.AbjadObject):
             resulting_timespans.insert(inventory_one[subtractee_index + 1:])
         else:
             resulting_timespans.insert(inventory_one[subtractee_index:])
-        resulting_timespans = timespantools.TimespanInventory(
+        resulting_timespans = timespantools.TimespanList(
             resulting_timespans[:])
         return resulting_timespans
 
@@ -2900,7 +2900,7 @@ class SegmentMaker(abctools.AbjadObject):
             >>> segment_maker.permitted_time_signatures = time_signatures
             >>> print(format(segment_maker))
             consort.tools.SegmentMaker(
-                permitted_time_signatures=indicatortools.TimeSignatureInventory(
+                permitted_time_signatures=indicatortools.TimeSignatureList(
                     [
                         indicatortools.TimeSignature((3, 4)),
                         indicatortools.TimeSignature((2, 4)),
@@ -2915,7 +2915,7 @@ class SegmentMaker(abctools.AbjadObject):
     @permitted_time_signatures.setter
     def permitted_time_signatures(self, permitted_time_signatures):
         if permitted_time_signatures is not None:
-            permitted_time_signatures = indicatortools.TimeSignatureInventory(
+            permitted_time_signatures = indicatortools.TimeSignatureList(
                 items=permitted_time_signatures,
                 )
         self._permitted_time_signatures = permitted_time_signatures

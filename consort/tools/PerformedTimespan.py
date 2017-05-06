@@ -149,7 +149,7 @@ class PerformedTimespan(timespantools.Timespan):
     def split_at_offset(self, offset):
         from abjad.tools import timespantools
         offset = durationtools.Offset(offset)
-        result = timespantools.TimespanInventory()
+        result = timespantools.TimespanList()
         if self._start_offset < offset < self._stop_offset:
             left_divisions, right_divisions = None, None
             if self.divisions is not None:

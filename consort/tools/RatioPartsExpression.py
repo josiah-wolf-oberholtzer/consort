@@ -91,7 +91,7 @@ class RatioPartsExpression(abctools.AbjadObject):
     def __call__(self, timespan):
         assert isinstance(timespan, timespantools.Timespan)
         divided_timespan = timespan.divide_by_ratio(self.ratio)
-        timespans = timespantools.TimespanInventory()
+        timespans = timespantools.TimespanList()
         for part in self.parts:
             timespans.append(divided_timespan[part])
         if self.mask_timespan is not None:

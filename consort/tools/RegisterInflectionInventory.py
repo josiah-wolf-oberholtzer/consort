@@ -2,7 +2,7 @@
 from abjad.tools import datastructuretools
 
 
-class RegisterInflectionInventory(datastructuretools.TypedList):
+class RegisterInflectionList(datastructuretools.TypedList):
 
     ### CLASS VARIABLES ###
 

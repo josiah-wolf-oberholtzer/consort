@@ -79,7 +79,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         voice_name=None,
         ):
         import consort
-        timespans = timespantools.TimespanInventory()
+        timespans = timespantools.TimespanList()
         timespan_specifier = timespan_specifier or \
             consort.TimespanSpecifier()
         seed = seed or 0
@@ -121,7 +121,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
                 seed += 1
 
         if padding:
-            silent_timespans = timespantools.TimespanInventory()
+            silent_timespans = timespantools.TimespanList()
             for shard in timespans.partition(True):
                 silent_timespan_one = consort.SilentTimespan(
                     layer=layer,

@@ -45,7 +45,7 @@ class CascadingTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -102,7 +102,7 @@ class CascadingTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -259,7 +259,7 @@ class CascadingTimespanMaker(TimespanMaker):
                 next(playing_groupings)
                 next(silence_talea)
         context_seeds = collections.Counter()
-        timespan_inventory = timespantools.TimespanInventory()
+        timespan_inventory = timespantools.TimespanList()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         can_continue = True
@@ -296,7 +296,7 @@ class CascadingTimespanMaker(TimespanMaker):
                     new_timespans[:] = []
                 if context_name not in new_timespan_mapping:
                     new_timespan_mapping[context_name] = \
-                        timespantools.TimespanInventory()
+                        timespantools.TimespanList()
                 new_timespan_mapping[context_name].extend(new_timespans)
                 context_index += cascade_step
                 context_seeds[context_name] += 1

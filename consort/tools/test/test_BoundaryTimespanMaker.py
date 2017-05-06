@@ -6,7 +6,7 @@ import collections
 
 
 def _make_timespan_inventory():
-    timespan_inventory = timespantools.TimespanInventory([
+    timespan_inventory = timespantools.TimespanList([
         consort.PerformedTimespan(
             start_offset=0,
             stop_offset=20,
@@ -50,7 +50,7 @@ def test_BoundarTimespanMaker_01():
     timespan_inventory = _make_timespan_inventory()
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -111,7 +111,7 @@ def test_BoundaryTimespanMaker_02():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -193,7 +193,7 @@ def test_BoundaryTimespanMaker_03():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -274,7 +274,7 @@ def test_BoundaryTimespanMaker_04():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -347,7 +347,7 @@ def test_BoundaryTimespanMaker_05():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),

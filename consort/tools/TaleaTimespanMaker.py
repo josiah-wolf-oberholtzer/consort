@@ -53,7 +53,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -89,7 +89,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -127,7 +127,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -304,7 +304,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         import consort
         counter = collections.Counter()
-        timespan_inventory = timespantools.TimespanInventory()
+        timespan_inventory = timespantools.TimespanList()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         can_continue = True
@@ -394,7 +394,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         import consort
         counter = collections.Counter()
-        timespan_inventory = timespantools.TimespanInventory()
+        timespan_inventory = timespantools.TimespanList()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         final_offset = durationtools.Offset(0)

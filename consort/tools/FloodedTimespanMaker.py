@@ -25,7 +25,7 @@ class FloodedTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
@@ -62,7 +62,7 @@ class FloodedTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 2),
@@ -113,7 +113,7 @@ class FloodedTimespanMaker(TimespanMaker):
         ):
         start_offset = target_timespan.start_offset
         durations = [target_timespan.duration]
-        new_timespans = timespantools.TimespanInventory()
+        new_timespans = timespantools.TimespanList()
         for context_name, music_specifier in music_specifiers.items():
             timespans = music_specifier(
                 durations=durations,

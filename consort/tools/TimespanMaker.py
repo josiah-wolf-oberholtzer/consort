@@ -39,7 +39,7 @@ class TimespanMaker(abctools.AbjadValueObject):
         if division_masks is not None:
             if isinstance(division_masks, patterntools.Pattern):
                 division_masks = (division_masks,)
-            division_masks = patterntools.PatternInventory(
+            division_masks = patterntools.PatternList(
                 items=division_masks,
                 )
         self._output_masks = division_masks
@@ -64,8 +64,8 @@ class TimespanMaker(abctools.AbjadValueObject):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        if not isinstance(timespan_inventory, timespantools.TimespanInventory):
-            timespan_inventory = timespantools.TimespanInventory(
+        if not isinstance(timespan_inventory, timespantools.TimespanList):
+            timespan_inventory = timespantools.TimespanList(
                 timespan_inventory,
                 )
         if target_timespan is None:
@@ -73,7 +73,7 @@ class TimespanMaker(abctools.AbjadValueObject):
                 target_timespan = timespan_inventory.timespan
             else:
                 raise TypeError
-        assert isinstance(timespan_inventory, timespantools.TimespanInventory)
+        assert isinstance(timespan_inventory, timespantools.TimespanList)
         if not music_specifiers:
             return timespan_inventory
         music_specifiers = self._coerce_music_specifiers(music_specifiers)
@@ -172,23 +172,23 @@ class TimespanMaker(abctools.AbjadValueObject):
         for context_name in silenced_context_names:
             if context_name not in silent_timespans_by_context:
                 silent_timespans_by_context[context_name] = \
-                    timespantools.TimespanInventory()
+                    timespantools.TimespanList()
 
         sounding_timespans_by_context = {}
-        sounding_timespans = timespantools.TimespanInventory()
+        sounding_timespans = timespantools.TimespanList()
 
         for timespan in timespans:
             voice_name = timespan.voice_name
             if isinstance(timespan, consort.PerformedTimespan):
                 if voice_name not in sounding_timespans_by_context:
                     sounding_timespans_by_context[voice_name] = \
-                        timespantools.TimespanInventory()
+                        timespantools.TimespanList()
                 sounding_timespans_by_context[voice_name].append(timespan)
                 sounding_timespans.append(timespan)
             else:
                 if voice_name not in silent_timespans_by_context:
                     silent_timespans_by_context[voice_name] = \
-                        timespantools.TimespanInventory()
+                        timespantools.TimespanList()
                 silent_timespans_by_context[voice_name].append(timespan)
 
         sounding_timespans.sort()

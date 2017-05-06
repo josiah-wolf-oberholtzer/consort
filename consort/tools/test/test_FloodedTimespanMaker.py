@@ -20,7 +20,7 @@ def test_FloodedTimespanMaker_01():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -45,7 +45,7 @@ def test_FloodedTimespanMaker_02():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 1),

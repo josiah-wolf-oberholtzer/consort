@@ -70,7 +70,7 @@ class MusicSetting(abctools.AbjadValueObject):
     ::
 
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
@@ -161,7 +161,7 @@ class MusicSetting(abctools.AbjadValueObject):
         ...     segment_timespan=segment_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 1),
@@ -315,7 +315,7 @@ class MusicSetting(abctools.AbjadValueObject):
         if timespan_identifier is not None:
             prototype = (
                 timespantools.Timespan,
-                timespantools.TimespanInventory,
+                timespantools.TimespanList,
                 consort.RatioPartsExpression,
                 )
             if not isinstance(timespan_identifier, prototype):
@@ -346,7 +346,7 @@ class MusicSetting(abctools.AbjadValueObject):
         if score is None:
             score = score_template()
         if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanInventory()
+            timespan_inventory = timespantools.TimespanList()
         if not self.music_specifiers:
             return timespan_inventory
         music_specifiers = self.resolve_music_specifiers(
@@ -483,7 +483,7 @@ class MusicSetting(abctools.AbjadValueObject):
         assert isinstance(segment_timespan, timespantools.Timespan)
         timespan_identifier = self.timespan_identifier
         if timespan_identifier is None:
-            target_timespans = timespantools.TimespanInventory([
+            target_timespans = timespantools.TimespanList([
                 segment_timespan,
                 ])
         elif isinstance(self.timespan_identifier, timespantools.Timespan):
@@ -499,7 +499,7 @@ class MusicSetting(abctools.AbjadValueObject):
                 mask_timespans = timespan_identifier(segment_timespan)
             else:
                 mask_timespans = timespan_identifier
-            target_timespans = timespantools.TimespanInventory()
+            target_timespans = timespantools.TimespanList()
             for mask_timespan in mask_timespans:
                 available_timespans = segment_timespan & mask_timespan
                 target_timespans.extend(available_timespans)

@@ -22,7 +22,7 @@ def test_TaleaTimespanMaker_01():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -63,7 +63,7 @@ def test_TaleaTimespanMaker_02():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 8),
@@ -101,7 +101,7 @@ def test_TaleaTimespanMaker_03():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -142,7 +142,7 @@ def test_TaleaTimespanMaker_04():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -189,7 +189,7 @@ def test_TaleaTimespanMaker_05():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -234,7 +234,7 @@ def test_TaleaTimespanMaker_06():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -284,7 +284,7 @@ def test_TaleaTimespanMaker_07():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(2, 1),
@@ -331,7 +331,7 @@ def test_TaleaTimespanMaker_08():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -376,7 +376,7 @@ def test_TaleaTimespanMaker_09():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -418,7 +418,7 @@ def test_TaleaTimespanMaker_10():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 8),
@@ -504,7 +504,7 @@ def test_TaleaTimespanMaker_11():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 8),
@@ -576,7 +576,7 @@ def test_TaleaTimespanMaker_12():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 8),
@@ -659,7 +659,7 @@ def test_TaleaTimespanMaker_13():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 8),
@@ -742,7 +742,7 @@ def test_TaleaTimespanMaker_14():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 8),
@@ -833,7 +833,7 @@ def test_TaleaTimespanMaker_15():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(13, 4),

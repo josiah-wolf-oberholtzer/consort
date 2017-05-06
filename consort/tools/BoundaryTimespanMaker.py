@@ -40,7 +40,7 @@ class BoundaryTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_inventory = timespantools.TimespanInventory([
+        >>> timespan_inventory = timespantools.TimespanList([
         ...     consort.PerformedTimespan(
         ...         start_offset=0,
         ...         stop_offset=1,
@@ -68,7 +68,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         ...     timespan_inventory=timespan_inventory,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -215,7 +215,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         import consort
-        preexisting_timespans = timespantools.TimespanInventory()
+        preexisting_timespans = timespantools.TimespanList()
         for timespan in timespan_inventory:
             assert isinstance(timespan, (
                 consort.PerformedTimespan,
@@ -250,7 +250,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         ):
         import consort
 
-        new_timespans = timespantools.TimespanInventory()
+        new_timespans = timespantools.TimespanList()
         if not self.voice_names and not self.labels:
             return new_timespans
 
@@ -303,7 +303,7 @@ class BoundaryTimespanMaker(TimespanMaker):
             for context_name, music_specifier in music_specifiers.items():
                 if context_name not in new_timespan_mapping:
                     new_timespan_mapping[context_name] = \
-                        timespantools.TimespanInventory()
+                        timespantools.TimespanList()
                 context_seed = context_counter[context_name]
                 start_durations = []
                 for _ in range(next(start_groupings)):

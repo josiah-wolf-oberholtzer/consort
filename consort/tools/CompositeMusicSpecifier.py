@@ -44,7 +44,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     layer=1,
         ...     )
         >>> print(format(timespans))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -86,7 +86,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     seed=1,
         ...     )
         >>> print(format(timespans))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -129,7 +129,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     seed=2,
         ...     )
         >>> print(format(timespans))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 1),
@@ -288,7 +288,7 @@ class CompositeMusicSpecifier(HashCachingObject):
             voice_name=self.secondary_voice_name,
             )
         timespans = primary_timespans[:] + secondary_timespans[:]
-        timespans = timespantools.TimespanInventory(timespans)
+        timespans = timespantools.TimespanList(timespans)
         timespans.sort()
         return timespans
 

@@ -6,7 +6,7 @@ import collections
 
 
 def _make_timespan_inventory():
-    timespan_inventory = timespantools.TimespanInventory([
+    timespan_inventory = timespantools.TimespanList([
         consort.PerformedTimespan(
             start_offset=0,
             stop_offset=20,
@@ -50,7 +50,7 @@ def test_DependentTimespanMaker_01():
     timespan_inventory = _make_timespan_inventory()
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -105,11 +105,11 @@ def test_DependentTimespanMaker_02():
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
-        timespan_inventory=timespantools.TimespanInventory()
+        timespan_inventory=timespantools.TimespanList()
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             []
             )
         ''')
@@ -130,11 +130,11 @@ def test_DependentTimespanMaker_03():
     timespan_inventory = timespan_maker(
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
-        timespan_inventory=timespantools.TimespanInventory()
+        timespan_inventory=timespantools.TimespanList()
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             []
             )
         ''')
@@ -159,7 +159,7 @@ def test_DependentTimespanMaker_04():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -229,7 +229,7 @@ def test_DependentTimespanMaker_05():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -308,7 +308,7 @@ def test_DependentTimespanMaker_06():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -376,7 +376,7 @@ def test_DependentTimespanMaker_07():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -446,7 +446,7 @@ def test_DependentTimespanMaker_08():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -531,7 +531,7 @@ def test_DependentTimespanMaker_09():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -617,7 +617,7 @@ def test_DependentTimespanMaker_10():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -714,7 +714,7 @@ def test_DependentTimespanMaker_11():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -811,7 +811,7 @@ def test_DependentTimespanMaker_12():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -908,7 +908,7 @@ def test_DependentTimespanMaker_13():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -991,7 +991,7 @@ def test_DependentTimespanMaker_14():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -1074,7 +1074,7 @@ def test_DependentTimespanMaker_15():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -1152,7 +1152,7 @@ def test_DependentTimespanMaker_16():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -1212,7 +1212,7 @@ def test_DependentTimespanMaker_17():
     timespan_inventory.sort()
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -1273,7 +1273,7 @@ def test_DependentTimespanMaker_17():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),
@@ -1364,7 +1364,7 @@ def test_DependentTimespanMaker_18():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.SilentTimespan(
                     start_offset=durationtools.Offset(-1, 1),
@@ -1459,7 +1459,7 @@ def test_DependentTimespanMaker_19():
         hysteresis=10,
         voice_names=['A'],
         )
-    timespan_inventory = timespantools.TimespanInventory([
+    timespan_inventory = timespantools.TimespanList([
         consort.PerformedTimespan(0, 10, voice_name='A'),
         consort.PerformedTimespan(5, 15, voice_name='A'),
         consort.PerformedTimespan(20, 30, voice_name='A'),
@@ -1474,7 +1474,7 @@ def test_DependentTimespanMaker_19():
         )
     assert format(timespan_inventory) == systemtools.TestManager.clean_string(
         r'''
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(0, 1),

@@ -31,7 +31,7 @@ class DependentTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_inventory = timespantools.TimespanInventory([
+        >>> timespan_inventory = timespantools.TimespanList([
         ...     consort.tools.PerformedTimespan(
         ...         voice_name='Viola Voice',
         ...         start_offset=(1, 4),
@@ -57,7 +57,7 @@ class DependentTimespanMaker(TimespanMaker):
         ...     timespan_inventory=timespan_inventory,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanInventory(
+        timespantools.TimespanList(
             [
                 consort.tools.PerformedTimespan(
                     start_offset=durationtools.Offset(1, 4),
@@ -175,7 +175,7 @@ class DependentTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         import consort
-        preexisting_timespans = timespantools.TimespanInventory()
+        preexisting_timespans = timespantools.TimespanList()
         for timespan in timespan_inventory:
             if not isinstance(timespan, consort.PerformedTimespan):
                 continue
@@ -230,7 +230,7 @@ class DependentTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        new_timespans = timespantools.TimespanInventory()
+        new_timespans = timespantools.TimespanList()
         if not self.voice_names and not self.labels:
             return new_timespans
         rotation_indices = self.rotation_indices or (0,)
