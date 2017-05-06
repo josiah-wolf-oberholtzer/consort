@@ -32,5 +32,4 @@ class PhrasedSelectorCallback(abctools.AbjadValueObject):
                 subresult.append(leaves[1])
             subresult = selectiontools.Selection(subresult)
             result.append(subresult)
-        result = tuple(result)
-        return result, start_offset
+        return tuple(result)

@@ -26,4 +26,4 @@ class AfterGraceSelectorCallback(abctools.AbjadValueObject):
             if subresult:
                 subresult = selectiontools.Selection(subresult)
                 result.append(subresult)
-        return tuple(result), start_offset
+        return tuple(result)
