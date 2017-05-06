@@ -97,9 +97,9 @@ class RegisterInflection(abctools.AbjadValueObject):
             return self.inflections[0]
         elif position == 1:
             return self.inflections[-1]
-        ratio_sum = sum(self.ratio)
+        ratio_sum = sum(list(self.ratio))
         positions = [durationtools.Offset(x) / ratio_sum
-            for x in mathtools.cumulative_sums(self.ratio)]
+            for x in mathtools.cumulative_sums(list(self.ratio))]
         index = bisect.bisect(positions, position)
         position = float(position)
         x0 = float(positions[index - 1])
