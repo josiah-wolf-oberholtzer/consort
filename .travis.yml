@@ -1,19 +1,23 @@
 language: python
 
-python:
-    - 2.7
-    - 3.4
-
 sudo: false
 
+env:
+    global:
+        - LILYPOND_VERSION=2.19.44
+
+python:
+    - 3.5
+
 before_install:
-    - wget -q http://download.linuxaudio.org/lilypond/binaries/linux-64/lilypond-2.19.44-1.linux-64.sh
-    - sh lilypond-2.19.44-1.linux-64.sh --batch
+
+    - echo TRAVIS_PYTHON_VERSION $TRAVIS_PYTHON_VERSION
+    - wget -q http://download.linuxaudio.org/lilypond/binaries/linux-64/lilypond-$LILYPOND_VERSION-1.linux-64.sh
+    - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
     - export PATH=/home/travis/bin:$PATH
-    - git clone https://github.com/Abjad/abjad.git && cd abjad && git checkout josiah/dev && pip install -e .[development,ipython] && cd ..
+    - pip install -U pip
     - pip install coveralls
     - pip install coverage
-    - ls . && pwd
 
 install:
     - pip install -e . 
