@@ -3,7 +3,7 @@ from distutils.core import setup
 
 
 install_requires = [
-    'abjad==2.20[accelerated,development]',
+    'abjad[accelerated,development]==2.20',
     ]
 
 
