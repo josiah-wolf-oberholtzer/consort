@@ -270,18 +270,6 @@ class ChordExpression(LogicalTieExpression):
         chord_expr = self.chord_expr or ()
         new_chord_expr = chord_expr
         if pitch_range is not None:
-#            if base_pitch not in pitch_range:
-#                print('Voice:', consort.SegmentMaker.logical_tie_to_voice(
-#                    logical_tie).name)
-#                print('Pitch range:', pitch_range)
-#                print('Base pitch:', base_pitch)
-#                print('Chord expression:', chord_expr)
-#                print('MusicSpec:')
-#                print(format(
-#                    consort.SegmentMaker.logical_tie_to_music_specifier(
-#                        logical_tie)))
-#                raise Exception
-#
             sorted_intervals = sorted(chord_expr, key=lambda x: x.semitones)
             maximum = sorted_intervals[-1]
             maximum_pitch = base_pitch.transpose(maximum)
@@ -295,6 +283,11 @@ class ChordExpression(LogicalTieExpression):
         pitches = [base_pitch.transpose(x) for x in new_chord_expr]
         pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]
         if pitch_range is not None:
+            # Not exhaustive, but good enough.
+            while min(pitches) < pitch_range.start_pitch:
+                pitches = [_.transpose(12) for _ in pitches]
+            while max(pitches) > pitch_range.stop_pitch:
+                pitches = [_.transpose(-12) for _ in pitches]
             if not all(pitch in pitch_range for pitch in pitches):
                 print('Voice:', consort.SegmentMaker.logical_tie_to_voice(
                     logical_tie).name)
@@ -302,10 +295,6 @@ class ChordExpression(LogicalTieExpression):
                 print('Base pitch:', base_pitch)
                 print('Chord expression:', chord_expr)
                 print('Resulting pitches:', pitches)
-                print('MusicSpec:')
-                print(format(
-                    consort.SegmentMaker.logical_tie_to_music_specifier(
-                        logical_tie)))
                 raise Exception
 
         pitch_set = self._respell_pitch_set(pitchtools.PitchSet(pitches))
