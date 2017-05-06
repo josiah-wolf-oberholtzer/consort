@@ -506,12 +506,12 @@ class PitchHandler(HashCachingObject):
             ...     )
             >>> operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
-            ...         pitchtools.PitchOperation((
+            ...         pitchtools.CompoundOperator((
             ...             pitchtools.Rotation(1),
             ...             pitchtools.Transposition(1),
             ...             )),
             ...         None,
-            ...         pitchtools.PitchOperation((
+            ...         pitchtools.CompoundOperator((
             ...             pitchtools.Rotation(-1),
             ...             pitchtools.Transposition(-1),
             ...             ))

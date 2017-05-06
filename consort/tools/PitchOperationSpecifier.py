@@ -17,12 +17,12 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> import consort
             >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
-            ...         pitchtools.PitchOperation((
+            ...         pitchtools.CompoundOperator((
             ...             pitchtools.Rotation(1),
             ...             pitchtools.Transposition(1),
             ...             )),
             ...         None,
-            ...         pitchtools.PitchOperation((
+            ...         pitchtools.CompoundOperator((
             ...             pitchtools.Rotation(-1),
             ...             pitchtools.Transposition(-1),
             ...             ))
@@ -32,7 +32,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> print(format(pitch_operation_specifier))
             consort.tools.PitchOperationSpecifier(
                 pitch_operations=(
-                    pitchtools.PitchOperation(
+                    pitchtools.CompoundOperator(
                         operators=(
                             pitchtools.Rotation(
                                 index=1,
@@ -44,7 +44,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                             ),
                         ),
                     None,
-                    pitchtools.PitchOperation(
+                    pitchtools.CompoundOperator(
                         operators=(
                             pitchtools.Rotation(
                                 index=-1,
@@ -81,13 +81,13 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             if not isinstance(pitch_operations, collections.Sequence):
                 pitch_operations = (pitch_operations,)
             prototype = (
-                pitchtools.PitchOperation,
+                pitchtools.CompoundOperator,
                 type(None),
                 )
             coerced_pitch_operations = []
             for x in pitch_operations:
                 if not isinstance(x, prototype):
-                    x = pitchtools.PitchOperation(x)
+                    x = pitchtools.CompoundOperator(x)
                 coerced_pitch_operations.append(x)
             pitch_operations = tuple(coerced_pitch_operations)
             assert len(pitch_operations)
@@ -122,7 +122,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(0, 1),
                             stop_offset=durationtools.Offset(5, 2),
-                            annotation=pitchtools.PitchOperation(
+                            annotation=pitchtools.CompoundOperator(
                                 operators=(
                                     pitchtools.Rotation(
                                         index=1,
@@ -141,7 +141,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(15, 2),
                             stop_offset=durationtools.Offset(10, 1),
-                            annotation=pitchtools.PitchOperation(
+                            annotation=pitchtools.CompoundOperator(
                                 operators=(
                                     pitchtools.Rotation(
                                         index=-1,
@@ -177,7 +177,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(0, 1),
                             stop_offset=durationtools.Offset(10, 7),
-                            annotation=pitchtools.PitchOperation(
+                            annotation=pitchtools.CompoundOperator(
                                 operators=(
                                     pitchtools.Rotation(
                                         index=1,
@@ -189,7 +189,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(10, 7),
                             stop_offset=durationtools.Offset(30, 7),
-                            annotation=pitchtools.PitchOperation(
+                            annotation=pitchtools.CompoundOperator(
                                 operators=(
                                     pitchtools.Rotation(
                                         index=1,
@@ -204,7 +204,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(30, 7),
                             stop_offset=durationtools.Offset(60, 7),
-                            annotation=pitchtools.PitchOperation(
+                            annotation=pitchtools.CompoundOperator(
                                 operators=(
                                     pitchtools.Rotation(
                                         index=1,
@@ -220,7 +220,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                         timespantools.AnnotatedTimespan(
                             start_offset=durationtools.Offset(60, 7),
                             stop_offset=durationtools.Offset(10, 1),
-                            annotation=pitchtools.PitchOperation(
+                            annotation=pitchtools.CompoundOperator(
                                 operators=(
                                     pitchtools.Rotation(
                                         index=1,
@@ -252,12 +252,12 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                 stop_offset=stop_offset,
                 )
             divided_timespans = target_timespan.divide_by_ratio(self.ratio)
-            pitch_operation = pitchtools.PitchOperation()
+            pitch_operation = pitchtools.CompoundOperator()
             for i, timespan in enumerate(divided_timespans):
                 current_pitch_operation = self._pitch_operations[i]
                 if self.is_cumulative:
                     if current_pitch_operation:
-                        pitch_operation = pitchtools.PitchOperation(
+                        pitch_operation = pitchtools.CompoundOperator(
                             (pitch_operation.operators or ()) +
                             current_pitch_operation.operators
                             )
@@ -278,12 +278,12 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
 
             >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
-            ...         pitchtools.PitchOperation((
+            ...         pitchtools.CompoundOperator((
             ...             pitchtools.Rotation(1),
             ...             pitchtools.Transposition(1),
             ...             )),
             ...         None,
-            ...         pitchtools.PitchOperation((
+            ...         pitchtools.CompoundOperator((
             ...             pitchtools.Rotation(-1),
             ...             pitchtools.Transposition(-1),
             ...             ))
@@ -294,7 +294,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> print(format(rotated_specifier))
             consort.tools.PitchOperationSpecifier(
                 pitch_operations=(
-                    pitchtools.PitchOperation(
+                    pitchtools.CompoundOperator(
                         operators=(
                             pitchtools.Rotation(
                                 index=-1,
@@ -305,7 +305,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                                 ),
                             ),
                         ),
-                    pitchtools.PitchOperation(
+                    pitchtools.CompoundOperator(
                         operators=(
                             pitchtools.Rotation(
                                 index=1,
