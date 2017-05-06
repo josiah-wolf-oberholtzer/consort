@@ -502,9 +502,9 @@ class SegmentMaker(abctools.AbjadObject):
         includes = []
         if self.score_package_name != 'consort':
             comments.extend([
-                lilypondfiletools.PackageGitCommitToken('abjad'),
-                lilypondfiletools.PackageGitCommitToken('consort'),
-                lilypondfiletools.PackageGitCommitToken(self.score_package_name),
+                consort.PackageGitCommitToken('abjad'),
+                consort.PackageGitCommitToken('consort'),
+                consort.PackageGitCommitToken(self.score_package_name),
                 ])
         if not self.omit_stylesheets:
             path = os.path.join(
