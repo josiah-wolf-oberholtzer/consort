@@ -19,13 +19,13 @@ class CascadingTimespanMaker(TimespanMaker):
         consort.tools.CascadingTimespanMaker(
             cascade_pattern=(1,),
             playing_talea=rhythmmakertools.Talea(
-                counts=(4,),
+                counts=[4],
                 denominator=16,
                 ),
             playing_groupings=(1,),
             repeat=True,
             silence_talea=rhythmmakertools.Talea(
-                counts=(4,),
+                counts=[4],
                 denominator=16,
                 ),
             )

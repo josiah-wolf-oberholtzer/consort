@@ -29,20 +29,20 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
         >>> print(format(composite_rhythm_maker))
         consort.tools.CompositeRhythmMaker(
             default=rhythmmakertools.EvenDivisionRhythmMaker(
-                denominators=(8,),
+                denominators=[8],
                 preferred_denominator='from_counts',
                 ),
             first=rhythmmakertools.NoteRhythmMaker(),
             last=rhythmmakertools.IncisedRhythmMaker(
                 incise_specifier=rhythmmakertools.InciseSpecifier(
-                    prefix_counts=(0,),
-                    suffix_talea=(1,),
-                    suffix_counts=(1,),
+                    prefix_counts=[0],
+                    suffix_talea=[1],
+                    suffix_counts=[1],
                     talea_denominator=16,
                     ),
                 ),
             only=rhythmmakertools.EvenDivisionRhythmMaker(
-                denominators=(32,),
+                denominators=[32],
                 preferred_denominator='from_counts',
                 ),
             )

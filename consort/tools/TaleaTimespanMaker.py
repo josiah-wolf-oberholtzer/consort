@@ -22,7 +22,7 @@ class TaleaTimespanMaker(TimespanMaker):
         >>> print(format(timespan_maker))
         consort.tools.TaleaTimespanMaker(
             initial_silence_talea=rhythmmakertools.Talea(
-                counts=(0, 4),
+                counts=[0, 4],
                 denominator=16,
                 ),
             playing_talea=rhythmmakertools.Talea(
@@ -32,7 +32,7 @@ class TaleaTimespanMaker(TimespanMaker):
             playing_groupings=(1,),
             repeat=True,
             silence_talea=rhythmmakertools.Talea(
-                counts=(4,),
+                counts=[4],
                 denominator=16,
                 ),
             step_anchor=Right,

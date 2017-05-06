@@ -26,11 +26,11 @@ class BoundaryTimespanMaker(TimespanMaker):
         >>> print(format(timespan_maker))
         consort.tools.BoundaryTimespanMaker(
             start_talea=rhythmmakertools.Talea(
-                counts=(1,),
+                counts=[1],
                 denominator=2,
                 ),
             stop_talea=rhythmmakertools.Talea(
-                counts=(1,),
+                counts=[1],
                 denominator=4,
                 ),
             start_anchor=Left,
