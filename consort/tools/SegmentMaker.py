@@ -503,7 +503,6 @@ class SegmentMaker(abctools.AbjadObject):
         if self.score_package_name != 'consort':
             comments.extend([
                 lilypondfiletools.PackageGitCommitToken('abjad'),
-                lilypondfiletools.PackageGitCommitToken('ide'),
                 lilypondfiletools.PackageGitCommitToken('consort'),
                 lilypondfiletools.PackageGitCommitToken(self.score_package_name),
                 ])
