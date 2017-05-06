@@ -10,7 +10,6 @@ python:
     - 3.5
 
 before_install:
-
     - echo TRAVIS_PYTHON_VERSION $TRAVIS_PYTHON_VERSION
     - wget -q http://download.linuxaudio.org/lilypond/binaries/linux-64/lilypond-$LILYPOND_VERSION-1.linux-64.sh
     - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch

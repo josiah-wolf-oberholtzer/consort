@@ -12,6 +12,7 @@ from abjad import mutate
 from abjad import override
 from abjad import new
 from abjad import set_
+from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
@@ -25,10 +26,9 @@ from abjad.tools import selectiontools
 from abjad.tools import spannertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
-from experimental.tools import makertools
 
 
-class SegmentMaker(makertools.SegmentMaker):
+class SegmentMaker(abctools.AbjadObject):
     r'''A Consort segment-maker.
 
     ::
@@ -213,9 +213,6 @@ class SegmentMaker(makertools.SegmentMaker):
         tempo=None,
         timespan_quantization=None,
         ):
-        makertools.SegmentMaker.__init__(
-            self,
-            )
         self.name = name
         self.annotate_colors = annotate_colors
         self.annotate_phrasing = annotate_phrasing
@@ -321,6 +318,14 @@ class SegmentMaker(makertools.SegmentMaker):
         self.update_segment_metadata()
 
         return self.lilypond_file, self._segment_metadata
+
+    def __illustrate__(self, **kwargs):
+        r'''Illustrates segment-maker.
+
+        Returns LilyPond file.
+        '''
+        lilypond_file, metadata = self(**kwargs)
+        return lilypond_file
 
     ### PRIVATE METHODS ###
 
