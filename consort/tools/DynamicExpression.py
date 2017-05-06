@@ -554,8 +554,8 @@ class DynamicExpression(abctools.AbjadValueObject):
         selections = [
             select(list(iterate(_).by_leaf())) for _ in music
             ]
-        parts = sequencetools.partition_sequence_by_counts(
-            selections, [period], cyclic=True, overhang=True)
+        parts = sequencetools.Sequence(selections).partition_by_counts(
+            [period], cyclic=True, overhang=True)
         if len(parts[-1]) < period and 1 < len(parts):
             part = parts.pop()
             parts[-1].extend(part)

@@ -4,7 +4,6 @@ from abjad import inspect_
 from abjad.tools import datastructuretools
 from abjad.tools import durationtools
 from abjad.tools import mathtools
-from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
@@ -230,6 +229,7 @@ class DependentTimespanMaker(TimespanMaker):
         target_timespan=None,
         timespan_inventory=None,
         ):
+        import consort
         new_timespans = timespantools.TimespanList()
         if not self.voice_names and not self.labels:
             return new_timespans
@@ -254,8 +254,7 @@ class DependentTimespanMaker(TimespanMaker):
                     offsets.add(timespan.stop_offset)
             offsets = tuple(sorted(offsets))
             durations = mathtools.difference_series(offsets)
-            durations = sequencetools.rotate_sequence(
-                durations, rotation_index)
+            durations = consort.rotate(durations, rotation_index)
             start_offset = offsets[0]
             for context_name, music_specifier in music_specifiers.items():
                 context_seed = context_counter[context_name]

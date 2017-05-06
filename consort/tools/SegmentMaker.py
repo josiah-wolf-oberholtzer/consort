@@ -963,7 +963,7 @@ class SegmentMaker(abctools.AbjadObject):
             nontrivial=True, pitched=True, reverse=True):
             if len(logical_tie) != 2:
                 continue
-            if not logical_tie.all_leaves_are_in_same_parent:
+            if not logical_tie._all_leaves_are_in_same_parent:
                 continue
             if logical_tie.written_duration == \
                 durationtools.Duration(1, 8):

@@ -3,7 +3,6 @@ from abjad import new
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
-from abjad.tools import sequencetools
 from abjad.tools import timespantools
 
 
@@ -259,14 +258,14 @@ class PitchSpecifier(abctools.AbjadValueObject):
 
         Returns new pitch specifier.
         '''
+        import consort
         rotation = int(rotation)
         pitch_segments = tuple(
             _.rotate(rotation, transpose=True)
             for _ in self.pitch_segments
             )
-        pitch_segments = sequencetools.rotate_sequence(
-            pitch_segments, rotation)
-        ratio = sequencetools.rotate_sequence(self.ratio, rotation)
+        pitch_segments = consort.rotate(pitch_segments, rotation)
+        ratio = consort.rotate(self.ratio, rotation)
         return new(
             self,
             pitch_segments=pitch_segments,

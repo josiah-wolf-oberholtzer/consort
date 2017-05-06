@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import collections
 from abjad.tools import datastructuretools
-from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -253,6 +252,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         timespan_specifier=None,
         voice_name=None,
         ):
+        import consort
         seed = seed or 0
         rotation_indices = self.rotation_indices or (0,)
         rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
@@ -261,7 +261,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         if self.discard_inner_offsets:
             secondary_durations = [sum(primary_durations)]
         else:
-            secondary_durations = sequencetools.rotate_sequence(
+            secondary_durations = consort.rotate(
                 primary_durations,
                 rotation_indices[seed],
                 )

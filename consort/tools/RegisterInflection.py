@@ -5,7 +5,6 @@ from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import mathtools
 from abjad.tools import pitchtools
-from abjad.tools import sequencetools
 
 
 class RegisterInflection(abctools.AbjadValueObject):
@@ -277,9 +276,11 @@ class RegisterInflection(abctools.AbjadValueObject):
 
         Emits new register inflection.
         '''
-        return new(self,
-            inflections=sequencetools.rotate_sequence(self.inflections, n),
-            ratio=sequencetools.rotate_sequence(self.ratio, n),
+        import consort
+        return new(
+            self,
+            inflections=consort.rotate(self.inflections, n),
+            ratio=consort.rotate(self.ratio, n),
             )
 
     @staticmethod
