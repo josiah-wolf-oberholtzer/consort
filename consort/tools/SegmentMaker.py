@@ -1502,7 +1502,7 @@ class SegmentMaker(abctools.AbjadObject):
         offset_counter[desired_duration] = maximum * 2
         maximum_meter_run_length = self.maximum_meter_run_length
         meters = metertools.Meter.fit_meters_to_expr(
-            expr=offset_counter,
+            argument=offset_counter,
             meters=permitted_time_signatures,
             maximum_run_length=maximum_meter_run_length,
             )

@@ -11,7 +11,6 @@ from abjad.tools import durationtools
 from abjad.tools import instrumenttools
 from abjad.tools import indicatortools
 from abjad.tools import pitchtools
-from abjad.tools import sequencetools
 from abjad.tools import timespantools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -597,8 +596,7 @@ class PitchHandler(HashCachingObject):
         offsets.update(pitch_timespans.all_offsets)
         offsets.update(operation_timespans.all_offsets)
         offsets = tuple(sorted(offsets))
-        for start_offset, stop_offset in sequencetools.iterate_sequence_nwise(
-            offsets):
+        for start_offset, stop_offset in consort.iterate_nwise(offsets):
             timespan = timespantools.Timespan(
                 start_offset=start_offset,
                 stop_offset=stop_offset,

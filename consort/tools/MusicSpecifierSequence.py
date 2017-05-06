@@ -4,7 +4,6 @@ from abjad import new
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import rhythmmakertools
-from abjad.tools import sequencetools
 from abjad.tools import timespantools
 
 
@@ -91,7 +90,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         offset_pair_count = len(offsets) - 1
         if offset_pair_count == 1:
             offset_pair_count = 2  # make patterns happy
-        iterator = sequencetools.iterate_sequence_nwise(offsets)
+        iterator = consort.iterate_nwise(offsets)
         for i, offset_pair in enumerate(iterator):
             start_offset, stop_offset = offset_pair
             music_specifier = self[seed % len(self)]

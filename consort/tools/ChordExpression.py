@@ -6,7 +6,6 @@ from abjad.tools import indicatortools
 from abjad.tools import pitchtools
 from abjad.tools import scoretools
 from abjad.tools import selectiontools
-from abjad.tools import sequencetools
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 
@@ -122,6 +121,7 @@ class ChordExpression(LogicalTieExpression):
 
     @staticmethod
     def _score_pitch_set(pitch_set):
+        import consort
         buckets = {}
         for pitch in pitch_set:
             if pitch.diatonic_pitch_number not in buckets:
@@ -130,8 +130,7 @@ class ChordExpression(LogicalTieExpression):
         penalty = 0
         for diatonic_pitch_number, bucket in sorted(buckets.items()):
             penalty = penalty + (len(bucket) - 1)
-        for one, two in sequencetools.iterate_sequence_nwise(
-            sorted(buckets.items())):
+        for one, two in consort.iterate_nwise(sorted(buckets.items())):
             number_1, bucket_1 = one
             number_2, bucket_2 = two
             if abs(number_1 - number_2) != 1:
