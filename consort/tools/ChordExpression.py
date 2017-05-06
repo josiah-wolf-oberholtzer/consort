@@ -270,18 +270,18 @@ class ChordExpression(LogicalTieExpression):
         chord_expr = self.chord_expr or ()
         new_chord_expr = chord_expr
         if pitch_range is not None:
-            if base_pitch not in pitch_range:
-                print('Voice:', consort.SegmentMaker.logical_tie_to_voice(
-                    logical_tie).name)
-                print('Pitch range:', pitch_range)
-                print('Base pitch:', base_pitch)
-                print('Chord expression:', chord_expr)
-                print('MusicSpec:')
-                print(format(
-                    consort.SegmentMaker.logical_tie_to_music_specifier(
-                        logical_tie)))
-                raise Exception
-
+#            if base_pitch not in pitch_range:
+#                print('Voice:', consort.SegmentMaker.logical_tie_to_voice(
+#                    logical_tie).name)
+#                print('Pitch range:', pitch_range)
+#                print('Base pitch:', base_pitch)
+#                print('Chord expression:', chord_expr)
+#                print('MusicSpec:')
+#                print(format(
+#                    consort.SegmentMaker.logical_tie_to_music_specifier(
+#                        logical_tie)))
+#                raise Exception
+#
             sorted_intervals = sorted(chord_expr, key=lambda x: x.semitones)
             maximum = sorted_intervals[-1]
             maximum_pitch = base_pitch.transpose(maximum)
