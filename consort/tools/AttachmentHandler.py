@@ -57,9 +57,6 @@ class AttachmentHandler(abctools.AbjadValueObject):
         if not self.attachment_expressions:
             return
         items = self.attachment_expressions.items()
-
-        #print('\nnondestructive...')
-
         destructive_expressions = set()
         selectors = set()
         selectors_to_expressions = {}
@@ -75,26 +72,18 @@ class AttachmentHandler(abctools.AbjadValueObject):
             if selector not in selectors_to_expressions:
                 selectors_to_expressions[selector] = set()
             selectors_to_expressions[selector].add(item)
-        selectors_to_selections = selectortools.Selector.run_selectors(
-            music, selectors,
-            rotation=seed,
-            )
         if destructive_expressions:
             for name, attachment_expression in sorted(destructive_expressions):
-                attachment_expression(
-                    music,
-                    name=name,
-                    rotation=seed,
-                    )
+                attachment_expression(music, name=name, rotation=seed)
+        selectors_to_selections = selectortools.Selector.run_selectors(
+            music, selectors, rotation=seed,
+            )
         for selector in selectors:
             expressions = selectors_to_expressions[selector]
             selections = selectors_to_selections[selector]
             for name, attachment_expression in sorted(expressions):
                 attachment_expression._apply_attachments(
-                    selections,
-                    name=name,
-                    rotation=seed,
-                    )
+                    selections, name=name, rotation=seed)
 
     def __getattr__(self, item):
         if item in self.attachment_expressions:
