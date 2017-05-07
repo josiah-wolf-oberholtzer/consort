@@ -1,2 +1,1 @@
--e git://github.com/josiah-wolf-oberholtzer/consort.git#egg=consort
--e git://github.com/Abjad/abjad.git#egg=abjad [development]
+abjad==2.20[development]

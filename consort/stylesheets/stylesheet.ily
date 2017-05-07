@@ -1,6 +1,10 @@
 #(set-default-paper-size "letter" 'landscape)
 #(set-global-staff-size 11)
 
+#(define-markup-command (overlay layout props args)
+  (markup-list?)
+  (apply ly:stencil-add (interpret-markup-list layout props args)))
+
 #(define-markup-command (vstrut layout props) ()
     (let ((ref-mrkp (interpret-markup layout props "fp")))
     (ly:make-stencil 

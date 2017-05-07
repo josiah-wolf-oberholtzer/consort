@@ -9,6 +9,7 @@ from abjad.tools import lilypondfiletools
 from abjad.tools import metertools
 from abjad.tools import markuptools
 from abjad.tools import patterntools
+from abjad.tools import stringtools
 from abjad.tools import timespantools
 
 
@@ -131,6 +132,12 @@ class TimespanMaker(abctools.AbjadValueObject):
             date_time_token=False,
             )
         lilypond_file.items.extend([
+            stringtools.normalize('''
+            % Backport for pre 2.19.20 versions of LilyPond
+            #(define-markup-command (overlay layout props args)
+                (markup-list?)
+                (apply ly:stencil-add (interpret-markup-list layout props args)))
+            '''),
             ti_markup,
             markuptools.Markup.null().pad_around(2),
             oc_markup,
