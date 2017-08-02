@@ -1,6 +1,5 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad.tools import abctools
-from abjad.tools import durationtools
 
 
 class TimespanSpecifier(abctools.AbjadValueObject):
@@ -28,7 +27,7 @@ class TimespanSpecifier(abctools.AbjadValueObject):
             forbid_splitting = bool(forbid_splitting)
         self._forbid_splitting = forbid_splitting
         if minimum_duration is not None:
-            minimum_duration = durationtools.Duration(minimum_duration)
+            minimum_duration = abjad.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
 
     ### PUBLIC PROPERTIES ###

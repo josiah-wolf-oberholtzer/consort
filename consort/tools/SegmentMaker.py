@@ -1,19 +1,9 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
 import importlib
 import itertools
 import os
-from abjad import attach
-from abjad import detach
-from abjad import inspect_
-from abjad import iterate
-from abjad import mutate
-from abjad import override
-from abjad import new
-from abjad import set_
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import lilypondfiletools
@@ -21,11 +11,9 @@ from abjad.tools import markuptools
 from abjad.tools import mathtools
 from abjad.tools import metertools
 from abjad.tools import rhythmmakertools
-from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from abjad.tools import spannertools
 from abjad.tools import systemtools
-from abjad.tools import timespantools
 
 
 class SegmentMaker(abctools.AbjadObject):
@@ -33,8 +21,7 @@ class SegmentMaker(abctools.AbjadObject):
 
     ::
 
-        >>> import consort
-        >>> score_template = templatetools.StringOrchestraScoreTemplate(
+        >>> score_template = abjad.templatetools.StringOrchestraScoreTemplate(
         ...     violin_count=2,
         ...     viola_count=1,
         ...     cello_count=1,
@@ -53,7 +40,7 @@ class SegmentMaker(abctools.AbjadObject):
         ...             ),
         ...         ),
         ...     desired_duration_in_seconds=2,
-        ...     tempo=indicatortools.Tempo((1, 4), 72),
+        ...     tempo=abjad.MetronomeMark((1, 4), 72),
         ...     permitted_time_signatures=(
         ...         (5, 8),
         ...         (7, 16),
@@ -61,11 +48,11 @@ class SegmentMaker(abctools.AbjadObject):
         ...     )
         >>> print(format(segment_maker))
         consort.tools.SegmentMaker(
-            desired_duration_in_seconds=durationtools.Duration(2, 1),
-            permitted_time_signatures=indicatortools.TimeSignatureList(
+            desired_duration_in_seconds=abjad.Duration(2, 1),
+            permitted_time_signatures=abjad.TimeSignatureList(
                 [
-                    indicatortools.TimeSignature((5, 8)),
-                    indicatortools.TimeSignature((7, 16)),
+                    abjad.TimeSignature((5, 8)),
+                    abjad.TimeSignature((7, 16)),
                     ]
                 ),
             score_template=templatetools.StringOrchestraScoreTemplate(
@@ -97,8 +84,8 @@ class SegmentMaker(abctools.AbjadObject):
                     violin_2_bowing_voice=consort.tools.MusicSpecifier(),
                     ),
                 ),
-            tempo=indicatortools.Tempo(
-                reference_duration=durationtools.Duration(1, 4),
+            tempo=abjad.MetronomeMark(
+                reference_duration=abjad.Duration(1, 4),
                 units_per_minute=72,
                 ),
             )
@@ -249,7 +236,7 @@ class SegmentMaker(abctools.AbjadObject):
         self._score = self.score_template()
         self._voice_names = tuple(
             voice.name for voice in
-            iterate(self.score).by_class(scoretools.Voice)
+            abjad.iterate(self.score).by_class(abjad.Voice)
             )
         with systemtools.Timer(
             '    total:',
@@ -353,13 +340,13 @@ class SegmentMaker(abctools.AbjadObject):
 
     def get_end_instruments(self):
         result = collections.OrderedDict()
-        staves = iterate(self._score).by_class(scoretools.Staff)
+        staves = abjad.iterate(self._score).by_class(abjad.Staff)
         staves = list(staves)
         staves.sort(key=lambda x: x.name)
         prototype = (instrumenttools.Instrument,)
         for staff in staves:
-            last_leaf = inspect_(staff).get_leaf(-1)
-            instrument = inspect_(last_leaf).get_effective(prototype)
+            last_leaf = abjad.inspect(staff).get_leaf(-1)
+            instrument = abjad.inspect(last_leaf).get_effective(prototype)
             if instrument:
                 formatted = format(instrument)
                 formatted = formatted.replace('\n', ' ')
@@ -374,10 +361,10 @@ class SegmentMaker(abctools.AbjadObject):
         return result
 
     def get_end_tempo_indication(self):
-        prototype = indicatortools.Tempo
+        prototype = abjad.MetronomeMark
         context = self._score['Time Signature Context']
-        last_leaf = inspect_(context).get_leaf(-1)
-        effective_tempo = inspect_(last_leaf).get_effective(prototype)
+        last_leaf = abjad.inspect(context).get_leaf(-1)
+        effective_tempo = abjad.inspect(last_leaf).get_effective(prototype)
         if effective_tempo is not None:
             duration = effective_tempo.reference_duration.pair
             units_per_minute = effective_tempo.units_per_minute
@@ -385,10 +372,10 @@ class SegmentMaker(abctools.AbjadObject):
         return effective_tempo
 
     def get_end_time_signature(self):
-        prototype = indicatortools.TimeSignature
+        prototype = abjad.TimeSignature
         context = self._score['Time Signature Context']
         last_measure = context[-1]
-        time_signature = inspect_(last_measure).get_effective(prototype)
+        time_signature = abjad.inspect(last_measure).get_effective(prototype)
         if not time_signature:
             return
         pair = time_signature.pair
@@ -406,11 +393,11 @@ class SegmentMaker(abctools.AbjadObject):
         measures = []
         for time_signature, group in iterator:
             count = len(tuple(group))
-            skip = scoretools.Skip(1)
-            multiplier = durationtools.Multiplier(time_signature) * count
-            attach(multiplier, skip)
-            attach(time_signature, skip, scope=scoretools.Score)
-            measure = scoretools.Container([skip])
+            skip = abjad.Skip(1)
+            multiplier = abjad.Multiplier(time_signature) * count
+            abjad.attach(multiplier, skip)
+            abjad.attach(time_signature, skip, scope=abjad.Score)
+            measure = abjad.Container([skip])
             measures.append(measure)
         context.extend(measures)
 
@@ -437,24 +424,24 @@ class SegmentMaker(abctools.AbjadObject):
         if self.repeat:
             if segment_number != 1:
                 command = indicatortools.LilyPondCommand('break', 'opening')
-                attach(command, self.score['Time Signature Context'])
+                abjad.attach(command, self.score['Time Signature Context'])
             return
         elif self._previous_segment_metadata.get('is_repeated'):
             return
         elif segment_number == 1:
             return
         bar_line = indicatortools.LilyPondCommand('bar "||"', 'opening')
-        for staff in iterate(self.score).by_class(scoretools.Staff):
-            attach(bar_line, staff)
+        for staff in abjad.iterate(self.score).by_class(abjad.Staff):
+            abjad.attach(bar_line, staff)
 
     def attach_final_bar_line(self):
         segment_number = int(self._segment_metadata.get('segment_number', 1) or 1)
         segment_count = int(self._segment_metadata.get('segment_count', 1) or 1)
         if self.repeat:
             repeat = indicatortools.Repeat()
-            for staff in iterate(self.score).by_class(scoretools.Staff):
-                attach(repeat, staff)
-            attach(repeat, self.score['Time Signature Context'])
+            for staff in abjad.iterate(self.score).by_class(abjad.Staff):
+                abjad.attach(repeat, staff)
+            abjad.attach(repeat, self.score['Time Signature Context'])
         elif segment_number == segment_count:
             self.score.add_final_bar_line(
                 abbreviation='|.',
@@ -474,7 +461,7 @@ class SegmentMaker(abctools.AbjadObject):
 
     def attach_rehearsal_mark(self):
         markup_a, markup_b = None, None
-        first_leaf = next(iterate(
+        first_leaf = next(abjad.iterate(
             self.score['Time Signature Context']).by_leaf())
         rehearsal_letter = self.get_rehearsal_letter()
         if rehearsal_letter:
@@ -489,13 +476,13 @@ class SegmentMaker(abctools.AbjadObject):
             markup = markup_a or markup_b
         if markup:
             rehearsal_mark = indicatortools.RehearsalMark(markup=markup)
-            attach(rehearsal_mark, first_leaf)
+            abjad.attach(rehearsal_mark, first_leaf)
 
     def attach_tempo(self):
-        first_leaf = next(iterate(
+        first_leaf = next(abjad.iterate(
             self.score['Time Signature Context']).by_leaf())
         if self.tempo is not None:
-            attach(self.tempo, first_leaf)
+            abjad.attach(self.tempo, first_leaf)
 
     def configure_lilypond_file(self):
         import consort
@@ -554,8 +541,8 @@ class SegmentMaker(abctools.AbjadObject):
             consort.annotate(self.score, nonsilence=True)
         if self.annotate_timespans:
             context = self.score['Time Signature Context']
-            for leaf in iterate(context).by_class(scoretools.Leaf):
-                timespan = inspect_(leaf).get_timespan()
+            for leaf in abjad.iterate(context).by_class(abjad.Leaf):
+                timespan = abjad.inspect(leaf).get_timespan()
                 start_fraction = markuptools.Markup.fraction(
                     timespan.start_offset)
                 stop_fraction = markuptools.Markup.fraction(
@@ -564,11 +551,11 @@ class SegmentMaker(abctools.AbjadObject):
                 markup = markuptools.Markup.concat(markup_contents)
                 markup = markuptools.Markup(markup, Up)
                 markup = markup.pad_around(0.5).box()
-                attach(markup, leaf)
+                abjad.attach(markup, leaf)
         if self.annotate_colors:
-            for voice in iterate(self.score).by_class(scoretools.Voice):
+            for voice in abjad.iterate(self.score).by_class(abjad.Voice):
                 for phrase in voice:
-                    music_specifier = inspect_(phrase).get_indicator(
+                    music_specifier = abjad.inspect(phrase).get_indicator(
                         consort.MusicSpecifier)
                     if music_specifier is None:
                         continue
@@ -576,10 +563,10 @@ class SegmentMaker(abctools.AbjadObject):
                     if color is None:
                         continue
                     spanner = consort.ColorBracket(color)
-                    attach(spanner, phrase)
-        for voice in iterate(self.score).by_class(scoretools.Voice):
+                    abjad.attach(spanner, phrase)
+        for voice in abjad.iterate(self.score).by_class(abjad.Voice):
             for phrase in voice:
-                music_specifier = inspect_(phrase).get_indicator(
+                music_specifier = abjad.inspect(phrase).get_indicator(
                     consort.MusicSpecifier)
                 if music_specifier is None:
                     continue
@@ -588,30 +575,34 @@ class SegmentMaker(abctools.AbjadObject):
                     continue
                 comment = '[{}] Material: "{}"'.format(voice.name, comment)
                 comment = indicatortools.LilyPondComment(comment)
-                attach(comment, phrase)
+                abjad.attach(comment, phrase)
 
     def apply_instruments(self):
         import abjad
         import consort
         end_instruments = self._previous_segment_metadata.get(
             'end_instruments_by_staff', {})
-        for voice in iterate(self.score).by_class(scoretools.Voice):
+        for voice in abjad.iterate(self.score).by_class(abjad.Voice):
             for i, phrase in enumerate(voice):
                 staff = voice._parent
-                music_specifier = inspect_(phrase).get_indicator(
+                music_specifier = abjad.inspect(phrase).get_indicator(
                     consort.MusicSpecifier)
-                first_leaf = next(iterate(phrase).by_leaf())
+                first_leaf = next(abjad.iterate(phrase).by_leaf())
                 previous_instrument = None
                 if i == 0 and end_instruments.get(staff.name):
                     for parent in phrase._get_parentage(include_self=False):
-                        detach(consort.Instrument, parent)
+                        abjad.detach(consort.Instrument, parent)
                     string = 'instrument = {}'.format(
                         end_instruments[staff.name])
                     namespace = abjad.__dict__.copy()
-                    namespace['consort'] = consort
-                    exec(string, namespace)
+                    namespace.update(abjad=abjad, consort=consort)
+                    try:
+                        exec(string, namespace)
+                    except:
+                        print(string)
+                        raise
                     previous_instrument = namespace['instrument']
-                    attach(previous_instrument, first_leaf)
+                    abjad.attach(previous_instrument, first_leaf)
                 if music_specifier is None:
                     continue
                 instrument = music_specifier.instrument
@@ -619,17 +610,17 @@ class SegmentMaker(abctools.AbjadObject):
                     continue
                 if i == 0:
                     for parent in first_leaf._get_parentage(include_self=True):
-                        detach(consort.Instrument, parent)
-                    attach(
+                        abjad.detach(consort.Instrument, parent)
+                    abjad.attach(
                         previous_instrument,
                         first_leaf,
                         synthetic_offset=-1,
                         )
-                attach(instrument, first_leaf)
+                abjad.attach(instrument, first_leaf)
 
     def postprocess_multimeasure_rests(self):
         def division_to_meter(division):
-            offset = inspect_(division).get_timespan().start_offset
+            offset = abjad.inspect(division).get_timespan().start_offset
             timespan = meter_timespans.find_timespans_starting_at(offset)[0]
             meter = timespan.annotation
             return meter
@@ -637,15 +628,15 @@ class SegmentMaker(abctools.AbjadObject):
         silent_specifier = consort.MusicSpecifier()
         meter_timespans = self.meters_to_timespans(self.meters)
         with systemtools.ForbidUpdate(self.score):
-            for voice in iterate(self.score).by_class(scoretools.Voice):
+            for voice in abjad.iterate(self.score).by_class(abjad.Voice):
                 for phrase in voice:
-                    music_specifier = inspect_(phrase).get_indicator(
+                    music_specifier = abjad.inspect(phrase).get_indicator(
                         consort.MusicSpecifier)
                     if music_specifier != silent_specifier:
                         continue
                     divisions = [
                         _ for _ in phrase
-                        if isinstance(_[0], scoretools.MultimeasureRest)
+                        if isinstance(_[0], abjad.MultimeasureRest)
                         ]
                     iterator = itertools.groupby(divisions, division_to_meter)
                     for meter, grouped_divisions in iterator:
@@ -656,32 +647,32 @@ class SegmentMaker(abctools.AbjadObject):
                         for division in grouped_divisions[1:]:
                             phrase.remove(division)
                         rest = grouped_divisions[0][0]
-                        multiplier = inspect_(rest).get_indicator(
-                            durationtools.Multiplier)
-                        detach(multiplier, rest)
+                        multiplier = abjad.inspect(rest).get_indicator(
+                            abjad.Multiplier)
+                        abjad.detach(multiplier, rest)
                         multiplier = multiplier * count
-                        attach(multiplier, rest)
+                        abjad.attach(multiplier, rest)
 
     def postprocess_staff_lines_spanners(self):
         segment_number = self._segment_metadata.get('segment_number', 1) or 1
         segment_count = self._segment_metadata.get('segment_count', 1) or 1
         if segment_number != segment_count:
             return
-        for voice in iterate(self.score).by_class(scoretools.Voice):
-            for leaf in iterate(voice).by_class(scoretools.Leaf, reverse=True):
-                if not isinstance(leaf, scoretools.MultimeasureRest):
+        for voice in abjad.iterate(self.score).by_class(abjad.Voice):
+            for leaf in abjad.iterate(voice).by_class(abjad.Leaf, reverse=True):
+                if not isinstance(leaf, abjad.MultimeasureRest):
                     break
                 prototype = spannertools.StaffLinesSpanner
-                if not inspect_(leaf).has_spanner(prototype):
+                if not abjad.inspect(leaf).has_spanner(prototype):
                     continue
-                staff_lines_spanner = inspect_(leaf).get_spanner(prototype)
+                staff_lines_spanner = abjad.inspect(leaf).get_spanner(prototype)
                 components = staff_lines_spanner.components
-                detach(staff_lines_spanner)
-                staff_lines_spanner = new(
+                abjad.detach(staff_lines_spanner)
+                staff_lines_spanner = abjad.new(
                     staff_lines_spanner,
                     forbid_restarting=True,
                     )
-                attach(
+                abjad.attach(
                     staff_lines_spanner,
                     components,
                     name='staff_lines_spanner',
@@ -691,11 +682,11 @@ class SegmentMaker(abctools.AbjadObject):
     def attach_bar_number_comments(self):
         first_bar_number = self._segment_metadata.get('first_bar_number', 1) or 1
         measure_offsets = self.measure_offsets
-        for voice in iterate(self.score).by_class(scoretools.Voice):
+        for voice in abjad.iterate(self.score).by_class(abjad.Voice):
             voice_name = voice.name
             for phrase in voice:
                 for division in phrase:
-                    timespan = inspect_(division).get_timespan()
+                    timespan = abjad.inspect(division).get_timespan()
                     start_offset = timespan.start_offset
                     matched = False
                     for bar_number, measure_offset in enumerate(
@@ -710,31 +701,31 @@ class SegmentMaker(abctools.AbjadObject):
                         bar_number,
                         )
                     comment = indicatortools.LilyPondComment(string)
-                    attach(comment, division)
-#                for leaf in iterate(phrase).by_leaf():
+                    abjad.attach(comment, division)
+#                for leaf in abjad.iterate(phrase).by_leaf():
 #                    string = '[{}] Logical Measure {}'.format(
 #                        voice_name,
 #                        leaf._logical_measure_number
 #                        )
 #                    comment = indicatortools.LilyPondComment(string)
-#                    attach(comment, leaf)
+#                    abjad.attach(comment, leaf)
 
     def postprocess_ties(self):
-        for component in iterate(self.score).depth_first():
-            if not inspect_(component).has_spanner(spannertools.Tie):
+        for component in abjad.iterate(self.score).depth_first():
+            if not abjad.inspect(component).has_spanner(spannertools.Tie):
                 continue
-            tie = inspect_(component).get_spanner(spannertools.Tie)
+            tie = abjad.inspect(component).get_spanner(spannertools.Tie)
             if component != tie[0]:
                 continue
             components = tie.components
-            detach(tie)
+            abjad.detach(tie)
             tie = spannertools.Tie(use_messiaen_style_ties=True)
-            attach(tie, components)
+            abjad.attach(tie, components)
 
     def set_bar_number(self):
         first_bar_number = self._segment_metadata.get('first_bar_number')
         if first_bar_number is not None:
-            set_(self.score).current_bar_number = first_bar_number
+            abjad.setting(self.score).current_bar_number = first_bar_number
         #else:
         #    override(self.score).bar_number.transparent = True
 
@@ -748,14 +739,14 @@ class SegmentMaker(abctools.AbjadObject):
         remove_ties=False,
         replace_rests_with_skips=False,
         ):
-        new_voice = mutate(voice).copy()
+        new_voice = abjad.mutate(voice).copy()
         if new_voice_name:
             new_voice.name = new_voice_name
         if new_context_name:
             new_voice.context_name = new_context_name
         rests = []
-        for component in iterate(new_voice).depth_first(capped=True):
-            agent = inspect_(component)
+        for component in abjad.iterate(new_voice).depth_first(capped=True):
+            agent = abjad.inspect(component)
             indicators = agent.get_indicators(unwrap=False)
             spanners = agent.get_spanners()
             for x in indicators:
@@ -773,70 +764,69 @@ class SegmentMaker(abctools.AbjadObject):
                     not any(x.name.startswith(_) for _ in attachment_names):
                     x._detach()
             if replace_rests_with_skips and \
-                isinstance(component, scoretools.Rest):
+                isinstance(component, abjad.Rest):
                 rests.append(component)
-            grace_containers = agent.get_grace_containers()
-            if grace_containers and remove_grace_containers:
-                for grace_container in grace_containers:
-                    grace_container._detach()
+            after_grace = agent.get_after_grace_container()
+            if after_grace is not None and remove_grace_containers:
+                after_grace._detach()
         if replace_rests_with_skips:
             for rest in rests:
-                indicators = inspect_(rest).get_indicators(
-                    durationtools.Multiplier,
+                indicators = abjad.inspect(rest).get_indicators(
+                    abjad.Multiplier,
                     )
-                skip = scoretools.Skip(rest)
+                skip = abjad.Skip(rest)
                 if indicators:
-                    attach(indicators[0], skip)
-                mutate(rest).replace(skip)
+                    abjad.attach(indicators[0], skip)
+                abjad.mutate(rest).replace(skip)
         return new_voice
 
     @staticmethod
     def logical_tie_to_music_specifier(logical_tie):
         import consort
-        parentage = inspect_(logical_tie.head).get_parentage()
+        parentage = abjad.inspect(logical_tie.head).get_parentage()
         music_specifier = None
         prototype = consort.MusicSpecifier
         for parent in parentage:
-            if not inspect_(parent).has_indicator(prototype):
+            if not abjad.inspect(parent).has_indicator(prototype):
                 continue
-            music_specifier = inspect_(parent).get_indicator(prototype)
+            music_specifier = abjad.inspect(parent).get_indicator(prototype)
         return music_specifier
 
     @staticmethod
     def logical_tie_to_division(logical_tie):
         import consort
-        parentage = inspect_(logical_tie.head).get_parentage()
+        parentage = abjad.inspect(logical_tie.head).get_parentage()
         prototype = consort.MusicSpecifier
         for i, parent in enumerate(parentage):
-            if inspect_(parent).has_indicator(prototype):
+            if abjad.inspect(parent).has_indicator(prototype):
                 break
         return parentage[i - 1]
 
     @staticmethod
     def logical_tie_to_phrase(logical_tie):
         import consort
-        parentage = inspect_(logical_tie.head).get_parentage()
+        parentage = abjad.inspect(logical_tie.head).get_parentage()
         prototype = consort.MusicSpecifier
         for parent in parentage:
-            if inspect_(parent).has_indicator(prototype):
+            if abjad.inspect(parent).has_indicator(prototype):
                 return parent
 
     @staticmethod
     def logical_tie_to_voice(logical_tie):
-        parentage = inspect_(logical_tie.head).get_parentage()
+        parentage = abjad.inspect(logical_tie.head).get_parentage()
         voice = None
         for parent in parentage:
-            if isinstance(parent, scoretools.Voice):
+            if isinstance(parent, abjad.Voice):
                 voice = parent
                 break
         return voice
 
     @staticmethod
     def logical_tie_to_staff(logical_tie):
-        parentage = inspect_(logical_tie.head).get_parentage()
+        parentage = abjad.inspect(logical_tie.head).get_parentage()
         staff = None
         for parent in parentage:
-            if isinstance(parent, scoretools.Staff):
+            if isinstance(parent, abjad.Staff):
                 staff = parent
                 break
         return staff
@@ -845,22 +835,22 @@ class SegmentMaker(abctools.AbjadObject):
         import consort
         score = self.score
         stop_trill_span = consort.StopTrillSpan()
-        for leaf in iterate(score).by_class(scoretools.Leaf):
-            agent = inspect_(leaf)
+        for leaf in abjad.iterate(score).by_class(abjad.Leaf):
+            agent = abjad.inspect(leaf)
             spanners = agent.get_spanners(consort.ConsortTrillSpanner)
             if not spanners:
                 continue
-            after_graces = agent.get_grace_containers('after')
-            if not after_graces:
+            after_grace = agent.get_after_grace_container()
+            if after_grace is None:
                 continue
-            after_grace = after_graces[0]
             leaf = after_grace[0]
-            attach(stop_trill_span, leaf)
+            abjad.attach(stop_trill_span, leaf)
 
     @staticmethod
     def validate_score(score, verbose=True):
         import consort
-        manager = systemtools.WellformednessManager()
+        manager = systemtools.WellformednessManager(
+            allow_percussion_clef=True)
         triples = manager(score)
         for current_violators, current_total, current_check in triples:
             if verbose:
@@ -873,12 +863,12 @@ class SegmentMaker(abctools.AbjadObject):
             raise AssertionError
         if not verbose:
             return
-        for voice in iterate(score).by_class(scoretools.Voice):
+        for voice in abjad.iterate(score).by_class(abjad.Voice):
             #print(voice.name)
             voice_name = voice.name
             for phrase in voice:
                 #print('PHRASE:', phrase)
-                music_specifier = inspect_(phrase).get_indicator(
+                music_specifier = abjad.inspect(phrase).get_indicator(
                     consort.MusicSpecifier)
                 if music_specifier is None:
                     #print('\tNO MUSIC SPECIFIER')
@@ -890,22 +880,22 @@ class SegmentMaker(abctools.AbjadObject):
                         continue
                 instrument = music_specifier.instrument
                 if instrument is None:
-                    instrument = inspect_(phrase).get_effective(
+                    instrument = abjad.inspect(phrase).get_effective(
                         instrumenttools.Instrument)
                 if instrument is None:
                     #print('\tNO INSTRUMENT')
                     continue
                 pitch_range = instrument.pitch_range
-                for leaf in iterate(phrase).by_class((
-                    scoretools.Note, scoretools.Chord,
+                for leaf in abjad.iterate(phrase).by_class((
+                    abjad.Note, abjad.Chord,
                     )):
-                    timespan = inspect_(leaf).get_timespan()
+                    timespan = abjad.inspect(leaf).get_timespan()
                     #print('\t{!r}'.format(leaf))
-                    if isinstance(leaf, scoretools.Note):
+                    if isinstance(leaf, abjad.Note):
                         note_head = leaf.note_head
                         #print('\t\t', note_head)
                         if note_head.written_pitch not in pitch_range:
-                            override(leaf).note_head.color = 'red'
+                            abjad.override(leaf).note_head.color = 'red'
                             message = '    {}Out of range: {} {!r} {!s} {!s}{}'
                             message = message.format(
                                 '\033[91m',
@@ -916,7 +906,7 @@ class SegmentMaker(abctools.AbjadObject):
                                 '\033[0m',
                                 )
                             print(message)
-                    elif isinstance(leaf, scoretools.Chord):
+                    elif isinstance(leaf, abjad.Chord):
                         for note_head in leaf.note_heads:
                             #print('\t\t', note_head)
                             if note_head.written_pitch not in pitch_range:
@@ -959,26 +949,26 @@ class SegmentMaker(abctools.AbjadObject):
 
     @staticmethod
     def cleanup_logical_ties(music):
-        for logical_tie in iterate(music).by_logical_tie(
+        for logical_tie in abjad.iterate(music).by_logical_tie(
             nontrivial=True, pitched=True, reverse=True):
             if len(logical_tie) != 2:
                 continue
             if not logical_tie._all_leaves_are_in_same_parent:
                 continue
             if logical_tie.written_duration == \
-                durationtools.Duration(1, 8):
-                mutate(logical_tie).replace([scoretools.Note("c'8")])
+                abjad.Duration(1, 8):
+                abjad.mutate(logical_tie).replace([abjad.Note("c'8")])
             elif logical_tie.written_duration == \
-                durationtools.Duration(1, 16):
-                mutate(logical_tie).replace([scoretools.Note("c'16")])
+                abjad.Duration(1, 16):
+                abjad.mutate(logical_tie).replace([abjad.Note("c'16")])
 
     @staticmethod
     def collect_attack_points(score):
         import consort
         attack_point_map = collections.OrderedDict()
-        iterator = iterate(score).by_timeline(prototype=scoretools.Note)
+        iterator = abjad.iterate(score).by_timeline(prototype=abjad.Note)
         for note in iterator:
-            logical_tie = inspect_(note).get_logical_tie()
+            logical_tie = abjad.inspect(note).get_logical_tie()
             if note is not logical_tie.head:
                 continue
             attack_point_signature = \
@@ -1001,11 +991,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
-            >>> music = scoretools.Container(r'''
+            >>> music = abjad.Container(r'''
             ...     { r4 c'8 }
             ...     \times 2/3 { d'4 r8 }
             ...     { r4 e'4 f'4 r4 }
@@ -1107,19 +1093,19 @@ class SegmentMaker(abctools.AbjadObject):
         Returns `music`.
         """
         prototype = (
-            scoretools.Rest,
-            scoretools.MultimeasureRest,
+            abjad.Rest,
+            abjad.MultimeasureRest,
             )
-        initial_music_duration = inspect_(music).get_duration()
-        initial_leaves = list(iterate(music).by_leaf())
-        if not isinstance(music[0], scoretools.Tuplet):
-            leading_silence = scoretools.Container()
+        initial_music_duration = abjad.inspect(music).get_duration()
+        initial_leaves = list(abjad.iterate(music).by_leaf())
+        if not isinstance(music[0], abjad.Tuplet):
+            leading_silence = abjad.Container()
             while music[0] and isinstance(music[0][0], prototype):
                 leading_silence.append(music[0].pop(0))
             if leading_silence:
                 music.insert(0, leading_silence)
-        if not isinstance(music[-1], scoretools.Tuplet):
-            tailing_silence = scoretools.Container()
+        if not isinstance(music[-1], abjad.Tuplet):
+            tailing_silence = abjad.Container()
             while music[-1] and isinstance(music[-1][-1], prototype):
                 tailing_silence.insert(0, music[-1].pop())
             if tailing_silence:
@@ -1130,11 +1116,11 @@ class SegmentMaker(abctools.AbjadObject):
         for index in indices:
             division = music[index]
             next_division = music[index + 1]
-            silence = scoretools.Container()
-            if not isinstance(division, scoretools.Tuplet):
+            silence = abjad.Container()
+            if not isinstance(division, abjad.Tuplet):
                 while division and isinstance(division[-1], prototype):
                     silence.insert(0, division.pop())
-            if not isinstance(next_division, scoretools.Tuplet):
+            if not isinstance(next_division, abjad.Tuplet):
                 while next_division and \
                     isinstance(next_division[0], prototype):
                     silence.append(next_division.pop(0))
@@ -1147,8 +1133,8 @@ class SegmentMaker(abctools.AbjadObject):
         for division in music[:]:
             if not division:
                 music.remove(division)
-        assert inspect_(music).get_duration() == initial_music_duration
-        assert list(iterate(music).by_leaf()) == initial_leaves
+        assert abjad.inspect(music).get_duration() == initial_music_duration
+        assert list(abjad.iterate(music).by_leaf()) == initial_leaves
         return music
 
     @staticmethod
@@ -1157,11 +1143,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
-            >>> timespans = timespantools.TimespanList([
+            >>> timespans = abjad.TimespanList([
             ...     consort.PerformedTimespan(
             ...         start_offset=0,
             ...         stop_offset=10,
@@ -1189,31 +1171,31 @@ class SegmentMaker(abctools.AbjadObject):
             ...         ),
             ...     ])
             >>> print(format(timespans))
-            timespantools.TimespanList(
+            abjad.TimespanList(
                 [
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(10, 1),
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(10, 1),
                         music_specifier='foo',
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(10, 1),
-                        stop_offset=durationtools.Offset(20, 1),
+                        start_offset=abjad.Offset(10, 1),
+                        stop_offset=abjad.Offset(20, 1),
                         music_specifier='foo',
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(20, 1),
-                        stop_offset=durationtools.Offset(25, 1),
+                        start_offset=abjad.Offset(20, 1),
+                        stop_offset=abjad.Offset(25, 1),
                         music_specifier='bar',
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(40, 1),
-                        stop_offset=durationtools.Offset(50, 1),
+                        start_offset=abjad.Offset(40, 1),
+                        stop_offset=abjad.Offset(50, 1),
                         music_specifier='bar',
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(50, 1),
-                        stop_offset=durationtools.Offset(58, 1),
+                        start_offset=abjad.Offset(50, 1),
+                        stop_offset=abjad.Offset(58, 1),
                         music_specifier='bar',
                         ),
                     ]
@@ -1224,31 +1206,31 @@ class SegmentMaker(abctools.AbjadObject):
             >>> timespans = consort.SegmentMaker.consolidate_timespans(
             ...     timespans)
             >>> print(format(timespans))
-            timespantools.TimespanList(
+            abjad.TimespanList(
                 [
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(20, 1),
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(20, 1),
                         divisions=(
-                            durationtools.Duration(10, 1),
-                            durationtools.Duration(10, 1),
+                            abjad.Duration(10, 1),
+                            abjad.Duration(10, 1),
                             ),
                         music_specifier='foo',
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(20, 1),
-                        stop_offset=durationtools.Offset(25, 1),
+                        start_offset=abjad.Offset(20, 1),
+                        stop_offset=abjad.Offset(25, 1),
                         divisions=(
-                            durationtools.Duration(5, 1),
+                            abjad.Duration(5, 1),
                             ),
                         music_specifier='bar',
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(40, 1),
-                        stop_offset=durationtools.Offset(58, 1),
+                        start_offset=abjad.Offset(40, 1),
+                        stop_offset=abjad.Offset(58, 1),
                         divisions=(
-                            durationtools.Duration(10, 1),
-                            durationtools.Duration(8, 1),
+                            abjad.Duration(10, 1),
+                            abjad.Duration(8, 1),
                             ),
                         music_specifier='bar',
                         ),
@@ -1257,7 +1239,7 @@ class SegmentMaker(abctools.AbjadObject):
 
         Returns new timespan inventory.
         '''
-        consolidated_timespans = timespantools.TimespanList()
+        consolidated_timespans = abjad.TimespanList()
         for music_specifier, grouped_timespans in \
             SegmentMaker.group_timespans(timespans):
             if music_specifier is None and not allow_silences:
@@ -1269,7 +1251,7 @@ class SegmentMaker(abctools.AbjadObject):
             divisions = tuple(_.duration for _ in grouped_timespans)
             first_timespan = grouped_timespans[0]
             last_timespan = grouped_timespans[-1]
-            consolidated_timespan = new(
+            consolidated_timespan = abjad.new(
                 first_timespan,
                 divisions=divisions,
                 stop_offset=last_timespan.stop_offset,
@@ -1319,7 +1301,7 @@ class SegmentMaker(abctools.AbjadObject):
                 demultiplexed_maquette[voice_name] = {}
             if layer not in demultiplexed_maquette[voice_name]:
                 demultiplexed_maquette[voice_name][layer] = \
-                    timespantools.TimespanList()
+                    abjad.TimespanList()
             demultiplexed_maquette[voice_name][layer].append(
                 timespan)
             demultiplexed_maquette[voice_name][layer]
@@ -1338,8 +1320,8 @@ class SegmentMaker(abctools.AbjadObject):
     @staticmethod
     def cleanup_maquette_layer(timespans):
         import consort
-        performed_timespans = timespantools.TimespanList()
-        silent_timespans = timespantools.TimespanList()
+        performed_timespans = abjad.TimespanList()
+        silent_timespans = abjad.TimespanList()
         for timespan in timespans:
             if isinstance(timespan, consort.PerformedTimespan):
                 performed_timespans.append(timespan)
@@ -1360,30 +1342,26 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
-            >>> division = scoretools.Container("c'4 d'4 e'4 f'4")
+            >>> division = abjad.Container("c'4 d'4 e'4 f'4")
             >>> consort.SegmentMaker.division_is_silent(division)
             False
 
         ::
 
-            >>> division = scoretools.Container('r4 r8 r16 r32')
+            >>> division = abjad.Container('r4 r8 r16 r32')
             >>> consort.SegmentMaker.division_is_silent(division)
             True
 
         ::
 
-            >>> division = scoretools.Container(
+            >>> division = abjad.Container(
             ...     r"c'4 \times 2/3 { d'8 r8 e'8 } f'4")
             >>> consort.SegmentMaker.division_is_silent(division)
             False
 
         ::
 
-            >>> division = scoretools.Container(
+            >>> division = abjad.Container(
             ...     r'\times 2/3 { r4 \times 2/3 { r8. } }')
             >>> consort.SegmentMaker.division_is_silent(division)
             True
@@ -1391,17 +1369,17 @@ class SegmentMaker(abctools.AbjadObject):
         Returns boolean.
         '''
         rest_prototype = (
-            scoretools.Rest,
-            scoretools.MultimeasureRest,
+            abjad.Rest,
+            abjad.MultimeasureRest,
             )
-        leaves = list(iterate(division).by_leaf())
+        leaves = list(abjad.iterate(division).by_leaf())
         return all(isinstance(leaf, rest_prototype) for leaf in leaves)
 
     def interpret_rhythms(
         self,
         verbose=True,
         ):
-        multiplexed_timespans = timespantools.TimespanList()
+        multiplexed_timespans = abjad.TimespanList()
 
         with systemtools.Timer(
             enter_message='    populating independent timespans:',
@@ -1501,7 +1479,7 @@ class SegmentMaker(abctools.AbjadObject):
             maximum = int(max(offset_counter.values()))
         offset_counter[desired_duration] = maximum * 2
         maximum_meter_run_length = self.maximum_meter_run_length
-        meters = metertools.Meter.fit_meters_to_expr(
+        meters = abjad.Meter.fit_meters(
             argument=offset_counter,
             meters=permitted_time_signatures,
             maximum_run_length=maximum_meter_run_length,
@@ -1518,7 +1496,7 @@ class SegmentMaker(abctools.AbjadObject):
         if music_specifier is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
                 beam_specifier=beam_specifier,
-                division_masks=[rhythmmakertools.silence_all()],
+                division_masks=[abjad.silence_all()],
                 )
         elif music_specifier.rhythm_maker is None:
             rhythm_maker = rhythmmakertools.NoteRhythmMaker(
@@ -1535,12 +1513,12 @@ class SegmentMaker(abctools.AbjadObject):
         else:
             rhythm_maker = music_specifier.rhythm_maker
             beam_specifier = rhythm_maker.beam_specifier or beam_specifier
-            beam_specifier = new(
+            beam_specifier = abjad.new(
                 beam_specifier,
                 beam_each_division=False,
                 beam_divisions_together=False,
                 )
-            rhythm_maker = new(
+            rhythm_maker = abjad.new(
                 rhythm_maker,
                 beam_specifier=beam_specifier,
                 )
@@ -1555,18 +1533,14 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
             >>> divisions = []
-            >>> divisions.append(scoretools.Container('r4'))
-            >>> divisions.append(scoretools.Container("c'4"))
-            >>> divisions.append(scoretools.Container('r4 r4'))
-            >>> divisions.append(scoretools.Container("d'4 d'4"))
-            >>> divisions.append(scoretools.Container("e'4 e'4 e'4"))
-            >>> divisions.append(scoretools.Container('r4 r4 r4'))
-            >>> divisions.append(scoretools.Container("f'4 f'4 f'4 f'4"))
+            >>> divisions.append(abjad.Container('r4'))
+            >>> divisions.append(abjad.Container("c'4"))
+            >>> divisions.append(abjad.Container('r4 r4'))
+            >>> divisions.append(abjad.Container("d'4 d'4"))
+            >>> divisions.append(abjad.Container("e'4 e'4 e'4"))
+            >>> divisions.append(abjad.Container('r4 r4 r4'))
+            >>> divisions.append(abjad.Container("f'4 f'4 f'4 f'4"))
 
         ::
 
@@ -1608,10 +1582,10 @@ class SegmentMaker(abctools.AbjadObject):
                 music_specifier, forbid_fusing = key
                 if forbid_fusing:
                     for timespan in grouped_timespans:
-                        group = timespantools.TimespanList([timespan])
+                        group = abjad.TimespanList([timespan])
                         yield music_specifier, group
                 else:
-                    group = timespantools.TimespanList(
+                    group = abjad.TimespanList(
                         grouped_timespans)
                     yield music_specifier, group
 
@@ -1624,7 +1598,7 @@ class SegmentMaker(abctools.AbjadObject):
         voice_names = demultiplexed_maquette.keys()
         voice_names = SegmentMaker.sort_voice_names(score, voice_names)
         for voice_name in voice_names:
-            inscribed_timespans = timespantools.TimespanList()
+            inscribed_timespans = abjad.TimespanList()
             uninscribed_timespans = demultiplexed_maquette[voice_name]
             for timespan in uninscribed_timespans:
                 if timespan.music is None:
@@ -1653,12 +1627,11 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
             >>> music_specifier = consort.MusicSpecifier(
             ...     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
             ...         division_masks=[
             ...             rhythmmakertools.SilenceMask(
-            ...                 pattern=patterntools.Pattern(
+            ...                 pattern=abjad.Pattern(
             ...                     indices=[0],
             ...                     period=3,
             ...                     ),
@@ -1670,30 +1643,30 @@ class SegmentMaker(abctools.AbjadObject):
         ::
 
             >>> timespan = consort.PerformedTimespan(
-            ...     divisions=[durationtools.Duration(1, 4)] * 7,
+            ...     divisions=[abjad.Duration(1, 4)] * 7,
             ...     start_offset=0,
             ...     stop_offset=(7, 4),
             ...     music_specifier=music_specifier,
             ...     )
             >>> print(format(timespan))
             consort.tools.PerformedTimespan(
-                start_offset=durationtools.Offset(0, 1),
-                stop_offset=durationtools.Offset(7, 4),
+                start_offset=abjad.Offset(0, 1),
+                stop_offset=abjad.Offset(7, 4),
                 divisions=(
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 4),
-                    durationtools.Duration(1, 4),
+                    abjad.Duration(1, 4),
+                    abjad.Duration(1, 4),
+                    abjad.Duration(1, 4),
+                    abjad.Duration(1, 4),
+                    abjad.Duration(1, 4),
+                    abjad.Duration(1, 4),
+                    abjad.Duration(1, 4),
                     ),
                 music_specifier=consort.tools.MusicSpecifier(
                     rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                        division_masks=patterntools.PatternList(
+                        division_masks=abjad.PatternList(
                             (
                                 rhythmmakertools.SilenceMask(
-                                    pattern=patterntools.Pattern(
+                                    pattern=abjad.Pattern(
                                         indices=[0],
                                         period=3,
                                         ),
@@ -1708,20 +1681,20 @@ class SegmentMaker(abctools.AbjadObject):
 
             >>> result = consort.SegmentMaker.inscribe_timespan(timespan)
             >>> print(format(result))
-            timespantools.TimespanList(
+            abjad.TimespanList(
                 [
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(1, 4),
-                        stop_offset=durationtools.Offset(3, 4),
-                        music=scoretools.Container(
+                        start_offset=abjad.Offset(1, 4),
+                        stop_offset=abjad.Offset(3, 4),
+                        music=abjad.Container(
                             "{   c'4 } {   c'4 }"
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                division_masks=patterntools.PatternList(
+                                division_masks=abjad.PatternList(
                                     (
                                         rhythmmakertools.SilenceMask(
-                                            pattern=patterntools.Pattern(
+                                            pattern=abjad.Pattern(
                                                 indices=[0],
                                                 period=3,
                                                 ),
@@ -1730,21 +1703,21 @@ class SegmentMaker(abctools.AbjadObject):
                                     ),
                                 ),
                             ),
-                        original_start_offset=durationtools.Offset(0, 1),
-                        original_stop_offset=durationtools.Offset(7, 4),
+                        original_start_offset=abjad.Offset(0, 1),
+                        original_stop_offset=abjad.Offset(7, 4),
                         ),
                     consort.tools.PerformedTimespan(
-                        start_offset=durationtools.Offset(1, 1),
-                        stop_offset=durationtools.Offset(3, 2),
-                        music=scoretools.Container(
+                        start_offset=abjad.Offset(1, 1),
+                        stop_offset=abjad.Offset(3, 2),
+                        music=abjad.Container(
                             "{   c'4 } {   c'4 }"
                             ),
                         music_specifier=consort.tools.MusicSpecifier(
                             rhythm_maker=rhythmmakertools.NoteRhythmMaker(
-                                division_masks=patterntools.PatternList(
+                                division_masks=abjad.PatternList(
                                     (
                                         rhythmmakertools.SilenceMask(
-                                            pattern=patterntools.Pattern(
+                                            pattern=abjad.Pattern(
                                                 indices=[0],
                                                 period=3,
                                                 ),
@@ -1753,15 +1726,15 @@ class SegmentMaker(abctools.AbjadObject):
                                     ),
                                 ),
                             ),
-                        original_start_offset=durationtools.Offset(0, 1),
-                        original_stop_offset=durationtools.Offset(7, 4),
+                        original_start_offset=abjad.Offset(0, 1),
+                        original_stop_offset=abjad.Offset(7, 4),
                         ),
                     ]
                 )
 
         Returns timespan inventory.
         '''
-        inscribed_timespans = timespantools.TimespanList()
+        inscribed_timespans = abjad.TimespanList()
         rhythm_maker = SegmentMaker.get_rhythm_maker(timespan.music_specifier)
         durations = timespan.divisions[:]
         music = SegmentMaker.make_music(
@@ -1769,17 +1742,17 @@ class SegmentMaker(abctools.AbjadObject):
             durations,
             seed,
             )
-        assert inspect_(music).get_duration() == timespan.duration
+        assert abjad.inspect(music).get_duration() == timespan.duration
         for container, duration in zip(music, durations):
-            assert inspect_(container).get_duration() == duration
+            assert abjad.inspect(container).get_duration() == duration
         music = SegmentMaker.consolidate_rests(music)
-        assert inspect_(music).get_duration() == timespan.duration
+        assert abjad.inspect(music).get_duration() == timespan.duration
         for group in SegmentMaker.group_nonsilent_divisions(music):
-            start_offset = inspect_(group[0]).get_timespan().start_offset
-            stop_offset = inspect_(group[-1]).get_timespan().stop_offset
+            start_offset = abjad.inspect(group[0]).get_timespan().start_offset
+            stop_offset = abjad.inspect(group[-1]).get_timespan().stop_offset
             start_offset += timespan.start_offset
             stop_offset += timespan.start_offset
-            container = scoretools.Container()
+            container = abjad.Container()
             container.extend(group)
 #            beam = spannertools.GeneralizedBeam(
 #                durations=[division._get_duration() for division in music],
@@ -1788,7 +1761,7 @@ class SegmentMaker(abctools.AbjadObject):
 #                isolated_nib_direction=None,
 #                use_stemlets=False,
 #                )
-#            attach(beam, container, name='beam')
+#            abjad.attach(beam, container, name='beam')
             for division in container:
                 durations = [division._get_duration()]
                 beam = spannertools.GeneralizedBeam(
@@ -1798,19 +1771,19 @@ class SegmentMaker(abctools.AbjadObject):
                     isolated_nib_direction=None,
                     use_stemlets=True,
                     )
-                attach(beam, division)
-            attach(timespan.music_specifier, container, scope=scoretools.Voice)
-            inscribed_timespan = new(
+                abjad.attach(beam, division)
+            abjad.attach(timespan.music_specifier, container, scope=abjad.Voice)
+            inscribed_timespan = abjad.new(
                 timespan,
                 divisions=None,
                 music=container,
                 start_offset=start_offset,
                 stop_offset=stop_offset,
                 )
-            assert inspect_(container).get_duration() == \
+            assert abjad.inspect(container).get_duration() == \
                 inscribed_timespan.duration
-            assert inspect_(container).get_timespan().start_offset == 0
-            assert inspect_(container[0]).get_timespan().start_offset == 0
+            assert abjad.inspect(container).get_timespan().start_offset == 0
+            assert abjad.inspect(container[0]).get_timespan().start_offset == 0
             inscribed_timespans.append(inscribed_timespan)
         inscribed_timespans.sort()
         return inscribed_timespans
@@ -1819,14 +1792,14 @@ class SegmentMaker(abctools.AbjadObject):
     def leaf_is_tied(leaf):
         prototype = spannertools.Tie
         leaf_tie = None
-        if inspect_(leaf).get_spanners(prototype):
-            leaf_tie = inspect_(leaf).get_spanner(prototype)
+        if abjad.inspect(leaf).get_spanners(prototype):
+            leaf_tie = abjad.inspect(leaf).get_spanner(prototype)
         else:
             return False
-        next_leaf = inspect_(leaf).get_leaf(1)
+        next_leaf = abjad.inspect(leaf).get_leaf(1)
         if next_leaf is not None:
-            if inspect_(next_leaf).get_spanners(prototype):
-                next_leaf_tie = inspect_(next_leaf).get_spanner(prototype)
+            if abjad.inspect(next_leaf).get_spanners(prototype):
+                next_leaf_tie = abjad.inspect(next_leaf).get_spanner(prototype)
                 if leaf_tie is next_leaf_tie:
                     return True
         return False
@@ -1837,20 +1810,20 @@ class SegmentMaker(abctools.AbjadObject):
         for i, division in enumerate(music):
             if (
                 len(division) == 1 and
-                isinstance(division[0], scoretools.Tuplet)
+                isinstance(division[0], abjad.Tuplet)
                 ):
                 music[i] = division[0]
             else:
-                music[i] = scoretools.Container(division)
-        music = scoretools.Container(music)
+                music[i] = abjad.Container(division)
+        music = abjad.Container(music)
         prototype = rhythmmakertools.AccelerandoRhythmMaker
         if not isinstance(rhythm_maker, prototype):
             for division in music[:]:
                 if (
-                    isinstance(division, scoretools.Tuplet) and
+                    isinstance(division, abjad.Tuplet) and
                     division.multiplier == 1
                     ):
-                    mutate(division).swap(scoretools.Container())
+                    abjad.mutate(division).swap(abjad.Container())
         return music
 
     @staticmethod
@@ -1859,15 +1832,11 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
             >>> meters = [
-            ...     metertools.Meter((3, 4)),
-            ...     metertools.Meter((2, 4)),
-            ...     metertools.Meter((6, 8)),
-            ...     metertools.Meter((5, 16)),
+            ...     abjad.Meter((3, 4)),
+            ...     abjad.Meter((2, 4)),
+            ...     abjad.Meter((6, 8)),
+            ...     abjad.Meter((5, 16)),
             ...     ]
 
         ::
@@ -1886,7 +1855,7 @@ class SegmentMaker(abctools.AbjadObject):
         '''
         durations = [_.duration for _ in meters]
         offsets = mathtools.cumulative_sums(durations)
-        offsets = [durationtools.Offset(_) for _ in offsets]
+        offsets = [abjad.Offset(_) for _ in offsets]
         return tuple(offsets)
 
     @staticmethod
@@ -1895,15 +1864,11 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
             >>> meters = [
-            ...     metertools.Meter((3, 4)),
-            ...     metertools.Meter((2, 4)),
-            ...     metertools.Meter((6, 8)),
-            ...     metertools.Meter((5, 16)),
+            ...     abjad.Meter((3, 4)),
+            ...     abjad.Meter((2, 4)),
+            ...     abjad.Meter((6, 8)),
+            ...     abjad.Meter((5, 16)),
             ...     ]
 
         ::
@@ -1912,31 +1877,31 @@ class SegmentMaker(abctools.AbjadObject):
             >>> print(format(timespans))
             consort.tools.TimespanCollection(
                 [
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(3, 4),
-                        annotation=metertools.Meter(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(3, 4),
+                        annotation=abjad.Meter(
                             '(3/4 (1/4 1/4 1/4))'
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(3, 4),
-                        stop_offset=durationtools.Offset(5, 4),
-                        annotation=metertools.Meter(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(3, 4),
+                        stop_offset=abjad.Offset(5, 4),
+                        annotation=abjad.Meter(
                             '(2/4 (1/4 1/4))'
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(5, 4),
-                        stop_offset=durationtools.Offset(2, 1),
-                        annotation=metertools.Meter(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(5, 4),
+                        stop_offset=abjad.Offset(2, 1),
+                        annotation=abjad.Meter(
                             '(6/8 ((3/8 (1/8 1/8 1/8)) (3/8 (1/8 1/8 1/8))))'
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(2, 1),
-                        stop_offset=durationtools.Offset(37, 16),
-                        annotation=metertools.Meter(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(2, 1),
+                        stop_offset=abjad.Offset(37, 16),
+                        annotation=abjad.Meter(
                             '(5/16 ((3/16 (1/16 1/16 1/16)) (2/16 (1/16 1/16))))'
                             ),
                         ),
@@ -1951,7 +1916,7 @@ class SegmentMaker(abctools.AbjadObject):
         for i, meter in enumerate(meters):
             start_offset = offsets[i]
             stop_offset = offsets[i + 1]
-            timespan = timespantools.AnnotatedTimespan(
+            timespan = abjad.AnnotatedTimespan(
                 annotation=meter,
                 start_offset=start_offset,
                 stop_offset=stop_offset,
@@ -1966,21 +1931,17 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
-
-        ::
-
             >>> demultiplexed = {}
-            >>> demultiplexed['foo'] = timespantools.TimespanList([
-            ...     timespantools.Timespan(0, 10),
-            ...     timespantools.Timespan(15, 30),
+            >>> demultiplexed['foo'] = abjad.TimespanList([
+            ...     abjad.Timespan(0, 10),
+            ...     abjad.Timespan(15, 30),
             ...     ])
-            >>> demultiplexed['bar'] = timespantools.TimespanList([
-            ...     timespantools.Timespan(5, 15),
-            ...     timespantools.Timespan(20, 35),
+            >>> demultiplexed['bar'] = abjad.TimespanList([
+            ...     abjad.Timespan(5, 15),
+            ...     abjad.Timespan(20, 35),
             ...     ])
-            >>> demultiplexed['baz'] = timespantools.TimespanList([
-            ...     timespantools.Timespan(5, 40),
+            >>> demultiplexed['baz'] = abjad.TimespanList([
+            ...     abjad.Timespan(5, 40),
             ...     ])
 
         ::
@@ -1988,34 +1949,34 @@ class SegmentMaker(abctools.AbjadObject):
             >>> multiplexed = consort.SegmentMaker.multiplex_timespans(
             ...     demultiplexed)
             >>> print(format(multiplexed))
-            timespantools.TimespanList(
+            abjad.TimespanList(
                 [
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(10, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(10, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(5, 1),
-                        stop_offset=durationtools.Offset(15, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(5, 1),
+                        stop_offset=abjad.Offset(15, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(5, 1),
-                        stop_offset=durationtools.Offset(40, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(5, 1),
+                        stop_offset=abjad.Offset(40, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(15, 1),
-                        stop_offset=durationtools.Offset(30, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(15, 1),
+                        stop_offset=abjad.Offset(30, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(20, 1),
-                        stop_offset=durationtools.Offset(35, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(20, 1),
+                        stop_offset=abjad.Offset(35, 1),
                         ),
                     ]
                 )
 
         Returns timespan inventory.
         '''
-        multiplexed_timespans = timespantools.TimespanList()
+        multiplexed_timespans = abjad.TimespanList()
         for timespans in demultiplexed_maquette.values():
             multiplexed_timespans.extend(timespans)
         multiplexed_timespans.sort()
@@ -2193,11 +2154,11 @@ class SegmentMaker(abctools.AbjadObject):
         timespan_quantization=None,
         ):
         import consort
-        segment_timespan = timespantools.Timespan(0, desired_duration)
+        segment_timespan = abjad.Timespan(0, desired_duration)
         if timespan_quantization is None:
-            timespan_quantization = durationtools.Duration(1, 16)
+            timespan_quantization = abjad.Duration(1, 16)
         if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanList()
+            timespan_inventory = abjad.TimespanList()
         independent_settings = [
             setting for setting in settings
             if not setting.timespan_maker.is_dependent
@@ -2241,7 +2202,7 @@ class SegmentMaker(abctools.AbjadObject):
             voice = score[voice_name]
             for timespan in timespans:
                 assert timespan.duration == \
-                    inspect_(timespan.music).get_duration()
+                    abjad.inspect(timespan.music).get_duration()
                 voice.append(timespan.music)
         return score
 
@@ -2262,9 +2223,9 @@ class SegmentMaker(abctools.AbjadObject):
         for voice_name in voice_names:
             if voice_name not in demultiplexed_maquette:
                 demultiplexed_maquette[voice_name] = \
-                    timespantools.TimespanList()
+                    abjad.TimespanList()
             timespans = demultiplexed_maquette[voice_name]
-            silences = timespantools.TimespanList([
+            silences = abjad.TimespanList([
                 consort.SilentTimespan(
                     start_offset=0,
                     stop_offset=meter_offsets[-1],
@@ -2282,7 +2243,7 @@ class SegmentMaker(abctools.AbjadObject):
                     rhythm_maker,
                     durations,
                     )
-                attach(silent_music_specifier, silence, scope=scoretools.Voice)
+                abjad.attach(silent_music_specifier, silence, scope=abjad.Voice)
                 silent_timespan = consort.PerformedTimespan(
                     music=silence,
                     start_offset=start_offset,
@@ -2367,7 +2328,7 @@ class SegmentMaker(abctools.AbjadObject):
                     continue
                 resolved_inventory.append(timespan)
             resolved_inventory.sort()
-        resolved_inventory = timespantools.TimespanList(
+        resolved_inventory = abjad.TimespanList(
             resolved_inventory[:],
             )
         return resolved_inventory
@@ -2380,24 +2341,24 @@ class SegmentMaker(abctools.AbjadObject):
         ):
         assert meter_timespans
         assert meter_timespans[0].start_offset <= \
-            inspect_(container).get_timespan().start_offset
+            abjad.inspect(container).get_timespan().start_offset
         #last_leaf = container.select_leaves()[-1]
-        last_leaf = next(iterate(container).by_leaf(reverse=True))
+        last_leaf = next(abjad.iterate(container).by_leaf(reverse=True))
         is_tied = SegmentMaker.leaf_is_tied(last_leaf)
-        container_timespan = inspect_(container).get_timespan()
-        if isinstance(container, scoretools.Tuplet):
-            contents_duration = container._contents_duration
-            meter = metertools.Meter(contents_duration)
+        container_timespan = abjad.inspect(container).get_timespan()
+        if isinstance(container, abjad.Tuplet):
+            contents_duration = container._get_contents_duration()
+            meter = abjad.Meter(contents_duration)
             boundary_depth = 1
             if meter.numerator in (3, 4):
                 boundary_depth = None
-            mutate(container[:]).rewrite_meter(
+            abjad.mutate(container[:]).rewrite_meter(
                 meter,
                 boundary_depth=boundary_depth,
                 maximum_dot_count=2,
                 )
         elif len(meter_timespans) == 1:
-            container_timespan = inspect_(container).get_timespan()
+            container_timespan = abjad.inspect(container).get_timespan()
             container_start_offset = container_timespan.start_offset
             container_stop_offset = container_timespan.stop_offset
             meter_timespan = meter_timespans[0]
@@ -2411,24 +2372,25 @@ class SegmentMaker(abctools.AbjadObject):
             assert container_stop_offset <= absolute_meter_stop_offset
             if meter_timespan.is_congruent_to_timespan(container_timespan) \
                 and SegmentMaker.division_is_silent(container):
-                multimeasure_rest = scoretools.MultimeasureRest(1)
-                duration = inspect_(container).get_duration()
-                multiplier = durationtools.Multiplier(duration)
-                attach(multiplier, multimeasure_rest)
+                multimeasure_rest = abjad.MultimeasureRest(1)
+                duration = abjad.inspect(container).get_duration()
+                multiplier = abjad.Multiplier(duration)
+                abjad.attach(multiplier, multimeasure_rest)
                 container[:] = [multimeasure_rest]
                 if not forbid_staff_lines_spanner:
                     previous_leaf = multimeasure_rest._get_leaf(-1)
-                    if isinstance(previous_leaf, scoretools.MultimeasureRest):
+                    if isinstance(previous_leaf, abjad.MultimeasureRest):
                         staff_lines_spanner = \
-                            inspect_(previous_leaf).get_spanner(
+                            abjad.inspect(previous_leaf).get_spanner(
                                 spannertools.StaffLinesSpanner)
                         components = staff_lines_spanner.components
                         components = components + [multimeasure_rest]
-                        detach(staff_lines_spanner)
+                        abjad.detach(staff_lines_spanner)
                     else:
                         staff_lines_spanner = spannertools.StaffLinesSpanner([0])
                         components = [multimeasure_rest]
-                    attach(
+                    components = abjad.select(components)
+                    abjad.attach(
                         staff_lines_spanner,
                         components,
                         name='staff_lines_spanner',
@@ -2440,11 +2402,7 @@ class SegmentMaker(abctools.AbjadObject):
                 boundary_depth = 1
                 if meter.numerator in (3, 4):
                     boundary_depth = None
-                #print()
-                #print(container)
-                #print(meter)
-                #print(initial_offset)
-                mutate(container[:]).rewrite_meter(
+                abjad.mutate(container[:]).rewrite_meter(
                     meter,
                     boundary_depth=boundary_depth,
                     initial_offset=initial_offset,
@@ -2454,8 +2412,8 @@ class SegmentMaker(abctools.AbjadObject):
             # TODO: handle bar-line-crossing containers
             raise AssertionError('Bar-line-crossing containers not permitted.')
         if is_tied:
-            last_leaf = next(iterate(container).by_leaf(reverse=True))
-            next_leaf = inspect_(last_leaf).get_leaf(1)
+            last_leaf = next(abjad.iterate(container).by_leaf(reverse=True))
+            next_leaf = abjad.inspect(last_leaf).get_leaf(1)
             selection = selectiontools.Selection((
                 last_leaf, next_leaf))
             selection._attach_tie_spanner_to_leaf_pair()
@@ -2485,44 +2443,40 @@ class SegmentMaker(abctools.AbjadObject):
                     ))
                 if not SegmentMaker.can_rewrite_meter(inscribed_timespan):
                     continue
-                with systemtools.ForbidUpdate(
-                    inscribed_timespan.music,
-                    update_on_exit=True,
-                    ):
-                    for i, container in enumerate(inscribed_timespan.music):
-                        container_timespan = inspect_(container).get_timespan()
-                        container_timespan = container_timespan.translate(
-                            inscribed_timespan.start_offset)
-                        if i == 0:
-                            assert container_timespan.start_offset == \
-                                inscribed_timespan.start_offset
-                        if i == (len(inscribed_timespan.music) - 1):
-                            assert container_timespan.stop_offset == \
-                                inscribed_timespan.stop_offset
-                        if container_timespan in cache:
-                            intersecting_meters = cache[container_timespan]
-                        else:
-                            intersecting_meters = \
-                                meter_timespans.find_timespans_intersecting_timespan(
-                                    container_timespan)
-                            cache[container_timespan] = intersecting_meters
-                        shifted_intersecting_meters = [
-                            _.translate(-1 * inscribed_timespan.start_offset)
-                            for _ in intersecting_meters
-                            ]
-                        consort.debug('\t\t{!r} {!r}'.format(
-                            container,
-                            container_timespan,
-                            ))
-                        for intersecting_meter in intersecting_meters:
-                            consort.debug('\t\t\t' + repr(intersecting_meter))
-                        SegmentMaker.rewrite_container_meter(
-                            container,
-                            shifted_intersecting_meters,
-                            forbid_staff_lines_spanner,
-                            )
-                        SegmentMaker.cleanup_logical_ties(container)
-                        count += 1
+                for i, container in enumerate(inscribed_timespan.music):
+                    container_timespan = abjad.inspect(container).get_timespan()
+                    container_timespan = container_timespan.translate(
+                        inscribed_timespan.start_offset)
+                    if i == 0:
+                        assert container_timespan.start_offset == \
+                            inscribed_timespan.start_offset
+                    if i == (len(inscribed_timespan.music) - 1):
+                        assert container_timespan.stop_offset == \
+                            inscribed_timespan.stop_offset
+                    if container_timespan in cache:
+                        intersecting_meters = cache[container_timespan]
+                    else:
+                        intersecting_meters = \
+                            meter_timespans.find_timespans_intersecting_timespan(
+                                container_timespan)
+                        cache[container_timespan] = intersecting_meters
+                    shifted_intersecting_meters = [
+                        _.translate(-1 * inscribed_timespan.start_offset)
+                        for _ in intersecting_meters
+                        ]
+                    consort.debug('\t\t{!r} {!r}'.format(
+                        container,
+                        container_timespan,
+                        ))
+                    for intersecting_meter in intersecting_meters:
+                        consort.debug('\t\t\t' + repr(intersecting_meter))
+                    SegmentMaker.rewrite_container_meter(
+                        container,
+                        shifted_intersecting_meters,
+                        forbid_staff_lines_spanner,
+                        )
+                    SegmentMaker.cleanup_logical_ties(container)
+                    count += 1
             if verbose:
                 message = template.format(context_name, count)
                 print(message)
@@ -2530,7 +2484,7 @@ class SegmentMaker(abctools.AbjadObject):
     @staticmethod
     def sort_voice_names(score, voice_names):
         result = []
-        for voice in iterate(score).by_class(scoretools.Voice):
+        for voice in abjad.iterate(score).by_class(abjad.Voice):
             if voice.name in voice_names:
                 result.append(voice.name)
         return tuple(result)
@@ -2552,7 +2506,7 @@ class SegmentMaker(abctools.AbjadObject):
     def split_timespans(offsets, timespan_inventory):
         offsets = list(offsets)
         timespan_inventory.sort()
-        split_inventory = timespantools.TimespanList()
+        split_inventory = abjad.TimespanList()
         for timespan in sorted(timespan_inventory):
             current_offsets = []
             while offsets and offsets[0] <= timespan.start_offset:
@@ -2591,48 +2545,47 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> inventory_one = timespantools.TimespanList([
-            ...     timespantools.Timespan(0, 10),
-            ...     timespantools.Timespan(10, 20),
-            ...     timespantools.Timespan(40, 80),
+            >>> inventory_one = abjad.TimespanList([
+            ...     abjad.Timespan(0, 10),
+            ...     abjad.Timespan(10, 20),
+            ...     abjad.Timespan(40, 80),
             ...     ])
 
         ::
 
-            >>> inventory_two = timespantools.TimespanList([
-            ...     timespantools.Timespan(5, 15),
-            ...     timespantools.Timespan(25, 35),
-            ...     timespantools.Timespan(35, 45),
-            ...     timespantools.Timespan(55, 65),
-            ...     timespantools.Timespan(85, 95),
+            >>> inventory_two = abjad.TimespanList([
+            ...     abjad.Timespan(5, 15),
+            ...     abjad.Timespan(25, 35),
+            ...     abjad.Timespan(35, 45),
+            ...     abjad.Timespan(55, 65),
+            ...     abjad.Timespan(85, 95),
             ...     ])
 
         ::
 
-            >>> import consort
             >>> manager = consort.SegmentMaker
             >>> result = manager.subtract_timespan_inventories(
             ...      inventory_one,
             ...      inventory_two,
             ...      )
             >>> print(format(result))
-            timespantools.TimespanList(
+            abjad.TimespanList(
                 [
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(5, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(5, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(15, 1),
-                        stop_offset=durationtools.Offset(20, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(15, 1),
+                        stop_offset=abjad.Offset(20, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(45, 1),
-                        stop_offset=durationtools.Offset(55, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(45, 1),
+                        stop_offset=abjad.Offset(55, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(65, 1),
-                        stop_offset=durationtools.Offset(80, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(65, 1),
+                        stop_offset=abjad.Offset(80, 1),
                         ),
                     ]
                 )
@@ -2644,19 +2597,19 @@ class SegmentMaker(abctools.AbjadObject):
             ...      inventory_one,
             ...      )
             >>> print(format(result))
-            timespantools.TimespanList(
+            abjad.TimespanList(
                 [
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(25, 1),
-                        stop_offset=durationtools.Offset(35, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(25, 1),
+                        stop_offset=abjad.Offset(35, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(35, 1),
-                        stop_offset=durationtools.Offset(40, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(35, 1),
+                        stop_offset=abjad.Offset(40, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(85, 1),
-                        stop_offset=durationtools.Offset(95, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(85, 1),
+                        stop_offset=abjad.Offset(95, 1),
                         ),
                     ]
                 )
@@ -2665,9 +2618,9 @@ class SegmentMaker(abctools.AbjadObject):
         import consort
         resulting_timespans = consort.TimespanCollection()
         if not inventory_two:
-            return timespantools.TimespanList(inventory_one)
+            return abjad.TimespanList(inventory_one)
         elif not inventory_one:
-            return timespantools.TimespanList()
+            return abjad.TimespanList()
         subtractee_index = 0
         subtractor_index = 0
         subtractee = None
@@ -2707,7 +2660,7 @@ class SegmentMaker(abctools.AbjadObject):
             resulting_timespans.insert(inventory_one[subtractee_index + 1:])
         else:
             resulting_timespans.insert(inventory_one[subtractee_index:])
-        resulting_timespans = timespantools.TimespanList(
+        resulting_timespans = abjad.TimespanList(
             resulting_timespans[:])
         return resulting_timespans
 
@@ -2779,18 +2732,18 @@ class SegmentMaker(abctools.AbjadObject):
     def desired_duration(self):
         tempo = self.tempo
         if tempo is None:
-            tempo = indicatortools.Tempo((1, 4), 60)
-        tempo_desired_duration_in_seconds = durationtools.Duration(
+            tempo = abjad.MetronomeMark((1, 4), 60)
+        tempo_desired_duration_in_seconds = abjad.Duration(
             tempo.duration_to_milliseconds(tempo.reference_duration),
             1000,
             )
-        desired_duration = durationtools.Duration((
+        desired_duration = abjad.Duration((
             self.desired_duration_in_seconds /
             tempo_desired_duration_in_seconds
             ).limit_denominator(8))
         desired_duration *= tempo.reference_duration
-        count = desired_duration // durationtools.Duration(1, 8)
-        desired_duration = durationtools.Duration(count, 8)
+        count = desired_duration // abjad.Duration(1, 8)
+        desired_duration = abjad.Duration(count, 8)
         assert 0 < desired_duration
         return desired_duration
 
@@ -2801,7 +2754,7 @@ class SegmentMaker(abctools.AbjadObject):
     @desired_duration_in_seconds.setter
     def desired_duration_in_seconds(self, desired_duration_in_seconds):
         if desired_duration_in_seconds is not None:
-            desired_duration_in_seconds = durationtools.Duration(
+            desired_duration_in_seconds = abjad.Duration(
                 desired_duration_in_seconds,
                 )
         self._desired_duration_in_seconds = desired_duration_in_seconds
@@ -2894,17 +2847,16 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
             >>> segment_maker = consort.SegmentMaker()
             >>> time_signatures = [(3, 4), (2, 4), (5, 8)]
             >>> segment_maker.permitted_time_signatures = time_signatures
             >>> print(format(segment_maker))
             consort.tools.SegmentMaker(
-                permitted_time_signatures=indicatortools.TimeSignatureList(
+                permitted_time_signatures=abjad.TimeSignatureList(
                     [
-                        indicatortools.TimeSignature((3, 4)),
-                        indicatortools.TimeSignature((2, 4)),
-                        indicatortools.TimeSignature((5, 8)),
+                        abjad.TimeSignature((3, 4)),
+                        abjad.TimeSignature((2, 4)),
+                        abjad.TimeSignature((5, 8)),
                         ]
                     ),
                 )
@@ -2915,7 +2867,7 @@ class SegmentMaker(abctools.AbjadObject):
     @permitted_time_signatures.setter
     def permitted_time_signatures(self, permitted_time_signatures):
         if permitted_time_signatures is not None:
-            permitted_time_signatures = indicatortools.TimeSignatureList(
+            permitted_time_signatures = abjad.TimeSignatureList(
                 items=permitted_time_signatures,
                 )
         self._permitted_time_signatures = permitted_time_signatures
@@ -2949,9 +2901,8 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
             >>> segment_maker = consort.SegmentMaker()
-            >>> score_template = templatetools.StringOrchestraScoreTemplate(
+            >>> score_template = abjad.templatetools.StringOrchestraScoreTemplate(
             ...     violin_count=2,
             ...     viola_count=1,
             ...     cello_count=1,
@@ -3001,14 +2952,13 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
             >>> segment_maker = consort.SegmentMaker()
-            >>> tempo = indicatortools.Tempo((1, 4), 52)
+            >>> tempo = abjad.MetronomeMark((1, 4), 52)
             >>> segment_maker.tempo = tempo
             >>> print(format(segment_maker))
             consort.tools.SegmentMaker(
-                tempo=indicatortools.Tempo(
-                    reference_duration=durationtools.Duration(1, 4),
+                tempo=abjad.MetronomeMark(
+                    reference_duration=abjad.Duration(1, 4),
                     units_per_minute=52,
                     ),
                 )
@@ -3020,14 +2970,14 @@ class SegmentMaker(abctools.AbjadObject):
         elif self._previous_segment_metadata is not None:
             tempo = self._previous_segment_metadata.get('end_tempo')
             if tempo:
-                tempo = indicatortools.Tempo(*tempo)
+                tempo = abjad.MetronomeMark(*tempo)
         return tempo
 
     @tempo.setter
     def tempo(self, tempo):
         if tempo is not None:
-            if not isinstance(tempo, indicatortools.Tempo):
-                tempo = indicatortools.Tempo(tempo)
+            if not isinstance(tempo, abjad.MetronomeMark):
+                tempo = abjad.MetronomeMark(tempo)
         self._tempo = tempo
 
     @property
@@ -3043,13 +2993,12 @@ class SegmentMaker(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
             >>> segment_maker = consort.SegmentMaker()
             >>> timespan_quantization = (1, 8)
             >>> segment_maker.timespan_quantization = timespan_quantization
             >>> print(format(segment_maker))
             consort.tools.SegmentMaker(
-                timespan_quantization=durationtools.Duration(1, 8),
+                timespan_quantization=abjad.Duration(1, 8),
                 )
 
         '''
@@ -3059,7 +3008,7 @@ class SegmentMaker(abctools.AbjadObject):
     def timespan_quantization(self, timespan_quantization):
         if timespan_quantization is not None:
             timespan_quantization = \
-                durationtools.Duration(timespan_quantization)
+                abjad.Duration(timespan_quantization)
         self._timespan_quantization = timespan_quantization
 
     @property

@@ -1,10 +1,7 @@
-# -*- encoding: utf-8 -*-
-from abjad import iterate
-from abjad import new
+import abjad
 from abjad.tools import instrumenttools
 from abjad.tools import lilypondnametools
 from abjad.tools import markuptools
-from abjad.tools import scoretools
 from abjad.tools import systemtools
 
 
@@ -13,7 +10,6 @@ class Instrument(instrumenttools.Instrument):
 
     ::
 
-        >>> import consort
         >>> instrument_one = consort.Instrument(
         ...     instrument_name_markup='Bassoon',
         ...     short_instrument_name_markup='Bsn.',
@@ -27,11 +23,11 @@ class Instrument(instrumenttools.Instrument):
 
     ::
 
-        >>> staff = Staff("c'4 d'4 e'4 f'4 g'4 a'4 b'4 c''4")
-        >>> attach(instrument_one, staff[0])
-        >>> attach(instrument_two, staff[2])
-        >>> attach(instrument_two, staff[4])
-        >>> attach(instrument_one, staff[6])
+        >>> staff = abjad.Staff("c'4 d'4 e'4 f'4 g'4 a'4 b'4 c''4")
+        >>> abjad.attach(instrument_one, staff[0])
+        >>> abjad.attach(instrument_two, staff[2])
+        >>> abjad.attach(instrument_two, staff[4])
+        >>> abjad.attach(instrument_one, staff[6])
         >>> print(format(staff))
         \new Staff {
             \set Staff.instrumentName = \markup { Bassoon }
@@ -91,8 +87,8 @@ class Instrument(instrumenttools.Instrument):
     def _get_lilypond_format_bundle(self, component):
         bundle = systemtools.LilyPondFormatBundle()
         previous_instrument = component._get_effective(type(self), n=-1)
-        if isinstance(component, scoretools.Container):
-            previous_leaf = next(iterate(component).by_leaf())._get_leaf(-1)
+        if isinstance(component, abjad.Container):
+            previous_leaf = next(abjad.iterate(component).by_leaf())._get_leaf(-1)
         else:
             previous_leaf = component._get_leaf(-1)
         if self.instrument_change_markup and previous_instrument != self:
@@ -100,19 +96,19 @@ class Instrument(instrumenttools.Instrument):
                 bundle.right.markup.append(self.instrument_change_markup)
         if previous_instrument == self:
             return bundle
-        if isinstance(component, scoretools.Leaf):
+        if isinstance(component, abjad.Leaf):
             if self.instrument_name_markup is not None:
                 context_setting = lilypondnametools.LilyPondContextSetting(
                     context_name=self._scope_name,
                     context_property='instrumentName',
-                    value=new(self.instrument_name_markup, direction=None),
+                    value=abjad.new(self.instrument_name_markup, direction=None),
                     )
                 bundle.update(context_setting)
             if self.short_instrument_name_markup is not None:
                 context_setting = lilypondnametools.LilyPondContextSetting(
                     context_name=self._scope_name,
                     context_property='shortInstrumentName',
-                    value=new(self.short_instrument_name_markup, direction=None),
+                    value=abjad.new(self.short_instrument_name_markup, direction=None),
                     )
                 bundle.update(context_setting)
         else:

@@ -1,7 +1,4 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
-from abjad import new
-from abjad.tools import datastructuretools
+import abjad
 from abjad.tools import pitchtools
 from consort.tools.PitchHandler import PitchHandler
 
@@ -11,7 +8,6 @@ class PitchClassPitchHandler(PitchHandler):
 
     ::
 
-        >>> import consort
         >>> pitch_handler = consort.PitchClassPitchHandler(
         ...     pitch_specifier="c' d' e' f'",
         ...     )
@@ -19,17 +15,17 @@ class PitchClassPitchHandler(PitchHandler):
         consort.tools.PitchClassPitchHandler(
             pitch_specifier=consort.tools.PitchSpecifier(
                 pitch_segments=(
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("c'"),
-                            pitchtools.NamedPitch("d'"),
-                            pitchtools.NamedPitch("e'"),
-                            pitchtools.NamedPitch("f'"),
+                            abjad.NamedPitch("c'"),
+                            abjad.NamedPitch("d'"),
+                            abjad.NamedPitch("e'"),
+                            abjad.NamedPitch("f'"),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
                     ),
-                ratio=mathtools.Ratio((1,)),
+                ratio=abjad.Ratio((1,)),
                 ),
             )
 
@@ -45,7 +41,7 @@ class PitchClassPitchHandler(PitchHandler):
         '_register_spread',
         )
 
-    _default_octavations = datastructuretools.CyclicTuple([
+    _default_octavations = abjad.CyclicTuple([
         4, 2, 1, 0, 5, 6, 7, 3,
         0, 5, 3, 1, 7, 4, 2, 6,
         2, 1, 5, 3, 4, 0, 7, 6,
@@ -104,7 +100,9 @@ class PitchClassPitchHandler(PitchHandler):
         previous_pitch,
         seed_session,
         ):
-        previous_pitch_class = pitchtools.NamedPitchClass(previous_pitch)
+        previous_pitch_class = None
+        if previous_pitch is not None:
+            previous_pitch_class = abjad.NamedPitchClass(previous_pitch)
         instrument = self._get_instrument(logical_tie, music_specifier)
         pitch_range = self._get_pitch_range(
             instrument,
@@ -175,11 +173,11 @@ class PitchClassPitchHandler(PitchHandler):
         ):
         octavations = self.octavations or self._default_octavations
         octave = octavations[seed]
-        pitch = pitchtools.NamedPitch(pitch_class, octave)
+        pitch = abjad.NamedPitch((pitch_class, octave))
         pitch_range = pitchtools.PitchRange('[C0, C8)')
         pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
         pitch = registration([pitch])[0]
-        pitch = pitchtools.NamedPitch(pitch)
+        pitch = abjad.NamedPitch(pitch)
         return pitch
 
     def _get_pitch_class(
@@ -191,23 +189,25 @@ class PitchClassPitchHandler(PitchHandler):
         ):
         pitch_class = pitch_choices[seed]
         pitch_class = pitchtools.NamedPitchClass(pitch_class)
+        if previous_pitch_class is not None:
+            previous_pitch_class = float(previous_pitch_class)
         if pitch_choices and \
             1 < len(set(pitch_choices)) and \
             self.forbid_repetitions:
             if self.pitch_application_rate == 'phrase':
                 if attack_point_signature.is_first_of_phrase:
-                    while float(pitch_class) == float(previous_pitch_class):
+                    while float(pitch_class) == previous_pitch_class:
                         seed += 1
                         pitch_class = pitch_choices[seed]
                         pitch_class = pitchtools.NamedPitchClass(pitch_class)
             elif self.pitch_application_rate == 'division':
                 if attack_point_signature.is_first_of_division:
-                    while float(pitch_class) == float(previous_pitch_class):
+                    while float(pitch_class) == previous_pitch_class:
                         seed += 1
                         pitch_class = pitch_choices[seed]
                         pitch_class = pitchtools.NamedPitchClass(pitch_class)
             else:
-                while float(pitch_class) == float(previous_pitch_class):
+                while float(pitch_class) == previous_pitch_class:
                     seed += 1
                     pitch_class = pitch_choices[seed]
                     pitch_class = pitchtools.NamedPitchClass(pitch_class)
@@ -239,7 +239,7 @@ class PitchClassPitchHandler(PitchHandler):
 
     def _initialize_leap_constraint(self, leap_constraint):
         if leap_constraint is not None:
-            leap_constraint = pitchtools.NumberedInterval(leap_constraint)
+            leap_constraint = abjad.NumberedInterval(leap_constraint)
             leap_constraint = abs(leap_constraint)
         self._leap_constraint = leap_constraint
 
@@ -247,7 +247,7 @@ class PitchClassPitchHandler(PitchHandler):
         if octavations is not None:
             assert octavations
             assert all(isinstance(x, int) for x in octavations)
-            octavations = datastructuretools.CyclicTuple(octavations)
+            octavations = abjad.CyclicTuple(octavations)
         self._octavations = octavations
 
     def _initialize_pitch_classes(self, pitch_classes):
@@ -255,7 +255,7 @@ class PitchClassPitchHandler(PitchHandler):
             items=pitch_classes,
             item_class=pitchtools.NumberedPitchClass,
             )
-        pitch_classes = datastructuretools.CyclicTuple(pitch_classes)
+        pitch_classes = abjad.CyclicTuple(pitch_classes)
         self._pitch_classes = pitch_classes
 
     def _initialize_pitch_range(self, pitch_range):
@@ -284,7 +284,7 @@ class PitchClassPitchHandler(PitchHandler):
         register_specifier = self.register_specifier
         if register_specifier is not None:
             register_specifier = register_specifier.transpose(expr)
-        return new(
+        return abjad.new(
             self,
             pitch_specifier=pitch_specifier,
             register_specifier=register_specifier,

@@ -1,8 +1,6 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
-from abjad import new
 from abjad.tools import abctools
-from abjad.tools import pitchtools
 
 
 class RegisterSpecifier(abctools.AbjadValueObject):
@@ -10,7 +8,6 @@ class RegisterSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> register_specifier = consort.RegisterSpecifier(
         ...     base_pitch=12,
         ...     division_inflections=(
@@ -34,49 +31,49 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         ...     )
         >>> print(format(register_specifier))
         consort.tools.RegisterSpecifier(
-            base_pitch=pitchtools.NumberedPitch(12),
+            base_pitch=abjad.NumberedPitch(12),
             division_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
-                        inflections=pitchtools.IntervalSegment(
+                        inflections=abjad.IntervalSegment(
                             (
-                                pitchtools.NumberedInterval(-6),
-                                pitchtools.NumberedInterval(3),
-                                pitchtools.NumberedInterval(6),
+                                abjad.NumberedInterval(-6),
+                                abjad.NumberedInterval(3),
+                                abjad.NumberedInterval(6),
                                 ),
-                            item_class=pitchtools.NumberedInterval,
+                            item_class=abjad.NumberedInterval,
                             ),
-                        ratio=mathtools.Ratio((1, 1)),
+                        ratio=abjad.Ratio((1, 1)),
                         ),
                     ]
                 ),
             phrase_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
-                        inflections=pitchtools.IntervalSegment(
+                        inflections=abjad.IntervalSegment(
                             (
-                                pitchtools.NumberedInterval(3),
-                                pitchtools.NumberedInterval(-3),
+                                abjad.NumberedInterval(3),
+                                abjad.NumberedInterval(-3),
                                 ),
-                            item_class=pitchtools.NumberedInterval,
+                            item_class=abjad.NumberedInterval,
                             ),
-                        ratio=mathtools.Ratio((1,)),
+                        ratio=abjad.Ratio((1,)),
                         ),
                     ]
                 ),
             segment_inflections=consort.tools.RegisterInflectionInventory(
                 [
                     consort.tools.RegisterInflection(
-                        inflections=pitchtools.IntervalSegment(
+                        inflections=abjad.IntervalSegment(
                             (
-                                pitchtools.NumberedInterval(-12),
-                                pitchtools.NumberedInterval(-9),
-                                pitchtools.NumberedInterval(0),
-                                pitchtools.NumberedInterval(12),
+                                abjad.NumberedInterval(-12),
+                                abjad.NumberedInterval(-9),
+                                abjad.NumberedInterval(0),
+                                abjad.NumberedInterval(12),
                                 ),
-                            item_class=pitchtools.NumberedInterval,
+                            item_class=abjad.NumberedInterval,
                             ),
-                        ratio=mathtools.Ratio((3, 2, 1)),
+                        ratio=abjad.Ratio((3, 2, 1)),
                         ),
                     ]
                 ),
@@ -121,7 +118,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
             self._segment_inflections = expr.segment_inflections
             return
         if base_pitch is not None:
-            base_pitch = pitchtools.NumberedPitch(base_pitch)
+            base_pitch = abjad.NumberedPitch(base_pitch)
         self._base_pitch = base_pitch
         if division_inflections is not None:
             if not isinstance(division_inflections, collections.Sequence):
@@ -155,7 +152,7 @@ class RegisterSpecifier(abctools.AbjadValueObject):
         seed = int(seed)
         register = self.base_pitch
         if register is None:
-            register = pitchtools.NumberedPitch(0)
+            register = abjad.NumberedPitch(0)
         if self.division_inflections:
             index = seed % len(self.division_inflections)
             inflection = self.division_inflections[index]
@@ -202,58 +199,58 @@ class RegisterSpecifier(abctools.AbjadValueObject):
             >>> transposed_specifier = register_specifier.transpose(-6)
             >>> print(format(transposed_specifier))
             consort.tools.RegisterSpecifier(
-                base_pitch=pitchtools.NumberedPitch(6),
+                base_pitch=abjad.NumberedPitch(6),
                 division_inflections=consort.tools.RegisterInflectionInventory(
                     [
                         consort.tools.RegisterInflection(
-                            inflections=pitchtools.IntervalSegment(
+                            inflections=abjad.IntervalSegment(
                                 (
-                                    pitchtools.NumberedInterval(-6),
-                                    pitchtools.NumberedInterval(3),
-                                    pitchtools.NumberedInterval(6),
+                                    abjad.NumberedInterval(-6),
+                                    abjad.NumberedInterval(3),
+                                    abjad.NumberedInterval(6),
                                     ),
-                                item_class=pitchtools.NumberedInterval,
+                                item_class=abjad.NumberedInterval,
                                 ),
-                            ratio=mathtools.Ratio((1, 1)),
+                            ratio=abjad.Ratio((1, 1)),
                             ),
                         ]
                     ),
                 phrase_inflections=consort.tools.RegisterInflectionInventory(
                     [
                         consort.tools.RegisterInflection(
-                            inflections=pitchtools.IntervalSegment(
+                            inflections=abjad.IntervalSegment(
                                 (
-                                    pitchtools.NumberedInterval(3),
-                                    pitchtools.NumberedInterval(-3),
+                                    abjad.NumberedInterval(3),
+                                    abjad.NumberedInterval(-3),
                                     ),
-                                item_class=pitchtools.NumberedInterval,
+                                item_class=abjad.NumberedInterval,
                                 ),
-                            ratio=mathtools.Ratio((1,)),
+                            ratio=abjad.Ratio((1,)),
                             ),
                         ]
                     ),
                 segment_inflections=consort.tools.RegisterInflectionInventory(
                     [
                         consort.tools.RegisterInflection(
-                            inflections=pitchtools.IntervalSegment(
+                            inflections=abjad.IntervalSegment(
                                 (
-                                    pitchtools.NumberedInterval(-12),
-                                    pitchtools.NumberedInterval(-9),
-                                    pitchtools.NumberedInterval(0),
-                                    pitchtools.NumberedInterval(12),
+                                    abjad.NumberedInterval(-12),
+                                    abjad.NumberedInterval(-9),
+                                    abjad.NumberedInterval(0),
+                                    abjad.NumberedInterval(12),
                                     ),
-                                item_class=pitchtools.NumberedInterval,
+                                item_class=abjad.NumberedInterval,
                                 ),
-                            ratio=mathtools.Ratio((3, 2, 1)),
+                            ratio=abjad.Ratio((3, 2, 1)),
                             ),
                         ]
                     ),
                 )
 
         '''
-        base_pitch = self.base_pitch or pitchtools.NamedPitch('C4')
+        base_pitch = self.base_pitch or abjad.NamedPitch('C4')
         base_pitch = base_pitch.transpose(transposition)
-        return new(self, base_pitch=base_pitch)
+        return abjad.new(self, base_pitch=base_pitch)
 
     ### PUBLIC PROPERTIES ###
 

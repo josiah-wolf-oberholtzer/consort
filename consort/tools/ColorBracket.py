@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from abjad import inspect_
+import abjad
 from abjad.tools.spannertools.Spanner import Spanner
 
 
@@ -12,7 +11,7 @@ class ColorBracket(Spanner):
 
     ::
 
-        >>> staff = Staff("c'4 d'4 e'4 f'4")
+        >>> staff = abjad.Staff("c'4 d'4 e'4 f'4")
         >>> print(format(staff))
         \new Staff {
             c'4
@@ -23,11 +22,10 @@ class ColorBracket(Spanner):
 
     ::
 
-        >>> import consort
         >>> red_bracket = consort.ColorBracket('red')
         >>> blue_bracket = consort.ColorBracket('blue')
-        >>> attach(red_bracket, staff[:2])
-        >>> attach(blue_bracket, staff[2:])
+        >>> abjad.attach(red_bracket, staff[:2])
+        >>> abjad.attach(blue_bracket, staff[2:])
         >>> print(format(staff))
         \new Staff {
             \colorSpan #-4 #4 #(x11-color 'red)
@@ -41,13 +39,13 @@ class ColorBracket(Spanner):
 
     ::
 
-        >>> staff = Staff("c'4 d'4 e'4 f'4")
+        >>> staff = abjad.Staff("c'4 d'4 e'4 f'4")
         >>> red = consort.Color(1, 0, 0)
         >>> blue = consort.Color(0, 0, 1)
         >>> red_bracket = consort.ColorBracket(red)
         >>> blue_bracket = consort.ColorBracket(blue)
-        >>> attach(red_bracket, staff[:2])
-        >>> attach(blue_bracket, staff[2:])
+        >>> abjad.attach(red_bracket, staff[:2])
+        >>> abjad.attach(blue_bracket, staff[2:])
         >>> print(format(staff))
         \new Staff {
             \colorSpan #-4 #4 #(rgb-color 1.0 0.0 0.0)
@@ -57,6 +55,20 @@ class ColorBracket(Spanner):
             e'4 \) \(
             f'4
             <> \)
+        }
+
+    ::
+
+        >>> staff = abjad.Staff("r2 d'2 r2")
+        >>> red_bracket = consort.ColorBracket(red)
+        >>> abjad.attach(red_bracket, staff[1:2])
+        >>> print(format(staff))
+        \new Staff {
+            r2
+            \colorSpan #-4 #4 #(rgb-color 1.0 0.0 0.0)
+            d'2 \(
+            <> \)
+            r2
         }
 
     '''
@@ -82,22 +94,11 @@ class ColorBracket(Spanner):
 
     ### PRIVATE METHODS ###
 
-    def _format_after_leaf(self, leaf):
-        result = Spanner._format_after_leaf(self, leaf)
-        if self._is_my_last_leaf(leaf):
-            next_leaf = leaf._get_leaf(1)
-            if (
-                next_leaf is None or
-                not inspect_(next_leaf).has_spanner(type(self))
-                ):
-                result.append(r'<> \)')
-        return result
-
-    def _format_before_leaf(self, leaf):
+    def _get_lilypond_format_bundle(self, leaf):
         import consort
-        result = []
+        lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
         if self._is_my_first_leaf(leaf):
-            result.extend(Spanner._format_before_leaf(self, leaf))
+            # Add color command
             if isinstance(self._color, consort.Color):
                 string = r'\colorSpan #-4 #4 {}'.format(
                     self._color._lilypond_format,
@@ -105,20 +106,28 @@ class ColorBracket(Spanner):
             else:
                 string = r"\colorSpan #-4 #4 #(x11-color '{})"
             string = string.format(self._color)
-            result.append(string)
-        return result
-
-    def _format_right_of_leaf(self, leaf):
-        result = []
-        if self._is_my_first_leaf(leaf):
+            lilypond_format_bundle.opening.commands.append(string)
+            # Check for previous spanner and terminate if it exists
             previous_leaf = leaf._get_leaf(-1)
             if (
                 previous_leaf is not None and
-                inspect_(previous_leaf).has_spanner(type(self))
+                abjad.inspect(previous_leaf).has_spanner(type(self))
                 ):
-                result.append(r'\)')
-            result.append(r'\(')
-        return result
+                string = r'\)'
+                lilypond_format_bundle.right.spanner_stops.append(string)
+            # Start the spanner
+            string = r'\('
+            lilypond_format_bundle.right.spanner_starts.append(string)
+        if self._is_my_last_leaf(leaf):
+            # Check for next spanner, don't terminate if it exists
+            next_leaf = leaf._get_leaf(1)
+            if (
+                next_leaf is None or
+                not abjad.inspect(next_leaf).has_spanner(type(self))
+                ):
+                string = r'<> \)'
+                lilypond_format_bundle.closing.commands.append(string)
+        return lilypond_format_bundle
 
     ### PUBLIC PROPERTIES ###
 

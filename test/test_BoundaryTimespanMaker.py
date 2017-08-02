@@ -1,12 +1,12 @@
-# -*- encoding: utf-8 -*-
-from abjad.tools import systemtools
-from abjad.tools import timespantools
+import abjad
 import consort
 import collections
+from abjad.tools import systemtools
+from abjad.tools import timespantools
 
 
 def _make_timespan_inventory():
-    timespan_inventory = timespantools.TimespanList([
+    timespan_inventory = abjad.TimespanList([
         consort.PerformedTimespan(
             start_offset=0,
             stop_offset=20,
@@ -48,42 +48,42 @@ def _make_timespan_inventory():
 
 def test_BoundarTimespanMaker_01():
     timespan_inventory = _make_timespan_inventory()
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(20, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(20, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(40, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(40, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(25, 1),
-                    stop_offset=durationtools.Offset(50, 1),
+                    start_offset=abjad.Offset(25, 1),
+                    stop_offset=abjad.Offset(50, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(80, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(80, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(100, 1),
+                    start_offset=abjad.Offset(65, 1),
+                    stop_offset=abjad.Offset(100, 1),
                     voice_name='B',
                     ),
                 ]
@@ -95,7 +95,7 @@ def test_BoundaryTimespanMaker_02():
     music_specifiers = collections.OrderedDict([
         ('C', None),
         ])
-    target_timespan = timespantools.Timespan(0, 100)
+    target_timespan = abjad.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
         start_talea=5,
         stop_talea=5,
@@ -109,62 +109,62 @@ def test_BoundaryTimespanMaker_02():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(5, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(5, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(20, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(20, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(40, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(40, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(25, 1),
-                    stop_offset=durationtools.Offset(50, 1),
+                    start_offset=abjad.Offset(25, 1),
+                    stop_offset=abjad.Offset(50, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(50, 1),
-                    stop_offset=durationtools.Offset(55, 1),
+                    start_offset=abjad.Offset(50, 1),
+                    stop_offset=abjad.Offset(55, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(65, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(65, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(80, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(80, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(100, 1),
+                    start_offset=abjad.Offset(65, 1),
+                    stop_offset=abjad.Offset(100, 1),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(100, 1),
-                    stop_offset=durationtools.Offset(105, 1),
+                    start_offset=abjad.Offset(100, 1),
+                    stop_offset=abjad.Offset(105, 1),
                     voice_name='C',
                     ),
                 ]
@@ -176,7 +176,7 @@ def test_BoundaryTimespanMaker_03():
     music_specifiers = collections.OrderedDict([
         ('C', None),
         ])
-    target_timespan = timespantools.Timespan(0, 100)
+    target_timespan = abjad.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
         labels=['labeled'],
         start_talea=5,
@@ -191,62 +191,62 @@ def test_BoundaryTimespanMaker_03():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(20, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(20, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(25, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(25, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(40, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(40, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(25, 1),
-                    stop_offset=durationtools.Offset(50, 1),
+                    start_offset=abjad.Offset(25, 1),
+                    stop_offset=abjad.Offset(50, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(50, 1),
-                    stop_offset=durationtools.Offset(55, 1),
+                    start_offset=abjad.Offset(50, 1),
+                    stop_offset=abjad.Offset(55, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(65, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(65, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(80, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(80, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(100, 1),
+                    start_offset=abjad.Offset(65, 1),
+                    stop_offset=abjad.Offset(100, 1),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(80, 1),
-                    stop_offset=durationtools.Offset(85, 1),
+                    start_offset=abjad.Offset(80, 1),
+                    stop_offset=abjad.Offset(85, 1),
                     voice_name='C',
                     ),
                 ]
@@ -258,7 +258,7 @@ def test_BoundaryTimespanMaker_04():
     music_specifiers = collections.OrderedDict([
         ('C', None),
         ])
-    target_timespan = timespantools.Timespan(0, 100)
+    target_timespan = abjad.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
         start_talea=5,
         stop_talea=15,
@@ -272,57 +272,57 @@ def test_BoundaryTimespanMaker_04():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(5, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(5, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(20, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(20, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(40, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(40, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(25, 1),
-                    stop_offset=durationtools.Offset(50, 1),
+                    start_offset=abjad.Offset(25, 1),
+                    stop_offset=abjad.Offset(50, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(50, 1),
-                    stop_offset=durationtools.Offset(65, 1),
+                    start_offset=abjad.Offset(50, 1),
+                    stop_offset=abjad.Offset(65, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(80, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(80, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(100, 1),
+                    start_offset=abjad.Offset(65, 1),
+                    stop_offset=abjad.Offset(100, 1),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(100, 1),
-                    stop_offset=durationtools.Offset(115, 1),
+                    start_offset=abjad.Offset(100, 1),
+                    stop_offset=abjad.Offset(115, 1),
                     voice_name='C',
                     ),
                 ]
@@ -334,7 +334,7 @@ def test_BoundaryTimespanMaker_05():
     music_specifiers = collections.OrderedDict([
         ('C', None),
         ])
-    target_timespan = timespantools.Timespan(0, 100)
+    target_timespan = abjad.Timespan(0, 100)
     timespan_maker = consort.BoundaryTimespanMaker(
         start_talea=5,
         stop_talea=5,
@@ -345,62 +345,62 @@ def test_BoundaryTimespanMaker_05():
         music_specifiers=music_specifiers,
         timespan_inventory=_make_timespan_inventory(),
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(20, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(20, 1),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(25, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(25, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(20, 1),
-                    stop_offset=durationtools.Offset(40, 1),
+                    start_offset=abjad.Offset(20, 1),
+                    stop_offset=abjad.Offset(40, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(25, 1),
-                    stop_offset=durationtools.Offset(50, 1),
+                    start_offset=abjad.Offset(25, 1),
+                    stop_offset=abjad.Offset(50, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(50, 1),
-                    stop_offset=durationtools.Offset(55, 1),
+                    start_offset=abjad.Offset(50, 1),
+                    stop_offset=abjad.Offset(55, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(65, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(65, 1),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(60, 1),
-                    stop_offset=durationtools.Offset(80, 1),
+                    start_offset=abjad.Offset(60, 1),
+                    stop_offset=abjad.Offset(80, 1),
                     music_specifier=consort.tools.MusicSpecifier(
                         labels=('labeled',),
                         ),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(65, 1),
-                    stop_offset=durationtools.Offset(100, 1),
+                    start_offset=abjad.Offset(65, 1),
+                    stop_offset=abjad.Offset(100, 1),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(80, 1),
-                    stop_offset=durationtools.Offset(85, 1),
+                    start_offset=abjad.Offset(80, 1),
+                    stop_offset=abjad.Offset(85, 1),
                     voice_name='C',
                     ),
                 ]

@@ -1,16 +1,12 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 from abjad import attach
 from abjad import iterate
 from abjad import select
 from abjad.tools import abctools
-from abjad.tools import datastructuretools
-from abjad.tools import durationtools
 from abjad.tools import lilypondnametools
 from abjad.tools import mathtools
 from abjad.tools import schemetools
 from abjad.tools import scoretools
-from abjad.tools import sequencetools
 from abjad.tools import spannertools
 
 
@@ -19,17 +15,16 @@ class DynamicExpression(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> dynamic_expression = consort.DynamicExpression(
         ...     dynamic_tokens='f p pp pp',
         ...     transitions=('flared', None),
         ...     )
         >>> print(format(dynamic_expression))
         consort.tools.DynamicExpression(
-            dynamic_tokens=datastructuretools.CyclicTuple(
+            dynamic_tokens=abjad.CyclicTuple(
                 ['f', 'p', 'pp', 'pp']
                 ),
-            transitions=datastructuretools.CyclicTuple(
+            transitions=abjad.CyclicTuple(
                 ['flared', None]
                 ),
             )
@@ -38,7 +33,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff(r'''
+            >>> music = abjad.Staff(r'''
             ...     { c'4 d'4 e'4 f'4 }
             ...     { g'4 a'4 b'4 }
             ...     { c''4 }
@@ -87,7 +82,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff(r'''
+            >>> music = abjad.Staff(r'''
             ...     { c'4 d'4 e'4 f'4 }
             ...     { g'4 a'4 b'4 }
             ...     { c''4 c'4 }
@@ -120,7 +115,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ c'4 }")
+            >>> music = abjad.Staff("{ c'4 }")
             >>> dynamic_expression(music, seed=1)
             >>> print(format(music))
             \new Staff {
@@ -133,7 +128,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ c'4 d'4 }")
+            >>> music = abjad.Staff("{ c'4 d'4 }")
             >>> dynamic_expression(music, seed=1)
             >>> print(format(music))
             \new Staff {
@@ -147,7 +142,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ r4 c'4 r4 } { r4 d'4 r4 } { r4 e' r4 } ")
+            >>> music = abjad.Staff("{ r4 c'4 r4 } { r4 d'4 r4 } { r4 e' r4 } ")
             >>> dynamic_expression(music)
             >>> print(format(music))
             \new Staff {
@@ -173,7 +168,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ c'16 c'16 }")
+            >>> music = abjad.Staff("{ c'16 c'16 }")
             >>> dynamic_expression(music)
             >>> print(format(music))
             \new Staff {
@@ -187,7 +182,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ c'1 }")
+            >>> music = abjad.Staff("{ c'1 }")
             >>> dynamic_expression = consort.DynamicExpression(
             ...     dynamic_tokens='fp',
             ...     )
@@ -203,7 +198,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ c'1 }")
+            >>> music = abjad.Staff("{ c'1 }")
             >>> dynamic_expression = consort.DynamicExpression(
             ...     dynamic_tokens='fp',
             ...     unsustained=True,
@@ -220,7 +215,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff(r'''
+            >>> music = abjad.Staff(r'''
             ...     { c'4 d'4 e'4 }
             ...     { c'4 d'4 e'4 }
             ...     { c'4 d'4 e'4 }
@@ -269,7 +264,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff("{ c'8. } { e'8. } { g'8. }")
+            >>> music = abjad.Staff("{ c'8. } { e'8. } { g'8. }")
             >>> dynamic_expression = consort.DynamicExpression(
             ...     division_period=2,
             ...     dynamic_tokens='p ppp',
@@ -295,7 +290,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> music = Staff(r'''
+            >>> music = abjad.Staff(r'''
             ... { c'8 ~ c'4 }
             ... \times 3/4 { d'16 d' d' d' r d' d' r }
             ... ''')
@@ -371,7 +366,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         if isinstance(transitions, (str, type(None))):
             transitions = [transitions]
         assert all(_ in self._transition_types for _ in transitions)
-        transitions = datastructuretools.CyclicTuple(transitions)
+        transitions = abjad.CyclicTuple(transitions)
         self._transitions = transitions
         if only_first is not None:
             only_first = bool(only_first)
@@ -403,7 +398,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                 current_dynamic = dynamic
             if self.unsustained:
                 inner_leaves = selection[1:-1]
-                prototype = scoretools.Rest
+                prototype = abjad.Rest
                 if (
                     len(inner_leaves) and
                     all(isinstance(_, prototype) for _ in inner_leaves)
@@ -522,14 +517,14 @@ class DynamicExpression(abctools.AbjadValueObject):
 
         if next_dynamic is not None:
             if this_dynamic_ordinal < next_dynamic_ordinal:
-                hairpin = spannertools.Crescendo(include_rests=True)
+                hairpin = spannertools.Hairpin('<', include_rests=True)
             elif next_dynamic_ordinal < this_dynamic_ordinal:
-                hairpin = spannertools.Decrescendo(include_rests=True)
+                hairpin = spannertools.Hairpin('>', include_rests=True)
 
         if hairpin is not None:
             transition = self.transitions[seed]
             if transition == 'constante':
-                hairpin = spannertools.Crescendo(include_rests=True)
+                hairpin = spannertools.Hairpin('<', include_rests=True)
             if transition in ('flared', 'constante'):
                 hairpin_override = lilypondnametools.LilyPondGrobOverride(
                     grob_name='Hairpin',
@@ -554,7 +549,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         selections = [
             select(list(iterate(_).by_leaf())) for _ in music
             ]
-        parts = sequencetools.Sequence(selections).partition_by_counts(
+        parts = abjad.Sequence(selections).partition_by_counts(
             [period], cyclic=True, overhang=True)
         parts = [list(_) for _ in parts]
         if len(parts[-1]) < period and 1 < len(parts):
@@ -569,7 +564,7 @@ class DynamicExpression(abctools.AbjadValueObject):
         return selections
 
     def _reorganize_selections(self, selections):
-        prototype = (scoretools.Note, scoretools.Chord)
+        prototype = (abjad.Note, abjad.Chord)
         for i, leaf in enumerate(selections[0]):
             if isinstance(leaf, prototype):
                 break
@@ -604,7 +599,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
             ::
 
-                >>> music = Staff(r'''
+                >>> music = abjad.Staff(r'''
                 ...     { c'4 d'4 e'4 f'4 }
                 ...     { g'4 a'4 b'4 }
                 ...     { c''4 }
@@ -631,7 +626,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
             ::
 
-                >>> music = Staff(r'''
+                >>> music = abjad.Staff(r'''
                 ...     { c'4 d'4 e'4 }
                 ...     { f'4 g'4 a'4 }
                 ...     { b'4 c''4 }
@@ -660,7 +655,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
             ::
 
-                >>> music = Staff(r'''
+                >>> music = abjad.Staff(r'''
                 ...     { c'8 d'8 e'8 }
                 ...     { f'8 g'8 a'8 }
                 ...     { b'32 c''16. }
@@ -686,7 +681,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
             ::
 
-                >>> music = Staff("{ r4 c'4 r4 } { r4 d'4 r4 } { r4 e' r4 } ")
+                >>> music = abjad.Staff("{ r4 c'4 r4 } { r4 d'4 r4 } { r4 e' r4 } ")
                 >>> result = dynamic_expression._get_selections(music)
                 >>> selections, attach_components = result
                 >>> for _ in selections:
@@ -708,7 +703,7 @@ class DynamicExpression(abctools.AbjadValueObject):
 
             ::
 
-                >>> music = Staff("{ c'8. } { e'8. } { g'8. }")
+                >>> music = abjad.Staff("{ c'8. } { e'8. } { g'8. }")
                 >>> dynamic_expression = consort.DynamicExpression(
                 ...     division_period=2,
                 ...     dynamic_tokens='p ppp',
@@ -747,7 +742,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                 selections.append(selection)
                 attach_components.append(selection[0])
             elif (
-                (selection.get_duration() <= durationtools.Duration(1, 8) and
+                (selection.get_duration() <= abjad.Duration(1, 8) and
                 1 < len(selections)) or len(selection) == 1
                 ):
                 #print('   ', 'B')
@@ -756,7 +751,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                     #print('   ', 'B1')
                     selections[-1] = selections[-1] + selection[1:]
             elif (
-                    durationtools.Duration(1, 8) < (
+                    abjad.Duration(1, 8) < (
                     selection[-1]._get_timespan().start_offset -
                     selection[0]._get_timespan().start_offset
                         )
@@ -783,7 +778,7 @@ class DynamicExpression(abctools.AbjadValueObject):
                 continue
             assert token in consort.Dynamic._dynamic_names
         assert len(tokens)
-        tokens = datastructuretools.CyclicTuple(tokens)
+        tokens = abjad.CyclicTuple(tokens)
         return tokens
 
     ### PUBLIC PROPERTIES ###

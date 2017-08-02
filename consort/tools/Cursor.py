@@ -1,6 +1,5 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad.tools import abctools
-from abjad.tools import datastructuretools
 
 
 class Cursor(abctools.AbjadValueObject):
@@ -10,7 +9,6 @@ class Cursor(abctools.AbjadValueObject):
 
         ::
 
-            >>> import consort
             >>> cursor = consort.Cursor([1, 2, 3])
             >>> next(cursor)
             1
@@ -64,7 +62,7 @@ class Cursor(abctools.AbjadValueObject):
 
         ::
 
-            >>> talea = rhythmmakertools.Talea(
+            >>> talea = abjad.rhythmmakertools.Talea(
             ...    counts=(2, 1, 3, 2, 4, 1, 1),
             ...    denominator=16,
             ...    )
@@ -81,7 +79,7 @@ class Cursor(abctools.AbjadValueObject):
             Duration(1, 16)
             Duration(1, 8)
             Duration(1, 16)
-            Duration(3, 16) 
+            Duration(3, 16)
 
     '''
 
@@ -95,7 +93,7 @@ class Cursor(abctools.AbjadValueObject):
     ### INITIALIZER ###
 
     def __init__(self, sequence=(1, 2, 3), index=None):
-        self._sequence = datastructuretools.CyclicTuple(sequence)
+        self._sequence = abjad.CyclicTuple(sequence)
         if index is not None:
             index = int(index)
         self._index = index

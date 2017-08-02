@@ -1,10 +1,8 @@
-# -*- encoding: utf-8 -*-
-from abjad.tools import datastructuretools
+import abjad
 from abjad.tools import durationtools
-from abjad.tools import sequencetools
 
 
-class Proportions(datastructuretools.TypedList):
+class Proportions(abjad.TypedList):
 
     ### CLASS VARIABLES ###
 
@@ -13,7 +11,7 @@ class Proportions(datastructuretools.TypedList):
     ### INITIALIZER ###
 
     def __init__(self, items=None):
-        datastructuretools.TypedList.__init__(
+        abjad.TypedList.__init__(
             self,
             items=items,
             )
@@ -29,9 +27,9 @@ class Proportions(datastructuretools.TypedList):
 
     def get_segment_desired_duration_in_seconds(self, segment_index, total_seconds):
         segment_proportions = self[segment_index]
-        segment_total = sum(sequencetools.flatten_sequence(
+        segment_total = sum(abjad.flatten_sequence(
             segment_proportions))
-        ratio = durationtools.Multiplier(segment_total, self.total)
+        ratio = abjad.Multiplier(segment_total, self.total)
         desired_duration_in_seconds = ratio * total_seconds
         return desired_duration_in_seconds
 
@@ -39,4 +37,4 @@ class Proportions(datastructuretools.TypedList):
 
     @property
     def total(self):
-        return sum(sequencetools.flatten_sequence(self))
+        return sum(abjad.flatten_sequence(self))

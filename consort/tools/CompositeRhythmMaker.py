@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-from abjad import new
+import abjad
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import rhythmmakertools
@@ -10,7 +9,6 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> composite_rhythm_maker = consort.CompositeRhythmMaker(
         ...     default=rhythmmakertools.EvenDivisionRhythmMaker(),
         ...     first=rhythmmakertools.NoteRhythmMaker(),
@@ -53,7 +51,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
 
             >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4)]
             >>> result = composite_rhythm_maker(divisions)
-            >>> staff = Staff()
+            >>> staff = abjad.Staff()
             >>> for x in result:
             ...     staff.extend(x)
             ...
@@ -78,7 +76,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
 
             >>> divisions = [(1, 4), (1, 4)]
             >>> result = composite_rhythm_maker(divisions)
-            >>> staff = Staff()
+            >>> staff = abjad.Staff()
             >>> for x in result:
             ...     staff.extend(x)
             ...
@@ -95,7 +93,7 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
 
             >>> divisions = [(1, 4)]
             >>> result = composite_rhythm_maker(divisions)
-            >>> staff = Staff()
+            >>> staff = abjad.Staff()
             >>> for x in result:
             ...     staff.extend(x)
             ...
@@ -243,14 +241,14 @@ class CompositeRhythmMaker(abctools.AbjadValueObject):
         only = only or self.only
         default = default or self.default
         if first is not None:
-            first = new(first, **kwargs)
+            first = abjad.new(first, **kwargs)
         if last is not None:
-            last = new(last, **kwargs)
+            last = abjad.new(last, **kwargs)
         if only is not None:
-            only = new(only, **kwargs)
+            only = abjad.new(only, **kwargs)
         if default is not None:
-            default = new(default, **kwargs)
-        result = new(
+            default = abjad.new(default, **kwargs)
+        result = abjad.new(
             self,
             first=first,
             last=last,

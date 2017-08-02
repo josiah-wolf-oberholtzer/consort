@@ -1,9 +1,7 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad import abctools
 from abjad import attach
 from abjad import iterate
-from abjad.tools import datastructuretools
-from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import markuptools
 from abjad.tools import spannertools
@@ -37,14 +35,14 @@ class TextSpannerExpression(abctools.AbjadValueObject):
                 else:
                     markup = markuptools.Markup(x)
                 coerced_markup_tokens.append(markup)
-            markup_tokens = datastructuretools.CyclicTuple(
+            markup_tokens = abjad.CyclicTuple(
                 coerced_markup_tokens)
         self._markup_tokens = markup_tokens
         if transitions:
             prototype = (indicatortools.LineSegment, type(None))
             assert len(transitions)
             assert all(isinstance(_, prototype) for _ in transitions)
-            transitions = datastructuretools.CyclicTuple(transitions)
+            transitions = abjad.CyclicTuple(transitions)
         self._transitions = transitions
 
     ### SPECIAL METHODS ###
@@ -58,7 +56,7 @@ class TextSpannerExpression(abctools.AbjadValueObject):
                 seed += 1
         markup, transition = self._get_attachments(seed)
         selection = selections[-1]
-        if selection.get_duration() <= durationtools.Duration(1, 8):
+        if selection.get_duration() <= abjad.Duration(1, 8):
             # do stuff
             pass
         else:

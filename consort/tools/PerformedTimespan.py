@@ -1,19 +1,14 @@
-# -*- encoding: utf-8 -*-
-from abjad import new
-from abjad.tools import durationtools
+import abjad
 from abjad.tools import markuptools
 from abjad.tools import mathtools
-from abjad.tools import sequencetools
 from abjad.tools import systemtools
-from abjad.tools import timespantools
 
 
-class PerformedTimespan(timespantools.Timespan):
+class PerformedTimespan(abjad.Timespan):
     r'''A Consort timespan.
 
     ::
 
-        >>> import consort
         >>> timespan = consort.PerformedTimespan()
         >>> print(format(timespan))
         consort.tools.PerformedTimespan(
@@ -55,13 +50,13 @@ class PerformedTimespan(timespantools.Timespan):
         original_stop_offset=None,
         voice_name=None,
         ):
-        timespantools.Timespan.__init__(
+        abjad.Timespan.__init__(
             self,
             start_offset=start_offset,
             stop_offset=stop_offset,
             )
         if divisions is not None:
-            divisions = tuple(durationtools.Duration(_) for _ in divisions)
+            divisions = tuple(abjad.Duration(_) for _ in divisions)
             assert sum(divisions) == self.duration
         self._divisions = divisions
         if forbid_fusing is not None:
@@ -74,22 +69,22 @@ class PerformedTimespan(timespantools.Timespan):
             layer = int(layer)
         self._layer = layer
         if minimum_duration is not None:
-            minimum_duration = durationtools.Duration(minimum_duration)
+            minimum_duration = abjad.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
         #if music is not None:
-        #    assert inspect_(music).get_duration() == self.duration
+        #    assert inspect(music).get_duration() == self.duration
         self._music = music
         #if music_specifier is not None:
         #    assert isinstance(music_specifier, consort.MusicSpecifier), \
         #        music_specifier
         self._music_specifier = music_specifier
         if original_start_offset is not None:
-            original_start_offset = durationtools.Offset(original_start_offset)
+            original_start_offset = abjad.Offset(original_start_offset)
         else:
             original_start_offset = self.start_offset
         self._original_start_offset = original_start_offset
         if original_stop_offset is not None:
-            original_stop_offset = durationtools.Offset(original_stop_offset)
+            original_stop_offset = abjad.Offset(original_stop_offset)
         else:
             original_stop_offset = self.stop_offset
         self._original_stop_offset = original_stop_offset
@@ -98,9 +93,9 @@ class PerformedTimespan(timespantools.Timespan):
     ### SPECIAL METHODS ###
 
     def __lt__(self, expr):
-        if timespantools.Timespan.__lt__(self, expr):
+        if abjad.Timespan.__lt__(self, expr):
             return True
-        if not timespantools.Timespan.__gt__(self, expr):
+        if not abjad.Timespan.__gt__(self, expr):
             if hasattr(expr, 'voice_name'):
                 return self.voice_name < expr.voice_name
         return False
@@ -147,24 +142,23 @@ class PerformedTimespan(timespantools.Timespan):
     ### PUBLIC METHODS ###
 
     def split_at_offset(self, offset):
-        from abjad.tools import timespantools
-        offset = durationtools.Offset(offset)
-        result = timespantools.TimespanList()
+        offset = abjad.Offset(offset)
+        result = abjad.TimespanList()
         if self._start_offset < offset < self._stop_offset:
             left_divisions, right_divisions = None, None
             if self.divisions is not None:
-                left_divisions, right_divisions = sequencetools.split_sequence(
+                left_divisions, right_divisions = abjad.split_sequence(
                     self.divisions,
                     [offset - self.start_offset],
                     overhang=True,
                     )
-            left = new(
+            left = abjad.new(
                 self,
                 start_offset=self._start_offset,
                 stop_offset=offset,
                 divisions=left_divisions,
                 )
-            right = new(
+            right = abjad.new(
                 self,
                 start_offset=offset,
                 stop_offset=self._stop_offset,
@@ -175,7 +169,7 @@ class PerformedTimespan(timespantools.Timespan):
             if right.duration:
                 result.append(right)
         else:
-            result.append(new(self))
+            result.append(abjad.new(self))
         return result
 
     ### PUBLIC PROPERTIES ###

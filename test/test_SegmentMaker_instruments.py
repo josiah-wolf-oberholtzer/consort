@@ -1,9 +1,7 @@
-# -*- encoding: utf -*-
-from abjad.tools import indicatortools
-from abjad.tools import rhythmmakertools
-from abjad.tools import stringtools
-from abjad.tools import templatetools
+import abjad
 import consort
+from abjad.tools import rhythmmakertools
+from abjad.tools import templatetools
 
 
 def test_SegmentMaker_instruments_01():
@@ -13,7 +11,7 @@ def test_SegmentMaker_instruments_01():
         omit_stylesheets=True,
         score_template=templatetools.StringQuartetScoreTemplate(),
         settings=None,
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=[(4, 4)],
         )
     instrument = consort.Instrument(
@@ -44,7 +42,7 @@ def test_SegmentMaker_instruments_01():
             ),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=None)
-    assert format(lilypond_file) == stringtools.normalize(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
         \version "2.19.44"
         \language "english"
@@ -64,9 +62,9 @@ def test_SegmentMaker_instruments_01():
                 \context StaffGroup = "String Quartet Staff Group" <<
                     \tag #'first-violin
                     \context Staff = "First Violin Staff" {
-                        \clef "treble"
                         \set Staff.instrumentName = \markup { Violin }
                         \set Staff.shortInstrumentName = \markup { Vn. }
+                        \clef "treble"
                         \context Voice = "First Violin Voice" {
                             {
                                 % [First Violin Voice] Measure 1
@@ -90,9 +88,9 @@ def test_SegmentMaker_instruments_01():
                     }
                     \tag #'second-violin
                     \context Staff = "Second Violin Staff" {
-                        \clef "treble"
                         \set Staff.instrumentName = \markup { Violin }
                         \set Staff.shortInstrumentName = \markup { Vn. }
+                        \clef "treble"
                         \context Voice = "Second Violin Voice" {
                             {
                                 % [Second Violin Voice] Measure 1
@@ -118,9 +116,9 @@ def test_SegmentMaker_instruments_01():
                     }
                     \tag #'viola
                     \context Staff = "Viola Staff" {
-                        \clef "alto"
                         \set Staff.instrumentName = \markup { Viola }
                         \set Staff.shortInstrumentName = \markup { Va. }
+                        \clef "alto"
                         \context Voice = "Viola Voice" {
                             {
                                 % [Viola Voice] Measure 1
@@ -139,9 +137,9 @@ def test_SegmentMaker_instruments_01():
                     }
                     \tag #'cello
                     \context Staff = "Cello Staff" {
-                        \clef "bass"
                         \set Staff.instrumentName = \markup { Cello }
                         \set Staff.shortInstrumentName = \markup { Vc. }
+                        \clef "bass"
                         \context Voice = "Cello Voice" {
                             {
                                 % [Cello Voice] Measure 1

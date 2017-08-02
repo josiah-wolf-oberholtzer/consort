@@ -1,7 +1,5 @@
-# -*- encoding: utf-8 -*-
-from abjad import inspect_
+import abjad
 from abjad.tools import lilypondnametools
-from abjad.tools import pitchtools
 from abjad.tools import spannertools
 
 
@@ -12,7 +10,7 @@ class ConsortTrillSpanner(spannertools.Spanner):
 
         ::
 
-            >>> staff = Staff("c'4 ~ c'8 d'8 r8 e'8 ~ e'8 r8")
+            >>> staff = abjad.Staff("c'4 ~ c'8 d'8 r8 e'8 ~ e'8 r8")
             >>> show(staff) # doctest: +SKIP
 
         ..  doctest::
@@ -30,11 +28,10 @@ class ConsortTrillSpanner(spannertools.Spanner):
 
         ::
 
-            >>> import consort
             >>> complex_trill = consort.ConsortTrillSpanner(
             ...     interval='P4',
             ...     )
-            >>> attach(complex_trill, staff)
+            >>> abjad.attach(complex_trill, staff)
             >>> show(staff) # doctest: +SKIP
 
         ..  doctest::
@@ -81,7 +78,7 @@ class ConsortTrillSpanner(spannertools.Spanner):
             overrides=overrides,
             )
         if interval is not None:
-            interval = pitchtools.NamedInterval(interval)
+            interval = abjad.NamedInterval(interval)
         self._interval = interval
 
     ### PRIVATE METHODS ###
@@ -90,22 +87,21 @@ class ConsortTrillSpanner(spannertools.Spanner):
         new._interval = self.interval
 
     def _get_lilypond_format_bundle(self, leaf):
-        from abjad.tools import scoretools
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
         prototype = (
-            scoretools.Rest,
-            scoretools.MultimeasureRest,
-            scoretools.Skip,
+            abjad.Rest,
+            abjad.MultimeasureRest,
+            abjad.Skip,
             )
         if isinstance(leaf, prototype):
             return lilypond_format_bundle
-        logical_tie = inspect_(leaf).get_logical_tie()
+        logical_tie = abjad.inspect(leaf).get_logical_tie()
 
         starts_spanner, stops_spanner = False, False
         if leaf is logical_tie.head:
             starts_spanner = True
-        after_graces = inspect_(leaf).get_grace_containers('after')
-        if leaf is logical_tie.tail and not len(after_graces):
+        after_grace = abjad.inspect(leaf).get_after_grace_container()
+        if leaf is logical_tie.tail and after_grace is None:
             stops_spanner = True
         elif self._is_my_last_leaf(leaf):
             stops_spanner = True
@@ -113,9 +109,8 @@ class ConsortTrillSpanner(spannertools.Spanner):
         if starts_spanner:
             previous_leaf = leaf._get_leaf(-1)
             if previous_leaf is not None:
-                after_graces = inspect_(previous_leaf).get_grace_containers(
-                    'after')
-                if after_graces:
+                after_grace = abjad.inspect(previous_leaf).get_after_grace_container()
+                if after_grace is not None:
                     grob_override = lilypondnametools.LilyPondGrobOverride(
                         grob_name='TrillSpanner',
                         is_once=True,
@@ -165,12 +160,11 @@ class ConsortTrillSpanner(spannertools.Spanner):
 
             ::
 
-                >>> import consort
-                >>> staff = Staff("c'4 d'4 e'4 f'4")
-                >>> interval = pitchtools.NamedInterval('m3')
+                >>> staff = abjad.Staff("c'4 d'4 e'4 f'4")
+                >>> interval = abjad.NamedInterval('m3')
                 >>> complex_trill = consort.ConsortTrillSpanner(
                 ...     interval=interval)
-                >>> attach(complex_trill, staff[1:-1])
+                >>> abjad.attach(complex_trill, staff[1:-1])
                 >>> show(staff) # doctest: +SKIP
 
             ..  doctest::

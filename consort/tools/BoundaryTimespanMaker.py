@@ -1,8 +1,6 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
-from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
-from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
 
@@ -11,7 +9,6 @@ class BoundaryTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> import consort
         >>> timespan_maker = consort.BoundaryTimespanMaker(
         ...     start_talea=rhythmmakertools.Talea(
         ...         counts=[1],
@@ -40,7 +37,7 @@ class BoundaryTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_inventory = timespantools.TimespanList([
+        >>> timespan_inventory = abjad.TimespanList([
         ...     consort.PerformedTimespan(
         ...         start_offset=0,
         ...         stop_offset=1,
@@ -61,48 +58,48 @@ class BoundaryTimespanMaker(TimespanMaker):
     ::
 
         >>> music_specifiers = {'Cello Voice': None}
-        >>> target_timespan = timespantools.Timespan(0, 10)
+        >>> target_timespan = abjad.Timespan(0, 10)
         >>> timespan_inventory = timespan_maker(
         ...     music_specifiers=music_specifiers,
         ...     target_timespan=target_timespan,
         ...     timespan_inventory=timespan_inventory,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Violin 1 Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 2),
                     voice_name='Violin 2 Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 2),
-                    stop_offset=durationtools.Offset(7, 4),
+                    start_offset=abjad.Offset(3, 2),
+                    stop_offset=abjad.Offset(7, 4),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(7, 2),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(7, 2),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(4, 1),
                     voice_name='Violin 2 Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(4, 1),
-                    stop_offset=durationtools.Offset(17, 4),
+                    start_offset=abjad.Offset(4, 1),
+                    stop_offset=abjad.Offset(17, 4),
                     voice_name='Cello Voice',
                     ),
                 ]
@@ -150,7 +147,7 @@ class BoundaryTimespanMaker(TimespanMaker):
 
         if start_talea is not None:
             if not isinstance(start_talea, rhythmmakertools.Talea):
-                start_duration = durationtools.Duration(start_talea)
+                start_duration = abjad.Duration(start_talea)
                 counts = [start_duration.numerator]
                 denominator = start_duration.denominator
                 start_talea = rhythmmakertools.Talea(
@@ -172,7 +169,7 @@ class BoundaryTimespanMaker(TimespanMaker):
 
         if stop_talea is not None:
             if not isinstance(stop_talea, rhythmmakertools.Talea):
-                stop_duration = durationtools.Duration(stop_talea)
+                stop_duration = abjad.Duration(stop_talea)
                 counts = [stop_duration.numerator]
                 denominator = stop_duration.denominator
                 stop_talea = rhythmmakertools.Talea(
@@ -215,7 +212,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         import consort
-        preexisting_timespans = timespantools.TimespanList()
+        preexisting_timespans = abjad.TimespanList()
         for timespan in timespan_inventory:
             assert isinstance(timespan, (
                 consort.PerformedTimespan,
@@ -250,7 +247,7 @@ class BoundaryTimespanMaker(TimespanMaker):
         ):
         import consort
 
-        new_timespans = timespantools.TimespanList()
+        new_timespans = abjad.TimespanList()
         if not self.voice_names and not self.labels:
             return new_timespans
 
@@ -303,7 +300,7 @@ class BoundaryTimespanMaker(TimespanMaker):
             for context_name, music_specifier in music_specifiers.items():
                 if context_name not in new_timespan_mapping:
                     new_timespan_mapping[context_name] = \
-                        timespantools.TimespanList()
+                        abjad.TimespanList()
                 context_seed = context_counter[context_name]
                 start_durations = []
                 for _ in range(next(start_groupings)):

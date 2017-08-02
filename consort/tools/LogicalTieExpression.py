@@ -1,8 +1,7 @@
-# -*- encoding: utf-8 -*-
 import abc
+import abjad
 from abjad import attach
 from abjad import detach
-from abjad import inspect_
 from abjad import iterate
 from abjad import mutate
 from abjad.tools import abctools
@@ -24,13 +23,13 @@ class LogicalTieExpression(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _replace(self, old_leaf, new_leaf):
-        grace_containers = inspect_(old_leaf).get_grace_containers('after')
-        if grace_containers:
-            old_grace_container = grace_containers[0]
-            grace_notes = list(iterate(old_grace_container).by_leaf())
+        after_grace = abjad.inspect(old_leaf).get_after_grace_container()
+        if after_grace is not None:
+            old_after_grace = after_grace
+            grace_notes = list(iterate(old_after_grace).by_leaf())
             detach(scoretools.GraceContainer, old_leaf)
 
-        indicator_expressions = inspect_(old_leaf).get_indicators(unwrap=False)
+        indicator_expressions = abjad.inspect(old_leaf).get_indicators(unwrap=False)
         #for indicator_expression in indicator_expressions:
         #    detach(indicator, old_leaf)
 
@@ -44,12 +43,9 @@ class LogicalTieExpression(abctools.AbjadValueObject):
         new_leaf._stop_offset = stop_offset
         new_leaf._logical_measure_number = logical_measure_number
 
-        if grace_containers:
-            new_grace_container = scoretools.GraceContainer(
-                grace_notes,
-                kind='after',
-                )
-            attach(new_grace_container, new_leaf)
+        if after_grace is not None:
+            new_after_grace = scoretools.AfterGraceContainer(grace_notes)
+            attach(new_after_grace, new_leaf)
 
         for indicator_expression in indicator_expressions:
             attach(indicator_expression, new_leaf)

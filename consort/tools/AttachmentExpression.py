@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
 import copy
 try:
@@ -7,12 +6,6 @@ try:
 except ImportError:
     import inspect as funcsigs
 from abjad import attach
-from abjad import new
-from abjad.tools import datastructuretools
-from abjad.tools import scoretools
-from abjad.tools import selectortools
-from abjad.tools import sequencetools
-from abjad.tools import spannertools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -23,27 +16,26 @@ class AttachmentExpression(HashCachingObject):
 
         ::
 
-            >>> import consort
             >>> attachment_expression = consort.AttachmentExpression(
-            ...     attachments=(indicatortools.Articulation('>'),),
-            ...     selector=selectortools.Selector().by_leaf().by_run(Note)[0],
+            ...     attachments=(abjad.Articulation('>'),),
+            ...     selector=abjad.Selector().by_leaf().by_run(abjad.Note)[0],
             ...     )
             >>> print(format(attachment_expression))
             consort.tools.AttachmentExpression(
-                attachments=datastructuretools.TypedList(
+                attachments=abjad.TypedList(
                     [
-                        indicatortools.Articulation('>'),
+                        abjad.Articulation('>'),
                         ]
                     ),
-                selector=selectortools.Selector(
+                selector=abjad.Selector(
                     callbacks=(
-                        selectortools.PrototypeSelectorCallback(
-                            prototype=scoretools.Leaf,
+                        abjad.PrototypeSelectorCallback(
+                            prototype=abjad.Leaf,
                             ),
-                        selectortools.RunSelectorCallback(
-                            prototype=scoretools.Note,
+                        abjad.RunSelectorCallback(
+                            prototype=abjad.Note,
                             ),
-                        selectortools.ItemSelectorCallback(
+                        abjad.ItemSelectorCallback(
                             item=0,
                             apply_to_each=True,
                             ),
@@ -60,12 +52,12 @@ class AttachmentExpression(HashCachingObject):
             ...             hairpin_stop_token='niente',
             ...             ),
             ...         ),
-            ...     selector=selectortools.Selector().by_leaf().by_run(Note),
+            ...     selector=abjad.Selector().by_leaf().by_run(abjad.Note),
             ...     )
 
         ::
 
-            >>> staff = Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
+            >>> staff = abjad.Staff("c'8 r8 d'8 e'8 r8 f'8 g'8 a'8")
             >>> attachment_expression(staff)
             >>> print(format(staff))
             \new Staff {
@@ -73,14 +65,14 @@ class AttachmentExpression(HashCachingObject):
                 r8
                 \override Hairpin.circled-tip = ##t
                 d'8 \> \sfz
-                e'8 \!
                 \revert Hairpin.circled-tip
+                e'8 \!
                 r8
                 \override Hairpin.circled-tip = ##t
                 f'8 \> \sfz
                 g'8
-                a'8 \!
                 \revert Hairpin.circled-tip
+                a'8 \!
             }
 
     ..  container:: example
@@ -88,9 +80,9 @@ class AttachmentExpression(HashCachingObject):
         ::
 
             >>> attachment_expression = consort.AttachmentExpression(
-            ...     attachments=spannertools.Slur(),
+            ...     attachments=abjad.Slur(),
             ...     )
-            >>> staff = Staff("c'4 d'4 e'4 f'4")
+            >>> staff = abjad.Staff("c'4 d'4 e'4 f'4")
             >>> attachment_expression(staff)
             >>> print(format(staff))
             \new Staff {
@@ -104,15 +96,15 @@ class AttachmentExpression(HashCachingObject):
 
         ::
 
-            >>> staff = Staff("c'4 d'4 e'4 f'4")
+            >>> staff = abjad.Staff("c'4 d'4 e'4 f'4")
             >>> attachment_expression = consort.AttachmentExpression(
             ...     attachments=[
             ...         [
-            ...             indicatortools.Articulation('accent'),
-            ...             indicatortools.Articulation('staccato'),
+            ...             abjad.Articulation('accent'),
+            ...             abjad.Articulation('staccato'),
             ...             ],
             ...         ],
-            ...     selector=selectortools.Selector().by_logical_tie()[0]
+            ...     selector=abjad.Selector().by_logical_tie()[0]
             ...     )
             >>> attachment_expression(staff)
             >>> print(format(staff))
@@ -151,16 +143,16 @@ class AttachmentExpression(HashCachingObject):
         if attachments is not None:
             if not isinstance(attachments, collections.Sequence):
                 attachments = (attachments,)
-            attachments = datastructuretools.TypedList(attachments)
+            attachments = abjad.TypedList(attachments)
         self._attachments = attachments
         if selector is not None:
-            assert isinstance(selector, selectortools.Selector)
+            assert isinstance(selector, abjad.Selector)
         self._selector = selector
         if scope is not None:
             if isinstance(scope, type):
-                assert issubclass(scope, scoretools.Component)
+                assert issubclass(scope, abjad.Component)
             else:
-                assert isinstance(scope, (scoretools.Component, str))
+                assert isinstance(scope, (abjad.Component, str))
         self._scope = scope
         if is_annotation is not None:
             is_annotation = bool(is_annotation)
@@ -182,7 +174,7 @@ class AttachmentExpression(HashCachingObject):
         ):
         selector = self.selector
         if selector is None:
-            selector = selectortools.Selector()
+            selector = abjad.Selector()
         selections = selector(music, rotation=rotation)
         self._apply_attachments(
             selections,
@@ -195,7 +187,7 @@ class AttachmentExpression(HashCachingObject):
     def _apply_attachments(self, selections, name=None, rotation=None):
         if not self.attachments:
             return
-        all_attachments = datastructuretools.CyclicTuple(self.attachments)
+        all_attachments = abjad.CyclicTuple(self.attachments)
         if self.use_only_first_attachment:
             attachments = all_attachments[rotation]
         for i, selection in enumerate(selections, rotation):
@@ -209,11 +201,11 @@ class AttachmentExpression(HashCachingObject):
             for attachment in attachments:
                 # print('\t' + repr(attachment))
                 # spanners
-                if isinstance(attachment, spannertools.Spanner):
+                if isinstance(attachment, abjad.Spanner):
                     attachment = copy.copy(attachment)
                     attach(attachment, selection, name=name)
                 elif isinstance(attachment, type) and \
-                    issubclass(attachment, spannertools.Spanner):
+                    issubclass(attachment, abjad.Spanner):
                     attachment = attachment()
                     attach(attachment, selection, name=name)
                 # expressions
@@ -229,7 +221,7 @@ class AttachmentExpression(HashCachingObject):
                         attachment(selection)
                 # indicators
                 else:
-                    if isinstance(selection, scoretools.Leaf):
+                    if isinstance(selection, abjad.Leaf):
                         selection = (selection,)
                     for component in selection:
                         attachment = copy.copy(attachment)
@@ -244,14 +236,16 @@ class AttachmentExpression(HashCachingObject):
     ### PUBLIC METHODS ###
 
     def reverse(self):
-        attachments = sequencetools.Sequence(*self.attachments)
-        return new(self,
+        attachments = abjad.Sequence(*self.attachments)
+        return abjad.new(
+            self,
             attachments=attachments.reverse(),
             )
 
     def rotate(self, n=0):
-        attachments = sequencetools.Sequence(*self.attachments)
-        return new(self,
+        attachments = abjad.Sequence(*self.attachments)
+        return abjad.new(
+            self,
             attachments=attachments.rotate(n),
             )
 

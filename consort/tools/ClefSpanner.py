@@ -1,8 +1,4 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
-from abjad import inspect_
-from abjad.tools import indicatortools
-from abjad.tools import scoretools
+import abjad
 from abjad.tools import spannertools
 
 
@@ -11,10 +7,9 @@ class ClefSpanner(spannertools.Spanner):
 
     ::
 
-        >>> import consort
-        >>> staff = Staff("c' d' e' f' g' a' b' c''")
-        >>> clef = Clef('treble')
-        >>> attach(clef, staff[0])
+        >>> staff = abjad.Staff("c' d' e' f' g' a' b' c''")
+        >>> clef = abjad.Clef('treble')
+        >>> abjad.attach(clef, staff[0])
         >>> print(format(staff))
         \new Staff {
             \clef "treble"
@@ -31,7 +26,7 @@ class ClefSpanner(spannertools.Spanner):
     ::
 
         >>> clef_spanner = consort.ClefSpanner('percussion')
-        >>> attach(clef_spanner, staff[2:-2])
+        >>> abjad.attach(clef_spanner, staff[2:-2])
         >>> print(format(staff))
         \new Staff {
             \clef "treble"
@@ -49,13 +44,13 @@ class ClefSpanner(spannertools.Spanner):
 
     ::
 
-        >>> staff = Staff("r4 c'4 d'4 r4 e'4 f'4 r4")
-        >>> clef = Clef('treble')
-        >>> attach(clef, staff[0])
+        >>> staff = abjad.Staff("r4 c'4 d'4 r4 e'4 f'4 r4")
+        >>> clef = abjad.Clef('treble')
+        >>> abjad.attach(clef, staff[0])
         >>> clef_spanner = consort.ClefSpanner('percussion')
-        >>> attach(clef_spanner, staff[1:3])
+        >>> abjad.attach(clef_spanner, staff[1:3])
         >>> clef_spanner = consort.ClefSpanner('percussion')
-        >>> attach(clef_spanner, staff[4:6])
+        >>> abjad.attach(clef_spanner, staff[4:6])
         >>> print(format(staff))
         \new Staff {
             \clef "treble"
@@ -89,7 +84,7 @@ class ClefSpanner(spannertools.Spanner):
             self,
             overrides=overrides,
             )
-        clef = indicatortools.Clef(clef)
+        clef = abjad.Clef(clef)
         self._clef = clef
 
     ### SPECIAL METHODS ###
@@ -112,10 +107,10 @@ class ClefSpanner(spannertools.Spanner):
         import consort
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
 
-        prototype = (scoretools.Note, scoretools.Chord, type(None))
+        prototype = (abjad.Note, abjad.Chord, type(None))
 
         first_leaf = self._get_leaves()[0]
-        current_clef = inspect_(first_leaf).get_effective(indicatortools.Clef)
+        current_clef = abjad.inspect(first_leaf).get_effective(abjad.Clef)
 
         set_clef = False
         reset_clef = False
@@ -126,26 +121,27 @@ class ClefSpanner(spannertools.Spanner):
                 set_clef = True
                 reset_clef = True
 
-            previous_leaf = inspect_(leaf).get_leaf(-1)
+            previous_leaf = abjad.inspect(leaf).get_leaf(-1)
             consort.debug('\tP', previous_leaf)
             while not isinstance(previous_leaf, prototype):
-                previous_leaf = inspect_(previous_leaf).get_leaf(-1)
+                previous_leaf = abjad.inspect(previous_leaf).get_leaf(-1)
                 consort.debug('\tP', previous_leaf)
             if previous_leaf is not None:
-                spanners = inspect_(previous_leaf).get_spanners(type(self))
+                spanners = abjad.inspect(previous_leaf).get_spanners(
+                    type(self))
                 spanners = tuple(spanners)
                 if spanners:
                     consort.debug('\tPREV?', spanners)
                     if spanners[0].clef == self.clef:
                         set_clef = False
 
-            next_leaf = inspect_(leaf).get_leaf(1)
+            next_leaf = abjad.inspect(leaf).get_leaf(1)
             consort.debug('\tN', next_leaf)
             while not isinstance(next_leaf, prototype):
-                next_leaf = inspect_(next_leaf).get_leaf(1)
+                next_leaf = abjad.inspect(next_leaf).get_leaf(1)
                 consort.debug('\tN', next_leaf)
             if next_leaf is not None:
-                spanners = inspect_(next_leaf).get_spanners(type(self))
+                spanners = abjad.inspect(next_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
                 if spanners:
                     consort.debug('\tNEXT?', spanners)
@@ -157,13 +153,13 @@ class ClefSpanner(spannertools.Spanner):
             if self.clef != current_clef:
                 set_clef = True
 
-            previous_leaf = inspect_(leaf).get_leaf(-1)
+            previous_leaf = abjad.inspect(leaf).get_leaf(-1)
             consort.debug('\tP', previous_leaf)
             while not isinstance(previous_leaf, prototype):
-                previous_leaf = inspect_(previous_leaf).get_leaf(-1)
+                previous_leaf = abjad.inspect(previous_leaf).get_leaf(-1)
                 consort.debug('\tP', previous_leaf)
             if previous_leaf is not None:
-                spanners = inspect_(previous_leaf).get_spanners(type(self))
+                spanners = abjad.inspect(previous_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
                 if spanners:
                     consort.debug('\tPREV?', spanners)
@@ -175,13 +171,13 @@ class ClefSpanner(spannertools.Spanner):
             if self.clef != current_clef and current_clef is not None:
                 reset_clef = True
 
-            next_leaf = inspect_(leaf).get_leaf(1)
+            next_leaf = abjad.inspect(leaf).get_leaf(1)
             consort.debug('\tN', next_leaf)
             while not isinstance(next_leaf, prototype):
-                next_leaf = inspect_(next_leaf).get_leaf(1)
+                next_leaf = abjad.inspect(next_leaf).get_leaf(1)
                 consort.debug('\tN', next_leaf)
             if next_leaf is not None:
-                spanners = inspect_(next_leaf).get_spanners(type(self))
+                spanners = abjad.inspect(next_leaf).get_spanners(type(self))
                 spanners = tuple(spanners)
                 if spanners:
                     consort.debug('\tNEXT?', spanners)

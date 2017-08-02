@@ -1,10 +1,7 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
-from abjad import inspect_
+import abjad
 from abjad.tools import indicatortools
 from abjad.tools import markuptools
 from abjad.tools import spannertools
-from abjad.tools import scoretools
 from abjad.tools import lilypondnametools
 
 
@@ -13,21 +10,20 @@ class StringContactSpanner(spannertools.Spanner):
 
     ::
 
-        >>> import consort
-        >>> staff = Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
-        >>> attach(indicatortools.StringContactPoint('sul tasto'),
-        ...     staff[2], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('sul tasto'),
-        ...     staff[3], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('ordinario'),
-        ...     staff[4], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('pizzicato'),
-        ...     staff[5], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('ordinario'),
-        ...     staff[6], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('sul ponticello'),
-        ...     staff[7], scope=Staff)
-        >>> attach(consort.StringContactSpanner(), staff[:])
+        >>> staff = abjad.Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
+        >>> abjad.attach(indicatortools.StringContactPoint('sul tasto'),
+        ...     staff[2], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('sul tasto'),
+        ...     staff[3], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('ordinario'),
+        ...     staff[4], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('pizzicato'),
+        ...     staff[5], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('ordinario'),
+        ...     staff[6], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('sul ponticello'),
+        ...     staff[7], scope=abjad.Staff)
+        >>> abjad.attach(consort.StringContactSpanner(), staff[:])
 
     ..  doctest::
 
@@ -139,16 +135,16 @@ class StringContactSpanner(spannertools.Spanner):
 
     ::
 
-        >>> staff = Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
-        >>> attach(indicatortools.StringContactPoint('ordinario'),
-        ...     staff[0], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('sul tasto'),
-        ...     staff[2], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('ordinario'),
-        ...     staff[4], scope=Staff)
-        >>> attach(indicatortools.StringContactPoint('sul tasto'),
-        ...     staff[6], scope=Staff)
-        >>> attach(consort.StringContactSpanner(), staff[:])
+        >>> staff = abjad.Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
+        >>> abjad.attach(indicatortools.StringContactPoint('ordinario'),
+        ...     staff[0], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('sul tasto'),
+        ...     staff[2], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('ordinario'),
+        ...     staff[4], scope=abjad.Staff)
+        >>> abjad.attach(indicatortools.StringContactPoint('sul tasto'),
+        ...     staff[6], scope=abjad.Staff)
+        >>> abjad.attach(consort.StringContactSpanner(), staff[:])
 
     ..  doctest::
 
@@ -274,10 +270,10 @@ class StringContactSpanner(spannertools.Spanner):
     def _get_annotations(self, leaf):
         import consort
 
-        leaves = self._get_leaves()
+        leaves = list(self._get_leaves())
         index = leaves.index(leaf)
         prototype = indicatortools.StringContactPoint
-        agent = inspect_(leaf)
+        agent = abjad.inspect(leaf)
         pizzicato = indicatortools.StringContactPoint('pizzicato')
 
         next_attached = None
@@ -291,7 +287,7 @@ class StringContactSpanner(spannertools.Spanner):
                 break
 
         actually_attached = current_attached = None
-        indicators = inspect_(leaf).get_indicators(prototype)
+        indicators = abjad.inspect(leaf).get_indicators(prototype)
         if indicators:
             actually_attached = current_attached = indicators[0]
         if self._is_my_first_leaf(leaf) and current_attached is None:
@@ -431,7 +427,7 @@ class StringContactSpanner(spannertools.Spanner):
         import consort
 
         lilypond_format_bundle = self._get_basic_lilypond_format_bundle(leaf)
-        if not isinstance(leaf, scoretools.Leaf):
+        if not isinstance(leaf, abjad.Leaf):
             return lilypond_format_bundle
         (
             current_attached,
@@ -505,7 +501,7 @@ class StringContactSpanner(spannertools.Spanner):
         right_padding = 5
         if stop_markup is not None:
             right_padding = 0
-        line_segment = indicatortools.Arrow(
+        line_segment = indicatortools.ArrowLineSegment(
             dash_fraction=0.25,
             dash_period=1,
             right_padding=right_padding,

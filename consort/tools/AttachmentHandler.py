@@ -1,11 +1,8 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
-from abjad import inspect_
+from abjad import inspect
 from abjad import iterate
 from abjad.tools import abctools
-from abjad.tools import scoretools
-from abjad.tools import selectortools
 from abjad.tools import systemtools
 
 
@@ -14,7 +11,6 @@ class AttachmentHandler(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> attachment_handler = consort.AttachmentHandler()
         >>> print(format(attachment_handler))
         consort.tools.AttachmentHandler()
@@ -53,7 +49,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         music,
         seed=0,
         ):
-        assert isinstance(music, scoretools.Container)
+        assert isinstance(music, abjad.Container)
         if not self.attachment_expressions:
             return
         items = self.attachment_expressions.items()
@@ -67,7 +63,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
                 continue
             selector = attachment_expression.selector
             if selector is None:
-                selector = selectortools.Selector()
+                selector = abjad.Selector()
             selectors.add(selector)
             if selector not in selectors_to_expressions:
                 selectors_to_expressions[selector] = set()
@@ -75,7 +71,7 @@ class AttachmentHandler(abctools.AbjadValueObject):
         if destructive_expressions:
             for name, attachment_expression in sorted(destructive_expressions):
                 attachment_expression(music, name=name, rotation=seed)
-        selectors_to_selections = selectortools.Selector.run_selectors(
+        selectors_to_selections = abjad.Selector.run_selectors(
             music, selectors, rotation=seed,
             )
         for selector in selectors:
@@ -106,11 +102,11 @@ class AttachmentHandler(abctools.AbjadValueObject):
         score = segment_maker.score
         counter = collections.Counter()
         template = '        decorating {}: {}'
-        for voice in iterate(score).by_class(scoretools.Voice):
+        for voice in iterate(score).by_class(abjad.Voice):
             count = 0
             for container in voice:
                 prototype = consort.MusicSpecifier
-                music_specifier = inspect_(container).get_effective(prototype)
+                music_specifier = abjad.inspect(container).get_effective(prototype)
                 maker = music_specifier.attachment_handler
                 if maker is None:
                     continue

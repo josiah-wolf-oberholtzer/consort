@@ -1,10 +1,6 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
-from abjad import new
 from abjad.tools import abctools
-from abjad.tools import mathtools
-from abjad.tools import pitchtools
-from abjad.tools import timespantools
 
 
 class PitchOperationSpecifier(abctools.AbjadValueObject):
@@ -14,17 +10,16 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
 
         ::
 
-            >>> import consort
             >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
-            ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(1, stravinsky=True),
-            ...             pitchtools.Transposition(1),
+            ...         abjad.CompoundOperator((
+            ...             abjad.Rotation(1, stravinsky=True),
+            ...             abjad.Transposition(1),
             ...             )),
             ...         None,
-            ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(-1, stravinsky=True),
-            ...             pitchtools.Transposition(-1),
+            ...         abjad.CompoundOperator((
+            ...             abjad.Rotation(-1, stravinsky=True),
+            ...             abjad.Transposition(-1),
             ...             ))
             ...         ),
             ...     ratio=(1, 2, 1),
@@ -32,31 +27,31 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> print(format(pitch_operation_specifier))
             consort.tools.PitchOperationSpecifier(
                 pitch_operations=(
-                    pitchtools.CompoundOperator(
+                    abjad.CompoundOperator(
                         operators=[
-                            pitchtools.Rotation(
+                            abjad.Rotation(
                                 n=1,
                                 stravinsky=True,
                                 ),
-                            pitchtools.Transposition(
+                            abjad.Transposition(
                                 n=1,
                                 ),
                             ],
                         ),
                     None,
-                    pitchtools.CompoundOperator(
+                    abjad.CompoundOperator(
                         operators=[
-                            pitchtools.Rotation(
+                            abjad.Rotation(
                                 n=-1,
                                 stravinsky=True,
                                 ),
-                            pitchtools.Transposition(
+                            abjad.Transposition(
                                 n=-1,
                                 ),
                             ],
                         ),
                     ),
-                ratio=mathtools.Ratio((1, 2, 1)),
+                ratio=abjad.Ratio((1, 2, 1)),
                 )
 
     '''
@@ -81,13 +76,13 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             if not isinstance(pitch_operations, collections.Sequence):
                 pitch_operations = (pitch_operations,)
             prototype = (
-                pitchtools.CompoundOperator,
+                abjad.CompoundOperator,
                 type(None),
                 )
             coerced_pitch_operations = []
             for x in pitch_operations:
                 if not isinstance(x, prototype):
-                    x = pitchtools.CompoundOperator(x)
+                    x = abjad.CompoundOperator(x)
                 coerced_pitch_operations.append(x)
             pitch_operations = tuple(coerced_pitch_operations)
             assert len(pitch_operations)
@@ -96,7 +91,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             ratio = [1] * len(pitch_operations)
 
         if ratio is not None:
-            ratio = mathtools.Ratio([abs(_) for _ in ratio])
+            ratio = abjad.Ratio([abs(_) for _ in ratio])
             assert len(ratio) == len(pitch_operations)
 
         if is_cumulative is not None:
@@ -115,39 +110,53 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
 
             ::
 
+                >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
+                ...     pitch_operations=(
+                ...         abjad.CompoundOperator((
+                ...             abjad.Rotation(1, stravinsky=True),
+                ...             abjad.Transposition(1),
+                ...             )),
+                ...         None,
+                ...         abjad.CompoundOperator((
+                ...             abjad.Rotation(-1, stravinsky=True),
+                ...             abjad.Transposition(-1),
+                ...             ))
+                ...         ),
+                ...     ratio=(1, 2, 1),
+                ...     )
                 >>> timespans = pitch_operation_specifier.get_timespans(10)
                 >>> print(format(timespans))
                 consort.tools.TimespanCollection(
                     [
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(0, 1),
-                            stop_offset=durationtools.Offset(5, 2),
-                            annotation=pitchtools.CompoundOperator(
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(0, 1),
+                            stop_offset=abjad.Offset(5, 2),
+                            annotation=abjad.CompoundOperator(
                                 operators=[
-                                    pitchtools.Rotation(
+                                    abjad.Rotation(
                                         n=1,
                                         stravinsky=True,
                                         ),
-                                    pitchtools.Transposition(
+                                    abjad.Transposition(
                                         n=1,
                                         ),
                                     ],
                                 ),
                             ),
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(5, 2),
-                            stop_offset=durationtools.Offset(15, 2),
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(5, 2),
+                            stop_offset=abjad.Offset(15, 2),
                             ),
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(15, 2),
-                            stop_offset=durationtools.Offset(10, 1),
-                            annotation=pitchtools.CompoundOperator(
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(15, 2),
+                            stop_offset=abjad.Offset(10, 1),
+                            annotation=abjad.CompoundOperator(
                                 operators=[
-                                    pitchtools.Rotation(
+                                    abjad.Rotation(
                                         n=-1,
                                         stravinsky=True,
                                         ),
-                                    pitchtools.Transposition(
+                                    abjad.Transposition(
                                         n=-1,
                                         ),
                                     ],
@@ -163,9 +172,9 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                 >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
                 ...     is_cumulative=True,
                 ...     pitch_operations=(
-                ...         pitchtools.Rotation(1, stravinsky=True),
-                ...         pitchtools.Transposition(1),
-                ...         pitchtools.Inversion(),
+                ...         abjad.Rotation(1, stravinsky=True),
+                ...         abjad.Transposition(1),
+                ...         abjad.Inversion(),
                 ...         None,
                 ...         ),
                 ...     ratio=(1, 2, 3, 1),
@@ -174,62 +183,62 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
                 >>> print(format(timespans))
                 consort.tools.TimespanCollection(
                     [
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(0, 1),
-                            stop_offset=durationtools.Offset(10, 7),
-                            annotation=pitchtools.CompoundOperator(
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(0, 1),
+                            stop_offset=abjad.Offset(10, 7),
+                            annotation=abjad.CompoundOperator(
                                 operators=[
-                                    pitchtools.Rotation(
+                                    abjad.Rotation(
                                         n=1,
                                         stravinsky=True,
                                         ),
                                     ],
                                 ),
                             ),
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(10, 7),
-                            stop_offset=durationtools.Offset(30, 7),
-                            annotation=pitchtools.CompoundOperator(
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(10, 7),
+                            stop_offset=abjad.Offset(30, 7),
+                            annotation=abjad.CompoundOperator(
                                 operators=[
-                                    pitchtools.Rotation(
+                                    abjad.Rotation(
                                         n=1,
                                         stravinsky=True,
                                         ),
-                                    pitchtools.Transposition(
+                                    abjad.Transposition(
                                         n=1,
                                         ),
                                     ],
                                 ),
                             ),
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(30, 7),
-                            stop_offset=durationtools.Offset(60, 7),
-                            annotation=pitchtools.CompoundOperator(
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(30, 7),
+                            stop_offset=abjad.Offset(60, 7),
+                            annotation=abjad.CompoundOperator(
                                 operators=[
-                                    pitchtools.Rotation(
+                                    abjad.Rotation(
                                         n=1,
                                         stravinsky=True,
                                         ),
-                                    pitchtools.Transposition(
+                                    abjad.Transposition(
                                         n=1,
                                         ),
-                                    pitchtools.Inversion(),
+                                    abjad.Inversion(),
                                     ],
                                 ),
                             ),
-                        timespantools.AnnotatedTimespan(
-                            start_offset=durationtools.Offset(60, 7),
-                            stop_offset=durationtools.Offset(10, 1),
-                            annotation=pitchtools.CompoundOperator(
+                        abjad.AnnotatedTimespan(
+                            start_offset=abjad.Offset(60, 7),
+                            stop_offset=abjad.Offset(10, 1),
+                            annotation=abjad.CompoundOperator(
                                 operators=[
-                                    pitchtools.Rotation(
+                                    abjad.Rotation(
                                         n=1,
                                         stravinsky=True,
                                         ),
-                                    pitchtools.Transposition(
+                                    abjad.Transposition(
                                         n=1,
                                         ),
-                                    pitchtools.Inversion(),
+                                    abjad.Inversion(),
                                     ],
                                 ),
                             ),
@@ -241,29 +250,29 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         import consort
         timespans = consort.TimespanCollection()
         if not self.ratio or not self.pitch_operations:
-            annotated_timespan = timespantools.AnnotatedTimespan(
+            annotated_timespan = abjad.AnnotatedTimespan(
                 start_offset=0,
                 stop_offset=stop_offset,
                 ),
             timespans.insert(annotated_timespan)
         else:
-            target_timespan = timespantools.Timespan(
+            target_timespan = abjad.Timespan(
                 start_offset=0,
                 stop_offset=stop_offset,
                 )
             divided_timespans = target_timespan.divide_by_ratio(self.ratio)
-            pitch_operation = pitchtools.CompoundOperator()
+            pitch_operation = abjad.CompoundOperator()
             for i, timespan in enumerate(divided_timespans):
                 current_pitch_operation = self._pitch_operations[i]
                 if self.is_cumulative:
                     if current_pitch_operation:
-                        pitch_operation = pitchtools.CompoundOperator(
+                        pitch_operation = abjad.CompoundOperator(
                             (pitch_operation.operators or []) +
                             current_pitch_operation.operators
                             )
                 else:
                     pitch_operation = current_pitch_operation
-                annotated_timespan = timespantools.AnnotatedTimespan(
+                annotated_timespan = abjad.AnnotatedTimespan(
                     annotation=pitch_operation,
                     start_offset=timespan.start_offset,
                     stop_offset=timespan.stop_offset,
@@ -278,14 +287,14 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
 
             >>> pitch_operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
-            ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(1, stravinsky=True),
-            ...             pitchtools.Transposition(1),
+            ...         abjad.CompoundOperator((
+            ...             abjad.Rotation(1, stravinsky=True),
+            ...             abjad.Transposition(1),
             ...             )),
             ...         None,
-            ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(-1, stravinsky=True),
-            ...             pitchtools.Transposition(-1),
+            ...         abjad.CompoundOperator((
+            ...             abjad.Rotation(-1, stravinsky=True),
+            ...             abjad.Transposition(-1),
             ...             ))
             ...         ),
             ...     ratio=(1, 2, 1),
@@ -294,31 +303,31 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
             >>> print(format(rotated_specifier))
             consort.tools.PitchOperationSpecifier(
                 pitch_operations=(
-                    pitchtools.CompoundOperator(
+                    abjad.CompoundOperator(
                         operators=[
-                            pitchtools.Rotation(
+                            abjad.Rotation(
                                 n=-1,
                                 stravinsky=True,
                                 ),
-                            pitchtools.Transposition(
+                            abjad.Transposition(
                                 n=-1,
                                 ),
                             ],
                         ),
-                    pitchtools.CompoundOperator(
+                    abjad.CompoundOperator(
                         operators=[
-                            pitchtools.Rotation(
+                            abjad.Rotation(
                                 n=1,
                                 stravinsky=True,
                                 ),
-                            pitchtools.Transposition(
+                            abjad.Transposition(
                                 n=1,
                                 ),
                             ],
                         ),
                     None,
                     ),
-                ratio=mathtools.Ratio((1, 1, 2)),
+                ratio=abjad.Ratio((1, 1, 2)),
                 )
 
         Returns new pitch specifier.
@@ -327,7 +336,7 @@ class PitchOperationSpecifier(abctools.AbjadValueObject):
         rotation = int(rotation)
         pitch_operations = consort.rotate(self.pitch_operations, rotation)
         ratio = consort.rotate(self.ratio, rotation)
-        return new(
+        return abjad.new(
             self,
             pitch_operations=pitch_operations,
             ratio=ratio,

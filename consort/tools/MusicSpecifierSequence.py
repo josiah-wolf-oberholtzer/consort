@@ -1,10 +1,8 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
-from abjad import new
 from abjad.tools import abctools
 from abjad.tools import mathtools
 from abjad.tools import rhythmmakertools
-from abjad.tools import timespantools
 
 
 class MusicSpecifierSequence(abctools.AbjadValueObject):
@@ -12,7 +10,6 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> sequence_a = consort.MusicSpecifierSequence(
         ...     music_specifiers='music',
         ...     )
@@ -58,7 +55,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
             isinstance(music_specifiers, str):
             music_specifiers = [music_specifiers]
         music_specifiers = tuple(music_specifiers)
-        #music_specifiers = datastructuretools.CyclicTuple(music_specifiers)
+        #music_specifiers = abjad.CyclicTuple(music_specifiers)
         assert len(music_specifiers)
         self._application_rate = application_rate
         self._music_specifiers = music_specifiers
@@ -78,7 +75,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
         voice_name=None,
         ):
         import consort
-        timespans = timespantools.TimespanList()
+        timespans = abjad.TimespanList()
         timespan_specifier = timespan_specifier or \
             consort.TimespanSpecifier()
         seed = seed or 0
@@ -120,7 +117,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
                 seed += 1
 
         if padding:
-            silent_timespans = timespantools.TimespanList()
+            silent_timespans = abjad.TimespanList()
             for shard in timespans.partition(True):
                 silent_timespan_one = consort.SilentTimespan(
                     layer=layer,
@@ -154,7 +151,7 @@ class MusicSpecifierSequence(abctools.AbjadValueObject):
 
     def transpose(self, expr):
         music_specifiers = [_.transpose(expr) for _ in self.music_specifiers]
-        return new(
+        return abjad.new(
             self,
             music_specifiers=music_specifiers,
             )

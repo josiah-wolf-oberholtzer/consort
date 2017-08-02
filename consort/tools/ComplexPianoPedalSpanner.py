@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 from abjad.tools import spannertools
 
 
@@ -7,7 +6,6 @@ class ComplexPianoPedalSpanner(spannertools.Spanner):
 
     ::
 
-        >>> import consort
         >>> spanner = consort.ComplexPianoPedalSpanner()
         >>> print(format(spanner))
         consort.tools.ComplexPianoPedalSpanner(

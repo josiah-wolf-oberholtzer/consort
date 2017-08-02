@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-from abjad import inspect_
+import abjad
 from abjad.tools import abctools
 from abjad.tools import selectiontools
 
@@ -19,7 +18,7 @@ class AfterGraceSelectorCallback(abctools.AbjadValueObject):
             subresult = []
             for x in subexpr:
                 subresult.append(x)
-                if inspect_(x).get_grace_containers('after'):
+                if abjad.inspect(x).get_after_grace_container():
                     subresult = selectiontools.Selection(subresult)
                     result.append(subresult)
                     subresult = []

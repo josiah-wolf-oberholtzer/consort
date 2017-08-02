@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import inspect
 import pytest
 from abjad.tools import documentationtools

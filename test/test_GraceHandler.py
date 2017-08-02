@@ -1,10 +1,9 @@
-# -*- encoding: utf -*-
+import abjad
 import collections
-from abjad.tools import indicatortools
+import consort
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
-import consort
 
 
 segment_metadata = collections.OrderedDict(
@@ -44,11 +43,11 @@ def test_GraceHandler_01():
                 v2=music_specifier,
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
         \version "2.19.44"
         \language "english"
@@ -181,11 +180,11 @@ def test_GraceHandler_02():
                 v2=music_specifier,
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
         \version "2.19.44"
         \language "english"
@@ -336,11 +335,11 @@ def test_GraceHandler_03():
                 v2=music_specifier,
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
         \version "2.19.44"
         \language "english"
@@ -475,11 +474,11 @@ def test_GraceHandler_04():
                 v1=music_specifier,
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
         \version "2.19.44"
         \language "english"
@@ -564,11 +563,11 @@ def test_GraceHandler_05():
                 v1=music_specifier,
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
         \version "2.19.44"
         \language "english"

@@ -1,11 +1,6 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
-from abjad import attach
-from abjad import new
-from abjad import override
 from abjad.tools import abctools
-from abjad.tools import datastructuretools
 from abjad.tools import mathtools
 from abjad.tools import schemetools
 from abjad.tools import scoretools
@@ -17,13 +12,12 @@ class GraceHandler(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> grace_handler = consort.GraceHandler(
         ...     counts=(0, 1, 0, 0, 2),
         ...     )
         >>> print(format(grace_handler))
         consort.tools.GraceHandler(
-            counts=datastructuretools.CyclicTuple(
+            counts=abjad.CyclicTuple(
                 [0, 1, 0, 0, 2]
                 ),
             )
@@ -53,7 +47,7 @@ class GraceHandler(abctools.AbjadValueObject):
         assert len(counts)
         assert mathtools.all_are_nonnegative_integer_equivalent_numbers(
             counts)
-        self._counts = datastructuretools.CyclicTuple(counts)
+        self._counts = abjad.CyclicTuple(counts)
         if only_if_preceded_by_nonsilence is not None:
             only_if_preceded_by_nonsilence = bool(
                 only_if_preceded_by_nonsilence)
@@ -80,9 +74,9 @@ class GraceHandler(abctools.AbjadValueObject):
         if previous_leaf is None:
             return
         silence_prototype = (
-            scoretools.Rest,
-            scoretools.MultimeasureRest,
-            scoretools.Skip,
+            abjad.Rest,
+            abjad.MultimeasureRest,
+            abjad.Skip,
             )
         if self.only_if_preceded_by_silence:
             if not isinstance(previous_leaf, silence_prototype):
@@ -93,20 +87,16 @@ class GraceHandler(abctools.AbjadValueObject):
         grace_count = self.counts[seed]
         if not grace_count:
             return
-        kind = 'after'
         leaf_to_attach_to = previous_leaf
         leaves = []
-        notes = scoretools.make_notes([0], [(1, 16)] * grace_count)
+        notes = abjad.LeafMaker()([0], [(1, 16)] * grace_count)
         leaves.extend(notes)
         assert len(leaves)
-        grace_container = scoretools.GraceContainer(
-            leaves,
-            kind=kind,
-            )
-        override(grace_container).flag.stroke_style = \
+        grace_container = scoretools.AfterGraceContainer(leaves)
+        abjad.override(grace_container).flag.stroke_style = \
             schemetools.Scheme('grace', force_quotes=True)
-        override(grace_container).script.font_size = 0.5
-        attach(grace_container, leaf_to_attach_to)
+        abjad.override(grace_container).script.font_size = 0.5
+        abjad.attach(grace_container, leaf_to_attach_to)
 
     ### PRIVATE METHODS ###
 
@@ -143,17 +133,13 @@ class GraceHandler(abctools.AbjadValueObject):
         counts = self.counts
         if counts is not None:
             counts = counts.reverse()
-        return new(self,
-            counts=counts,
-            )
+        return abjad.new(self, counts=counts)
 
     def rotate(self, n=0):
         counts = self.counts
         if counts is not None:
             counts = counts.rotate(n)
-        return new(self,
-            counts=counts,
-            )
+        return abjad.new(self, counts=counts)
 
     ### PUBLIC PROPERTIES ###
 

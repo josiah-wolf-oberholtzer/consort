@@ -1,7 +1,5 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
-from abjad.tools import datastructuretools
-from abjad.tools import timespantools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -10,7 +8,6 @@ class CompositeMusicSpecifier(HashCachingObject):
 
     ::
 
-        >>> import consort
         >>> music_specifier = consort.CompositeMusicSpecifier(
         ...     primary_music_specifier='one',
         ...     primary_voice_name='Viola 1 RH',
@@ -43,32 +40,32 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     layer=1,
         ...     )
         >>> print(format(timespans))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=1,
                     music_specifier='two',
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=1,
                     music_specifier='one',
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=1,
                     music_specifier='two',
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=1,
                     music_specifier='one',
                     voice_name='Viola 1 RH',
@@ -85,32 +82,32 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     seed=1,
         ...     )
         >>> print(format(timespans))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=2,
                     music_specifier='one',
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=2,
                     music_specifier='three',
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=2,
                     music_specifier='one',
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(2, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(2, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=2,
                     music_specifier='three',
                     voice_name='Viola 1 LH',
@@ -128,57 +125,57 @@ class CompositeMusicSpecifier(HashCachingObject):
         ...     seed=2,
         ...     )
         >>> print(format(timespans))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 1),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 1),
+                    stop_offset=abjad.Offset(0, 1),
                     layer=3,
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 1),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 1),
+                    stop_offset=abjad.Offset(0, 1),
                     layer=3,
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=3,
                     music_specifier='one',
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=3,
                     music_specifier='four',
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=3,
                     music_specifier='one',
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(2, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(2, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=3,
                     music_specifier='four',
                     voice_name='Viola 1 LH',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(4, 1),
                     layer=3,
                     voice_name='Viola 1 RH',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(4, 1),
                     layer=3,
                     voice_name='Viola 1 LH',
                     ),
@@ -255,7 +252,7 @@ class CompositeMusicSpecifier(HashCachingObject):
         import consort
         seed = seed or 0
         rotation_indices = self.rotation_indices or (0,)
-        rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
+        rotation_indices = abjad.CyclicTuple(rotation_indices)
         primary_durations = durations
         start_offset = start_offset or 0
         if self.discard_inner_offsets:
@@ -288,7 +285,7 @@ class CompositeMusicSpecifier(HashCachingObject):
             voice_name=self.secondary_voice_name,
             )
         timespans = primary_timespans[:] + secondary_timespans[:]
-        timespans = timespantools.TimespanList(timespans)
+        timespans = abjad.TimespanList(timespans)
         timespans.sort()
         return timespans
 

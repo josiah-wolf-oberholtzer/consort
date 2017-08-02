@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 from abjad.tools import abctools
 from abjad.tools import systemtools
 
@@ -8,13 +7,12 @@ class TimespanCollection(abctools.AbjadObject):
 
     ::
 
-        >>> import consort
         >>> timespans = (
-        ...     timespantools.Timespan(0, 3),
-        ...     timespantools.Timespan(1, 3),
-        ...     timespantools.Timespan(1, 2),
-        ...     timespantools.Timespan(2, 5),
-        ...     timespantools.Timespan(6, 9),
+        ...     abjad.Timespan(0, 3),
+        ...     abjad.Timespan(1, 3),
+        ...     abjad.Timespan(1, 2),
+        ...     abjad.Timespan(2, 5),
+        ...     abjad.Timespan(6, 9),
         ...     )
         >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -45,11 +43,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -60,7 +58,7 @@ class TimespanCollection(abctools.AbjadObject):
 
         ::
 
-            >>> timespantools.Timespan(-1, 100) in timespan_collection
+            >>> abjad.Timespan(-1, 100) in timespan_collection
             False
 
         Returns boolean.
@@ -76,11 +74,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -147,11 +145,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -187,11 +185,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -212,17 +210,17 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
         ::
 
-            >>> timespan_collection[:3] = [timespantools.Timespan(100, 200)]
+            >>> timespan_collection[:3] = [abjad.Timespan(100, 200)]
 
         Returns none.
         '''
@@ -240,14 +238,14 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespan_collection = consort.TimespanCollection([
-            ...     timespantools.Timespan(0, 16),
-            ...     timespantools.Timespan(5, 12),
-            ...     timespantools.Timespan(-2, 8),
+            ...     abjad.Timespan(0, 16),
+            ...     abjad.Timespan(5, 12),
+            ...     abjad.Timespan(-2, 8),
             ...     ])
 
         ::
 
-            >>> timespan = timespantools.Timespan(5, 10)
+            >>> timespan = abjad.Timespan(5, 10)
             >>> result = timespan_collection - timespan
 
         ::
@@ -255,21 +253,21 @@ class TimespanCollection(abctools.AbjadObject):
             >>> print(format(timespan_collection))
             consort.tools.TimespanCollection(
                 [
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(-2, 1),
-                        stop_offset=durationtools.Offset(5, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(-2, 1),
+                        stop_offset=abjad.Offset(5, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(5, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(5, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(10, 1),
-                        stop_offset=durationtools.Offset(12, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(10, 1),
+                        stop_offset=abjad.Offset(12, 1),
                         ),
-                    timespantools.Timespan(
-                        start_offset=durationtools.Offset(10, 1),
-                        stop_offset=durationtools.Offset(16, 1),
+                    abjad.Timespan(
+                        start_offset=abjad.Offset(10, 1),
+                        stop_offset=abjad.Offset(16, 1),
                         ),
                     ]
                 )
@@ -507,11 +505,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -548,17 +546,17 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
         ::
 
-            >>> timespan = timespantools.Timespan(2, 4)
+            >>> timespan = abjad.Timespan(2, 4)
             >>> for x in timespan_collection.find_timespans_intersecting_timespan(timespan):
             ...     x
             ...
@@ -591,11 +589,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -629,11 +627,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -683,11 +681,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -745,10 +743,10 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespan_collection = consort.TimespanCollection()
-            >>> timespan_collection.insert(timespantools.Timespan(1, 3))
+            >>> timespan_collection.insert(abjad.Timespan(1, 3))
             >>> timespan_collection.insert((
-            ...     timespantools.Timespan(0, 4),
-            ...     timespantools.Timespan(2, 6),
+            ...     abjad.Timespan(0, 4),
+            ...     abjad.Timespan(2, 6),
             ...     ))
 
         ::
@@ -782,11 +780,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -842,11 +840,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 
@@ -900,11 +898,11 @@ class TimespanCollection(abctools.AbjadObject):
         ::
 
             >>> timespans = (
-            ...     timespantools.Timespan(0, 3),
-            ...     timespantools.Timespan(1, 3),
-            ...     timespantools.Timespan(1, 2),
-            ...     timespantools.Timespan(2, 5),
-            ...     timespantools.Timespan(6, 9),
+            ...     abjad.Timespan(0, 3),
+            ...     abjad.Timespan(1, 3),
+            ...     abjad.Timespan(1, 2),
+            ...     abjad.Timespan(2, 5),
+            ...     abjad.Timespan(6, 9),
             ...     )
             >>> timespan_collection = consort.TimespanCollection(timespans)
 

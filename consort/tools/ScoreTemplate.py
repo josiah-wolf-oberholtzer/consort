@@ -1,5 +1,5 @@
-# -*- encoding: utf-8 -*-
 import abc
+import abjad
 import importlib
 from abjad import Multiplier
 from abjad import attach
@@ -9,7 +9,6 @@ from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import lilypondfiletools
 from abjad.tools import scoretools
-from abjad.tools import stringtools
 try:
     import pathlib
 except ImportError:
@@ -50,19 +49,19 @@ class ScoreTemplate(abctools.AbjadValueObject):
             (4, 4), (6, 8), (5, 4), (3, 8),
             (3, 4), (7, 8), (2, 4), (5, 16),
             ]
-        for voice in iterate(score).by_class(scoretools.Voice):
+        for voice in iterate(score).by_class(abjad.Voice):
             for pair in time_signatures:
-                rest = scoretools.MultimeasureRest(1)
+                rest = abjad.MultimeasureRest(1)
                 attach(Multiplier(pair), rest)
                 voice.append(rest)
         for pair in time_signatures:
-            skip = scoretools.Skip(1)
+            skip = abjad.Skip(1)
             attach(Multiplier(pair), skip)
             score['Time Signature Context'].append(skip)
             attach(
-                indicatortools.TimeSignature(pair),
+                abjad.TimeSignature(pair),
                 skip,
-                scope=scoretools.Score,
+                scope=abjad.Score,
                 )
         module = importlib.import_module(type(self).__module__)
         score_path = pathlib.Path(module.__file__).parent.parent
@@ -78,7 +77,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _attach_tag(self, label, context):
-        label = stringtools.to_dash_case(label)
+        label = abjad.String(label).to_dash_case()
         tag = indicatortools.LilyPondCommand(
             name="tag #'{}".format(label),
             format_slot='before',
@@ -88,9 +87,9 @@ class ScoreTemplate(abctools.AbjadValueObject):
     def _make_voice(self, name, abbreviation=None, context_name=None):
         name = name.title()
         abbreviation = abbreviation or name
-        abbreviation = stringtools.to_snake_case(abbreviation)
+        abbreviation = abjad.String(abbreviation).to_snake_case()
         voice_name = '{} Voice'.format(name)
-        voice = scoretools.Voice(
+        voice = abjad.Voice(
             name=voice_name,
             context_name=context_name,
             )
@@ -112,9 +111,9 @@ class ScoreTemplate(abctools.AbjadValueObject):
         context_name = context_name or staff_name
         context_name = context_name.replace(' ', '')
         abbreviation = abbreviation or name
-        abbreviation = stringtools.to_snake_case(abbreviation)
+        abbreviation = abjad.String(abbreviation).to_snake_case()
         voices = voices or [self._make_voice(name, abbreviation=abbreviation)]
-        staff = scoretools.Staff(
+        staff = abjad.Staff(
             voices,
             context_name=context_name,
             name=staff_name
@@ -135,7 +134,7 @@ class ScoreTemplate(abctools.AbjadValueObject):
             type(self)._is_populated = True
 
     def _register_abbreviation(self, abbreviation, voice):
-        assert isinstance(voice, scoretools.Voice)
+        assert isinstance(voice, abjad.Voice)
         self._context_name_abbreviations[abbreviation] = voice.name
 
     ### PUBLIC PROPERTIES ###

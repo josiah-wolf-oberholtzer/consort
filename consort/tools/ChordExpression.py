@@ -1,10 +1,6 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 from abjad import attach
-from abjad import mutate
-from abjad.tools import indicatortools
 from abjad.tools import pitchtools
-from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
@@ -14,30 +10,29 @@ class ChordExpression(LogicalTieExpression):
 
     ::
 
-        >>> import consort
         >>> chord_expression = consort.ChordExpression(
         ...     arpeggio_direction=Down,
         ...     chord_expr=(-1, 3, 7),
         ...     )
         >>> print(format(chord_expression))
         consort.tools.ChordExpression(
-            chord_expr=pitchtools.IntervalSegment(
+            chord_expr=abjad.IntervalSegment(
                 (
-                    pitchtools.NumberedInterval(-1),
-                    pitchtools.NumberedInterval(3),
-                    pitchtools.NumberedInterval(7),
+                    abjad.NumberedInterval(-1),
+                    abjad.NumberedInterval(3),
+                    abjad.NumberedInterval(7),
                     ),
-                item_class=pitchtools.NumberedInterval,
+                item_class=abjad.NumberedInterval,
                 ),
             arpeggio_direction=Down,
             )
 
     ::
 
-        >>> staff = Staff(r"c'4 d'4 \p -\accent ~ d'4 e'4")
+        >>> staff = abjad.Staff(r"c'4 d'4 \p -\accent ~ d'4 e'4")
         >>> pitch_range = pitchtools.PitchRange.from_pitches('C3', 'C6')
-        >>> attach(pitch_range, staff, scope=Staff)
-        >>> logical_tie = inspect_(staff[1]).get_logical_tie()
+        >>> abjad.attach(pitch_range, staff, scope=abjad.Staff)
+        >>> logical_tie = abjad.inspect(staff[1]).get_logical_tie()
         >>> chord_expression(logical_tie)
         >>> print(format(staff))
         \new Staff {
@@ -67,17 +62,17 @@ class ChordExpression(LogicalTieExpression):
         assert arpeggio_direction in (Up, Down, Center, None)
         if chord_expr is not None:
             assert len(chord_expr)
-            prototype = (pitchtools.IntervalSegment, pitchtools.PitchSegment)
+            prototype = (abjad.IntervalSegment, abjad.PitchSegment)
             if isinstance(chord_expr, prototype):
                 result = chord_expr
             elif isinstance(chord_expr, str):
-                result = pitchtools.PitchSegment(chord_expr)
+                result = abjad.PitchSegment(chord_expr)
             else:
                 try:
                     result = sorted(chord_expr)
-                    result = pitchtools.IntervalSegment(result)
+                    result = abjad.IntervalSegment(result)
                 except:
-                    result = pitchtools.PitchSegment(chord_expr)
+                    result = abjad.PitchSegment(chord_expr)
             chord_expr = result
         self._arpeggio_direction = arpeggio_direction
         self._chord_expr = chord_expr
@@ -90,7 +85,7 @@ class ChordExpression(LogicalTieExpression):
         pitch_range=None,
         ):
         assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
-        if isinstance(self.chord_expr, pitchtools.IntervalSegment):
+        if isinstance(self.chord_expr, abjad.IntervalSegment):
             pitches = self._get_pitches_from_intervals(
                 logical_tie.head.written_pitch,
                 pitch_range,
@@ -101,20 +96,20 @@ class ChordExpression(LogicalTieExpression):
         if len(pitches) == 2:
             interval = pitches[0] - pitches[1]
             if interval.quality_string in ('augmented', 'diminished'):
-                chord = scoretools.Chord(pitches, 1)
-                mutate(chord).respell_with_sharps()
+                chord = abjad.Chord(pitches, 1)
+                abjad.Accidental.respell_with_sharps(chord)
                 pitches = chord.written_pitches
                 interval = pitches[0] - pitches[1]
             if interval.quality_string in ('augmented', 'diminished'):
-                chord = scoretools.Chord(pitches, 1)
-                mutate(chord).respell_with_flats()
+                chord = abjad.Chord(pitches, 1)
+                abjad.Accidental.respell_with_flats(chord)
                 pitches = chord.written_pitches
         for i, leaf in enumerate(logical_tie):
-            chord = scoretools.Chord(leaf)
+            chord = abjad.Chord(leaf)
             chord.written_pitches = pitches
             self._replace(leaf, chord)
             if not i and self.arpeggio_direction is not None:
-                arpeggio = indicatortools.Arpeggio(self.arpeggio_direction)
+                arpeggio = abjad.Arpeggio(self.arpeggio_direction)
                 attach(arpeggio, chord)
 
     ### PRIVATE METHODS ###
@@ -124,9 +119,9 @@ class ChordExpression(LogicalTieExpression):
         import consort
         buckets = {}
         for pitch in pitch_set:
-            if pitch.diatonic_pitch_number not in buckets:
-                buckets[pitch.diatonic_pitch_number] = set()
-            buckets[pitch.diatonic_pitch_number].add(pitch)
+            if pitch._get_diatonic_pitch_number() not in buckets:
+                buckets[pitch._get_diatonic_pitch_number()] = set()
+            buckets[pitch._get_diatonic_pitch_number()].add(pitch)
         penalty = 0
         for diatonic_pitch_number, bucket in sorted(buckets.items()):
             penalty = penalty + (len(bucket) - 1)
@@ -137,15 +132,15 @@ class ChordExpression(LogicalTieExpression):
                 continue
             one_has_flats, one_has_sharps = False, False
             for pitch in bucket_1:
-                if pitch.alteration_in_semitones > 0:
+                if pitch._get_alteration() > 0:
                     one_has_sharps = True
-                if pitch.alteration_in_semitones < 0:
+                if pitch._get_alteration() < 0:
                     one_has_flats = True
             two_has_flats, two_has_sharps = False, False
             for pitch in bucket_2:
-                if pitch.alteration_in_semitones > 0:
+                if pitch._get_alteration() > 0:
                     two_has_sharps = True
-                if pitch.alteration_in_semitones < 0:
+                if pitch._get_alteration() < 0:
                     two_has_flats = True
             if one_has_flats and two_has_sharps:
                 penalty += 1
@@ -155,19 +150,19 @@ class ChordExpression(LogicalTieExpression):
 
     @staticmethod
     def _flip_accidental(pitch):
-        if not pitch.alteration_in_semitones:
+        if not pitch._get_alteration():
             return pitch
-        elif 0 < pitch.alteration_in_semitones:
-            return pitch.respell_with_flats()
-        return pitch.respell_with_sharps()
+        elif 0 < pitch._get_alteration():
+            return pitch._respell_with_flats()
+        return pitch._respell_with_sharps()
 
     @staticmethod
     def _reshape_pitch_set(pitch_set):
         altered = {}
         unaltered = {}
         for pitch in pitch_set:
-            diatonic_pitch_number = pitch.diatonic_pitch_number
-            if pitch.alteration_in_semitones:
+            diatonic_pitch_number = pitch._get_diatonic_pitch_number()
+            if pitch._get_alteration():
                 if diatonic_pitch_number not in altered:
                     altered[diatonic_pitch_number] = []
                 altered[diatonic_pitch_number].append(pitch)
@@ -184,7 +179,7 @@ class ChordExpression(LogicalTieExpression):
                     new_altered[diatonic_pitch_number].append(altered_pitch)
                 else:
                     new_pitch = ChordExpression._flip_accidental(altered_pitch)
-                    new_diatonic_pitch_number = new_pitch.diatonic_pitch_number
+                    new_diatonic_pitch_number = new_pitch._get_diatonic_pitch_number()
                     if new_diatonic_pitch_number not in new_altered:
                         new_altered[new_diatonic_pitch_number] = []
                     new_altered[new_diatonic_pitch_number].append(new_pitch)
@@ -226,7 +221,7 @@ class ChordExpression(LogicalTieExpression):
 
             >>> pitch_set = pitchtools.PitchSet("cf' c' cs'")
             >>> consort.ChordExpression._respell_pitch_set(pitch_set)
-            PitchSet(['b', "c'", "df'"])
+            PitchSet(["c'", "df'", "b'"])
 
         ::
 
@@ -239,14 +234,14 @@ class ChordExpression(LogicalTieExpression):
         if not initial_score:
             return pitch_set
         flat_pitch_set = pitchtools.PitchSet(
-            _.respell_with_flats()
+            _._respell_with_flats()
             for _ in pitch_set
             )
         flat_score = ChordExpression._score_pitch_set(flat_pitch_set)
         if not flat_score:
             return flat_pitch_set
         sharp_pitch_set = pitchtools.PitchSet(
-            _.respell_with_sharps()
+            _._respell_with_sharps()
             for _ in pitch_set
             )
         sharp_score = ChordExpression._score_pitch_set(sharp_pitch_set)
@@ -281,7 +276,7 @@ class ChordExpression(LogicalTieExpression):
                 new_chord_expr = [x - minimum for x in chord_expr]
 
         pitches = [base_pitch.transpose(x) for x in new_chord_expr]
-        pitches = [pitchtools.NamedPitch(float(x)) for x in pitches]
+        pitches = [abjad.NamedPitch(float(x)) for x in pitches]
         if pitch_range is not None:
             # Not exhaustive, but good enough.
             while min(pitches) < pitch_range.start_pitch:
@@ -298,7 +293,7 @@ class ChordExpression(LogicalTieExpression):
                 raise Exception
 
         pitch_set = self._respell_pitch_set(pitchtools.PitchSet(pitches))
-        pitches = pitchtools.PitchSegment(sorted(pitch_set))
+        pitches = abjad.PitchSegment(sorted(pitch_set))
 
         return pitches
 

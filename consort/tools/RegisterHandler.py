@@ -1,7 +1,4 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
-from abjad import inspect_
-from abjad.tools import datastructuretools
+import abjad
 from abjad.tools import instrumenttools
 from abjad.tools import pitchtools
 from consort.tools.HashCachingObject import HashCachingObject
@@ -21,7 +18,7 @@ class RegisterHandler(HashCachingObject):
         '_register_spread',
         )
 
-    _default_octavations = datastructuretools.CyclicTuple([
+    _default_octavations = abjad.CyclicTuple([
         4, 2, 1, 0, 5, 6, 7, 3,
         0, 5, 3, 1, 7, 4, 2, 6,
         2, 1, 5, 3, 4, 0, 7, 6,
@@ -74,7 +71,7 @@ class RegisterHandler(HashCachingObject):
             logical_tie,
             seed_session.current_timewise_phrase_seed,
             )
-        pitch_class = logical_tie[0].written_pitch.named_pitch_class
+        pitch_class = logical_tie[0].written_pitch.pitch_class
         pitch = self._get_pitch(
             pitch_class,
             registration,
@@ -133,7 +130,7 @@ class RegisterHandler(HashCachingObject):
             return music_specifier.instrument
         component = logical_tie.head
         prototype = instrumenttools.Instrument
-        instrument = inspect_(component).get_effective(prototype)
+        instrument = abjad.inspect(component).get_effective(prototype)
         return instrument
 
     def _get_pitch(
@@ -144,11 +141,11 @@ class RegisterHandler(HashCachingObject):
         ):
         octavations = self.octavations or self._default_octavations
         octave = octavations[seed]
-        pitch = pitchtools.NamedPitch(pitch_class, octave)
+        pitch = abjad.NamedPitch((pitch_class, octave))
         pitch_range = pitchtools.PitchRange('[C0, C8)')
         pitch = self._fit_pitch_to_pitch_range(pitch, pitch_range)
         pitch = registration([pitch])[0]
-        pitch = pitchtools.NamedPitch(pitch)
+        pitch = abjad.NamedPitch(pitch)
         return pitch
 
     @staticmethod
@@ -158,7 +155,7 @@ class RegisterHandler(HashCachingObject):
         ):
         prototype = pitchtools.PitchRange
         component = logical_tie.head
-        pitch_range = inspect_(component).get_effective(prototype)
+        pitch_range = abjad.inspect(component).get_effective(prototype)
         if pitch_range is None and instrument is not None:
             pitch_range = instrument.pitch_range
         return pitch_range
@@ -201,7 +198,7 @@ class RegisterHandler(HashCachingObject):
             assert all(isinstance(_, prototype)
                 for _ in logical_tie_expressions), \
                 logical_tie_expressions
-            logical_tie_expressions = datastructuretools.CyclicTuple(
+            logical_tie_expressions = abjad.CyclicTuple(
                 logical_tie_expressions,
                 )
         self._logical_tie_expressions = logical_tie_expressions
@@ -210,7 +207,7 @@ class RegisterHandler(HashCachingObject):
         if octavations is not None:
             assert octavations
             assert all(isinstance(x, int) for x in octavations)
-            octavations = datastructuretools.CyclicTuple(octavations)
+            octavations = abjad.CyclicTuple(octavations)
         self._octavations = octavations
 
     def _initialize_pitch_range(self, pitch_range):

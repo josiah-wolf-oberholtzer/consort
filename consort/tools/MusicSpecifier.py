@@ -1,15 +1,10 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
 import os
-from abjad import new
-from abjad.tools import durationtools
-from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import lilypondfiletools
 from abjad.tools import markuptools
-from abjad.tools import pitchtools
 from abjad.tools import rhythmmakertools
-from abjad.tools import stringtools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -18,7 +13,6 @@ class MusicSpecifier(HashCachingObject):
 
     ::
 
-        >>> import consort
         >>> music_specifier = consort.MusicSpecifier()
         >>> print(format(music_specifier))
         consort.tools.MusicSpecifier()
@@ -89,7 +83,7 @@ class MusicSpecifier(HashCachingObject):
         self._labels = labels
         if minimum_phrase_duration is not None:
             minimum_phrase_duration = \
-                durationtools.Duration(minimum_phrase_duration)
+                abjad.Duration(minimum_phrase_duration)
             assert 0 <= minimum_phrase_duration
         self._minimum_phrase_duration = minimum_phrase_duration
         if pitch_handler is not None:
@@ -127,7 +121,7 @@ class MusicSpecifier(HashCachingObject):
 
             >>> piano_glissando_music_specifier = consort.MusicSpecifier(
             ...     attachment_handler=consort.AttachmentHandler(
-            ...         glissando=spannertools.Glissando(),
+            ...         glissando=abjad.Glissando(),
             ...         ),
             ...     color=None,
             ...     labels=[],
@@ -181,7 +175,7 @@ class MusicSpecifier(HashCachingObject):
                 (7, 8),
                 ],
             score_template=score_template,
-            tempo=indicatortools.Tempo((1, 4), 72),
+            tempo=abjad.MetronomeMark((1, 4), 72),
             timespan_quantization=(1, 8),
             )
         timespan_maker = consort.TaleaTimespanMaker(
@@ -203,7 +197,7 @@ class MusicSpecifier(HashCachingObject):
             synchronize_groupings=False,
             synchronize_step=False,
             timespan_specifier=consort.TimespanSpecifier(
-                minimum_duration=durationtools.Duration(1, 8),
+                minimum_duration=abjad.Duration(1, 8),
                 ),
             )
         segment_maker.add_setting(
@@ -227,7 +221,7 @@ class MusicSpecifier(HashCachingObject):
             'stylesheet.ily',
             )
         consort_stylesheet_path = os.path.abspath(consort_stylesheet_path)
-        lilypond_file = new(
+        lilypond_file = abjad.new(
             lilypond_file,
             includes=[consort_stylesheet_path],
             use_relative_includes=False,
@@ -235,7 +229,7 @@ class MusicSpecifier(HashCachingObject):
             )
         if package_name is not None:
             header = lilypondfiletools.Block('header')
-            title = stringtools.to_space_delimited_lowercase(package_name)
+            title = abjad.String.to_space_delimited_lowercase(package_name)
             title = title.title()
             title = markuptools.Markup(title).override(('font-name', 'Didot'))
             header.title = title
@@ -248,7 +242,7 @@ class MusicSpecifier(HashCachingObject):
     def rotate(self, rotation):
         seed = self.seed or 0
         seed = seed + rotation
-        return new(self, seed=seed)
+        return abjad.new(self, seed=seed)
 
     def transpose(self, expr):
         r'''Transposes music specifier.
@@ -273,29 +267,29 @@ class MusicSpecifier(HashCachingObject):
                 pitch_handler=consort.tools.AbsolutePitchHandler(
                     pitch_specifier=consort.tools.PitchSpecifier(
                         pitch_segments=(
-                            pitchtools.PitchSegment(
+                            abjad.PitchSegment(
                                 (
-                                    pitchtools.NamedPitch('bf'),
-                                    pitchtools.NamedPitch("d'"),
-                                    pitchtools.NamedPitch("f'"),
+                                    abjad.NamedPitch('bf'),
+                                    abjad.NamedPitch("d'"),
+                                    abjad.NamedPitch("f'"),
                                     ),
-                                item_class=pitchtools.NamedPitch,
+                                item_class=abjad.NamedPitch,
                                 ),
-                            pitchtools.PitchSegment(
+                            abjad.PitchSegment(
                                 (
-                                    pitchtools.NamedPitch("e'"),
-                                    pitchtools.NamedPitch("fs'"),
+                                    abjad.NamedPitch("e'"),
+                                    abjad.NamedPitch("fs'"),
                                     ),
-                                item_class=pitchtools.NamedPitch,
+                                item_class=abjad.NamedPitch,
                                 ),
-                            pitchtools.PitchSegment(
+                            abjad.PitchSegment(
                                 (
-                                    pitchtools.NamedPitch('a'),
+                                    abjad.NamedPitch('a'),
                                     ),
-                                item_class=pitchtools.NamedPitch,
+                                item_class=abjad.NamedPitch,
                                 ),
                             ),
-                        ratio=mathtools.Ratio((1, 2, 3)),
+                        ratio=abjad.Ratio((1, 2, 3)),
                         ),
                     ),
                 )
@@ -304,14 +298,14 @@ class MusicSpecifier(HashCachingObject):
         '''
         if isinstance(expr, str):
             try:
-                pitch = pitchtools.NamedPitch(expr)
-                expr = pitchtools.NamedPitch('C4') - pitch
+                pitch = abjad.NamedPitch(expr)
+                expr = abjad.NamedPitch('C4') - pitch
             except:
-                expr = pitchtools.NamedInterval(expr)
+                expr = abjad.NamedInterval(expr)
         pitch_handler = self.pitch_handler
         if pitch_handler is not None:
             pitch_handler = pitch_handler.transpose(expr)
-        return new(
+        return abjad.new(
             self,
             pitch_handler=pitch_handler,
             )

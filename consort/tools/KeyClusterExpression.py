@@ -1,9 +1,7 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 from abjad import attach
 from abjad.tools import indicatortools
 from abjad.tools import pitchtools
-from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
@@ -11,7 +9,6 @@ from consort.tools.LogicalTieExpression import LogicalTieExpression
 class KeyClusterExpression(LogicalTieExpression):
     r'''A key cluster expression.
 
-        >>> import consort
         >>> key_cluster_expression = consort.KeyClusterExpression(
         ...     arpeggio_direction=Up,
         ...     include_black_keys=False,
@@ -26,8 +23,8 @@ class KeyClusterExpression(LogicalTieExpression):
 
     ::
 
-        >>> staff = Staff("c'4 d'4 ~ d'4 e'4")
-        >>> logical_tie = inspect_(staff[1]).get_logical_tie()
+        >>> staff = abjad.Staff("c'4 d'4 ~ d'4 e'4")
+        >>> logical_tie = abjad.inspect(staff[1]).get_logical_tie()
         >>> key_cluster_expression(logical_tie)
         >>> print(format(staff))
         \new Staff {
@@ -106,7 +103,7 @@ class KeyClusterExpression(LogicalTieExpression):
                 center_pitch = center_pitch.transpose(interval)
                 chord_pitches = self._get_chord_pitches(center_pitch)
         for i, leaf in enumerate(logical_tie):
-            chord = scoretools.Chord(leaf)
+            chord = abjad.Chord(leaf)
             chord.written_pitches = chord_pitches
             self._replace(leaf, chord)
             if i:
@@ -132,8 +129,10 @@ class KeyClusterExpression(LogicalTieExpression):
     ### PRIVATE PROPERTIES ###
 
     def _get_chord_pitches(self, center_pitch):
-        starting_diatonic_number = \
-            center_pitch.diatonic_pitch_number - (self.staff_space_width // 2)
+        starting_diatonic_number = (
+            center_pitch._get_diatonic_pitch_number() -
+            (self.staff_space_width // 2)
+            )
         diatonic_numbers = [starting_diatonic_number]
         for i in range(1, (self.staff_space_width // 2) + 1):
             step = 2 * i
@@ -145,7 +144,7 @@ class KeyClusterExpression(LogicalTieExpression):
                 x % 7]
             for x in diatonic_numbers
             ]
-        chord_pitches = [pitchtools.NamedPitch(x)
+        chord_pitches = [abjad.NamedPitch(x)
             for x in chromatic_numbers]
         return chord_pitches
 

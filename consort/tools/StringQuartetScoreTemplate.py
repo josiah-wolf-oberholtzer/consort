@@ -1,10 +1,9 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad import detach
 from abjad import iterate
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import markuptools
-from abjad.tools import scoretools
 from consort.tools.ScoreTemplate import ScoreTemplate
 
 
@@ -13,7 +12,6 @@ class StringQuartetScoreTemplate(ScoreTemplate):
 
     ::
 
-        >>> import consort
         >>> template = consort.StringQuartetScoreTemplate()
         >>> score = template()
         >>> print(format(score))
@@ -170,8 +168,8 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                     }
             } <<
                 \context StringStaff = "Violin 1 Staff" {
+                    \clef "treble"
                     \context Voice = "Violin 1 Voice" {
-                        \clef "treble"
                     }
                 }
             >>
@@ -189,8 +187,8 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                     }
             } <<
                 \context StringStaff = "Violin 2 Staff" {
+                    \clef "treble"
                     \context Voice = "Violin 2 Voice" {
-                        \clef "treble"
                     }
                 }
             >>
@@ -208,8 +206,8 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                     }
             } <<
                 \context StringStaff = "Viola Staff" {
+                    \clef "alto"
                     \context Voice = "Viola Voice" {
-                        \clef "alto"
                     }
                 }
             >>
@@ -227,8 +225,8 @@ class StringQuartetScoreTemplate(ScoreTemplate):
                     }
             } <<
                 \context StringStaff = "Cello Staff" {
+                    \clef "bass"
                     \context Voice = "Cello Voice" {
-                        \clef "bass"
                     }
                 }
             >>
@@ -334,7 +332,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
             score_template=self,
             )
 
-        score = scoretools.Score(
+        score = abjad.Score(
             [
                 time_signature_context,
                 violin_one,
@@ -346,7 +344,7 @@ class StringQuartetScoreTemplate(ScoreTemplate):
             )
 
         if self.without_instruments:
-            for staff in iterate(score).by_class(scoretools.Context):
+            for staff in iterate(score).by_class(abjad.Context):
                 detach(instrumenttools.Instrument, staff)
 
         return score

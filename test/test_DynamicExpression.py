@@ -1,6 +1,5 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import consort
-from abjad.tools import scoretools
 from abjad.tools import systemtools
 
 
@@ -9,9 +8,9 @@ def test_DynamicExpression_01():
         dynamic_tokens="f p mf mf mp",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -29,9 +28,9 @@ def test_DynamicExpression_01():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -48,9 +47,9 @@ def test_DynamicExpression_01():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -64,9 +63,9 @@ def test_DynamicExpression_01():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -79,9 +78,9 @@ def test_DynamicExpression_01():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -91,9 +90,9 @@ def test_DynamicExpression_01():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -108,9 +107,9 @@ def test_DynamicExpression_02():
         dynamic_tokens="f p mf mf mp",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -128,9 +127,9 @@ def test_DynamicExpression_02():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -147,9 +146,9 @@ def test_DynamicExpression_02():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -163,9 +162,9 @@ def test_DynamicExpression_02():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -178,9 +177,9 @@ def test_DynamicExpression_02():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -190,9 +189,9 @@ def test_DynamicExpression_02():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -208,9 +207,9 @@ def test_DynamicExpression_03():
         start_dynamic_tokens="fff fffff",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -228,9 +227,9 @@ def test_DynamicExpression_03():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -247,9 +246,9 @@ def test_DynamicExpression_03():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -263,9 +262,9 @@ def test_DynamicExpression_03():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -278,9 +277,9 @@ def test_DynamicExpression_03():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -290,9 +289,9 @@ def test_DynamicExpression_03():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -308,9 +307,9 @@ def test_DynamicExpression_04():
         stop_dynamic_tokens="ppp ppppp",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -328,9 +327,9 @@ def test_DynamicExpression_04():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -347,9 +346,9 @@ def test_DynamicExpression_04():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -363,9 +362,9 @@ def test_DynamicExpression_04():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -378,9 +377,9 @@ def test_DynamicExpression_04():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -390,9 +389,9 @@ def test_DynamicExpression_04():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -408,9 +407,9 @@ def test_DynamicExpression_05():
         stop_dynamic_tokens="ppp ppppp",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -428,9 +427,9 @@ def test_DynamicExpression_05():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -447,9 +446,9 @@ def test_DynamicExpression_05():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -463,9 +462,9 @@ def test_DynamicExpression_05():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -478,9 +477,9 @@ def test_DynamicExpression_05():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -490,9 +489,9 @@ def test_DynamicExpression_05():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -509,9 +508,9 @@ def test_DynamicExpression_06():
         stop_dynamic_tokens="ppp ppppp",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -529,9 +528,9 @@ def test_DynamicExpression_06():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -548,9 +547,9 @@ def test_DynamicExpression_06():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -564,9 +563,9 @@ def test_DynamicExpression_06():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -579,9 +578,9 @@ def test_DynamicExpression_06():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -591,9 +590,9 @@ def test_DynamicExpression_06():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -610,9 +609,9 @@ def test_DynamicExpression_07():
         stop_dynamic_tokens="ppp ppppp",
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -630,9 +629,9 @@ def test_DynamicExpression_07():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -649,9 +648,9 @@ def test_DynamicExpression_07():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' f' }")
+    music = abjad.Staff("{ c' d' } { e' f' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -665,9 +664,9 @@ def test_DynamicExpression_07():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' } { e' }")
+    music = abjad.Staff("{ c' d' } { e' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -680,9 +679,9 @@ def test_DynamicExpression_07():
         }
         ''')
 
-    music = scoretools.Staff("{ c' d' }")
+    music = abjad.Staff("{ c' d' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -692,9 +691,9 @@ def test_DynamicExpression_07():
         }
         ''')
 
-    music = scoretools.Staff("{ c' }")
+    music = abjad.Staff("{ c' }")
     dynamic_expression(music, seed=1)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {
@@ -711,9 +710,9 @@ def test_DynamicExpression_08():
         stop_dynamic_tokens='niente',
         )
 
-    music = scoretools.Staff("{ c' d' } { e' f' } { g' a' }")
+    music = abjad.Staff("{ c' d' } { e' f' } { g' a' }")
     dynamic_expression(music)
-    assert format(music) == systemtools.TestManager.clean_string(
+    assert format(music) == abjad.String.normalize(
         r'''
         \new Staff {
             {

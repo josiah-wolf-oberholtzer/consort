@@ -1,6 +1,4 @@
-# -*- encoding: utf-8 -*-
-from abjad import inspect_
-from abjad import iterate
+import abjad
 from abjad.tools import abctools
 from abjad.tools import durationtools
 from abjad.tools import scoretools
@@ -11,7 +9,6 @@ class AttackPointSignature(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> attack_point_signature = consort.AttackPointSignature(
         ...     division_position=0,
         ...     phrase_position=(1, 2),
@@ -20,10 +17,10 @@ class AttackPointSignature(abctools.AbjadValueObject):
         >>> print(format(attack_point_signature))
         consort.tools.AttackPointSignature(
             division_index=0,
-            division_position=durationtools.Multiplier(0, 1),
+            division_position=abjad.Multiplier(0, 1),
             logical_tie_index=0,
-            phrase_position=durationtools.Multiplier(1, 2),
-            segment_position=durationtools.Multiplier(4, 5),
+            phrase_position=abjad.Multiplier(1, 2),
+            segment_position=abjad.Multiplier(4, 5),
             total_divisions_in_phrase=1,
             total_logical_ties_in_division=1,
             )
@@ -55,10 +52,10 @@ class AttackPointSignature(abctools.AbjadValueObject):
         total_logical_ties_in_division=1,
         ):
         division_index = int(division_index)
-        division_position = durationtools.Multiplier(division_position)
+        division_position = abjad.Multiplier(division_position)
         logical_tie_index = int(logical_tie_index)
-        phrase_position = durationtools.Multiplier(phrase_position)
-        segment_position = durationtools.Multiplier(segment_position)
+        phrase_position = abjad.Multiplier(phrase_position)
+        segment_position = abjad.Multiplier(segment_position)
         total_divisions_in_phrase = int(total_divisions_in_phrase)
         total_logical_ties_in_division = int(total_logical_ties_in_division)
         assert 0 <= logical_tie_index < total_logical_ties_in_division
@@ -86,7 +83,7 @@ class AttackPointSignature(abctools.AbjadValueObject):
         duration = bounding_stop_offset - bounding_start_offset
         start_offset = logical_tie_start_offset - bounding_start_offset
         if duration == 0:
-            return durationtools.Multiplier(0)
+            return abjad.Multiplier(0)
         position = start_offset / duration
         assert 0 <= position <= 1
         return position
@@ -120,7 +117,7 @@ class AttackPointSignature(abctools.AbjadValueObject):
         total_logical_ties_in_division = len(division_logical_ties)
 
         voice = consort.SegmentMaker.logical_tie_to_voice(logical_tie)
-        segment_timespan = inspect_(voice).get_timespan()
+        segment_timespan = abjad.inspect(voice).get_timespan()
         segment_position = cls._find_position(
             logical_tie_start_offset,
             segment_timespan.start_offset,
@@ -143,8 +140,8 @@ class AttackPointSignature(abctools.AbjadValueObject):
     @staticmethod
     def _collect_logical_ties(container):
         logical_ties = []
-        for leaf in iterate(container).by_class(scoretools.Note):
-            leaf_logical_tie = inspect_(leaf).get_logical_tie()
+        for leaf in abjad.iterate(container).by_class(abjad.Note):
+            leaf_logical_tie = abjad.inspect(leaf).get_logical_tie()
             if leaf is not leaf_logical_tie.head:
                 continue
             logical_ties.append(leaf_logical_tie)

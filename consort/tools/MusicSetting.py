@@ -1,12 +1,8 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
-from abjad import inspect_
-from abjad import new
 from abjad.tools import abctools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
-from abjad.tools import timespantools
 
 
 class MusicSetting(abctools.AbjadValueObject):
@@ -14,7 +10,6 @@ class MusicSetting(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> red_setting = consort.MusicSetting(
         ...     timespan_maker=consort.TaleaTimespanMaker(
         ...         initial_silence_talea=rhythmmakertools.Talea(
@@ -58,7 +53,7 @@ class MusicSetting(abctools.AbjadValueObject):
 
     ::
 
-        >>> segment_timespan = timespantools.Timespan(1, 2)
+        >>> segment_timespan = abjad.Timespan(1, 2)
         >>> from abjad.tools import templatetools
         >>> score_template = consort.StringQuartetScoreTemplate()
         >>> timespan_inventory = red_setting(
@@ -70,46 +65,46 @@ class MusicSetting(abctools.AbjadValueObject):
     ::
 
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(5, 4),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(5, 4),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 2),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 4),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(5, 4),
+                    stop_offset=abjad.Offset(3, 2),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 2 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 2),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(3, 2),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 4),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(7, 4),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 4),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(7, 4),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 2 Bowing Voice',
@@ -119,7 +114,7 @@ class MusicSetting(abctools.AbjadValueObject):
 
     ::
 
-        >>> red_setting = new(
+        >>> red_setting = abjad.new(
         ...     red_setting,
         ...     silenced_contexts=[
         ...         'viola_lh',
@@ -161,64 +156,64 @@ class MusicSetting(abctools.AbjadValueObject):
         ...     segment_timespan=segment_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(5, 4),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(5, 4),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 2),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     voice_name='Cello Bowing Voice',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     voice_name='Cello Fingering Voice',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     voice_name='Viola Fingering Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 4),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(5, 4),
+                    stop_offset=abjad.Offset(3, 2),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 2 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 2),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(3, 2),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 1 Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 4),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(7, 4),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 4),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(7, 4),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Violin 2 Bowing Voice',
@@ -277,32 +272,32 @@ class MusicSetting(abctools.AbjadValueObject):
         if color is not None:
             for abbreviation, music_specifier in sorted(music_specifiers.items()):
                 if isinstance(music_specifier, consort.MusicSpecifier):
-                    music_specifier = new(music_specifier, color=color)
+                    music_specifier = abjad.new(music_specifier, color=color)
                 elif isinstance(music_specifier, consort.CompositeMusicSpecifier):
-                    primary = new(
+                    primary = abjad.new(
                         music_specifier.primary_music_specifier,
                         music_specifiers=[
-                            new(_, color=color) for _ in
+                            abjad.new(_, color=color) for _ in
                             music_specifier.primary_music_specifier
                             ],
                         )
-                    secondary = new(
+                    secondary = abjad.new(
                         music_specifier.secondary_music_specifier,
                         music_specifiers=[
-                            new(_, color=color) for _ in
+                            abjad.new(_, color=color) for _ in
                             music_specifier.secondary_music_specifier
                             ],
                         )
-                    music_specifier = new(
+                    music_specifier = abjad.new(
                         music_specifier,
                         primary_music_specifier=primary,
                         secondary_music_specifier=secondary,
                         )
                 elif isinstance(music_specifier, consort.MusicSpecifierSequence):
-                    music_specifier = new(
+                    music_specifier = abjad.new(
                         music_specifier,
                         music_specifiers=[
-                            new(_, color=color) for _ in
+                            abjad.new(_, color=color) for _ in
                             music_specifier.music_specifiers
                             ],
                         )
@@ -314,8 +309,8 @@ class MusicSetting(abctools.AbjadValueObject):
         self._silenced_contexts = silenced_contexts
         if timespan_identifier is not None:
             prototype = (
-                timespantools.Timespan,
-                timespantools.TimespanList,
+                abjad.Timespan,
+                abjad.TimespanList,
                 consort.RatioPartsExpression,
                 )
             if not isinstance(timespan_identifier, prototype):
@@ -346,7 +341,7 @@ class MusicSetting(abctools.AbjadValueObject):
         if score is None:
             score = score_template()
         if timespan_inventory is None:
-            timespan_inventory = timespantools.TimespanList()
+            timespan_inventory = abjad.TimespanList()
         if not self.music_specifiers:
             return timespan_inventory
         music_specifiers = self.resolve_music_specifiers(
@@ -418,14 +413,14 @@ class MusicSetting(abctools.AbjadValueObject):
                     )
             context_name = all_abbreviations[abbreviation]
             context = score[context_name]
-            context_index = inspect_(context).get_parentage().score_index
+            context_index = abjad.inspect(context).get_parentage().score_index
             context_name = context.name
             if isinstance(music_specifier, consort.CompositeMusicSpecifier):
                 composite_pairs = score_template.composite_context_pairs
                 one, two = composite_pairs[abbreviation]
                 primary_voice_name = all_abbreviations[one]
                 secondary_voice_name = all_abbreviations[two]
-                music_specifier = new(
+                music_specifier = abjad.new(
                     music_specifier,
                     primary_voice_name=primary_voice_name,
                     secondary_voice_name=secondary_voice_name,
@@ -480,26 +475,26 @@ class MusicSetting(abctools.AbjadValueObject):
         timespan_quantization=None,
         ):
         import consort
-        assert isinstance(segment_timespan, timespantools.Timespan)
+        assert isinstance(segment_timespan, abjad.Timespan)
         timespan_identifier = self.timespan_identifier
         if timespan_identifier is None:
-            target_timespans = timespantools.TimespanList([
+            target_timespans = abjad.TimespanList([
                 segment_timespan,
                 ])
-        elif isinstance(self.timespan_identifier, timespantools.Timespan):
+        elif isinstance(self.timespan_identifier, abjad.Timespan):
             if timespan_identifier.stop_offset == Infinity:
-                timespan_identifier = new(
+                timespan_identifier = abjad.new(
                     timespan_identifier,
                     stop_offset=segment_timespan.stop_offset,
                     )
-            segment_timespan = timespantools.Timespan(start_offset=0)
+            segment_timespan = abjad.Timespan(start_offset=0)
             target_timespans = segment_timespan & timespan_identifier
         else:
             if isinstance(timespan_identifier, consort.RatioPartsExpression):
                 mask_timespans = timespan_identifier(segment_timespan)
             else:
                 mask_timespans = timespan_identifier
-            target_timespans = timespantools.TimespanList()
+            target_timespans = abjad.TimespanList()
             for mask_timespan in mask_timespans:
                 available_timespans = segment_timespan & mask_timespan
                 target_timespans.extend(available_timespans)
