@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from distutils.core import setup
+import os
+import setuptools
 
 
 install_requires = [
@@ -20,7 +21,7 @@ __version__ = local_dict['__version__']
 
 
 def main():
-    setup(
+    setuptools.setup(
         author='Josiah Wolf Oberholtzer',
         author_email='josiah.oberholtzer@gmail.com',
         description='High-level tools for formalized score control in Abjad.',
