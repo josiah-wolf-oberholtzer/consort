@@ -28,7 +28,7 @@ def test_SegmentMaker_rehearsal_mark_01():
         )
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -91,7 +91,7 @@ def test_SegmentMaker_rehearsal_mark_02():
         )
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)

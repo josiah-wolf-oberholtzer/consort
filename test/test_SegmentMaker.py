@@ -29,7 +29,7 @@ def test_SegmentMaker_01():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -102,7 +102,7 @@ def test_SegmentMaker_02():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -181,7 +181,7 @@ def test_SegmentMaker_03():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -278,7 +278,7 @@ def test_SegmentMaker_04():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -357,7 +357,7 @@ def test_SegmentMaker_05():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -444,7 +444,7 @@ def test_SegmentMaker_06():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -568,7 +568,7 @@ def test_SegmentMaker_07():
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)

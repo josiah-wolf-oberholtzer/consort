@@ -28,7 +28,7 @@ def test_SegmentMaker_is_final_segment_01():
         )
     assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
