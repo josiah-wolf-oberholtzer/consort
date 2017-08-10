@@ -1,4 +1,7 @@
 # -*- encoding: utf-8 -*-
+from consort._version import __version_info__, __version__
+del _version
+
 from consort.tools import *
 
 from abjad.tools import lilypondparsertools
