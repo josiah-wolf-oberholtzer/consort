@@ -1,17 +1,9 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
 import abc
+import abjad
 import collections
-from abjad import attach
-from abjad import inspect_
-from abjad import iterate
-from abjad import new
-from abjad.tools import datastructuretools
-from abjad.tools import durationtools
 from abjad.tools import instrumenttools
 from abjad.tools import indicatortools
 from abjad.tools import pitchtools
-from abjad.tools import timespantools
 from consort.tools.HashCachingObject import HashCachingObject
 
 
@@ -99,12 +91,12 @@ class PitchHandler(HashCachingObject):
         ):
         if self.deviations:
             deviation = self.deviations[seed]
-            if isinstance(deviation, pitchtools.NumberedInterval):
+            if isinstance(deviation, abjad.NumberedInterval):
                 if deviation != 0:
-                    pitch = pitchtools.NumberedPitch(pitch)
+                    pitch = abjad.NumberedPitch(pitch)
                     pitch = pitch.transpose(deviation)
-                    pitch = pitchtools.NamedPitch(pitch)
-            elif isinstance(deviation, pitchtools.NamedInterval):
+                    pitch = abjad.NamedPitch(pitch)
+            elif isinstance(deviation, abjad.NamedInterval):
                 pitch = pitch.transpose(deviation)
         return pitch
 
@@ -123,14 +115,12 @@ class PitchHandler(HashCachingObject):
     def _get_grace_logical_ties(logical_tie):
         logical_ties = []
         head = logical_tie.head
-        previous_leaf = inspect_(head).get_leaf(-1)
+        previous_leaf = abjad.inspect(head).get_leaf(-1)
         if previous_leaf is None:
             return logical_ties
-        grace_containers = inspect_(previous_leaf).get_grace_containers(
-            'after')
-        if grace_containers:
-            grace_container = grace_containers[0]
-            for logical_tie in iterate(grace_container).by_logical_tie(
+        after_grace = abjad.inspect(previous_leaf).get_after_grace_container()
+        if after_grace is not None:
+            for logical_tie in abjad.iterate(after_grace).by_logical_tie(
                 pitched=True,
                 ):
                 logical_ties.append(logical_tie)
@@ -142,7 +132,7 @@ class PitchHandler(HashCachingObject):
             return music_specifier.instrument
         component = logical_tie.head
         prototype = instrumenttools.Instrument
-        instrument = inspect_(component).get_effective(prototype)
+        instrument = abjad.inspect(component).get_effective(prototype)
         return instrument
 
     @staticmethod
@@ -198,7 +188,7 @@ class PitchHandler(HashCachingObject):
         ):
         prototype = pitchtools.PitchRange
         component = logical_tie.head
-        pitch_range = inspect_(component).get_effective(prototype)
+        pitch_range = abjad.inspect(component).get_effective(prototype)
         if pitch_range is None and instrument is not None:
             pitch_range = instrument.pitch_range
         return pitch_range
@@ -253,13 +243,13 @@ class PitchHandler(HashCachingObject):
         pitch_handler,
         ):
         if not instrument:
-            return pitchtools.NamedPitch("c'")
+            return abjad.NamedPitch("c'")
         sounding_pitch = instrument.sounding_pitch_of_written_middle_c
-        transposition_is_non_octave = sounding_pitch.named_pitch_class != \
+        transposition_is_non_octave = sounding_pitch.pitch_class != \
             pitchtools.NamedPitchClass('c')
         if transposition_is_non_octave:
             if pitch_handler.pitches_are_nonsemantic:
-                return pitchtools.NamedPitch("c'")
+                return abjad.NamedPitch("c'")
             return sounding_pitch
         return None
 
@@ -271,15 +261,15 @@ class PitchHandler(HashCachingObject):
             intervals = []
             for interval in deviations:
                 if isinstance(interval, (int, float)):
-                    interval = pitchtools.NumberedInterval(interval)
+                    interval = abjad.NumberedInterval(interval)
                 elif isinstance(interval, str):
-                    interval = pitchtools.NamedInterval(interval)
+                    interval = abjad.NamedInterval(interval)
                 elif isinstance(interval, pitchtools.Interval):
                     pass
                 else:
-                    interval = pitchtools.NumberedInterval(interval)
+                    interval = abjad.NumberedInterval(interval)
                 intervals.append(interval)
-            deviations = datastructuretools.CyclicTuple(intervals)
+            deviations = abjad.CyclicTuple(intervals)
         self._deviations = deviations
 
     def _initialize_forbid_repetitions(self, forbid_repetitions):
@@ -295,7 +285,7 @@ class PitchHandler(HashCachingObject):
             assert all(isinstance(_, prototype)
                 for _ in grace_expressions), \
                 grace_expressions
-            grace_expressions = datastructuretools.CyclicTuple(
+            grace_expressions = abjad.CyclicTuple(
                 grace_expressions,
                 )
         self._grace_expressions = grace_expressions
@@ -308,7 +298,7 @@ class PitchHandler(HashCachingObject):
             assert all(isinstance(_, prototype)
                 for _ in logical_tie_expressions), \
                 logical_tie_expressions
-            logical_tie_expressions = datastructuretools.CyclicTuple(
+            logical_tie_expressions = abjad.CyclicTuple(
                 logical_tie_expressions,
                 )
         self._logical_tie_expressions = logical_tie_expressions
@@ -399,8 +389,8 @@ class PitchHandler(HashCachingObject):
                 previous_pitch,
                 seed_session,
                 )
-            if pitch.accidental.abbreviation in ('ss', 'ff'):
-                pitch = pitchtools.NamedPitch(float(pitch))
+            if pitch.accidental.semitones in (-2, 2):
+                pitch = abjad.NamedPitch(float(pitch))
             pitch_handler._set_previous_pitch(
                 attack_point_signature,
                 music_specifier,
@@ -446,10 +436,10 @@ class PitchHandler(HashCachingObject):
         sounding_pitch = PitchHandler._get_sounding_pitch(
             instrument, pitch_handler)
         if pitch_handler and pitch_handler.pitches_are_nonsemantic:
-            sounding_pitch = pitchtools.NamedPitch('C4')
+            sounding_pitch = abjad.NamedPitch('C4')
         if sounding_pitch is None:
-            sounding_pitch = pitchtools.NamedPitch('C4')
-        if sounding_pitch == pitchtools.NamedPitch('C4'):
+            sounding_pitch = abjad.NamedPitch('C4')
+        if sounding_pitch == abjad.NamedPitch('C4'):
             return
         phrase = consort.SegmentMaker.logical_tie_to_phrase(logical_tie)
         transposition_command = indicatortools.LilyPondCommand(
@@ -462,7 +452,7 @@ class PitchHandler(HashCachingObject):
             voice.index(phrase),
             sounding_pitch,
             )
-        attach(transposition_command, phrase)
+        abjad.attach(transposition_command, phrase)
 
     @staticmethod
     def _set_previous_pitch(
@@ -495,7 +485,6 @@ class PitchHandler(HashCachingObject):
 
         ::
 
-            >>> import consort
             >>> pitch_specifier = consort.PitchSpecifier(
             ...     pitch_segments=(
             ...         "c' e' g'",
@@ -506,14 +495,14 @@ class PitchHandler(HashCachingObject):
             ...     )
             >>> operation_specifier = consort.PitchOperationSpecifier(
             ...     pitch_operations=(
-            ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(1, stravinsky=True),
-            ...             pitchtools.Transposition(1),
+            ...         abjad.CompoundOperator((
+            ...             abjad.Rotation(1, stravinsky=True),
+            ...             abjad.Transposition(1),
             ...             )),
             ...         None,
-            ...         pitchtools.CompoundOperator((
-            ...             pitchtools.Rotation(-1, stravinsky=True),
-            ...             pitchtools.Transposition(-1),
+            ...         abjad.CompoundOperator((
+            ...             abjad.Rotation(-1, stravinsky=True),
+            ...             abjad.Transposition(-1),
             ...             ))
             ...         ),
             ...     ratio=(1, 2, 1),
@@ -526,56 +515,56 @@ class PitchHandler(HashCachingObject):
             >>> print(format(timespans))
             consort.tools.TimespanCollection(
                 [
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(2, 1),
-                        annotation=datastructuretools.CyclicTuple(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(2, 1),
+                        annotation=abjad.CyclicTuple(
                             [
-                                pitchtools.NamedPitch("df'"),
-                                pitchtools.NamedPitch('gf'),
-                                pitchtools.NamedPitch('bf'),
+                                abjad.NamedPitch("df'"),
+                                abjad.NamedPitch('gf'),
+                                abjad.NamedPitch('bf'),
                                 ]
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(2, 1),
-                        stop_offset=durationtools.Offset(3, 1),
-                        annotation=datastructuretools.CyclicTuple(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(2, 1),
+                        stop_offset=abjad.Offset(3, 1),
+                        annotation=abjad.CyclicTuple(
                             [
-                                pitchtools.NamedPitch("g'"),
-                                pitchtools.NamedPitch("e'"),
-                                pitchtools.NamedPitch("f'"),
+                                abjad.NamedPitch("g'"),
+                                abjad.NamedPitch("e'"),
+                                abjad.NamedPitch("f'"),
                                 ]
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(3, 1),
-                        stop_offset=durationtools.Offset(6, 1),
-                        annotation=datastructuretools.CyclicTuple(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(3, 1),
+                        stop_offset=abjad.Offset(6, 1),
+                        annotation=abjad.CyclicTuple(
                             [
-                                pitchtools.NamedPitch("fs'"),
-                                pitchtools.NamedPitch("g'"),
-                                pitchtools.NamedPitch("a'"),
+                                abjad.NamedPitch("fs'"),
+                                abjad.NamedPitch("g'"),
+                                abjad.NamedPitch("a'"),
                                 ]
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(6, 1),
-                        stop_offset=durationtools.Offset(9, 1),
-                        annotation=datastructuretools.CyclicTuple(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(6, 1),
+                        stop_offset=abjad.Offset(9, 1),
+                        annotation=abjad.CyclicTuple(
                             [
-                                pitchtools.NamedPitch('b'),
-                                pitchtools.NamedPitch('d'),
+                                abjad.NamedPitch('b'),
+                                abjad.NamedPitch('d'),
                                 ]
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(9, 1),
-                        stop_offset=durationtools.Offset(12, 1),
-                        annotation=datastructuretools.CyclicTuple(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(9, 1),
+                        stop_offset=abjad.Offset(12, 1),
+                        annotation=abjad.CyclicTuple(
                             [
-                                pitchtools.NamedPitch('as'),
-                                pitchtools.NamedPitch("fss'"),
+                                abjad.NamedPitch('as'),
+                                abjad.NamedPitch("fss'"),
                                 ]
                             ),
                         ),
@@ -585,7 +574,7 @@ class PitchHandler(HashCachingObject):
         Returns timespans.
         '''
         import consort
-        duration = durationtools.Duration(duration)
+        duration = abjad.Duration(duration)
         pitch_specifier = pitch_specifier or consort.PitchSpecifier()
         operation_specifier = operation_specifier or \
             consort.PitchOperationSpecifier()
@@ -597,7 +586,7 @@ class PitchHandler(HashCachingObject):
         offsets.update(operation_timespans.all_offsets)
         offsets = tuple(sorted(offsets))
         for start_offset, stop_offset in consort.iterate_nwise(offsets):
-            timespan = timespantools.Timespan(
+            timespan = abjad.Timespan(
                 start_offset=start_offset,
                 stop_offset=stop_offset,
                 )
@@ -611,8 +600,8 @@ class PitchHandler(HashCachingObject):
             operation = operation_timespan.annotation
             if operation is not None:
                 pitches = operation(pitches)
-            pitches = datastructuretools.CyclicTuple(pitches)
-            pitch_choice_timespan = timespantools.AnnotatedTimespan(
+            pitches = abjad.CyclicTuple(pitches)
+            pitch_choice_timespan = abjad.AnnotatedTimespan(
                 annotation=pitches,
                 start_offset=start_offset,
                 stop_offset=stop_offset,
@@ -626,7 +615,7 @@ class PitchHandler(HashCachingObject):
             pitch_segments='C4',
             )
         pitch_specifier = pitch_specifier.transpose(expr)
-        return new(self, pitch_specifier=pitch_specifier)
+        return abjad.new(self, pitch_specifier=pitch_specifier)
 
     ### PUBLIC PROPERTIES ###
 

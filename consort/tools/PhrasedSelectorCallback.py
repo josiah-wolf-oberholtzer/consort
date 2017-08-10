@@ -1,7 +1,6 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad import iterate
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import selectiontools
 
 
@@ -23,7 +22,7 @@ class PhrasedSelectorCallback(abctools.AbjadValueObject):
                 selection = selectiontools.Selection(leaf)
                 subresult.append(selection)
             leaves = selectiontools.Selection(iterate(subexpr[-1]).by_leaf())
-            if leaves.get_duration() <= durationtools.Duration(1, 8):
+            if leaves.get_duration() <= abjad.Duration(1, 8):
                 subresult.append(leaves[-1])
             elif 1 == len(leaves):
                 subresult.append(leaves[0])

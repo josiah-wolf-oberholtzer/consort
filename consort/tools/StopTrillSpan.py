@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-from abjad import inspect_
+import abjad
 from abjad.tools import abctools
 from abjad.tools import scoretools
 from abjad.tools import systemtools
@@ -11,7 +10,7 @@ class StopTrillSpan(abctools.AbjadValueObject):
 
     def _get_lilypond_format_bundle(self, component):
         import consort
-        parentage = inspect_(component).get_parentage()
+        parentage = abjad.inspect(component).get_parentage()
         prototype = scoretools.GraceContainer
         grace_container = None
         for parent in parentage:
@@ -22,7 +21,7 @@ class StopTrillSpan(abctools.AbjadValueObject):
             return
         prototype = consort.ConsortTrillSpanner
         carrier = grace_container._carrier
-        spanners = inspect_(carrier).get_spanners(prototype)
+        spanners = abjad.inspect(carrier).get_spanners(prototype)
         if not spanners:
             return
         bundle = systemtools.LilyPondFormatBundle()

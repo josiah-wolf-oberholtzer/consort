@@ -4,7 +4,7 @@ import setuptools
 
 
 install_requires = [
-    'abjad[accelerated,development]==2.20',
+    'abjad[accelerated,development]==2.21',
     ]
 
 

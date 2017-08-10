@@ -1,8 +1,7 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad.tools import lilypondnametools
 from abjad.tools import spannertools
 from abjad.tools import markuptools
-from abjad.tools import scoretools
 
 
 class ComplexTextSpanner(spannertools.Spanner):
@@ -12,8 +11,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         ::
 
-            >>> import consort
-            >>> staff = Staff("c'4 d'4 r4 e'4")
+            >>> staff = abjad.Staff("c'4 d'4 r4 e'4")
             >>> spanner_one = consort.ComplexTextSpanner(
             ...     direction=Up,
             ...     markup='foo',
@@ -22,8 +20,8 @@ class ComplexTextSpanner(spannertools.Spanner):
             ...     direction=Down,
             ...     markup='bar',
             ...     )
-            >>> attach(spanner_one, staff[:2])
-            >>> attach(spanner_two, staff[3:])
+            >>> abjad.attach(spanner_one, staff[:2])
+            >>> abjad.attach(spanner_two, staff[3:])
 
         ::
 
@@ -51,8 +49,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         ::
 
-            >>> import consort
-            >>> staff = Staff("c'4 d'4 e'4 f'4")
+            >>> staff = abjad.Staff("c'4 d'4 e'4 f'4")
             >>> spanner_one = consort.ComplexTextSpanner(
             ...     direction=Up,
             ...     markup='foo',
@@ -61,8 +58,8 @@ class ComplexTextSpanner(spannertools.Spanner):
             ...     direction=Down,
             ...     markup='bar',
             ...     )
-            >>> attach(spanner_one, staff[:2])
-            >>> attach(spanner_two, staff[3:])
+            >>> abjad.attach(spanner_one, staff[:2])
+            >>> abjad.attach(spanner_two, staff[3:])
 
         ::
 
@@ -90,7 +87,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         ::
 
-            >>> staff = Staff("c'8 d' e' r r a' b' c''")
+            >>> staff = abjad.Staff("c'8 d' e' r r a' b' c''")
             >>> spanner_one = consort.ComplexTextSpanner(
             ...     direction=Up,
             ...     markup='foo',
@@ -99,8 +96,8 @@ class ComplexTextSpanner(spannertools.Spanner):
             ...     direction=Up,
             ...     markup='foo',
             ...     )
-            >>> attach(spanner_one, staff[:3])
-            >>> attach(spanner_two, staff[5:])
+            >>> abjad.attach(spanner_one, staff[:3])
+            >>> abjad.attach(spanner_two, staff[5:])
 
         ::
 
@@ -130,7 +127,7 @@ class ComplexTextSpanner(spannertools.Spanner):
 
         ::
 
-            >>> staff = Staff("c'8 d' e' f' g' a' b' c''")
+            >>> staff = abjad.Staff("c'8 d' e' f' g' a' b' c''")
             >>> spanner_one = consort.ComplexTextSpanner(
             ...     direction=Up,
             ...     markup='foo',
@@ -143,9 +140,9 @@ class ComplexTextSpanner(spannertools.Spanner):
             ...     direction=Up,
             ...     markup='foo',
             ...     )
-            >>> attach(spanner_one, staff[:3])
-            >>> attach(spanner_two, staff[3:5])
-            >>> attach(spanner_three, staff[5:])
+            >>> abjad.attach(spanner_one, staff[:3])
+            >>> abjad.attach(spanner_two, staff[3:5])
+            >>> abjad.attach(spanner_three, staff[5:])
 
         ::
 
@@ -338,14 +335,14 @@ class ComplexTextSpanner(spannertools.Spanner):
 #        return next_spanner_is_similar
 
     def _next_spanner_is_similar(self, leaf):
-        leaf_prototype = (scoretools.Note, scoretools.Chord)
+        leaf_prototype = (abjad.Note, abjad.Chord)
         next_spanner = None
         next_spanner_is_similar = False
         for index in range(1, 5):
             next_leaf = leaf._get_leaf(index)
             if next_leaf is None:
                 break
-            elif isinstance(next_leaf, scoretools.MultimeasureRest):
+            elif isinstance(next_leaf, abjad.MultimeasureRest):
                 break
             has_spanner = next_leaf._has_spanner(type(self),
                 in_parentage=True)
@@ -362,14 +359,14 @@ class ComplexTextSpanner(spannertools.Spanner):
         return next_spanner_is_similar
 
     def _previous_spanner_is_similar(self, leaf):
-        leaf_prototype = (scoretools.Note, scoretools.Chord)
+        leaf_prototype = (abjad.Note, abjad.Chord)
         previous_spanner = None
         previous_spanner_is_similar = False
         for index in range(1, 5):
             previous_leaf = leaf._get_leaf(-index)
             if previous_leaf is None:
                 break
-            elif isinstance(previous_leaf, scoretools.MultimeasureRest):
+            elif isinstance(previous_leaf, abjad.MultimeasureRest):
                 break
             has_spanner = previous_leaf._has_spanner(type(self),
                 in_parentage=True)

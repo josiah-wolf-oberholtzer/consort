@@ -1,10 +1,9 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad import attach
-from abjad import inspect_
+from abjad import inspect
 from abjad import iterate
 from abjad import override
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import instrumenttools
 from abjad.tools import selectiontools
@@ -18,7 +17,6 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> import consort
             >>> dynamic_expression = consort.SimpleDynamicExpression(
             ...     hairpin_start_token='sfp',
             ...     hairpin_stop_token='niente',
@@ -26,7 +24,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
 
         ::
 
-            >>> staff = Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
+            >>> staff = abjad.Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
             >>> dynamic_expression(staff[2:-2])
             >>> print(format(staff))
             \new Staff {
@@ -36,8 +34,8 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
                 e'8 \> \sfp
                 f'8
                 g'8
-                a'8 \!
                 \revert Hairpin.circled-tip
+                a'8 \!
                 b'8
                 c''8
             }
@@ -49,7 +47,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
             >>> dynamic_expression = consort.SimpleDynamicExpression(
             ...     'f', 'p',
             ...     )
-            >>> staff = Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
+            >>> staff = abjad.Staff("c'8 d'8 e'8 f'8 g'8 a'8 b'8 c''8")
             >>> dynamic_expression(staff[2:-2])
             >>> print(format(staff))
             \new Staff {
@@ -79,7 +77,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         self,
         hairpin_start_token='p',
         hairpin_stop_token=None,
-        minimum_duration=durationtools.Duration(1, 4),
+        minimum_duration=abjad.Duration(1, 4),
         ):
         known_dynamics = indicatortools.Dynamic._dynamic_names
         assert hairpin_start_token in known_dynamics, \
@@ -92,7 +90,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         self._hairpin_start_token = hairpin_start_token
         self._hairpin_stop_token = hairpin_stop_token
         if minimum_duration is not None:
-            minimum_duration = durationtools.Duration(minimum_duration)
+            minimum_duration = abjad.Duration(minimum_duration)
         self._minimum_duration = minimum_duration
 
     ### SPECIAL METHODS ###
@@ -106,7 +104,7 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
         elif self.minimum_duration is not None:
             if music.get_duration() < self.minimum_duration:
                 is_short_group = True
-        instrument = inspect_(music[0]).get_effective(
+        instrument = abjad.inspect(music[0]).get_effective(
             instrumenttools.Instrument,
             )
         logical_ties = tuple(iterate(music).by_logical_tie(pitched=True))
@@ -115,12 +113,11 @@ class SimpleDynamicExpression(abctools.AbjadValueObject):
                 instrument == instrumenttools.Percussion():
                 is_short_group = True
         grace_notes = None
-        previous_leaf = inspect_(music[0]).get_leaf(-1)
+        previous_leaf = abjad.inspect(music[0]).get_leaf(-1)
         if previous_leaf is not None:
-            graces = inspect_(previous_leaf).get_grace_containers('after')
-            if graces:
-                assert len(graces) == 1
-                grace_notes = list(iterate(graces[0]).by_leaf())
+            after_grace = abjad.inspect(previous_leaf).get_after_grace_container()
+            if after_grace is not None:
+                grace_notes = list(iterate(after_grace).by_leaf())
                 music = selectiontools.ContiguousSelect(
                     tuple(grace_notes) + tuple(music),
                     )

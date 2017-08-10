@@ -1,19 +1,13 @@
-# -*- encoding: utf-8 -*-
-from abjad.tools import datastructuretools
+import abjad
 
 
-class RegisterInflectionInventory(datastructuretools.TypedList):
+class RegisterInflectionInventory(abjad.TypedList):
 
     ### CLASS VARIABLES ###
 
     __slots__ = ()
 
     ### PRIVATE PROPERTIES ###
-
-    @property
-    def _attribute_manifest(self):
-        from abjad.tools import systemtools
-        return systemtools.AttributeManifest()
 
     @property
     def _item_callable(self):

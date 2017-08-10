@@ -1,10 +1,10 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad.tools import markuptools
 from abjad.tools import mathtools
 from abjad.tools import timespantools
 
 
-class SilentTimespan(timespantools.Timespan):
+class SilentTimespan(abjad.Timespan):
     r'''A silent timespan.
     '''
 
@@ -24,7 +24,7 @@ class SilentTimespan(timespantools.Timespan):
         layer=None,
         voice_name=None,
         ):
-        timespantools.Timespan.__init__(
+        abjad.Timespan.__init__(
             self,
             start_offset=start_offset,
             stop_offset=stop_offset,

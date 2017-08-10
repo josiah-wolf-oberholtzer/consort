@@ -1,11 +1,11 @@
-# -*- encoding: utf -*-
+import abjad
 import collections
+import consort
 from abjad.tools import durationtools
 from abjad.tools import indicatortools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
-import consort
 
 
 segment_metadata = collections.OrderedDict(
@@ -23,13 +23,13 @@ def test_SegmentMaker_01():
             staff_count=2,
             ),
         settings=None,
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -96,13 +96,13 @@ def test_SegmentMaker_02():
                 v2=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -175,13 +175,13 @@ def test_SegmentMaker_03():
                 v2=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -272,13 +272,13 @@ def test_SegmentMaker_04():
                 v2=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (9, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -344,20 +344,20 @@ def test_SegmentMaker_05():
             consort.MusicSetting(
                 timespan_maker=consort.FloodedTimespanMaker(
                     timespan_specifier=consort.TimespanSpecifier(
-                        minimum_duration=durationtools.Duration(1, 8),
+                        minimum_duration=abjad.Duration(1, 8),
                         ),
                     ),
                 v1=consort.MusicSpecifier(),
                 v2=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (9, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -431,20 +431,20 @@ def test_SegmentMaker_06():
                         denominator=8,
                         ),
                     timespan_specifier=consort.TimespanSpecifier(
-                        minimum_duration=durationtools.Duration(1, 8),
+                        minimum_duration=abjad.Duration(1, 8),
                         ),
                     ),
                 v1=consort.MusicSpecifier(),
                 v2=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -541,7 +541,7 @@ def test_SegmentMaker_07():
                         denominator=8,
                         ),
                     timespan_specifier=consort.TimespanSpecifier(
-                        minimum_duration=durationtools.Duration(1, 8),
+                        minimum_duration=abjad.Duration(1, 8),
                         ),
                     ),
                 v1=consort.MusicSpecifier(
@@ -562,13 +562,13 @@ def test_SegmentMaker_07():
                     ),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((5, 8), (7, 16)),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)

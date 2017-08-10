@@ -1,16 +1,10 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
 import abc
+import abjad
 import collections
-from abjad import new
 from abjad.tools import abctools
-from abjad.tools import durationtools
 from abjad.tools import lilypondfiletools
 from abjad.tools import metertools
 from abjad.tools import markuptools
-from abjad.tools import patterntools
-from abjad.tools import stringtools
-from abjad.tools import timespantools
 
 
 class TimespanMaker(abctools.AbjadValueObject):
@@ -38,14 +32,14 @@ class TimespanMaker(abctools.AbjadValueObject):
         ):
         import consort
         if division_masks is not None:
-            if isinstance(division_masks, patterntools.Pattern):
+            if isinstance(division_masks, abjad.Pattern):
                 division_masks = (division_masks,)
-            division_masks = patterntools.PatternList(
+            division_masks = abjad.PatternList(
                 items=division_masks,
                 )
         self._output_masks = division_masks
         if padding is not None:
-            padding = durationtools.Duration(padding)
+            padding = abjad.Duration(padding)
         self._padding = padding
         if seed is not None:
             seed = int(seed)
@@ -65,8 +59,8 @@ class TimespanMaker(abctools.AbjadValueObject):
         target_timespan=None,
         timespan_inventory=None,
         ):
-        if not isinstance(timespan_inventory, timespantools.TimespanList):
-            timespan_inventory = timespantools.TimespanList(
+        if not isinstance(timespan_inventory, abjad.TimespanList):
+            timespan_inventory = abjad.TimespanList(
                 timespan_inventory,
                 )
         if target_timespan is None:
@@ -74,7 +68,7 @@ class TimespanMaker(abctools.AbjadValueObject):
                 target_timespan = timespan_inventory.timespan
             else:
                 raise TypeError
-        assert isinstance(timespan_inventory, timespantools.TimespanList)
+        assert isinstance(timespan_inventory, abjad.TimespanList)
         if not music_specifiers:
             return timespan_inventory
         music_specifiers = self._coerce_music_specifiers(music_specifiers)
@@ -94,8 +88,8 @@ class TimespanMaker(abctools.AbjadValueObject):
         return timespan_inventory
 
     def __illustrate__(self, scale=None, target_timespan=None, **kwargs):
-        target_timespan = target_timespan or timespantools.Timespan(0, 16)
-        assert isinstance(target_timespan, timespantools.Timespan)
+        target_timespan = target_timespan or abjad.Timespan(0, 16)
+        assert isinstance(target_timespan, abjad.Timespan)
         assert 0 < target_timespan.duration
         scale = scale or 1.5
         music_specifiers = collections.OrderedDict([
@@ -132,7 +126,7 @@ class TimespanMaker(abctools.AbjadValueObject):
             date_time_token=False,
             )
         lilypond_file.items.extend([
-            stringtools.normalize('''
+            abjad.String.normalize('''
             % Backport for pre 2.19.20 versions of LilyPond
             #(define-markup-command (overlay layout props args)
                 (markup-list?)
@@ -179,23 +173,23 @@ class TimespanMaker(abctools.AbjadValueObject):
         for context_name in silenced_context_names:
             if context_name not in silent_timespans_by_context:
                 silent_timespans_by_context[context_name] = \
-                    timespantools.TimespanList()
+                    abjad.TimespanList()
 
         sounding_timespans_by_context = {}
-        sounding_timespans = timespantools.TimespanList()
+        sounding_timespans = abjad.TimespanList()
 
         for timespan in timespans:
             voice_name = timespan.voice_name
             if isinstance(timespan, consort.PerformedTimespan):
                 if voice_name not in sounding_timespans_by_context:
                     sounding_timespans_by_context[voice_name] = \
-                        timespantools.TimespanList()
+                        abjad.TimespanList()
                 sounding_timespans_by_context[voice_name].append(timespan)
                 sounding_timespans.append(timespan)
             else:
                 if voice_name not in silent_timespans_by_context:
                     silent_timespans_by_context[voice_name] = \
-                        timespantools.TimespanList()
+                        abjad.TimespanList()
                 silent_timespans_by_context[voice_name].append(timespan)
 
         sounding_timespans.sort()
@@ -227,7 +221,7 @@ class TimespanMaker(abctools.AbjadValueObject):
     def rotate(self, rotation):
         seed = self.seed or 0
         seed = seed + rotation
-        return new(self, seed=seed)
+        return abjad.new(self, seed=seed)
 
     ### PUBLIC PROPERTIES ###
 

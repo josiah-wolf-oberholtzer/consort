@@ -1,11 +1,9 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad import attach
-from abjad import set_
+from abjad import setting
 from abjad.tools import abctools
 from abjad.tools import indicatortools
 from abjad.tools import markuptools
-from abjad.tools import scoretools
-from abjad.tools import stringtools
 
 
 class ScoreTemplateManager(abctools.AbjadObject):
@@ -14,7 +12,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def attach_tag(label, context):
-        label = stringtools.to_dash_case(label)
+        label = abjad.String(label).to_dash_case()
         tag = indicatortools.LilyPondCommand(
             name="tag #'{}".format(label),
             format_slot='before',
@@ -31,18 +29,18 @@ class ScoreTemplateManager(abctools.AbjadObject):
             primary_instrument.instrument_name.title(),
             secondary_instrument.instrument_name.title(),
             )
-        voice = scoretools.Voice(
+        voice = abjad.Voice(
             name='{} Voice'.format(name),
             )
         context_name = ScoreTemplateManager.make_staff_name(
             secondary_instrument.instrument_name.title(),
             )
-        staff = scoretools.Staff(
+        staff = abjad.Staff(
             [voice],
             name='{} Staff'.format(name),
             context_name=context_name,
             )
-        abbreviation = stringtools.to_snake_case(name)
+        abbreviation = abjad.String(name).to_snake_case()
         score_template._context_name_abbreviations[abbreviation] = voice.name
         return staff
 
@@ -63,7 +61,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         name=None,
         performer_groups=None,
         ):
-        ensemble_group = scoretools.StaffGroup(
+        ensemble_group = abjad.StaffGroup(
             performer_groups,
             name=name,
             context_name='EnsembleGroup',
@@ -80,7 +78,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         ):
         context_name = context_name or 'PerformerGroup'
         name = '{} Performer Group'.format(instrument.instrument_name.title())
-        performer_group = scoretools.StaffGroup(
+        performer_group = abjad.StaffGroup(
             context_name=context_name,
             name=name,
             )
@@ -93,7 +91,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
             scope=context_name,
             is_annotation=True,
             )
-        manager = set_(performer_group)
+        manager = setting(performer_group)
         manager.instrument_name = instrument.instrument_name_markup
         manager.short_instrument_name = instrument.short_instrument_name_markup
         return performer_group
@@ -113,17 +111,17 @@ class ScoreTemplateManager(abctools.AbjadObject):
             )
         name = instrument.instrument_name.title()
         context_name = ScoreTemplateManager.make_staff_name(name)
-        voice = scoretools.Voice(
+        voice = abjad.Voice(
             name='{} Voice'.format(name),
             )
-        staff = scoretools.Staff(
+        staff = abjad.Staff(
             [voice],
             context_name=context_name,
             name='{} Staff'.format(name),
             )
         performer_group.append(staff)
         attach(clef, voice)
-        abbreviation = stringtools.to_snake_case(name)
+        abbreviation = abjad.String(name).to_snake_case()
         score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
@@ -135,30 +133,30 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='PianoStaff',
             instrument=instrument,
-            label=stringtools.to_dash_case(instrument.instrument_name),
+            label=abjad.String(instrument.instrument_name).to_dash_case(),
             )
         name = instrument.instrument_name.title()
-        upper_voice = scoretools.Voice(
+        upper_voice = abjad.Voice(
             name='{} Upper Voice'.format(name),
             )
-        upper_staff = scoretools.Staff(
+        upper_staff = abjad.Staff(
             [upper_voice],
             context_name='PianoUpperStaff',
             name='{} Upper Staff'.format(name),
             )
-        dynamics = scoretools.Voice(
+        dynamics = abjad.Voice(
             context_name='Dynamics',
             name='{} Dynamics'.format(name),
             )
-        lower_voice = scoretools.Voice(
+        lower_voice = abjad.Voice(
             name='{} Lower Voice'.format(name),
             )
-        lower_staff = scoretools.Staff(
+        lower_staff = abjad.Staff(
             [lower_voice],
             context_name='PianoLowerStaff',
             name='{} Lower Staff'.format(name),
             )
-        pedals = scoretools.Voice(
+        pedals = abjad.Voice(
             context_name='Dynamics',
             name='{} Pedals'.format(name),
             )
@@ -189,24 +187,24 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group = ScoreTemplateManager.make_performer_group(
             context_name='StringPerformerGroup',
             instrument=instrument,
-            label=stringtools.to_dash_case(instrument.instrument_name),
+            label=abjad.String(instrument.instrument_name).to_dash_case(),
             )
         name = instrument.instrument_name.title()
         abbreviation = abbreviation or \
-            stringtools.to_snake_case(name)
+            abjad.String(name).to_snake_case()
         if split:
-            right_hand_voice = scoretools.Voice(
+            right_hand_voice = abjad.Voice(
                 name='{} Bowing Voice'.format(name),
                 )
-            right_hand_staff = scoretools.Staff(
+            right_hand_staff = abjad.Staff(
                 [right_hand_voice],
                 context_name='BowingStaff',
                 name='{} Bowing Staff'.format(name),
                 )
-            left_hand_voice = scoretools.Voice(
+            left_hand_voice = abjad.Voice(
                 name='{} Fingering Voice'.format(name),
                 )
-            left_hand_staff = scoretools.Staff(
+            left_hand_staff = abjad.Staff(
                 [left_hand_voice],
                 context_name='FingeringStaff',
                 name='{} Fingering Staff'.format(name),
@@ -227,16 +225,16 @@ class ScoreTemplateManager(abctools.AbjadObject):
                 left_hand_abbreviation,
                 )
         else:
-            voice = scoretools.Voice(
+            voice = abjad.Voice(
                 name='{} Voice'.format(name),
                 )
-            staff = scoretools.Staff(
+            staff = abjad.Staff(
                 [voice],
                 context_name='StringStaff',
                 name='{} Staff'.format(name),
                 )
             performer_group.append(staff)
-            attach(clef, voice)
+            attach(clef, staff)
             score_template._context_name_abbreviations[abbreviation] = \
                 voice.name
         return performer_group
@@ -250,14 +248,14 @@ class ScoreTemplateManager(abctools.AbjadObject):
         ):
         performer_group = ScoreTemplateManager.make_performer_group(
             instrument=instrument,
-            label=stringtools.to_dash_case(instrument.instrument_name),
+            label=abjad.String(instrument.instrument_name).to_dash_case()
             )
         name = instrument.instrument_name.title()
         context_name = ScoreTemplateManager.make_staff_name(name)
-        voice = scoretools.Voice(
+        voice = abjad.Voice(
             name='{} Voice'.format(name),
             )
-        staff = scoretools.Staff(
+        staff = abjad.Staff(
             [voice],
             context_name=context_name,
             name='{} Staff'.format(name),
@@ -265,7 +263,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
         performer_group.append(staff)
         attach(clef, voice)
         abbreviation = abbreviation or \
-            stringtools.to_snake_case(name)
+            abjad.String(name).to_snake_case()
         score_template._context_name_abbreviations[abbreviation] = voice.name
         return performer_group
 
@@ -283,7 +281,7 @@ class ScoreTemplateManager(abctools.AbjadObject):
 
     @staticmethod
     def make_time_signature_context():
-        time_signature_context = scoretools.Context(
+        time_signature_context = abjad.Context(
             context_name='TimeSignatureContext',
             name='Time Signature Context',
             )

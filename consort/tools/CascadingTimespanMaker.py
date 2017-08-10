@@ -1,9 +1,6 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
-from abjad.tools import datastructuretools
 from abjad.tools import rhythmmakertools
-from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
 
@@ -13,7 +10,6 @@ class CascadingTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> import consort
         >>> timespan_maker = consort.CascadingTimespanMaker()
         >>> print(format(timespan_maker))
         consort.tools.CascadingTimespanMaker(
@@ -39,52 +35,52 @@ class CascadingTimespanMaker(TimespanMaker):
         ...     ('C', None),
         ...     ('D', None),
         ...     ])
-        >>> target_timespan = timespantools.Timespan(0, 2)
+        >>> target_timespan = abjad.Timespan(0, 2)
         >>> timespan_inventory = timespan_maker(
         ...     music_specifiers=music_specifiers,
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='D',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(5, 4),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(5, 4),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 4),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(5, 4),
+                    stop_offset=abjad.Offset(3, 2),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 2),
-                    stop_offset=durationtools.Offset(7, 4),
+                    start_offset=abjad.Offset(3, 2),
+                    stop_offset=abjad.Offset(7, 4),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 4),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(7, 4),
+                    stop_offset=abjad.Offset(2, 1),
                     voice_name='D',
                     ),
                 ]
@@ -92,7 +88,7 @@ class CascadingTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_maker = new(
+        >>> timespan_maker = abjad.new(
         ...     timespan_maker,
         ...     playing_groupings=(1, 2),
         ...     cascade_pattern=(2, -1),
@@ -102,49 +98,49 @@ class CascadingTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(3, 4),
-                    original_stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(3, 4),
+                    original_stop_offset=abjad.Offset(1, 2),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='B',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(5, 4),
-                    original_stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(5, 4),
+                    original_stop_offset=abjad.Offset(1, 1),
                     voice_name='D',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(5, 4),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(5, 4),
                     voice_name='C',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 4),
-                    stop_offset=durationtools.Offset(7, 4),
-                    original_stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(5, 4),
+                    stop_offset=abjad.Offset(7, 4),
+                    original_stop_offset=abjad.Offset(3, 2),
                     voice_name='A',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 2),
-                    stop_offset=durationtools.Offset(7, 4),
+                    start_offset=abjad.Offset(3, 2),
+                    stop_offset=abjad.Offset(7, 4),
                     voice_name='D',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 4),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(7, 4),
+                    stop_offset=abjad.Offset(2, 1),
                     voice_name='B',
                     ),
                 ]
@@ -247,7 +243,7 @@ class CascadingTimespanMaker(TimespanMaker):
         ):
         import consort
         # setup state
-        context_names = datastructuretools.CyclicTuple(music_specifiers)
+        context_names = abjad.CyclicTuple(music_specifiers)
         context_index = self.seed or 0
         cascade_pattern = self.cascade_pattern
         playing_talea = consort.Cursor(self.playing_talea)
@@ -259,7 +255,7 @@ class CascadingTimespanMaker(TimespanMaker):
                 next(playing_groupings)
                 next(silence_talea)
         context_seeds = collections.Counter()
-        timespan_inventory = timespantools.TimespanList()
+        timespan_inventory = abjad.TimespanList()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         can_continue = True
@@ -296,7 +292,7 @@ class CascadingTimespanMaker(TimespanMaker):
                     new_timespans[:] = []
                 if context_name not in new_timespan_mapping:
                     new_timespan_mapping[context_name] = \
-                        timespantools.TimespanList()
+                        abjad.TimespanList()
                 new_timespan_mapping[context_name].extend(new_timespans)
                 context_index += cascade_step
                 context_seeds[context_name] += 1

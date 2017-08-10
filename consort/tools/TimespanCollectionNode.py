@@ -1,6 +1,5 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad.tools import abctools
-from abjad.tools import timespantools
 
 
 class TimespanCollectionNode(abctools.AbjadObject):
@@ -173,7 +172,7 @@ class TimespanCollectionNode(abctools.AbjadObject):
 
     @property
     def timespan(self):
-        return timespantools.Timespan(
+        return abjad.Timespan(
             start_offset=self.start_offset,
             stop_offset=self.stop_offset_high,
             )

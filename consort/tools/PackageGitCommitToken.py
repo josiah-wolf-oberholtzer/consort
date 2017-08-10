@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import importlib
 import os
 import subprocess
@@ -14,7 +13,6 @@ class PackageGitCommitToken(AbjadValueObject):
 
         ::
 
-            >>> import consort
             >>> token = consort.PackageGitCommitToken('abjad')
             >>> token
             PackageGitCommitToken(package_name='abjad')

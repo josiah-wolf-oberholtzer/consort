@@ -1,9 +1,6 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
+import abjad
 import collections
-from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
-from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
 
@@ -12,7 +9,6 @@ class TaleaTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> import consort
         >>> timespan_maker = consort.TaleaTimespanMaker(
         ...     initial_silence_talea=rhythmmakertools.Talea(
         ...         counts=(0, 4),
@@ -47,32 +43,32 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     ('Violin', None),
         ...     ('Viola', None),
         ...     ])
-        >>> target_timespan = timespantools.Timespan(0, 1)
+        >>> target_timespan = abjad.Timespan(0, 1)
         >>> timespan_inventory = timespan_maker(
         ...     music_specifiers=music_specifiers,
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Viola',
                     ),
                 ]
@@ -80,7 +76,7 @@ class TaleaTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_maker = new(timespan_maker,
+        >>> timespan_maker = abjad.new(timespan_maker,
         ...     initial_silence_talea=None,
         ...     synchronize_step=True,
         ...     )
@@ -89,26 +85,26 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Violin',
                     ),
                 ]
@@ -116,7 +112,7 @@ class TaleaTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_maker = new(timespan_maker,
+        >>> timespan_maker = abjad.new(timespan_maker,
         ...     initial_silence_talea=rhythmmakertools.Talea(
         ...         counts=(0, 2),
         ...         denominator=16,
@@ -127,26 +123,26 @@ class TaleaTimespanMaker(TimespanMaker):
         ...     target_timespan=target_timespan,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='Viola',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='Violin',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Viola',
                     ),
                 ]
@@ -304,7 +300,7 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         import consort
         counter = collections.Counter()
-        timespan_inventory = timespantools.TimespanList()
+        timespan_inventory = abjad.TimespanList()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
         can_continue = True
@@ -394,10 +390,10 @@ class TaleaTimespanMaker(TimespanMaker):
         ):
         import consort
         counter = collections.Counter()
-        timespan_inventory = timespantools.TimespanList()
+        timespan_inventory = abjad.TimespanList()
         start_offset = target_timespan.start_offset
         stop_offset = target_timespan.stop_offset
-        final_offset = durationtools.Offset(0)
+        final_offset = abjad.Offset(0)
         for context_name, music_specifier in music_specifiers.items():
 
             if context_name not in counter:

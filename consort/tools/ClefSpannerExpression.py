@@ -1,7 +1,5 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
 from abjad import attach
-from abjad import inspect_
+from abjad import inspect
 from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import scoretools
@@ -28,13 +26,13 @@ class ClefSpannerExpression(abctools.AbjadValueObject):
         weights = []
         weighted_pitches = []
         for leaf in leaves:
-            weight = float(inspect_(leaf).get_duration())
-            if isinstance(leaf, scoretools.Note):
+            weight = float(inspect(leaf).get_duration())
+            if isinstance(leaf, abjad.Note):
                 pitch = float(leaf.written_pitch)
                 weighted_pitch = pitch * weight
                 weights.append(weight)
                 weighted_pitches.append(weighted_pitch)
-            elif isinstance(leaf, scoretools.Chord):
+            elif isinstance(leaf, abjad.Chord):
                 for pitch in leaf.written_pitches:
                     pitch = float(pitch)
                     weighted_pitch = pitch * weight

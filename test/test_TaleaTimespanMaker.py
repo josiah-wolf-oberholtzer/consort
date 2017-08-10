@@ -1,17 +1,17 @@
-# -*- encoding: utf-8 -*-
+import abjad
+import collections
+import consort
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import timespantools
-import consort
-import collections
 
 
 music_specifiers = collections.OrderedDict([
     ('One', None),
     ('Two', None),
     ])
-target_timespan = timespantools.Timespan(0, 1)
+target_timespan = abjad.Timespan(0, 1)
 
 
 def test_TaleaTimespanMaker_01():
@@ -20,28 +20,28 @@ def test_TaleaTimespanMaker_01():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Two',
                     ),
                 ]
@@ -61,28 +61,28 @@ def test_TaleaTimespanMaker_02():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Two',
                     ),
                 ]
@@ -99,28 +99,28 @@ def test_TaleaTimespanMaker_03():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Two',
                     ),
                 ]
@@ -140,33 +140,33 @@ def test_TaleaTimespanMaker_04():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(3, 8),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 8),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(7, 8),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='One',
                     ),
                 ]
@@ -187,28 +187,28 @@ def test_TaleaTimespanMaker_05():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Two',
                     ),
                 ]
@@ -232,33 +232,33 @@ def test_TaleaTimespanMaker_06():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(3, 8),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 8),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(7, 8),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='One',
                     ),
                 ]
@@ -279,36 +279,36 @@ def test_TaleaTimespanMaker_07():
             ),
         )
     timespan_inventory = timespan_maker(
-        target_timespan=timespantools.Timespan(2, 3),
+        target_timespan=abjad.Timespan(2, 3),
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(2, 1),
-                    stop_offset=durationtools.Offset(17, 8),
+                    start_offset=abjad.Offset(2, 1),
+                    stop_offset=abjad.Offset(17, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(17, 8),
-                    stop_offset=durationtools.Offset(19, 8),
+                    start_offset=abjad.Offset(17, 8),
+                    stop_offset=abjad.Offset(19, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(19, 8),
-                    stop_offset=durationtools.Offset(21, 8),
+                    start_offset=abjad.Offset(19, 8),
+                    stop_offset=abjad.Offset(21, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(21, 8),
-                    stop_offset=durationtools.Offset(11, 4),
+                    start_offset=abjad.Offset(21, 8),
+                    stop_offset=abjad.Offset(11, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(23, 8),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(23, 8),
+                    stop_offset=abjad.Offset(3, 1),
                     voice_name='One',
                     ),
                 ]
@@ -329,28 +329,28 @@ def test_TaleaTimespanMaker_08():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Two',
                     ),
                 ]
@@ -374,28 +374,28 @@ def test_TaleaTimespanMaker_09():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Two',
                     ),
                 ]
@@ -405,7 +405,7 @@ def test_TaleaTimespanMaker_09():
 
 def test_TaleaTimespanMaker_10():
     timespan_maker = consort.TaleaTimespanMaker(
-        padding=durationtools.Duration(1, 8),
+        padding=abjad.Duration(1, 8),
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
             denominator=8,
@@ -416,68 +416,68 @@ def test_TaleaTimespanMaker_10():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 8),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 8),
+                    stop_offset=abjad.Offset(0, 1),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 8),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 8),
+                    stop_offset=abjad.Offset(0, 1),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(7, 8),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(7, 8),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Two',
                     ),
                 ]
@@ -491,7 +491,7 @@ def test_TaleaTimespanMaker_11():
             counts=(0, 1),
             denominator=8,
             ),
-        padding=durationtools.Duration(1, 8),
+        padding=abjad.Duration(1, 8),
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
             denominator=8,
@@ -502,53 +502,53 @@ def test_TaleaTimespanMaker_11():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 8),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 8),
+                    stop_offset=abjad.Offset(0, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(3, 8),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(7, 8),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(7, 8),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='One',
                     ),
                 ]
@@ -562,7 +562,7 @@ def test_TaleaTimespanMaker_12():
             counts=(0, 1),
             denominator=8,
             ),
-        padding=durationtools.Duration(1, 8),
+        padding=abjad.Duration(1, 8),
         playing_groupings=(2,),
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
@@ -574,63 +574,63 @@ def test_TaleaTimespanMaker_12():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 8),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 8),
+                    stop_offset=abjad.Offset(0, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(3, 8),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 8),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(7, 8),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(9, 8),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(9, 8),
                     voice_name='One',
                     ),
                 ]
@@ -644,7 +644,7 @@ def test_TaleaTimespanMaker_13():
             counts=(0, 1),
             denominator=8,
             ),
-        padding=durationtools.Duration(1, 8),
+        padding=abjad.Duration(1, 8),
         playing_groupings=(2,),
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
@@ -657,63 +657,63 @@ def test_TaleaTimespanMaker_13():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 8),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 8),
+                    stop_offset=abjad.Offset(0, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(3, 8),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(5, 8),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(5, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(7, 8),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(7, 8),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 8),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(7, 8),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(9, 8),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(9, 8),
                     voice_name='One',
                     ),
                 ]
@@ -727,7 +727,7 @@ def test_TaleaTimespanMaker_14():
             counts=(0, 1),
             denominator=8,
             ),
-        padding=durationtools.Duration(1, 8),
+        padding=abjad.Duration(1, 8),
         playing_groupings=(2, 1),
         playing_talea=rhythmmakertools.Talea(
             counts=(1, 2),
@@ -740,63 +740,63 @@ def test_TaleaTimespanMaker_14():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(-1, 8),
-                    stop_offset=durationtools.Offset(0, 1),
+                    start_offset=abjad.Offset(-1, 8),
+                    stop_offset=abjad.Offset(0, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 8),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 8),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(1, 4),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(1, 4),
                     voice_name='Two',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 8),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 8),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(3, 8),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(3, 8),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(3, 8),
-                    stop_offset=durationtools.Offset(1, 2),
+                    start_offset=abjad.Offset(3, 8),
+                    stop_offset=abjad.Offset(1, 2),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(5, 8),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(5, 8),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(9, 8),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(9, 8),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(9, 8),
-                    stop_offset=durationtools.Offset(5, 4),
+                    start_offset=abjad.Offset(9, 8),
+                    stop_offset=abjad.Offset(5, 4),
                     voice_name='One',
                     ),
                 ]
@@ -804,12 +804,12 @@ def test_TaleaTimespanMaker_14():
         ''')
 
 def test_TaleaTimespanMaker_15():
-    target_timespan = timespantools.Timespan(
-        start_offset=durationtools.Offset(7, 2),
-        stop_offset=durationtools.Offset(35, 8),
+    target_timespan = abjad.Timespan(
+        start_offset=abjad.Offset(7, 2),
+        stop_offset=abjad.Offset(35, 8),
         )
     timespan_maker = consort.TaleaTimespanMaker(
-        padding=durationtools.Duration(1, 4),
+        padding=abjad.Duration(1, 4),
         playing_talea=rhythmmakertools.Talea(
             counts=(8,),
             denominator=16,
@@ -831,53 +831,53 @@ def test_TaleaTimespanMaker_15():
         target_timespan=target_timespan,
         music_specifiers=music_specifiers,
         )
-    assert format(timespan_inventory) == systemtools.TestManager.clean_string(
+    assert format(timespan_inventory) == abjad.String.normalize(
         r'''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(13, 4),
-                    stop_offset=durationtools.Offset(7, 2),
+                    start_offset=abjad.Offset(13, 4),
+                    stop_offset=abjad.Offset(7, 2),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(13, 4),
-                    stop_offset=durationtools.Offset(7, 2),
+                    start_offset=abjad.Offset(13, 4),
+                    stop_offset=abjad.Offset(7, 2),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(13, 4),
-                    stop_offset=durationtools.Offset(7, 2),
+                    start_offset=abjad.Offset(13, 4),
+                    stop_offset=abjad.Offset(7, 2),
                     voice_name='Three',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 2),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(7, 2),
+                    stop_offset=abjad.Offset(4, 1),
                     voice_name='One',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 2),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(7, 2),
+                    stop_offset=abjad.Offset(4, 1),
                     voice_name='Three',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(7, 2),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(7, 2),
+                    stop_offset=abjad.Offset(4, 1),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(4, 1),
-                    stop_offset=durationtools.Offset(17, 4),
+                    start_offset=abjad.Offset(4, 1),
+                    stop_offset=abjad.Offset(17, 4),
                     voice_name='One',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(4, 1),
-                    stop_offset=durationtools.Offset(17, 4),
+                    start_offset=abjad.Offset(4, 1),
+                    stop_offset=abjad.Offset(17, 4),
                     voice_name='Two',
                     ),
                 consort.tools.SilentTimespan(
-                    start_offset=durationtools.Offset(4, 1),
-                    stop_offset=durationtools.Offset(17, 4),
+                    start_offset=abjad.Offset(4, 1),
+                    stop_offset=abjad.Offset(17, 4),
                     voice_name='Three',
                     ),
                 ]

@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
 from consort.tools.PitchHandler import PitchHandler
 
 
@@ -8,7 +6,6 @@ class AbsolutePitchHandler(PitchHandler):
 
     ::
 
-        >>> import consort
         >>> pitch_handler = consort.AbsolutePitchHandler(
         ...     pitch_specifier="c' d' e' f'",
         ...     )
@@ -16,17 +13,17 @@ class AbsolutePitchHandler(PitchHandler):
         consort.tools.AbsolutePitchHandler(
             pitch_specifier=consort.tools.PitchSpecifier(
                 pitch_segments=(
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("c'"),
-                            pitchtools.NamedPitch("d'"),
-                            pitchtools.NamedPitch("e'"),
-                            pitchtools.NamedPitch("f'"),
+                            abjad.NamedPitch("c'"),
+                            abjad.NamedPitch("d'"),
+                            abjad.NamedPitch("e'"),
+                            abjad.NamedPitch("f'"),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
                     ),
-                ratio=mathtools.Ratio((1,)),
+                ratio=abjad.Ratio((1,)),
                 ),
             )
 

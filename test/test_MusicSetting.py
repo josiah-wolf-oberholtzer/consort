@@ -1,10 +1,10 @@
-# -*- encoding: utf-8 -*-
+import abjad
+import consort
 from abjad.tools import durationtools
 from abjad.tools import rhythmmakertools
 from abjad.tools import systemtools
 from abjad.tools import templatetools
 from abjad.tools import timespantools
-import consort
 
 layer = 1
 score_template = templatetools.StringOrchestraScoreTemplate(
@@ -13,7 +13,7 @@ score_template = templatetools.StringOrchestraScoreTemplate(
     cello_count=1,
     contrabass_count=0,
     )
-segment_timespan = timespantools.Timespan(0, 4)
+segment_timespan = abjad.Timespan(0, 4)
 timespan_maker = consort.TaleaTimespanMaker(
     playing_talea=rhythmmakertools.Talea(
         counts=(1,),
@@ -21,7 +21,7 @@ timespan_maker = consort.TaleaTimespanMaker(
         ),
     silence_talea=None,
     )
-timespan_quantization = durationtools.Duration(1, 16)
+timespan_quantization = abjad.Duration(1, 16)
 
 
 def test_MusicSetting_01():
@@ -37,34 +37,34 @@ def test_MusicSetting_01():
         segment_timespan=segment_timespan,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(2, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(2, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(4, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
@@ -79,7 +79,7 @@ def test_MusicSetting_02():
 
     music_setting = consort.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=timespantools.Timespan(1, 2),
+        timespan_identifier=abjad.Timespan(1, 2),
         viola_bowing_voice=consort.tools.MusicSpecifier(),
         )
 
@@ -89,13 +89,13 @@ def test_MusicSetting_02():
         segment_timespan=segment_timespan,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
@@ -110,9 +110,9 @@ def test_MusicSetting_03():
 
     music_setting = consort.MusicSetting(
         timespan_maker=timespan_maker,
-        timespan_identifier=timespantools.TimespanList([
-            timespantools.Timespan(0, 1),
-            timespantools.Timespan(2, 4),
+        timespan_identifier=abjad.TimespanList([
+            abjad.Timespan(0, 1),
+            abjad.Timespan(2, 4),
             ]),
         viola_bowing_voice=consort.tools.MusicSpecifier(),
         )
@@ -123,27 +123,27 @@ def test_MusicSetting_03():
         segment_timespan=segment_timespan,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(2, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(2, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(4, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
@@ -171,20 +171,20 @@ def test_MusicSetting_04():
         segment_timespan=segment_timespan,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(2, 1),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(2, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(2, 1),
-                    stop_offset=durationtools.Offset(3, 1),
+                    start_offset=abjad.Offset(2, 1),
+                    stop_offset=abjad.Offset(3, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
@@ -212,20 +212,20 @@ def test_MusicSetting_05():
         segment_timespan=segment_timespan,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(0, 1),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(0, 1),
+                    stop_offset=abjad.Offset(1, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 1),
-                    stop_offset=durationtools.Offset(4, 1),
+                    start_offset=abjad.Offset(3, 1),
+                    stop_offset=abjad.Offset(4, 1),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
@@ -254,13 +254,13 @@ def test_MusicSetting_06():
         timespan_quantization=timespan_quantization,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(21, 16),
-                    stop_offset=durationtools.Offset(37, 16),
+                    start_offset=abjad.Offset(21, 16),
+                    stop_offset=abjad.Offset(37, 16),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',
@@ -289,13 +289,13 @@ def test_MusicSetting_07():
         timespan_quantization=timespan_quantization,
         )
 
-    assert format(result) == systemtools.TestManager.clean_string(
+    assert format(result) == abjad.String.normalize(
         '''
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(19, 8),
-                    stop_offset=durationtools.Offset(27, 8),
+                    start_offset=abjad.Offset(19, 8),
+                    stop_offset=abjad.Offset(27, 8),
                     layer=1,
                     music_specifier=consort.tools.MusicSpecifier(),
                     voice_name='Viola Bowing Voice',

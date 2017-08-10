@@ -1,9 +1,6 @@
-# -*- encoding: utf-8 -*-
-from abjad import new
+import abjad
 from abjad.tools import abctools
-from abjad.tools import mathtools
 from abjad.tools import pitchtools
-from abjad.tools import timespantools
 
 
 class PitchSpecifier(abctools.AbjadValueObject):
@@ -11,7 +8,6 @@ class PitchSpecifier(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> pitch_specifier = consort.PitchSpecifier(
         ...     pitch_segments=(
         ...         "c' e' g'",
@@ -23,29 +19,29 @@ class PitchSpecifier(abctools.AbjadValueObject):
         >>> print(format(pitch_specifier))
         consort.tools.PitchSpecifier(
             pitch_segments=(
-                pitchtools.PitchSegment(
+                abjad.PitchSegment(
                     (
-                        pitchtools.NamedPitch("c'"),
-                        pitchtools.NamedPitch("e'"),
-                        pitchtools.NamedPitch("g'"),
+                        abjad.NamedPitch("c'"),
+                        abjad.NamedPitch("e'"),
+                        abjad.NamedPitch("g'"),
                         ),
-                    item_class=pitchtools.NamedPitch,
+                    item_class=abjad.NamedPitch,
                     ),
-                pitchtools.PitchSegment(
+                abjad.PitchSegment(
                     (
-                        pitchtools.NamedPitch("fs'"),
-                        pitchtools.NamedPitch("gs'"),
+                        abjad.NamedPitch("fs'"),
+                        abjad.NamedPitch("gs'"),
                         ),
-                    item_class=pitchtools.NamedPitch,
+                    item_class=abjad.NamedPitch,
                     ),
-                pitchtools.PitchSegment(
+                abjad.PitchSegment(
                     (
-                        pitchtools.NamedPitch('b'),
+                        abjad.NamedPitch('b'),
                         ),
-                    item_class=pitchtools.NamedPitch,
+                    item_class=abjad.NamedPitch,
                     ),
                 ),
-            ratio=mathtools.Ratio((1, 2, 3)),
+            ratio=abjad.Ratio((1, 2, 3)),
             )
 
     Pitch specifiers can be instantiated from a string of pitch names:
@@ -56,35 +52,35 @@ class PitchSpecifier(abctools.AbjadValueObject):
         >>> print(format(pitch_specifier))
         consort.tools.PitchSpecifier(
             pitch_segments=(
-                pitchtools.PitchSegment(
+                abjad.PitchSegment(
                     (
-                        pitchtools.NamedPitch("c'"),
-                        pitchtools.NamedPitch("e'"),
-                        pitchtools.NamedPitch("g'"),
-                        pitchtools.NamedPitch("a'"),
+                        abjad.NamedPitch("c'"),
+                        abjad.NamedPitch("e'"),
+                        abjad.NamedPitch("g'"),
+                        abjad.NamedPitch("a'"),
                         ),
-                    item_class=pitchtools.NamedPitch,
+                    item_class=abjad.NamedPitch,
                     ),
                 ),
-            ratio=mathtools.Ratio((1,)),
+            ratio=abjad.Ratio((1,)),
             )
 
     Pitch specifiers can be instantiated from a single pitch:
 
     ::
 
-        >>> pitch_specifier = consort.PitchSpecifier(NamedPitch("ds'"))
+        >>> pitch_specifier = consort.PitchSpecifier(abjad.NamedPitch("ds'"))
         >>> print(format(pitch_specifier))
         consort.tools.PitchSpecifier(
             pitch_segments=(
-                pitchtools.PitchSegment(
+                abjad.PitchSegment(
                     (
-                        pitchtools.NamedPitch("ds'"),
+                        abjad.NamedPitch("ds'"),
                         ),
-                    item_class=pitchtools.NamedPitch,
+                    item_class=abjad.NamedPitch,
                     ),
                 ),
-            ratio=mathtools.Ratio((1,)),
+            ratio=abjad.Ratio((1,)),
             )
 
     '''
@@ -105,19 +101,19 @@ class PitchSpecifier(abctools.AbjadValueObject):
         ):
         if pitch_segments is not None:
             if isinstance(pitch_segments, pitchtools.Pitch):
-                pitch_segments = pitchtools.PitchSegment([pitch_segments])
+                pitch_segments = abjad.PitchSegment([pitch_segments])
             elif isinstance(pitch_segments, str):
-                pitch_segments = pitchtools.PitchSegment(pitch_segments)
-            if isinstance(pitch_segments, pitchtools.PitchSegment):
+                pitch_segments = abjad.PitchSegment(pitch_segments)
+            if isinstance(pitch_segments, abjad.PitchSegment):
                 pitch_segments = [pitch_segments]
             coerced_pitch_segments = []
             for pitch_segment in pitch_segments:
-                pitch_segment = pitchtools.PitchSegment(
+                pitch_segment = abjad.PitchSegment(
                     pitch_segment,
-                    item_class=pitchtools.NamedPitch,
+                    item_class=abjad.NamedPitch,
                     )
                 if not pitch_segment:
-                    pitch_segment = pitchtools.PitchSegment("c'")
+                    pitch_segment = abjad.PitchSegment("c'")
                 coerced_pitch_segments.append(pitch_segment)
             pitch_segments = tuple(coerced_pitch_segments)
             assert len(pitch_segments)
@@ -126,7 +122,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
             ratio = [1] * len(pitch_segments)
 
         if ratio is not None:
-            ratio = mathtools.Ratio([abs(x) for x in ratio])
+            ratio = abjad.Ratio([abs(x) for x in ratio])
             assert len(ratio) == len(pitch_segments)
 
         self._pitch_segments = pitch_segments
@@ -151,37 +147,37 @@ class PitchSpecifier(abctools.AbjadValueObject):
             >>> print(format(timespans))
             consort.tools.TimespanCollection(
                 [
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(0, 1),
-                        stop_offset=durationtools.Offset(5, 3),
-                        annotation=pitchtools.PitchSegment(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(0, 1),
+                        stop_offset=abjad.Offset(5, 3),
+                        annotation=abjad.PitchSegment(
                             (
-                                pitchtools.NamedPitch("c'"),
-                                pitchtools.NamedPitch("e'"),
-                                pitchtools.NamedPitch("g'"),
+                                abjad.NamedPitch("c'"),
+                                abjad.NamedPitch("e'"),
+                                abjad.NamedPitch("g'"),
                                 ),
-                            item_class=pitchtools.NamedPitch,
+                            item_class=abjad.NamedPitch,
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(5, 3),
-                        stop_offset=durationtools.Offset(5, 1),
-                        annotation=pitchtools.PitchSegment(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(5, 3),
+                        stop_offset=abjad.Offset(5, 1),
+                        annotation=abjad.PitchSegment(
                             (
-                                pitchtools.NamedPitch("fs'"),
-                                pitchtools.NamedPitch("g'"),
+                                abjad.NamedPitch("fs'"),
+                                abjad.NamedPitch("g'"),
                                 ),
-                            item_class=pitchtools.NamedPitch,
+                            item_class=abjad.NamedPitch,
                             ),
                         ),
-                    timespantools.AnnotatedTimespan(
-                        start_offset=durationtools.Offset(5, 1),
-                        stop_offset=durationtools.Offset(10, 1),
-                        annotation=pitchtools.PitchSegment(
+                    abjad.AnnotatedTimespan(
+                        start_offset=abjad.Offset(5, 1),
+                        stop_offset=abjad.Offset(10, 1),
+                        annotation=abjad.PitchSegment(
                             (
-                                pitchtools.NamedPitch('b'),
+                                abjad.NamedPitch('b'),
                                 ),
-                            item_class=pitchtools.NamedPitch,
+                            item_class=abjad.NamedPitch,
                             ),
                         ),
                     ]
@@ -191,22 +187,22 @@ class PitchSpecifier(abctools.AbjadValueObject):
         import consort
         timespans = consort.TimespanCollection()
         if not self.ratio or not self.pitch_segments:
-            pitch_segment = pitchtools.PitchSegment("c'")
-            annotated_timespan = timespantools.AnnotatedTimespan(
+            pitch_segment = abjad.PitchSegment("c'")
+            annotated_timespan = abjad.AnnotatedTimespan(
                 annotation=pitch_segment,
                 start_offset=0,
                 stop_offset=stop_offset,
                 ),
             timespans.insert(annotated_timespan)
         else:
-            target_timespan = timespantools.Timespan(
+            target_timespan = abjad.Timespan(
                 start_offset=0,
                 stop_offset=stop_offset,
                 )
             divided_timespans = target_timespan.divide_by_ratio(self.ratio)
             for i, timespan in enumerate(divided_timespans):
                 pitch_segment = self._pitch_segments[i]
-                annotated_timespan = timespantools.AnnotatedTimespan(
+                annotated_timespan = abjad.AnnotatedTimespan(
                     annotation=pitch_segment,
                     start_offset=timespan.start_offset,
                     stop_offset=timespan.stop_offset,
@@ -231,29 +227,29 @@ class PitchSpecifier(abctools.AbjadValueObject):
             >>> print(format(rotated_pitch_specifier))
             consort.tools.PitchSpecifier(
                 pitch_segments=(
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch('b'),
+                            abjad.NamedPitch('b'),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("c'"),
-                            pitchtools.NamedPitch('f'),
-                            pitchtools.NamedPitch('a'),
+                            abjad.NamedPitch("c'"),
+                            abjad.NamedPitch('f'),
+                            abjad.NamedPitch('a'),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("fs'"),
-                            pitchtools.NamedPitch("e'"),
+                            abjad.NamedPitch("fs'"),
+                            abjad.NamedPitch("e'"),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
                     ),
-                ratio=mathtools.Ratio((3, 1, 2)),
+                ratio=abjad.Ratio((3, 1, 2)),
                 )
 
         Returns new pitch specifier.
@@ -266,7 +262,7 @@ class PitchSpecifier(abctools.AbjadValueObject):
             )
         pitch_segments = consort.rotate(pitch_segments, rotation)
         ratio = consort.rotate(self.ratio, rotation)
-        return new(
+        return abjad.new(
             self,
             pitch_segments=pitch_segments,
             ratio=ratio,
@@ -289,35 +285,35 @@ class PitchSpecifier(abctools.AbjadValueObject):
             >>> print(format(transposed_pitch_specifier))
             consort.tools.PitchSpecifier(
                 pitch_segments=(
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("d'"),
-                            pitchtools.NamedPitch("fs'"),
-                            pitchtools.NamedPitch("a'"),
+                            abjad.NamedPitch("d'"),
+                            abjad.NamedPitch("fs'"),
+                            abjad.NamedPitch("a'"),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("gs'"),
-                            pitchtools.NamedPitch("as'"),
+                            abjad.NamedPitch("gs'"),
+                            abjad.NamedPitch("as'"),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
-                    pitchtools.PitchSegment(
+                    abjad.PitchSegment(
                         (
-                            pitchtools.NamedPitch("cs'"),
+                            abjad.NamedPitch("cs'"),
                             ),
-                        item_class=pitchtools.NamedPitch,
+                        item_class=abjad.NamedPitch,
                         ),
                     ),
-                ratio=mathtools.Ratio((1, 2, 3)),
+                ratio=abjad.Ratio((1, 2, 3)),
                 )
 
         Returns new pitch specifier.
         '''
         pitch_segments = (_.transpose(expr) for _ in self.pitch_segments)
-        return new(self, pitch_segments=pitch_segments)
+        return abjad.new(self, pitch_segments=pitch_segments)
 
     ### PUBLIC PROPERTIES ###
 

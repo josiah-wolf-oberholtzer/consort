@@ -1,7 +1,5 @@
-# -*- encoding: utf-8 -*-
-from __future__ import print_function
 from abjad import attach
-from abjad import inspect_
+from abjad import inspect
 from abjad import iterate
 from abjad.tools import abctools
 from abjad.tools import indicatortools
@@ -30,13 +28,13 @@ class OctavationExpression(abctools.AbjadValueObject):
         weights = []
         weighted_pitches = []
         for leaf in leaves:
-            weight = float(inspect_(leaf).get_duration())
-            if isinstance(leaf, scoretools.Note):
+            weight = float(inspect(leaf).get_duration())
+            if isinstance(leaf, abjad.Note):
                 pitch = float(leaf.written_pitch)
                 weighted_pitch = pitch * weight
                 weights.append(weight)
                 weighted_pitches.append(weighted_pitch)
-            elif isinstance(leaf, scoretools.Chord):
+            elif isinstance(leaf, abjad.Chord):
                 for pitch in leaf.written_pitches:
                     pitch = float(pitch)
                     weighted_pitch = pitch * weight
@@ -46,10 +44,10 @@ class OctavationExpression(abctools.AbjadValueObject):
         sum_of_weighted_pitches = sum(weighted_pitches)
         weighted_average = sum_of_weighted_pitches / sum_of_weights
         #print(music, weighted_average)
-        clef = inspect_(leaves[0]).get_effective(indicatortools.Clef)
+        clef = abjad.inspect(leaves[0]).get_effective(indicatortools.Clef)
         octavation_spanner = None
         if clef == indicatortools.Clef('treble'):
-            if int(pitchtools.NamedPitch('C6')) <= int(weighted_average):
+            if int(abjad.NamedPitch('C6')) <= int(weighted_average):
                 octavation_spanner = spannertools.OctavationSpanner()
         elif clef == indicatortools.Clef('bass'):
             pass

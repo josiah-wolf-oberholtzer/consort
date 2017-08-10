@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import copy
 import inspect
 import pytest
@@ -27,7 +27,7 @@ def test_consort___deepcopy___01(class_):
     instance_two = copy.deepcopy(instance_one)
     instance_one_format = format(instance_one, 'storage')
     instance_two_format = format(instance_two, 'storage')
-    if not issubclass(class_, scoretools.Container):
+    if not issubclass(class_, abjad.Container):
         assert instance_one_format == instance_two_format
     # TODO: eventually this second asset should also pass
     #assert instance_one == instance_two

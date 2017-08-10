@@ -1,10 +1,9 @@
-# -*- encoding: utf -*-
+import abjad
 import collections
-from abjad.tools import indicatortools
+import consort
 from abjad.tools import systemtools
 from abjad.tools import templatetools
 from abjad.tools import timespantools
-import consort
 
 
 segment_metadata = collections.OrderedDict(
@@ -24,17 +23,17 @@ def test_SegmentMaker_discard_final_silence_01():
         settings=(
             consort.MusicSetting(
                 timespan_maker=consort.FloodedTimespanMaker(),
-                timespan_identifier=timespantools.Timespan(0, (1, 4)),
+                timespan_identifier=abjad.Timespan(0, (1, 4)),
                 v1=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -91,17 +90,17 @@ def test_SegmentMaker_discard_final_silence_02():
         settings=(
             consort.MusicSetting(
                 timespan_maker=consort.FloodedTimespanMaker(),
-                timespan_identifier=timespantools.Timespan(0, (1, 4)),
+                timespan_identifier=abjad.Timespan(0, (1, 4)),
                 v1=consort.MusicSpecifier(),
                 ),
             ),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)

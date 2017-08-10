@@ -1,7 +1,5 @@
-# -*- encoding: utf -*-
+import abjad
 from abjad.tools import abctools
-from abjad.tools import mathtools
-from abjad.tools import timespantools
 
 
 class RatioPartsExpression(abctools.AbjadObject):
@@ -12,7 +10,6 @@ class RatioPartsExpression(abctools.AbjadObject):
 
         ::
 
-            >>> import consort
             >>> expression = consort.RatioPartsExpression(
             ...     ratio=(1, 2, 1),
             ...     parts=(0, 2),
@@ -20,14 +17,14 @@ class RatioPartsExpression(abctools.AbjadObject):
             >>> print(format(expression))
             consort.tools.RatioPartsExpression(
                 parts=(0, 2),
-                ratio=mathtools.Ratio((1, 2, 1)),
+                ratio=abjad.Ratio((1, 2, 1)),
                 )
 
         ::
 
-            >>> timespan = timespantools.Timespan(
-            ...     start_offset=Duration(1, 2),
-            ...     stop_offset=Duration(3, 2),
+            >>> timespan = abjad.Timespan(
+            ...     start_offset=abjad.Duration(1, 2),
+            ...     stop_offset=abjad.Duration(3, 2),
             ...     )
             >>> for x in expression(timespan):
             ...     x
@@ -42,14 +39,14 @@ class RatioPartsExpression(abctools.AbjadObject):
             >>> expression = consort.RatioPartsExpression(
             ...     ratio=(1, 2, 1),
             ...     parts=(0, 2),
-            ...     mask_timespan=timespantools.Timespan(
+            ...     mask_timespan=abjad.Timespan(
             ...          start_offset=(1, 4),
             ...          ),
             ...     )
 
         ::
 
-            >>> timespan = timespantools.Timespan(0, 4)
+            >>> timespan = abjad.Timespan(0, 4)
             >>> for x in expression(timespan):
             ...     x
             ...
@@ -74,8 +71,8 @@ class RatioPartsExpression(abctools.AbjadObject):
         ratio=(1, 1),
         mask_timespan=None,
         ):
-        if not isinstance(ratio, mathtools.Ratio):
-            ratio = mathtools.Ratio(ratio)
+        if not isinstance(ratio, abjad.Ratio):
+            ratio = abjad.Ratio(ratio)
         self._ratio = ratio
         if isinstance(parts, int):
             parts = (parts,)
@@ -83,15 +80,15 @@ class RatioPartsExpression(abctools.AbjadObject):
         parts = tuple(sorted(set(parts)))
         self._parts = parts
         if mask_timespan is not None:
-            assert isinstance(mask_timespan, timespantools.Timespan)
+            assert isinstance(mask_timespan, abjad.Timespan)
         self._mask_timespan = mask_timespan
 
     ### SPECIAL METHODS ###
 
     def __call__(self, timespan):
-        assert isinstance(timespan, timespantools.Timespan)
+        assert isinstance(timespan, abjad.Timespan)
         divided_timespan = timespan.divide_by_ratio(self.ratio)
-        timespans = timespantools.TimespanList()
+        timespans = abjad.TimespanList()
         for part in self.parts:
             timespans.append(divided_timespan[part])
         if self.mask_timespan is not None:
@@ -111,7 +108,7 @@ class RatioPartsExpression(abctools.AbjadObject):
             >>> print(format(expression))
             consort.tools.RatioPartsExpression(
                 parts=(1, 3),
-                ratio=mathtools.Ratio((1, 2, 1, 1, 1)),
+                ratio=abjad.Ratio((1, 2, 1, 1, 1)),
                 )
 
         Returns new ratio parts expression.

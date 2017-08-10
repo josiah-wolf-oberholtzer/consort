@@ -1,9 +1,8 @@
-# -*- encoding: utf -*-
+import abjad
 import collections
-from abjad.tools import indicatortools
+import consort
 from abjad.tools import systemtools
 from abjad.tools import templatetools
-import consort
 
 
 segment_metadata = collections.OrderedDict(
@@ -21,15 +20,15 @@ def test_SegmentMaker_rehearsal_mark_01():
             staff_count=1,
             ),
         settings=None,
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(
         segment_metadata=segment_metadata,
         )
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -84,15 +83,15 @@ def test_SegmentMaker_rehearsal_mark_02():
             staff_count=1,
             ),
         settings=None,
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         permitted_time_signatures=((4, 4),),
         )
     lilypond_file, metadata = segment_maker(
         segment_metadata=segment_metadata,
         )
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)

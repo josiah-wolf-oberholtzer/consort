@@ -1,6 +1,6 @@
+import abjad
 import collections
 import consort
-from abjad.tools import indicatortools
 from abjad.tools import systemtools
 
 
@@ -24,7 +24,7 @@ def test_SegmentMaker_validate_01():
         omit_stylesheets=True,
         permitted_time_signatures=[(4, 4)],
         score_template=consort.StringQuartetScoreTemplate(split=False),
-        tempo=indicatortools.Tempo((1, 4), 60),
+        tempo=abjad.MetronomeMark((1, 4), 60),
         )
 
     segment_maker.add_setting(
@@ -35,9 +35,9 @@ def test_SegmentMaker_validate_01():
         )
 
     lilypond_file, metadata = segment_maker(segment_metadata=segment_metadata)
-    assert format(lilypond_file) == systemtools.TestManager.clean_string(
+    assert format(lilypond_file) == abjad.String.normalize(
         r'''
-        \version "2.19.44"
+        \version "2.19.65"
         \language "english"
 
         #(ly:set-option 'relative-includes #t)
@@ -66,8 +66,8 @@ def test_SegmentMaker_validate_01():
                         }
                 } <<
                     \context StringStaff = "Violin 1 Staff" {
+                        \clef "treble"
                         \context Voice = "Violin 1 Voice" {
-                            \clef "treble"
                             {
                                 % [Violin 1 Voice] Measure 1
                                 {
@@ -92,8 +92,8 @@ def test_SegmentMaker_validate_01():
                         }
                 } <<
                     \context StringStaff = "Violin 2 Staff" {
+                        \clef "treble"
                         \context Voice = "Violin 2 Voice" {
-                            \clef "treble"
                             {
                                 % [Violin 2 Voice] Measure 1
                                 {
@@ -118,8 +118,8 @@ def test_SegmentMaker_validate_01():
                         }
                 } <<
                     \context StringStaff = "Viola Staff" {
+                        \clef "alto"
                         \context Voice = "Viola Voice" {
-                            \clef "alto"
                             {
                                 % [Viola Voice] Measure 1
                                 {
@@ -144,8 +144,8 @@ def test_SegmentMaker_validate_01():
                         }
                 } <<
                     \context StringStaff = "Cello Staff" {
+                        \clef "bass"
                         \context Voice = "Cello Voice" {
-                            \clef "bass"
                             {
                                 % [Cello Voice] Measure 1
                                 {

@@ -1,10 +1,9 @@
-# -*- encoding: utf-8 -*-
+import abjad
 from abjad import attach
-from abjad import inspect_
+from abjad import inspect
 from abjad import mutate
 from abjad import select
 from abjad.tools import durationtools
-from abjad.tools import scoretools
 from abjad.tools import selectiontools
 from consort.tools.HashCachingObject import HashCachingObject
 
@@ -26,7 +25,7 @@ class LeafExpression(HashCachingObject):
         attachments=None,
         ):
         HashCachingObject.__init__(self)
-        prototype = scoretools.Leaf
+        prototype = abjad.Leaf
         if leaf is not None:
             if isinstance(leaf, prototype):
                 leaf = mutate(leaf).copy()
@@ -42,11 +41,11 @@ class LeafExpression(HashCachingObject):
     ### SPECIAL METHODS ###
 
     def __call__(self, expr):
-        if isinstance(expr, scoretools.Leaf):
+        if isinstance(expr, abjad.Leaf):
             expr = select(expr)
         assert isinstance(expr, selectiontools.Selection)
         for i, old_leaf in enumerate(expr):
-            assert isinstance(old_leaf, scoretools.Leaf)
+            assert isinstance(old_leaf, abjad.Leaf)
             new_leaf = self._make_new_leaf(old_leaf)
 
             timespan = old_leaf._timespan
@@ -65,17 +64,17 @@ class LeafExpression(HashCachingObject):
 
     def _make_new_leaf(self, old_leaf):
         duration = old_leaf.written_duration
-        if isinstance(self.leaf, scoretools.Note):
-            new_leaf = scoretools.Note(self.leaf.written_pitch, duration)
-        elif isinstance(self.leaf, scoretools.Chord):
-            new_leaf = scoretools.Chord(self.leaf.written_pitches, duration)
-        elif isinstance(self.leaf, scoretools.Rest):
-            new_leaf = scoretools.Rest(duration)
-        elif isinstance(self.leaf, scoretools.Skip):
-            new_leaf = scoretools.Skip(duration)
-        prototype = durationtools.Multiplier
-        if inspect_(old_leaf).has_indicator(prototype):
-            multiplier = inspect_(old_leaf).get_indicator(prototype)
+        if isinstance(self.leaf, abjad.Note):
+            new_leaf = abjad.Note(self.leaf.written_pitch, duration)
+        elif isinstance(self.leaf, abjad.Chord):
+            new_leaf = abjad.Chord(self.leaf.written_pitches, duration)
+        elif isinstance(self.leaf, abjad.Rest):
+            new_leaf = abjad.Rest(duration)
+        elif isinstance(self.leaf, abjad.Skip):
+            new_leaf = abjad.Skip(duration)
+        prototype = abjad.Multiplier
+        if inspect(old_leaf).has_indicator(prototype):
+            multiplier = abjad.inspect(old_leaf).get_indicator(prototype)
             attach(multiplier, new_leaf)
         return new_leaf
 

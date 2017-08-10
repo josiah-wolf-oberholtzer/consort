@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 import colorsys
 from abjad.tools import abctools
 
@@ -8,7 +7,6 @@ class Color(abctools.AbjadValueObject):
 
     ::
 
-        >>> import consort
         >>> color = consort.Color(1.0, 0.92, 0.8)
         >>> print(format(color))
         consort.tools.Color(

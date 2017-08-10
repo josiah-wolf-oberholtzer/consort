@@ -1,6 +1,4 @@
-# -*- encoding: utf-8 -*-
-from abjad.tools import selectiontools
-from abjad.tools import scoretools
+import abjad
 from consort.tools.LogicalTieExpression import LogicalTieExpression
 
 
@@ -9,10 +7,9 @@ class KeyClickExpression(LogicalTieExpression):
 
     ::
 
-        >>> import consort
         >>> key_click_expression = consort.KeyClickExpression()
-        >>> staff = Staff("c'4 d'4 ~ d'4 e'4")
-        >>> logical_tie = inspect_(staff[1]).get_logical_tie()
+        >>> staff = abjad.Staff("c'4 d'4 ~ d'4 e'4")
+        >>> logical_tie = abjad.inspect(staff[1]).get_logical_tie()
         >>> key_click_expression(logical_tie)
         >>> print(format(staff))
         \new Staff {
@@ -52,12 +49,12 @@ class KeyClickExpression(LogicalTieExpression):
         logical_tie,
         pitch_range=None,
         ):
-        assert isinstance(logical_tie, selectiontools.LogicalTie), logical_tie
+        assert isinstance(logical_tie, abjad.LogicalTie), logical_tie
         main_pitch = logical_tie[0].written_pitch
         subtone_pitch = main_pitch.transpose('-M7')
         chord_pitches = (subtone_pitch, main_pitch)
         for i, leaf in enumerate(logical_tie):
-            chord = scoretools.Chord(leaf)
+            chord = abjad.Chord(leaf)
             chord.written_pitches = chord_pitches
             self._replace(leaf, chord)
             for note_head in chord.note_heads:

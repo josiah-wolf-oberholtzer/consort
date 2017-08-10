@@ -1,10 +1,6 @@
-# -*- encoding: utf-8 -*-
+import abjad
 import collections
-from abjad import inspect_
-from abjad.tools import datastructuretools
-from abjad.tools import durationtools
 from abjad.tools import mathtools
-from abjad.tools import timespantools
 from consort.tools.TimespanMaker import TimespanMaker
 
 
@@ -13,7 +9,6 @@ class DependentTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> import consort
         >>> timespan_maker = consort.DependentTimespanMaker(
         ...     include_inner_starts=True,
         ...     include_inner_stops=True,
@@ -30,7 +25,7 @@ class DependentTimespanMaker(TimespanMaker):
 
     ::
 
-        >>> timespan_inventory = timespantools.TimespanList([
+        >>> timespan_inventory = abjad.TimespanList([
         ...     consort.tools.PerformedTimespan(
         ...         voice_name='Viola Voice',
         ...         start_offset=(1, 4),
@@ -49,53 +44,53 @@ class DependentTimespanMaker(TimespanMaker):
         ...     'Violin Voice': None,
         ...     'Cello Voice': None,
         ...     }
-        >>> target_timespan = timespantools.Timespan((1, 2), (2, 1))
+        >>> target_timespan = abjad.Timespan((1, 2), (2, 1))
         >>> timespan_inventory = timespan_maker(
         ...     music_specifiers=music_specifiers,
         ...     target_timespan=target_timespan,
         ...     timespan_inventory=timespan_inventory,
         ...     )
         >>> print(format(timespan_inventory))
-        timespantools.TimespanList(
+        abjad.TimespanList(
             [
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(1, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Viola Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 2),
-                    stop_offset=durationtools.Offset(3, 4),
+                    start_offset=abjad.Offset(1, 2),
+                    stop_offset=abjad.Offset(3, 4),
                     voice_name='Violin Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(1, 1),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(1, 1),
                     voice_name='Violin Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(3, 4),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(3, 4),
+                    stop_offset=abjad.Offset(3, 2),
                     voice_name='Viola Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 2),
                     voice_name='Cello Voice',
                     ),
                 consort.tools.PerformedTimespan(
-                    start_offset=durationtools.Offset(1, 1),
-                    stop_offset=durationtools.Offset(3, 2),
+                    start_offset=abjad.Offset(1, 1),
+                    stop_offset=abjad.Offset(3, 2),
                     voice_name='Violin Voice',
                     ),
                 ]
@@ -139,7 +134,7 @@ class DependentTimespanMaker(TimespanMaker):
             timespan_specifier=timespan_specifier,
             )
         if hysteresis is not None:
-            hysteresis = durationtools.Duration(hysteresis)
+            hysteresis = abjad.Duration(hysteresis)
             assert 0 < hysteresis
         self._hysteresis = hysteresis
         if include_inner_starts is not None:
@@ -174,7 +169,7 @@ class DependentTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         import consort
-        preexisting_timespans = timespantools.TimespanList()
+        preexisting_timespans = abjad.TimespanList()
         for timespan in timespan_inventory:
             if not isinstance(timespan, consort.PerformedTimespan):
                 continue
@@ -196,10 +191,10 @@ class DependentTimespanMaker(TimespanMaker):
             if self.inspect_music and timespan.music:
                 outer_start_offset = timespan.start_offset
                 inner_start_offset = \
-                    inspect_(timespan.music).get_timespan().start_offset
+                    abjad.inspect(timespan.music).get_timespan().start_offset
                 assert inner_start_offset == 0
                 for division in timespan.music:
-                    division_timespan = inspect_(division).get_timespan()
+                    division_timespan = abjad.inspect(division).get_timespan()
                     division_timespan = division_timespan.translate(
                         outer_start_offset)
                     preexisting_timespans.append(division_timespan)
@@ -230,11 +225,11 @@ class DependentTimespanMaker(TimespanMaker):
         timespan_inventory=None,
         ):
         import consort
-        new_timespans = timespantools.TimespanList()
+        new_timespans = abjad.TimespanList()
         if not self.voice_names and not self.labels:
             return new_timespans
         rotation_indices = self.rotation_indices or (0,)
-        rotation_indices = datastructuretools.CyclicTuple(rotation_indices)
+        rotation_indices = abjad.CyclicTuple(rotation_indices)
         context_counter = collections.Counter()
         preexisting_timespans = self._collect_preexisting_timespans(
             target_timespan=target_timespan,
