@@ -1,0 +1,6 @@
+include README.rst
+include setup.py
+include MANIFEST
+recursive-include consort *
+recursive-exclude consort/docs/build *
+recursive-exclude consort *.pyc
